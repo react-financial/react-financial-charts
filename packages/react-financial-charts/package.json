@@ -1,0 +1,52 @@
+{
+  "name": "react-financial-charts",
+  "version": "0.1.0",
+  "description": "React charts specific to finance.",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "sideEffects": false,
+  "author": "reactivemarkets",
+  "keywords": [
+    "charts",
+    "charting",
+    "stockcharts",
+    "finance",
+    "finanical",
+    "finance-chart",
+    "react",
+    "d3"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rimraf lib",
+    "compile": "tsc -p tsconfig.json",
+    "lint": "tslint -p tsconfig.json -c tslint.yaml",
+    "test": "jest",
+    "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "d3-array": "^1.2.1",
+    "d3-collection": "^1.0.7",
+    "d3-force": "^1.1.0",
+    "d3-format": "^1.2.1",
+    "d3-interpolate": "^1.1.6",
+    "d3-path": "^1.0.8",
+    "d3-scale": "^1.0.7",
+    "d3-selection": "^1.2.0",
+    "d3-shape": "^1.2.0",
+    "d3-time": "^1.0.11",
+    "d3-time-format": "^2.1.3",
+    "debug": "^4.1.1",
+    "lodash.flattendeep": "^4.4.0",
+    "prop-types": "^15.7.2",
+    "save-svg-as-png": "^1.4.14"
+  },
+  "peerDependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  }
+}

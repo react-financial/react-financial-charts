@@ -1,0 +1,10 @@
+---
+extends: "tslint:recommended"
+rules:
+  completed-docs: false
+  interface-name: false
+  object-literal-sort-keys: false
+  only-arrow-functions: false
+  space-before-function-paren: false
+  max-line-length:
+    options: [140]

@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "lib": [
+            "esnext.array",
+            "esnext.asynciterable",
+            "esnext",
+            "dom"
+        ],
+        "moduleResolution": "node",
+        "module": "esnext",
+        "noImplicitAny": false,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "strict": false,
+        "target": "es2017",
+        "baseUrl": "../.."
+    },
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "node_modules",
+        "lib",
+        "dist",
+        "**/__tests__/**"
+    ]
+}

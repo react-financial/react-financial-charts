@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "outDir": "lib",
+        "removeComments": true,
+        "sourceMap": true,
+        "strict": true,
+        "target": "es2017"
+    },
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "lib",
+        "**/__tests__/**"
+    ]
+}

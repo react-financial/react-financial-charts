@@ -81,7 +81,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
             strokeWidth: 1,
 
             textFill: "#6574CD",
-            fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+            fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
             fontSize: 12,
             fontStyle: "normal",
             fontWeight: "normal",

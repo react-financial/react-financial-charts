@@ -23,7 +23,7 @@ export class LabelAnnotation extends React.Component<LabelAnnotationProps> {
     public static defaultProps = {
         className: "react-stockcharts-labelannotation",
         textAnchor: "middle",
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
         fill: "#000000",
         opacity: 1,

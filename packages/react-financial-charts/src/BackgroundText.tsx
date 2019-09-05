@@ -24,7 +24,7 @@ class BackgroundText extends PureComponent<BackgroundTextProps> {
         fill: "#9E7523",
         stroke: "#9E7523",
         strokeOpacity: 1,
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
         textAnchor: "middle",
     };

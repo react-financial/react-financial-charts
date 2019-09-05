@@ -64,7 +64,7 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
                 "#a65628",
                 "#f781bf",
             ],
-            fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+            fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
             fontSize: 12,
             fontFill: "#000000",
         },

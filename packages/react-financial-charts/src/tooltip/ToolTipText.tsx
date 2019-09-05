@@ -7,7 +7,7 @@ export class ToolTipText extends React.Component<ToolTipTextProps> {
 
     public static defaultProps = {
         className: "react-stockcharts-tooltip",
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 11,
     };
 

@@ -71,7 +71,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
             stroke: "#000000",
             strokeWidth: 1,
             strokeOpacity: 1,
-            fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+            fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
             fontSize: 11,
             fontFill: "#000000",
             edgeStroke: "#000000",

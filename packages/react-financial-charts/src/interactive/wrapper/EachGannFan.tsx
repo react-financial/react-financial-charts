@@ -74,7 +74,7 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
                 "#e377c2",
                 "#7f7f7f",
             ],
-            fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+            fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
             fontSize: 10,
             fontFill: "#000000",
         },

@@ -74,7 +74,7 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
         hideLine: false,
         fill: "#8a8a8a",
         opacity: 1,
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,
         textFill: "#FFFFFF",
         lineStroke: "#000000",

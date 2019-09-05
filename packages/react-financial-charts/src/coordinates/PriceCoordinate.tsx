@@ -43,7 +43,7 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
         opacity: 1,
         lineOpacity: 0.2,
         lineStroke: "#000000",
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,
         textFill: "#FFFFFF",
         strokeOpacity: 1,

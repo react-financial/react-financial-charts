@@ -48,7 +48,7 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
         at: "bottom",
         fill: "#525252",
         opacity: 1,
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,
         textFill: "#FFFFFF",
         snapX: true,

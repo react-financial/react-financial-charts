@@ -27,7 +27,7 @@ export class Label extends React.Component<LabelProps> {
 
     public static defaultProps = {
         textAnchor: "middle",
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
         fill: "#000000",
         opacity: 1,

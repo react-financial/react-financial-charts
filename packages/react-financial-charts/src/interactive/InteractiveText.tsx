@@ -51,7 +51,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
             bgOpacity: 1,
             bgStrokeWidth: 1,
             textFill: "#F10040",
-            fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+            fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
             fontSize: 12,
             fontStyle: "normal",
             fontWeight: "normal",

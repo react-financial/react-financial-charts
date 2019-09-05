@@ -42,7 +42,7 @@ export class MouseCoordinateXV2 extends React.Component<MouseCoordinateXV2Props>
         text: {
             fontStyle: "",
             fontWeight: "",
-            fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+            fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
             fontSize: 13,
             fill: "rgb(35, 35, 35)",
         },

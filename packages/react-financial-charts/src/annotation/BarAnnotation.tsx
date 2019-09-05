@@ -38,7 +38,7 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
         opacity: 1,
         fill: "#000000",
         textAnchor: "middle",
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 10,
         textFill: "#000000",
         textOpacity: 1,

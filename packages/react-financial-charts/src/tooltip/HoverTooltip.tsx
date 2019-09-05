@@ -34,7 +34,7 @@ class HoverTooltip extends React.Component<HoverTooltipProps> {
         opacity: 0.8,
         backgroundShapeSVG,
         backgroundShapeCanvas,
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
     };
 

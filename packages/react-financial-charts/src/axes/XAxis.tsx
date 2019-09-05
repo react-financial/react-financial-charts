@@ -39,7 +39,7 @@ export class XAxis extends React.Component<XAxisProps> {
         tickPadding: 6,
         tickStroke: "#000000",
         tickStrokeOpacity: 1,
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
         fontWeight: 400,
         xZoomHeight: 25,

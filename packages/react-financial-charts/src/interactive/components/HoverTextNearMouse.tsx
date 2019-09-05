@@ -26,7 +26,7 @@ interface HoverTextNearMouseState {
 export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps, HoverTextNearMouseState> {
 
     public static defaultProps = {
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
         fill: "#000000",
         bgFill: "#FA9325",

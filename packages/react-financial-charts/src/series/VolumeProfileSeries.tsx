@@ -160,7 +160,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
             const rollup = nest()
                 .key((d) => d.direction)
                 .sortKeys(orient === "right" ? descending : ascending)
-                .rollup((leaves) => sum(leaves, (d) => d.volume));
+                .rollup((leaves) => sum<any>(leaves, (d) => d.volume));
 
             const values = histogram2(session);
 
@@ -180,12 +180,12 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
                 : [finish, finish - sessionWidth * (100 - maxProfileWidthPercent) / 100];
 
             const xScale = scaleLinear()
-                .domain([0, max(volumeValues)])
+                .domain([0, max(volumeValues)!])
                 .range([start, end]);
 
             const totalVolumes = volumeInBins.map((volumes) => {
 
-                const totalVolume = sum(volumes, (d) => d.value);
+                const totalVolume = sum<any>(volumes, (d) => d.value);
                 const totalVolumeX = xScale(totalVolume);
                 const widthLocal = base(xScale) - totalVolumeX;
                 const x = widthLocal < 0 ? totalVolumeX + widthLocal : totalVolumeX;
@@ -200,6 +200,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
                 return { x, ws, totalVolumeX };
             });
 
+            // @ts-ignore
             const rects = zip(values, totalVolumes)
                 .map(([d, { x, ws }]) => {
                     const w1 = ws[0] || { type: "up", width: 0 };
@@ -230,7 +231,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         });
 
         return {
-            rects: merge(allRects.map((d) => d.rects)),
+            rects: merge<any>(allRects.map((d) => d.rects)),
             sessionBg: allRects.map((d) => d.sessionBg),
         };
     }

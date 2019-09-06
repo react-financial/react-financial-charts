@@ -36,7 +36,7 @@
     "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "d3-array": "^1.2.1",
+    "d3-array": "^2.3.1",
     "d3-collection": "^1.0.7",
     "d3-force": "^1.1.0",
     "d3-format": "^1.2.1",

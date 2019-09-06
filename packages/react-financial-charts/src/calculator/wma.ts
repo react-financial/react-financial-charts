@@ -16,7 +16,7 @@ export default function () {
             .windowSize(windowSize)
             // @ts-ignore
             .sourcePath(sourcePath)
-            .accumulator((values) => {
+            .accumulator((values: number[]) => {
                 const total = sum(values, (v, i) => {
                     return (i + 1) * v;
                 });

@@ -53,7 +53,11 @@ export default function () {
             // @ts-ignore
             .accumulator((values) => {
                 const avg = last(values).mean;
-                const stdDev = deviation(values, (each) => source(each.datum));
+                const stdDev = deviation<any>(values, (each) => source(each.datum));
+                if (stdDev === undefined) {
+                    return undefined;
+                }
+
                 return {
                     top: avg + multiplier * stdDev,
                     middle: avg,

@@ -47,8 +47,15 @@ export default function () {
             // @ts-ignore
             .accumulator((values) => {
 
-                const highestHigh = max(values, high);
-                const lowestLow = min(values, low);
+                const highestHigh = max<any, number>(values, high);
+                if (highestHigh === undefined) {
+                    return undefined;
+                }
+
+                const lowestLow = min<any, number>(values, low);
+                if (lowestLow === undefined) {
+                    return undefined;
+                }
 
                 const currentClose = close(last(values));
                 const k = (currentClose - lowestLow) / (highestHigh - lowestLow) * 100;

@@ -114,6 +114,8 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
             select(this.node)
                 .on(MOUSEENTER, this.handleEnter)
                 .on(MOUSELEAVE, this.handleLeave);
+
+            this.node.addEventListener("wheel", this.handleWheel, { passive: false });
         }
     }
 
@@ -129,6 +131,8 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
             const win = d3Window(this.node);
             select(win)
                 .on(MOUSEMOVE, null);
+
+            this.node.removeEventListener("wheel", this.handleWheel, { passive: false });
         }
     }
 
@@ -622,7 +626,6 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 : "react-stockcharts-crosshair-cursor";
 
         const interactionProps = disableInteraction || {
-            onWheel: this.handleWheel,
             onMouseDown: this.handleMouseDown,
             onClick: this.handleClick,
             onContextMenu: this.handleRightClick,

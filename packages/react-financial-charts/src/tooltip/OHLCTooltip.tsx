@@ -10,8 +10,7 @@ import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 const displayTextsDefault = {
-    d: "Date: ",
-    o: " O: ",
+    o: "O: ",
     h: " H: ",
     l: " L: ",
     c: " C: ",
@@ -32,7 +31,6 @@ const defaultDisplay = (props, _, itemsToDisplay) => {
     } = props;
 
     const {
-        displayDate,
         open,
         high,
         low,
@@ -52,14 +50,6 @@ const defaultDisplay = (props, _, itemsToDisplay) => {
                 y={0}
                 fontFamily={fontFamily}
                 fontSize={fontSize}>
-                <ToolTipTSpanLabel
-                    fill={labelFill}
-                    key="label"
-                    x={0}
-                    dy="5">
-                    {displayTexts.d}
-                </ToolTipTSpanLabel>
-                <tspan key="value" fill={textFill}>{displayDate}</tspan>
                 <ToolTipTSpanLabel fill={labelFill} key="label_O">{displayTexts.o}</ToolTipTSpanLabel>
                 <tspan key="value_O" fill={textFill}>{open}</tspan>
                 <ToolTipTSpanLabel fill={labelFill} key="label_H">{displayTexts.h}</ToolTipTSpanLabel>

@@ -39,6 +39,7 @@ class StockChart extends React.Component<StockChartProps> {
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
         const xExtents = [start, end];
+        const yExtents = (d: IOHLCData) => [d.high, d.low];
 
         const margin = { left: 32, right: 70, top: 32, bottom: 32 };
         const gridWidth = width - margin.left - margin.right;
@@ -62,15 +63,16 @@ class StockChart extends React.Component<StockChartProps> {
                     height={gridHeight / 2}
                     origin={(w, h) => [0, h - (gridHeight / 2)]}
                     yExtents={(d: IOHLCData) => d.volume}>
-                    <BarSeries yAccessor={(d: IOHLCData) => d.volume} />
+                    <BarSeries
+                        fill={this.openCloseColor}
+                        yAccessor={(d: IOHLCData) => d.volume} />
                 </Chart>
-                <Chart id={2} yExtents={(d) => [d.high, d.low]}>
+                <Chart id={2} yExtents={yExtents}>
                     <XAxis
                         innerTickSize={-1 * gridHeight}
                         axisAt="bottom"
                         orient="bottom"
-                        ticks={6}
-                    />
+                        ticks={6} />
                     <YAxis
                         innerTickSize={-1 * gridWidth}
                         axisAt="right"
@@ -80,7 +82,7 @@ class StockChart extends React.Component<StockChartProps> {
                     <MouseCoordinateX
                         at="bottom"
                         orient="bottom"
-                        displayFormat={timeFormat("%H:%M")} />
+                        displayFormat={timeFormat("%d %b")} />
                     <MouseCoordinateY
                         at="right"
                         orient="right"
@@ -89,14 +91,18 @@ class StockChart extends React.Component<StockChartProps> {
                         itemType="last"
                         orient="right"
                         edgeAt="right"
-                        fill={(d: IOHLCData) => d.close > d.open ? "#26a69a" : "#ef5350"}
-                        lineStroke={(d: IOHLCData) => d.close > d.open ? "#26a69a" : "#ef5350"}
+                        fill={this.openCloseColor}
+                        lineStroke={this.openCloseColor}
                         displayFormat={format(".5f")}
                         yAccessor={(d: IOHLCData) => d.close} />
                     <CrossHairCursor />
                 </Chart>
             </ChartCanvas>
         );
+    }
+
+    private readonly openCloseColor = (data: IOHLCData) => {
+        return data.close > data.open ? "#26a69a" : "#ef5350";
     }
 }
 

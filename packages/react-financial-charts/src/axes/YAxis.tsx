@@ -68,7 +68,7 @@ export class YAxis extends React.Component<YAxisProps> {
             <Axis
                 {...rest}
                 {...moreProps}
-                getMouseDelta
+                getMouseDelta={getMouseDelta}
                 zoomEnabled={this.props.zoomEnabled && zoomEnabled}
                 edgeClip
                 axisZoomCallback={this.axisZoomCallback}

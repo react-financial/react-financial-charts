@@ -71,7 +71,7 @@ export class XAxis extends React.Component<XAxisProps> {
             <Axis
                 {...rest}
                 {...moreProps}
-                getMouseDelta
+                getMouseDelta={getMouseDelta}
                 zoomEnabled={this.props.zoomEnabled && zoomEnabled}
                 axisZoomCallback={this.axisZoomCallback}
                 zoomCursorClassName="react-stockcharts-ew-resize-cursor" />

@@ -13,41 +13,41 @@ interface AxisProps {
     readonly fontSize?: number;
     readonly fontWeight?: number;
     readonly orient?: "top" | "left" | "right" | "bottom";
-    innerTickSize?: number;
-    outerTickSize?: number;
-    tickFormat?: any; // func
-    tickPadding?: number;
-    tickSize?: number;
-    ticks?: number;
-    tickLabelFill?: string;
-    tickStroke?: string;
-    tickStrokeOpacity?: number;
-    tickStrokeWidth?: number;
-    tickStrokeDasharray?: strokeDashTypes;
-    tickValues?: number[] | any; // func
-    tickInterval?: number;
-    tickIntervalFunction?: any; // func
-    showDomain?: boolean;
-    showTicks?: boolean;
-    showTickLabel?: boolean;
-    className?: string;
-    axisZoomCallback?: any; // func
-    zoomEnabled?: boolean;
-    inverted?: boolean;
-    zoomCursorClassName?: string;
-    transform: number[];
-    range: number[];
-    getMouseDelta: any; // func
-    getScale: any; // func
-    bg: {
+    readonly innerTickSize?: number;
+    readonly outerTickSize?: number;
+    readonly tickFormat?: any; // func
+    readonly tickPadding?: number;
+    readonly tickSize?: number;
+    readonly ticks?: number;
+    readonly tickLabelFill?: string;
+    readonly tickStroke?: string;
+    readonly tickStrokeOpacity?: number;
+    readonly tickStrokeWidth?: number;
+    readonly tickStrokeDasharray?: strokeDashTypes;
+    readonly tickValues?: number[] | any; // func
+    readonly tickInterval?: number;
+    readonly tickIntervalFunction?: any; // func
+    readonly showDomain?: boolean;
+    readonly showTicks?: boolean;
+    readonly showTickLabel?: boolean;
+    readonly className?: string;
+    readonly axisZoomCallback?: any; // func
+    readonly zoomEnabled?: boolean;
+    readonly inverted?: boolean;
+    readonly zoomCursorClassName?: string;
+    readonly transform: number[];
+    readonly range: number[];
+    readonly getMouseDelta: any; // func
+    readonly getScale: any; // func
+    readonly bg: {
         h: number;
         x: number;
         w: number;
         y: number;
     };
-    edgeClip: boolean;
-    onContextMenu?: any; // func
-    onDoubleClick?: any; // func
+    readonly edgeClip: boolean;
+    readonly onContextMenu?: any; // func
+    readonly onDoubleClick?: any; // func
 }
 
 class Axis extends React.Component<AxisProps> {
@@ -247,7 +247,9 @@ function tickHelper(props, scale) {
     }
 
     return {
-        ticks, scale, tickStroke,
+        ticks,
+        scale,
+        tickStroke,
         tickLabelFill: (tickLabelFill || tickStroke),
         tickStrokeOpacity,
         tickStrokeWidth,

@@ -47,19 +47,21 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         strokeOpacity: 1,
         strokeWidth: 3,
         lineStroke: "#000000",
-        lineOpacity: 0.3,
-        lineStrokeDasharray: "ShortDash",
+        lineOpacity: 1,
+        lineStrokeDasharray: "ShortDot",
     };
 
     public render() {
-        return <GenericChartComponent
-            edgeClip
-            clip={false}
-            svgDraw={this.renderSVG}
-            canvasDraw={this.drawOnCanvas}
-            canvasToDraw={getAxisCanvas}
-            drawOn={["pan"]}
-        />;
+        return (
+            <GenericChartComponent
+                edgeClip
+                clip={false}
+                svgDraw={this.renderSVG}
+                canvasDraw={this.drawOnCanvas}
+                canvasToDraw={getAxisCanvas}
+                drawOn={["pan"]}
+            />
+        );
     }
 
     private readonly drawOnCanvas = (ctx, moreProps) => {

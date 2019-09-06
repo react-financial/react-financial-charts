@@ -10,6 +10,7 @@ interface YAxisProps {
     readonly tickFormat?: any; // func
     readonly tickPadding?: number;
     readonly tickSize?: number;
+    readonly tickLabelFill?: string;
     readonly ticks?: number;
     readonly yZoomWidth?: number;
     readonly tickValues?: number[];
@@ -37,7 +38,8 @@ export class YAxis extends React.Component<YAxisProps> {
         opacity: 1,
         innerTickSize: 5,
         tickPadding: 6,
-        tickStroke: "#000000",
+        tickLabelFill: "#000000",
+        tickStroke: "#e0e3eb",
         tickStrokeOpacity: 1,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,

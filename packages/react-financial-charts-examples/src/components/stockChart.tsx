@@ -33,15 +33,17 @@ class StockChart extends React.Component<StockChartProps> {
         const start = xAccessor(last(data));
         const end = xAccessor(data[0]);
         const xExtents = [start, end];
-
         const yExtents = [(d: IOHLCData) => [d.high, d.low]];
+        const margin = { left: 32, right: 70, top: 32, bottom: 32 };
+        const gridWidth = width - margin.left - margin.right;
+        const gridHeight = height - margin.top - margin.bottom;
 
         return (
             <ChartCanvas
                 height={height}
                 ratio={ratio}
                 width={width}
-                margin={{ left: 32, right: 70, top: 32, bottom: 32 }}
+                margin={margin}
                 type="hybrid"
                 data={data}
                 displayXAccessor={xAccessor}
@@ -50,8 +52,17 @@ class StockChart extends React.Component<StockChartProps> {
                 xAccessor={xAccessor}
                 xExtents={xExtents}>
                 <Chart id={1} yExtents={yExtents}>
-                    <XAxis axisAt="bottom" orient="bottom" ticks={6} />
-                    <YAxis axisAt="right" orient="right" ticks={5} />
+                    <XAxis
+                        innerTickSize={-1 * gridHeight}
+                        axisAt="bottom"
+                        orient="bottom"
+                        ticks={6}
+                    />
+                    <YAxis
+                        innerTickSize={-1 * gridWidth}
+                        axisAt="right"
+                        orient="right"
+                        ticks={5} />
                     <CandlestickSeries width={8} />
                     <MouseCoordinateX
                         at="bottom"
@@ -65,6 +76,8 @@ class StockChart extends React.Component<StockChartProps> {
                         itemType="last"
                         orient="right"
                         edgeAt="right"
+                        fill={(d: IOHLCData) => d.close > d.open ? "#26a69a" : "#ef5350"}
+                        lineStroke={(d: IOHLCData) => d.close > d.open ? "#26a69a" : "#ef5350"}
                         displayFormat={format(".5f")}
                         yAccessor={(d: IOHLCData) => d.close} />
                     <CrossHairCursor />

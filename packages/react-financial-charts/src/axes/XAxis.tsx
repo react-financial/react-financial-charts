@@ -1,5 +1,6 @@
 import * as PropTypes from "prop-types";
 import * as React from "react";
+import { strokeDashTypes } from "../utils";
 import Axis from "./Axis";
 
 interface XAxisProps {
@@ -10,7 +11,11 @@ interface XAxisProps {
     readonly tickFormat?: any; // func
     readonly tickPadding?: number;
     readonly tickSize?: number;
+    readonly tickLabelFill?: string;
     readonly ticks?: number;
+    readonly tickStroke?: string;
+    readonly tickStrokeWidth?: number;
+    readonly tickStrokeDasharray?: strokeDashTypes;
     readonly tickValues?: number[];
     readonly showTicks?: boolean;
     readonly className?: string;
@@ -37,7 +42,8 @@ export class XAxis extends React.Component<XAxisProps> {
         domainClassName: "react-stockcharts-axis-domain",
         innerTickSize: 5,
         tickPadding: 6,
-        tickStroke: "#000000",
+        tickLabelFill: "#000000",
+        tickStroke: "#e0e3eb",
         tickStrokeOpacity: 1,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,

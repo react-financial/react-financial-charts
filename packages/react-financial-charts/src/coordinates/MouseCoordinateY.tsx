@@ -32,7 +32,7 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
         at: "left",
         dx: 0,
         arrowWidth: 10,
-        fill: "#525252",
+        fill: "#4a4a4a",
         opacity: 1,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,

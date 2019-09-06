@@ -9,6 +9,10 @@ import { AxisZoomCapture } from "./AxisZoomCapture";
 import { first, getStrokeDasharray, hexToRGBA, identity, isDefined, isNotDefined, last, strokeDashTypes, zipper } from "../utils";
 
 interface AxisProps {
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly fontWeight?: number;
+    readonly orient?: "top" | "left" | "right" | "bottom";
     innerTickSize?: number;
     outerTickSize?: number;
     tickFormat?: any; // func
@@ -25,6 +29,7 @@ interface AxisProps {
     tickIntervalFunction?: any; // func
     showDomain?: boolean;
     showTicks?: boolean;
+    showTickLabel?: boolean;
     className?: string;
     axisZoomCallback?: any; // func
     zoomEnabled?: boolean;
@@ -258,7 +263,6 @@ function tickHelper(props, scale) {
     };
 }
 
-/* eslint-disable react/prop-types */
 function axisLineSVG(props, range) {
     const { orient, outerTickSize } = props;
     const { domainClassName, fill, stroke, strokeWidth, opacity } = props;
@@ -284,17 +288,13 @@ function axisLineSVG(props, range) {
         </path>
     );
 }
-/* eslint-enable react/prop-types */
 
 function drawAxisLine(ctx, props, range) {
-    // props = { ...AxisLine.defaultProps, ...props };
 
     const { orient, outerTickSize, stroke, strokeWidth, opacity } = props;
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
     const xAxis = (orient === "bottom" || orient === "top");
-
-    // var range = d3_scaleRange(xAxis ? xScale : yScale);
 
     ctx.lineWidth = strokeWidth;
     ctx.strokeStyle = hexToRGBA(stroke, opacity);
@@ -312,6 +312,7 @@ function drawAxisLine(ctx, props, range) {
         ctx.lineTo(0, last(range));
         ctx.lineTo(sign * outerTickSize, last(range));
     }
+
     ctx.stroke();
 }
 
@@ -413,7 +414,6 @@ function drawTicks(ctx, result) {
     ctx.strokeStyle = hexToRGBA(tickStroke, tickStrokeOpacity);
 
     ctx.fillStyle = tickStroke;
-    // ctx.textBaseline = 'middle';
 
     ticks.forEach((tick) => {
         drawEachTick(ctx, tick, result);

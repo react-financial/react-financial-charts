@@ -33,12 +33,12 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         yAccessor: (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
         classNames: (d) => d.close > d.open ? "up" : "down",
         width: plotDataLengthBarWidth,
-        wickStroke: "#000000",
-        fill: (d) => d.close > d.open ? "#6BA583" : "#FF0000",
-        stroke: "#000000",
+        wickStroke: (d) => d.close > d.open ? "#26a69a" : "#ef5350",
+        fill: (d) => d.close > d.open ? "#26a69a" : "#ef5350",
+        stroke: (d) => d.close > d.open ? "#26a69a" : "#ef5350",
         candleStrokeWidth: 0.5,
         widthRatio: 0.8,
-        opacity: 0.5,
+        opacity: 1,
         clip: true,
     };
 

@@ -227,7 +227,6 @@ export function drawOnCanvas(ctx, props) {
             rectWidth,
             rectHeight,
             rectRadius,
-            arrowWidth,
         } = edge.coordinateBase;
 
         ctx.fillStyle = hexToRGBA(
@@ -242,35 +241,17 @@ export function drawOnCanvas(ctx, props) {
             ctx.lineWidth = edge.coordinateBase.strokeWidth;
         }
 
-        let x = edge.coordinateBase.edgeXRect;
+        const x = edge.coordinateBase.edgeXRect;
         const y = edge.coordinateBase.edgeYRect;
-        const halfHeight = rectHeight / 2;
 
         ctx.beginPath();
-        if (edge.orient === "right") {
-            x -= arrowWidth;
-            ctx.moveTo(x, y + halfHeight);
-            ctx.lineTo(x + arrowWidth, y);
-            ctx.lineTo(x + rectWidth + arrowWidth, y);
-            ctx.lineTo(x + rectWidth + arrowWidth, y + rectHeight);
-            ctx.lineTo(x + arrowWidth, y + rectHeight);
-            ctx.closePath();
-        } else if (edge.orient === "left") {
-            // x += arrowWidth;
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + rectWidth, y);
-            ctx.lineTo(x + rectWidth + arrowWidth, y + halfHeight);
-            ctx.lineTo(x + rectWidth, y + rectHeight);
-            ctx.lineTo(x, y + rectHeight);
-            ctx.closePath();
+
+        if (rectRadius) {
+            roundRect(ctx, x, y, rectWidth, rectHeight, 3);
         } else {
-            // console.error(x, y, rectWidth, rectHeight)
-            if (rectRadius) {
-                roundRect(ctx, x, y, rectWidth, rectHeight, 3);
-            } else {
-                ctx.rect(x, y, rectWidth, rectHeight);
-            }
+            ctx.rect(x, y, rectWidth, rectHeight);
         }
+
         ctx.fill();
 
         if (isDefined(edge.coordinateBase.stroke)) {

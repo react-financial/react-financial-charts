@@ -24,9 +24,9 @@ const defaultCustomX = (props: CrossHairCursorProps, moreProps) => {
 export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
 
     public static defaultProps = {
-        stroke: "#000000",
-        opacity: 0.3,
-        strokeDasharray: "ShortDash",
+        stroke: "#4a4a4a",
+        opacity: 0.8,
+        strokeDasharray: "Dash",
         snapX: true,
         customX: defaultCustomX,
     };
@@ -87,6 +87,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
                     .map((d) => +d);
 
                 ctx.strokeStyle = hexToRGBA(line.stroke, line.opacity);
+                ctx.lineWidth = 1;
                 ctx.setLineDash(dashArray);
                 ctx.beginPath();
                 ctx.moveTo(line.x1, line.y1);
@@ -112,8 +113,8 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
         const line1 = {
             x1: 0,
             x2: width,
-            y1: mouseXY[1],
-            y2: mouseXY[1],
+            y1: mouseXY[1] + 0.5,
+            y2: mouseXY[1] + 0.5,
             stroke, strokeDasharray, opacity,
         };
         const x = customX(props, moreProps);

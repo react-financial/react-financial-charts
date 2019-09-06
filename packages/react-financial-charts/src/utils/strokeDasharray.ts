@@ -38,7 +38,7 @@ export const getStrokeDasharray = (type) => {
         case "Dot":
             return "2, 6";
         case "Dash":
-            return "8, 6";
+            return "4, 6";
         case "LongDash":
             return "16, 6";
         case "DashDot":

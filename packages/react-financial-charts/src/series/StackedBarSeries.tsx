@@ -246,7 +246,7 @@ export function getBars(props, xAccessor, yAccessor, xScale, yScale, plotData, s
         });
     });
 
-    const bars = merge(newData)
+    const bars = merge<any>(newData)
         .map((d) => {
             let y = yScale(d[1]);
             let h = getBase(xScale, yScale, d.data) - yScale(d[1] - d[0]);

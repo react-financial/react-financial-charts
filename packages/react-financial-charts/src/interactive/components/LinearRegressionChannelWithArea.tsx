@@ -210,10 +210,10 @@ function helper(props, moreProps) {
     const y2 = yScale(newy2);
 
     const stdDev = type === "SD"
-        ? deviation(array, (d) => d.close)
+        ? deviation<any>(array, (d) => d.close)
         : 0;
 
-    const dy = yScale(newy1 - stdDev) - y1;
+    const dy = yScale(newy1 - stdDev!) - y1;
 
     return {
         x1, y1, x2, y2, dy,

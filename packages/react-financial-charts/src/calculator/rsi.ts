@@ -48,11 +48,19 @@ export default function () {
 
                 const avgGain = isDefined(prevAvgGain)
                     ? (prevAvgGain * (windowSize - 1) + last(values).gain) / windowSize
-                    : mean(values, (each) => each.gain);
+                    : mean<any>(values, (each) => each.gain);
+
+                if (avgGain === undefined) {
+                    return undefined;
+                }
 
                 const avgLoss = isDefined(prevAvgLoss)
                     ? (prevAvgLoss * (windowSize - 1) + last(values).loss) / windowSize
-                    : mean(values, (each) => each.loss);
+                    : mean<any>(values, (each) => each.loss);
+
+                if (avgLoss === undefined) {
+                    return undefined;
+                }
 
                 const relativeStrength = avgGain / avgLoss;
                 const rsi = 100 - (100 / (1 + relativeStrength));

@@ -134,8 +134,12 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
             const diff = getMouseDelta(startXY, mouseXY);
 
             const center = mean(startScale.range());
+            if (center === undefined) {
+                return;
+            }
 
-            const tempRange = startScale.range()
+            const tempRange = startScale
+                .range()
                 .map((d) => inverted ? d - sign(d - center) * diff : d + sign(d - center) * diff);
 
             const newDomain = tempRange.map(startScale.invert);

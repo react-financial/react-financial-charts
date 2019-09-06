@@ -9,20 +9,22 @@ import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 interface SingleValueTooltipProps {
-    xDisplayFormat?: any; // func
-    yDisplayFormat: any; // func
-    xLabel?: string;
-    yLabel: string;
-    labelFill?: string;
-    valueFill?: string;
-    origin?: number[] | any; // func
-    className?: string;
-    fontFamily?: string;
-    fontSize?: number;
-    onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
-    displayValuesFor?: any; // func
-    xAccessor?: any; // func
-    yAccessor?: any; // func
+    readonly xDisplayFormat?: any; // func
+    readonly yDisplayFormat: any; // func
+    readonly xInitDisplay?: string;
+    readonly yInitDisplay?: string;
+    readonly xLabel?: string;
+    readonly yLabel: string;
+    readonly labelFill?: string;
+    readonly valueFill?: string;
+    readonly origin?: number[] | any; // func
+    readonly className?: string;
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
+    readonly displayValuesFor?: any; // func
+    readonly xAccessor?: (d: any) => any;
+    readonly yAccessor?: (d: any) => any;
 }
 
 export class SingleValueTooltip extends React.Component<SingleValueTooltipProps> {
@@ -35,6 +37,8 @@ export class SingleValueTooltip extends React.Component<SingleValueTooltipProps>
         displayValuesFor: defaultDisplayValuesFor,
         xAccessor: noop,
         yAccessor: identity,
+        xInitDisplay: "n/a",
+        yInitDisplay: "n/a",
         className: "react-stockcharts-tooltip",
     };
 
@@ -51,14 +55,16 @@ export class SingleValueTooltip extends React.Component<SingleValueTooltipProps>
     private readonly renderSVG = (moreProps) => {
 
         const { onClick, fontFamily, fontSize, labelFill, valueFill, className } = this.props;
-        const { xDisplayFormat, yDisplayFormat, xLabel, yLabel, xAccessor, yAccessor } = this.props;
+        const { xDisplayFormat, yDisplayFormat, xLabel, yLabel, xAccessor, yAccessor, xInitDisplay, yInitDisplay } = this.props;
         const { displayValuesFor } = this.props;
 
         const { chartConfig: { width, height } } = moreProps;
         const currentItem = displayValuesFor(this.props, moreProps);
 
-        const xDisplayValue = isDefined(currentItem) && isDefined(xAccessor(currentItem)) ? xDisplayFormat(xAccessor(currentItem)) : "n/a";
-        const yDisplayValue = isDefined(currentItem) && isDefined(yAccessor(currentItem)) ? yDisplayFormat(yAccessor(currentItem)) : "n/a";
+        const xDisplayValue = isDefined(currentItem) && isDefined(xAccessor!(currentItem)) ?
+            xDisplayFormat(xAccessor!(currentItem)) : xInitDisplay;
+        const yDisplayValue = isDefined(currentItem) && isDefined(yAccessor!(currentItem)) ?
+            yDisplayFormat(yAccessor!(currentItem)) : yInitDisplay;
 
         const { origin: originProp } = this.props;
         const origin = functor(originProp);

@@ -1,5 +1,4 @@
 import { ascending } from "d3-array";
-import { map, set } from "d3-collection";
 import { scaleLinear } from "d3-scale";
 
 import { head, isDefined, isNotDefined, last } from "../utils";
@@ -49,7 +48,7 @@ export default function financeDiscontinuousScale(
     };
     scale.ticks = function (m, flexTicks) {
         const backingTicks = backingLinearScale.ticks(m);
-        const ticksMap = map();
+        const ticksMap = new Map<number, any>();
 
         const [domainStart, domainEnd] = backingLinearScale.domain();
 
@@ -88,7 +87,7 @@ export default function financeDiscontinuousScale(
         // console.log(backingTicks.length, desiredTickCount, ticks, ticksMap);
 
         if (!flexTicks && end - start > ticks.length) {
-            const ticksSet = set(ticks);
+            const ticksSet = new Set(ticks);
 
             const d = Math.abs(head(index).index);
 
@@ -101,17 +100,13 @@ export default function financeDiscontinuousScale(
             for (let i = 0; i < ticks.length - 1; i++) {
                 for (let j = i + 1; j < ticks.length; j++) {
                     if (ticks[j] - ticks[i] <= distance) {
-                        ticksSet.remove(index[ticks[i] + d].level >= index[ticks[j] + d].level ? ticks[j] : ticks[i]);
+                        ticksSet.delete(index[ticks[i] + d].level >= index[ticks[j] + d].level ? ticks[j] : ticks[i]);
                     }
                 }
             }
 
-            const tickValues = ticksSet
-                .values()
+            const tickValues = [...ticksSet.values()]
                 .map((i) => parseInt(i, 10));
-
-            // console.log(ticks.length, tickValues, level);
-            // console.log(ticks, tickValues, distance);
 
             return tickValues;
         }

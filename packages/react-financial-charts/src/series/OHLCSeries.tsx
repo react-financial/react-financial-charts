@@ -65,7 +65,7 @@ function drawOnCanvas(ctx, barData) {
 
     const { strokeWidth, bars } = barData;
 
-    const wickNest = nest()
+    const wickNest = nest<any>()
         .key((d) => d.stroke)
         .entries(bars);
 

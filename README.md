@@ -1,19 +1,18 @@
 # React Financial Charts
 
-Create highly customizable stock charts.
+> **Note:** this repo is a fork of [react-stockcharts](https://github.com/rrag/react-stockcharts), renamed, converted to typescript and bug fixes applied due to the original project being unmaintained.
 
-Built with [React JS](http://facebook.github.io/react/) and [d3](http://d3js.org/)
+Charts dedicated to finance.
+
+The aim with this project is create financial charts that work out of the box.
+
+## Features
 
 - integrates multiple chart types
 - over 60 technical indicators and overlays
 - drawing objects
 
-Multiple [quick start examples](https://github.com/rrag/react-stockcharts-examples2)
-
-- svg and canvas for improved performance.
-- pan and zoom, on touch devices too
-
-## Chart types
+### Chart types
 
 - Scatter
 - Area
@@ -25,7 +24,7 @@ Multiple [quick start examples](https://github.com/rrag/react-stockcharts-exampl
 - Kagi
 - Point & Figure
 
-## Indicators
+### Indicators
 
 - EMA, SMA, WMA, TMA
 - Bollinger band
@@ -38,7 +37,7 @@ Multiple [quick start examples](https://github.com/rrag/react-stockcharts-exampl
 - ElderRay
 - Elder Impulse
 
-## Interactive Indicators
+### Interactive Indicators
 
 - Trendline
 - Fibonacci Retracements
@@ -56,12 +55,29 @@ npm install react-financial-charts
 
 ## Documentation
 
-TODO
+> **TODO**: The examples are currently serving as docs.
 
 ## Contributing
 
 Refer to [CONTRIBUTING.md](./CONTRIBUTING.md)
 
+This project is a mono-repo that uses [Lerna](https://lernajs.io/) to manage dependencies between packages.
+
+To get started run:
+
+```bash
+git clone https://github.com/reactivemarkets/react-financial-charts.git
+cd react-financial-charts
+npm ci
+npm run build
+```
+
+To start up a development server run:
+
+```bash
+npm start
+```
+
 ## LICENSE
 
-[ISC](./LICENSE)
+[MIT](./LICENSE)

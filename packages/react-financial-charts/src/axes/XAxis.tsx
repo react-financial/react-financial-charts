@@ -5,6 +5,7 @@ import Axis from "./Axis";
 
 interface XAxisProps {
     readonly axisAt: number | "top" | "bottom" | "middle";
+    readonly flexTicks?: boolean;
     readonly orient: "top" | "bottom";
     readonly innerTickSize?: number;
     readonly outerTickSize?: number;

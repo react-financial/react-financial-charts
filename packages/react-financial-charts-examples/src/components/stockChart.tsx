@@ -1,12 +1,11 @@
 import { format } from "d3-format";
-import { scaleTime } from "d3-scale";
 import { timeFormat } from "d3-time-format";
 import * as React from "react";
 import { Chart, ChartCanvas } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts/lib/axes";
 import { CrossHairCursor, EdgeIndicator, MouseCoordinateX, MouseCoordinateY } from "react-financial-charts/lib/coordinates";
-import { CandlestickSeries } from "react-financial-charts/lib/series";
-import { last } from "react-financial-charts/lib/utils";
+import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
+import { BarSeries, CandlestickSeries } from "react-financial-charts/lib/series";
 import { IOHLCData } from "../stores";
 import withDimensions from "./withDimensions";
 
@@ -21,18 +20,26 @@ class StockChart extends React.Component<StockChartProps> {
     public render() {
 
         const {
-            data,
+            data: initialData,
             height,
             ratio,
             width,
         } = this.props;
 
-        const xAccessor = (d: IOHLCData) => d.time;
+        const xScaleProvider = discontinuousTimeScaleProviderBuilder()
+            .inputDateAccessor((d) => d.date);
 
-        const start = xAccessor(last(data));
-        const end = xAccessor(data[0]);
+        const {
+            data,
+            xScale,
+            xAccessor,
+            displayXAccessor,
+        } = xScaleProvider(initialData);
+
+        const start = xAccessor(data[data.length - 1]);
+        const end = xAccessor(data[Math.max(0, data.length - 100)]);
         const xExtents = [start, end];
-        const yExtents = [(d: IOHLCData) => [d.high, d.low]];
+
         const margin = { left: 32, right: 70, top: 32, bottom: 32 };
         const gridWidth = width - margin.left - margin.right;
         const gridHeight = height - margin.top - margin.bottom;
@@ -45,12 +52,19 @@ class StockChart extends React.Component<StockChartProps> {
                 margin={margin}
                 type="hybrid"
                 data={data}
-                displayXAccessor={xAccessor}
+                displayXAccessor={displayXAccessor}
                 seriesName="Data"
-                xScale={scaleTime()}
+                xScale={xScale}
                 xAccessor={xAccessor}
                 xExtents={xExtents}>
-                <Chart id={1} yExtents={yExtents}>
+                <Chart
+                    id={1}
+                    height={gridHeight / 2}
+                    origin={(w, h) => [0, h - (gridHeight / 2)]}
+                    yExtents={(d: IOHLCData) => d.volume}>
+                    <BarSeries yAccessor={(d: IOHLCData) => d.volume} />
+                </Chart>
+                <Chart id={2} yExtents={(d) => [d.high, d.low]}>
                     <XAxis
                         innerTickSize={-1 * gridHeight}
                         axisAt="bottom"
@@ -62,7 +76,7 @@ class StockChart extends React.Component<StockChartProps> {
                         axisAt="right"
                         orient="right"
                         ticks={5} />
-                    <CandlestickSeries width={8} />
+                    <CandlestickSeries />
                     <MouseCoordinateX
                         at="bottom"
                         orient="bottom"

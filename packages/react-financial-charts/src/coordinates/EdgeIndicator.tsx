@@ -45,7 +45,7 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         opacity: 1,
         stroke: noop,
         strokeOpacity: 1,
-        strokeWidth: 3,
+        strokeWidth: 1,
         lineStroke: "#000000",
         lineOpacity: 1,
         lineStrokeDasharray: "ShortDot",

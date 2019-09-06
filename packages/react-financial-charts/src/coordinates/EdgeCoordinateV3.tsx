@@ -249,7 +249,7 @@ export function drawOnCanvas(ctx, props) {
         if (rectRadius) {
             roundRect(ctx, x, y, rectWidth, rectHeight, 3);
         } else {
-            ctx.rect(x, y, rectWidth, rectHeight);
+            ctx.rect(x + 0.5, y + 0.5, rectWidth, rectHeight);
         }
 
         ctx.fill();

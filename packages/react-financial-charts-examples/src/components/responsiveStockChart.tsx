@@ -1,117 +1,51 @@
+import { tsvParse } from "d3-dsv";
+import { timeParse } from "d3-time-format";
 import * as React from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
+import { IOHLCData } from "../stores";
 import StockChart from "./stockChart";
 
-export class ResponsiveStockChart extends React.Component {
+const parseDate = timeParse("%Y-%m-%d");
+
+function parseData(parse) {
+    return function (d) {
+        d.date = parse(d.date);
+        d.open = +d.open;
+        d.high = +d.high;
+        d.low = +d.low;
+        d.close = +d.close;
+        d.volume = +d.volume;
+
+        return d;
+    };
+}
+
+interface ResponsiveStockChartState {
+    data?: IOHLCData[];
+}
+
+export class ResponsiveStockChart extends React.Component<{}, ResponsiveStockChartState> {
+
+    public componentDidMount() {
+        fetch("https://cdn.rawgit.com/rrag/react-stockcharts/master/docs/data/MSFT.tsv")
+            .then((response) => response.text())
+            .then((data) => tsvParse(data, parseData(parseDate)))
+            .then((data) => {
+                this.setState({
+                    data,
+                });
+            })
+            .catch((error) => {
+                // tslint:disable-next-line: no-console
+                console.error(error);
+            });
+    }
+
     public render() {
 
-        const data = [
-            {
-                close: 1.10294,
-                high: 1.10301,
-                low: 1.10286,
-                open: 1.10291,
-                time: new Date(1567715580000),
-            },
-            {
-                close: 1.10292,
-                high: 1.10297,
-                low: 1.10287,
-                open: 1.10294,
-                time: new Date(1567715640000),
-            },
-            {
-                close: 1.10291,
-                high: 1.10299,
-                low: 1.10285,
-                open: 1.10293,
-                time: new Date(1567715700000),
-            },
-            {
-                close: 1.10292,
-                high: 1.10296,
-                low: 1.10282,
-                open: 1.10291,
-                time: new Date(1567715760000),
-            },
-            {
-                close: 1.10293,
-                high: 1.10298,
-                low: 1.10288,
-                open: 1.10288,
-                time: new Date(1567715820000),
-            },
-            {
-                close: 1.10289,
-                high: 1.10294,
-                low: 1.10286,
-                open: 1.10288,
-                time: new Date(1567715880000),
-            },
-            {
-                close: 1.10293,
-                high: 1.10295,
-                low: 1.10283,
-                open: 1.10288,
-                time: new Date(1567715940000),
-            },
-            {
-                close: 1.10288,
-                high: 1.10299,
-                low: 1.10287,
-                open: 1.10293,
-                time: new Date(1567716000000),
-            },
-            {
-                close: 1.10292,
-                high: 1.10302,
-                low: 1.10286,
-                open: 1.1029,
-                time: new Date(1567716060000),
-            },
-            {
-                close: 1.10295,
-                high: 1.10295,
-                low: 1.10282,
-                open: 1.10293,
-                time: new Date(1567716120000),
-            },
-            {
-                close: 1.10286,
-                high: 1.10298,
-                low: 1.10283,
-                open: 1.10297,
-                time: new Date(1567716180000),
-            },
-            {
-                close: 1.10294,
-                high: 1.10296,
-                low: 1.10286,
-                open: 1.10289,
-                time: new Date(1567716240000),
-            },
-            {
-                close: 1.10289,
-                high: 1.10296,
-                low: 1.10284,
-                open: 1.10294,
-                time: new Date(1567716300000),
-            },
-            {
-                close: 1.10285,
-                high: 1.10302,
-                low: 1.10285,
-                open: 1.10289,
-                time: new Date(1567716360000),
-            },
-            {
-                close: 1.10281,
-                high: 1.10285,
-                low: 1.10281,
-                open: 1.10284,
-                time: new Date(1567716420000),
-            },
-        ];
+        if (this.state == null) {
+            return <div>Loading...</div>;
+        }
 
         return (
             <div style={{ flex: "1 1 auto" }}>
@@ -119,7 +53,7 @@ export class ResponsiveStockChart extends React.Component {
                     {({ height, width }) => {
                         return (
                             <StockChart
-                                data={data}
+                                data={this.state.data}
                                 height={height}
                                 width={width} />
                         );

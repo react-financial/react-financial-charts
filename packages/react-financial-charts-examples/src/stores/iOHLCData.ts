@@ -3,5 +3,6 @@ export interface IOHLCData {
     readonly high: number;
     readonly low: number;
     readonly open: number;
-    readonly time: Date;
+    readonly date: Date;
+    readonly volume: number;
 }

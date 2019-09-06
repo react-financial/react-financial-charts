@@ -4,8 +4,8 @@ import { functor, hexToRGBA } from "../utils";
 
 interface CircleProps {
     stroke?: string;
-    fill: string;
-    opacity: number;
+    fill?: string;
+    opacity?: number;
     point: {
         x: number,
         y: number,

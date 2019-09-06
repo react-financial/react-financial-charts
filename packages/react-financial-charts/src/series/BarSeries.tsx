@@ -37,10 +37,8 @@ export class BarSeries extends React.Component<BarSeriesProps> {
             <GenericChartComponent
                 clip={clip}
                 svgDraw={this.renderSVG}
-
                 canvasToDraw={getAxisCanvas}
                 canvasDraw={this.drawOnCanvas}
-
                 drawOn={["pan"]}
             />
         );

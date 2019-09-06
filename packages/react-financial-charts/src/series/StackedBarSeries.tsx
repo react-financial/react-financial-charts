@@ -25,7 +25,7 @@ export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
         baseAt: (xScale, yScale/* , d*/) => head(yScale.range()),
         direction: "up",
         className: "bar",
-        stroke: true,
+        stroke: false,
         fill: "#4682B4",
         opacity: 0.5,
         width: plotDataLengthBarWidth,
@@ -176,8 +176,10 @@ export function drawOnCanvas2(props, ctx, bars) {
             if (d.width <= 1) {
                 ctx.fillRect(d.x - 0.5, d.y, 1, d.height);
             } else {
-                ctx.fillRect(d.x, d.y, d.width, d.height);
-                if (stroke) { ctx.strokeRect(d.x, d.y, d.width, d.height); }
+                ctx.fillRect(d.x + 0.5, d.y + 0.5, d.width, d.height);
+                if (stroke) {
+                    ctx.strokeRect(d.x, d.y, d.width, d.height);
+                }
             }
 
         });

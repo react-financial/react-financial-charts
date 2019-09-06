@@ -2,10 +2,10 @@ import * as React from "react";
 import { functor, hexToRGBA } from "../utils";
 
 interface TriangleProps {
-    direction: "top" | "bottom" | "left" | "right" | "hide";
-    stroke: string | any; // func
-    fill: string | any;
-    opacity: number;
+    direction?: "top" | "bottom" | "left" | "right" | "hide";
+    stroke?: string | any; // func
+    fill?: string | any;
+    opacity?: number;
     point: {
         x: number,
         y: number,
@@ -13,7 +13,7 @@ interface TriangleProps {
     };
     className?: string;
     strokeWidth?: number;
-    width: number | any; // func
+    width?: number | any; // func
 }
 
 export class Triangle extends React.Component<TriangleProps> {

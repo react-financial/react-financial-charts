@@ -6,6 +6,7 @@ import { XAxis, YAxis } from "react-financial-charts/lib/axes";
 import { CrossHairCursor, EdgeIndicator, MouseCoordinateX, MouseCoordinateY } from "react-financial-charts/lib/coordinates";
 import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
 import { BarSeries, CandlestickSeries } from "react-financial-charts/lib/series";
+import { OHLCTooltip } from "react-financial-charts/lib/tooltip";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData } from "../stores";
 
@@ -77,6 +78,7 @@ class StockChart extends React.Component<StockChartProps> {
                         axisAt="right"
                         orient="right"
                         ticks={5} />
+                    <OHLCTooltip />
                 </Chart>
                 <Chart
                     id={2}
@@ -107,8 +109,8 @@ class StockChart extends React.Component<StockChartProps> {
                         lineStroke={this.openCloseColor}
                         displayFormat={this.pricesDisplayFormat}
                         yAccessor={this.yEdgeIndicator} />
-                    <CrossHairCursor />
                 </Chart>
+                <CrossHairCursor />
             </ChartCanvas>
         );
     }

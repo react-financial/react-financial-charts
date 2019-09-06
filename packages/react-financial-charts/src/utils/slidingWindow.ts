@@ -63,11 +63,11 @@ export default function () {
         });
     };
 
-    slidingWindow.undefinedValue = function (...args) {
-        if (!args.length) {
+    slidingWindow.undefinedValue = function (x) {
+        if (!arguments.length) {
             return undefinedValue;
         }
-        undefinedValue = args;
+        undefinedValue = x;
         return slidingWindow;
     };
     slidingWindow.windowSize = function (x) {

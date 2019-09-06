@@ -3,27 +3,27 @@ import { path as d3Path } from "d3-path";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
-import { last, noop } from "./utils";
+import { last, noop } from "../utils";
 
 interface ZoomButtonsProps {
-    zoomMultiplier: number;
-    size: number[];
-    heightFromBase: number;
-    rx: number;
-    ry: number;
-    stroke: string;
-    strokeWidth: number;
-    strokeOpacity: number;
-    fill: string;
-    fillOpacity: number;
-    fontSize: number;
-    textDy: string;
-    textFill: string;
-    textStrokeWidth: number;
-    onReset: any; // func
+    readonly zoomMultiplier: number;
+    readonly size: number[];
+    readonly heightFromBase: number;
+    readonly rx: number;
+    readonly ry: number;
+    readonly stroke: string;
+    readonly strokeWidth: number;
+    readonly strokeOpacity: number;
+    readonly fill: string;
+    readonly fillOpacity: number;
+    readonly fontSize: number;
+    readonly textDy: string;
+    readonly textFill: string;
+    readonly textStrokeWidth: number;
+    readonly onReset: any; // func
 }
 
-class ZoomButtons extends React.Component<ZoomButtonsProps> {
+export class ZoomButtons extends React.Component<ZoomButtonsProps> {
 
     public static defaultProps = {
         size: [30, 24],
@@ -213,5 +213,3 @@ class ZoomButtons extends React.Component<ZoomButtonsProps> {
         }, 10);
     }
 }
-
-export default ZoomButtons;

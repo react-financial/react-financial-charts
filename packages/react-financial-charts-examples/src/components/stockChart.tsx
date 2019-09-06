@@ -6,17 +6,24 @@ import { XAxis, YAxis } from "react-financial-charts/lib/axes";
 import { CrossHairCursor, EdgeIndicator, MouseCoordinateX, MouseCoordinateY } from "react-financial-charts/lib/coordinates";
 import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
 import { BarSeries, CandlestickSeries } from "react-financial-charts/lib/series";
+import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData } from "../stores";
-import withDimensions from "./withDimensions";
 
 interface StockChartProps {
-    readonly data: any[];
+    readonly data: IOHLCData[];
     readonly height: number;
     readonly width: number;
     readonly ratio: number;
 }
 
 class StockChart extends React.Component<StockChartProps> {
+
+    private readonly margin = { left: 32, right: 70, top: 32, bottom: 32 };
+    private readonly pricesDisplayFormat = format(".5f");
+    private readonly timeDisplayFormat = timeFormat("%d %b");
+    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
+        .inputDateAccessor((d: IOHLCData) => d.date);
+
     public render() {
 
         const {
@@ -26,8 +33,7 @@ class StockChart extends React.Component<StockChartProps> {
             width,
         } = this.props;
 
-        const xScaleProvider = discontinuousTimeScaleProviderBuilder()
-            .inputDateAccessor((d) => d.date);
+        const { margin, xScaleProvider } = this;
 
         const {
             data,
@@ -39,11 +45,11 @@ class StockChart extends React.Component<StockChartProps> {
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
         const xExtents = [start, end];
-        const yExtents = (d: IOHLCData) => [d.high, d.low];
 
-        const margin = { left: 32, right: 70, top: 32, bottom: 32 };
         const gridWidth = width - margin.left - margin.right;
         const gridHeight = height - margin.top - margin.bottom;
+        const barChartHeight = gridHeight / 2;
+        const barChartOrigin = (_: number, h: number) => [0, h - (gridHeight / 2)];
 
         return (
             <ChartCanvas
@@ -60,14 +66,7 @@ class StockChart extends React.Component<StockChartProps> {
                 xExtents={xExtents}>
                 <Chart
                     id={1}
-                    height={gridHeight / 2}
-                    origin={(w, h) => [0, h - (gridHeight / 2)]}
-                    yExtents={(d: IOHLCData) => d.volume}>
-                    <BarSeries
-                        fill={this.openCloseColor}
-                        yAccessor={(d: IOHLCData) => d.volume} />
-                </Chart>
-                <Chart id={2} yExtents={yExtents}>
+                    yExtents={this.candleChartExtents}>
                     <XAxis
                         innerTickSize={-1 * gridHeight}
                         axisAt="bottom"
@@ -78,27 +77,56 @@ class StockChart extends React.Component<StockChartProps> {
                         axisAt="right"
                         orient="right"
                         ticks={5} />
+                </Chart>
+                <Chart
+                    id={2}
+                    height={barChartHeight}
+                    origin={barChartOrigin}
+                    yExtents={this.barChartExtents}>
+                    <BarSeries
+                        fill={this.openCloseColor}
+                        yAccessor={this.yBarSeries} />
+                </Chart>
+                <Chart
+                    id={3}
+                    yExtents={this.candleChartExtents}>
                     <CandlestickSeries />
                     <MouseCoordinateX
                         at="bottom"
                         orient="bottom"
-                        displayFormat={timeFormat("%d %b")} />
+                        displayFormat={this.timeDisplayFormat} />
                     <MouseCoordinateY
                         at="right"
                         orient="right"
-                        displayFormat={format(".5f")} />
+                        displayFormat={this.pricesDisplayFormat} />
                     <EdgeIndicator
                         itemType="last"
                         orient="right"
                         edgeAt="right"
                         fill={this.openCloseColor}
                         lineStroke={this.openCloseColor}
-                        displayFormat={format(".5f")}
-                        yAccessor={(d: IOHLCData) => d.close} />
+                        displayFormat={this.pricesDisplayFormat}
+                        yAccessor={this.yEdgeIndicator} />
                     <CrossHairCursor />
                 </Chart>
             </ChartCanvas>
         );
+    }
+
+    private readonly barChartExtents = (data: IOHLCData) => {
+        return data.volume;
+    }
+
+    private readonly candleChartExtents = (data: IOHLCData) => {
+        return [data.high, data.low];
+    }
+
+    private readonly yBarSeries = (data: IOHLCData) => {
+        return data.volume;
+    }
+
+    private readonly yEdgeIndicator = (data: IOHLCData) => {
+        return data.close;
     }
 
     private readonly openCloseColor = (data: IOHLCData) => {
@@ -106,4 +134,4 @@ class StockChart extends React.Component<StockChartProps> {
     }
 }
 
-export default withDimensions(StockChart);
+export default withDeviceRatio()(StockChart);

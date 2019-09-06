@@ -1,20 +1,20 @@
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
-import { hexToRGBA, isDefined } from "./utils";
-import { PureComponent } from "./utils/PureComponent";
+import { hexToRGBA, isDefined } from "../utils";
+import { PureComponent } from "../utils/PureComponent";
 
 interface BackgroundTextProps {
-    x: number;
-    y: number;
-    fontFamily?: string;
-    fontSize?: number;
-    fill?: string;
-    stroke?: string;
-    opacity?: number;
-    strokeOpacity?: number;
-    textAnchor?: string;
-    children: (interval: number) => string;
+    readonly x: number;
+    readonly y: number;
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly fill?: string;
+    readonly stroke?: string;
+    readonly opacity?: number;
+    readonly strokeOpacity?: number;
+    readonly textAnchor?: string;
+    readonly children: (interval: number) => string;
 }
 
 class BackgroundText extends PureComponent<BackgroundTextProps> {

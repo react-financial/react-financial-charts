@@ -9,15 +9,15 @@ import {
 import { PureComponent } from "./utils/PureComponent";
 
 interface ChartProps {
-    height?: number;
-    origin?: number[] | any; // func
-    id: number | string;
-    yExtents?: number[] | any; // func
-    yExtentsCalculator?: any; // func
-    onContextMenu?: (props: any, event: React.MouseEvent) => void;
-    yScale?: any; // func
-    flipYScale?: boolean;
-    padding?: number | { top: number; bottom: number; };
+    readonly height?: number;
+    readonly origin?: number[] | ((width: number, height: number) => number[]);
+    readonly id: number | string;
+    readonly yExtents?: number[] | ((data: any) => number | number[]);
+    readonly yExtentsCalculator?: any; // func
+    readonly onContextMenu?: (props: any, event: React.MouseEvent) => void;
+    readonly yScale?: any; // func
+    readonly flipYScale?: boolean;
+    readonly padding?: number | { top: number; bottom: number; };
 }
 
 export class Chart extends PureComponent<ChartProps> {

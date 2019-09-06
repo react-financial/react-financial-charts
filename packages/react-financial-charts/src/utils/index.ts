@@ -14,6 +14,7 @@ export { default as accumulatingWindow } from "./accumulatingWindow";
 
 export * from "./barWidth";
 export * from "./strokeDasharray";
+export * from "./withDeviceRatio";
 
 export function getLogger(prefix) {
     let logger = noop;

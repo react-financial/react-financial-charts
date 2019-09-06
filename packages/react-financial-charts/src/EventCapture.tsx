@@ -12,34 +12,34 @@ import {
 import { getCurrentCharts } from "./utils/ChartDataUtil";
 
 interface EventCaptureProps {
-    mouseMove: boolean;
-    zoom: boolean;
-    pan: boolean;
-    panSpeedMultiplier: number;
-    focus: boolean;
-    useCrossHairStyleCursor?: boolean;
-    width: number;
-    height: number;
-    chartConfig: Array<{ origin: number[], height: number }>;
-    xAccessor: any; // func
-    xScale: any; // func
-    disableInteraction: boolean;
-    getAllPanConditions: () => Array<{ panEnabled: boolean, draggable: boolean }>;
-    onMouseMove?: (touchXY: number[], eventType: string, event: React.TouchEvent) => void;
-    onMouseEnter?: (event: any) => void;
-    onMouseLeave?: (event: React.MouseEvent) => void;
-    onZoom?: (zoomDir: 1 | -1, mouseXY: number[], event: React.WheelEvent) => void;
-    onPinchZoom?: any; // func
-    onPinchZoomEnd: any; // func
-    onPan?: any; // func
-    onPanEnd?: any; // func
-    onDragStart?: (details: { startPos: number[] }, event: React.MouseEvent) => void;
-    onDrag?: (details: { startPos: number[], mouseXY: number[] }, event: React.MouseEvent) => void;
-    onDragComplete?: (details: { mouseXY: number[] }, event: React.MouseEvent) => void;
-    onClick?: (mouseXY: number[], event: React.MouseEvent) => void;
-    onDoubleClick?: (mouseXY: number[], event: React.MouseEvent) => void;
-    onContextMenu?: (mouseXY: number[], event: React.MouseEvent) => void;
-    onMouseDown?: (mouseXY: number[], currentCharts: any, event: React.MouseEvent) => void;
+    readonly mouseMove: boolean;
+    readonly zoom: boolean;
+    readonly pan: boolean;
+    readonly panSpeedMultiplier: number;
+    readonly focus: boolean;
+    readonly useCrossHairStyleCursor?: boolean;
+    readonly width: number;
+    readonly height: number;
+    readonly chartConfig: Array<{ origin: number[], height: number }>;
+    readonly xAccessor: any; // func
+    readonly xScale: any; // func
+    readonly disableInteraction: boolean;
+    readonly getAllPanConditions: () => Array<{ panEnabled: boolean, draggable: boolean }>;
+    readonly onMouseMove?: (touchXY: number[], eventType: string, event: React.TouchEvent) => void;
+    readonly onMouseEnter?: (event: any) => void;
+    readonly onMouseLeave?: (event: React.MouseEvent) => void;
+    readonly onZoom?: (zoomDir: 1 | -1, mouseXY: number[], event: React.WheelEvent) => void;
+    readonly onPinchZoom?: any; // func
+    readonly onPinchZoomEnd: any; // func
+    readonly onPan?: any; // func
+    readonly onPanEnd?: any; // func
+    readonly onDragStart?: (details: { startPos: number[] }, event: React.MouseEvent) => void;
+    readonly onDrag?: (details: { startPos: number[], mouseXY: number[] }, event: React.MouseEvent) => void;
+    readonly onDragComplete?: (details: { mouseXY: number[] }, event: React.MouseEvent) => void;
+    readonly onClick?: (mouseXY: number[], event: React.MouseEvent) => void;
+    readonly onDoubleClick?: (mouseXY: number[], event: React.MouseEvent) => void;
+    readonly onContextMenu?: (mouseXY: number[], event: React.MouseEvent) => void;
+    readonly onMouseDown?: (mouseXY: number[], currentCharts: any, event: React.MouseEvent) => void;
 }
 
 interface EventCaptureState {

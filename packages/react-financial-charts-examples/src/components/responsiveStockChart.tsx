@@ -7,8 +7,8 @@ import StockChart from "./stockChart";
 
 const parseDate = timeParse("%Y-%m-%d");
 
-function parseData(parse) {
-    return function (d) {
+const parseData = (parse: (dateString: string) => Date) => {
+    return (d: any) => {
         d.date = parse(d.date);
         d.open = +d.open;
         d.high = +d.high;
@@ -18,7 +18,7 @@ function parseData(parse) {
 
         return d;
     };
-}
+};
 
 interface ResponsiveStockChartState {
     data?: IOHLCData[];
@@ -36,7 +36,6 @@ export class ResponsiveStockChart extends React.Component<{}, ResponsiveStockCha
                 });
             })
             .catch((error) => {
-                // tslint:disable-next-line: no-console
                 console.error(error);
             });
     }
@@ -48,18 +47,16 @@ export class ResponsiveStockChart extends React.Component<{}, ResponsiveStockCha
         }
 
         return (
-            <div style={{ flex: "1 1 auto" }}>
-                <AutoSizer>
-                    {({ height, width }) => {
-                        return (
-                            <StockChart
-                                data={this.state.data}
-                                height={height}
-                                width={width} />
-                        );
-                    }}
-                </AutoSizer>
-            </div>
+            <AutoSizer>
+                {({ height, width }) => {
+                    return (
+                        <StockChart
+                            data={this.state.data}
+                            height={height}
+                            width={width} />
+                    );
+                }}
+            </AutoSizer>
         );
     }
 }

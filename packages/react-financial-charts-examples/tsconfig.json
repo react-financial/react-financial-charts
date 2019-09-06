@@ -10,7 +10,7 @@
         ],
         "moduleResolution": "node",
         "module": "esnext",
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "outDir": "./dist/",

@@ -23,34 +23,34 @@ const aliases = {
 };
 
 interface GenericComponentProps {
-    svgDraw: any; // func
-    canvasDraw?: any; // func
-    drawOn: any[];
-    clip?: boolean;
-    edgeClip?: boolean;
-    interactiveCursorClass?: string;
-    selected?: boolean;
-    enableDragOnHover?: boolean;
-    disablePan?: boolean;
-    canvasToDraw: any; // func
-    isHover?: any; // func
-    onClick?: any; // func
-    onClickWhenHover?: any; // func
-    onClickOutside?: any; // func
-    onPan?: any; // func
-    onPanEnd?: any; // func
-    onDragStart?: any; // func
-    onDrag?: any; // func
-    onDragComplete?: any; // func
-    onDoubleClick?: any; // func
-    onDoubleClickWhenHover?: any; // func
-    onContextMenu?: any; // func
-    onContextMenuWhenHover?: any; // func
-    onMouseMove?: any; // func
-    onMouseDown?: any; // func
-    onHover?: any; // func
-    onUnHover?: any; // func
-    debug?: any; // func
+    readonly svgDraw: any; // func
+    readonly canvasDraw?: any; // func
+    readonly drawOn: any[];
+    readonly clip?: boolean;
+    readonly edgeClip?: boolean;
+    readonly interactiveCursorClass?: string;
+    readonly selected?: boolean;
+    readonly enableDragOnHover?: boolean;
+    readonly disablePan?: boolean;
+    readonly canvasToDraw: any; // func
+    readonly isHover?: any; // func
+    readonly onClick?: any; // func
+    readonly onClickWhenHover?: any; // func
+    readonly onClickOutside?: any; // func
+    readonly onPan?: any; // func
+    readonly onPanEnd?: any; // func
+    readonly onDragStart?: any; // func
+    readonly onDrag?: any; // func
+    readonly onDragComplete?: any; // func
+    readonly onDoubleClick?: any; // func
+    readonly onDoubleClickWhenHover?: any; // func
+    readonly onContextMenu?: any; // func
+    readonly onContextMenuWhenHover?: any; // func
+    readonly onMouseMove?: any; // func
+    readonly onMouseDown?: any; // func
+    readonly onHover?: any; // func
+    readonly onUnHover?: any; // func
+    readonly debug?: any; // func
 }
 
 interface GenericComponentState {

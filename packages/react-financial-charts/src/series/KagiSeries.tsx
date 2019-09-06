@@ -62,12 +62,15 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
                     .y((item) => yScale(item[1]))
                     .curve(curveStepBefore);
 
-                dataSeries(each.plot);
+                const data = dataSeries(each.plot);
+                if (data === null) {
+                    return null;
+                }
 
                 return (
                     <path
                         key={i}
-                        d={dataSeries(each.plot)}
+                        d={data}
                         className={each.type}
                         stroke={stroke[each.type]}
                         fill={fill[each.type]}

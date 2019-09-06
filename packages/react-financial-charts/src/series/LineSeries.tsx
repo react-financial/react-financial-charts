@@ -1,4 +1,3 @@
-
 import { line as d3Line } from "d3-shape";
 import * as React from "react";
 
@@ -29,7 +28,7 @@ interface LineSeriesProps {
     onHover?: any; // func
     onUnHover?: any; // func
     onContextMenu?: any; // func
-    yAccessor?: any; // func
+    yAccessor: (data: any) => number;
     connectNulls?: boolean;
     interpolation?: any; // func
     canvasClip?: any; // func
@@ -100,6 +99,9 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         }
 
         const data = dataSeries(plotData);
+        if (data === null) {
+            return null;
+        }
 
         const { fill, className } = this.props;
 

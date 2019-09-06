@@ -59,7 +59,12 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         }
 
         const data = areaSeries(plotData);
+        if (data === null) {
+            return null;
+        }
+
         const newClassName = className.concat(isDefined(stroke) ? "" : " line-stroke");
+
         return (
             <path
                 style={style}
@@ -67,7 +72,6 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
                 stroke={stroke}
                 fill={hexToRGBA(fill, opacity)}
                 className={newClassName}
-
             />
         );
     }

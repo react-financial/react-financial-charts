@@ -8,7 +8,7 @@ import { functor, hexToRGBA } from "../utils";
 
 interface ScatterSeriesProps {
     className?: string;
-    yAccessor: any; // func
+    yAccessor: (data: any) => number;
     marker?: any; // func
     markerProvider?: any; // func
     markerProps?: object;

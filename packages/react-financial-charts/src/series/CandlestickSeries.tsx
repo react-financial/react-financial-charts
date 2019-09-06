@@ -209,7 +209,7 @@ function getCandleData(props: CandlestickSeriesProps, xAccessor, xScale, yScale,
 
             const ohlc = yAccessor(d);
             const y = Math.round(yScale(Math.max(ohlc.open, ohlc.close)));
-            const height = Math.round(Math.abs(yScale(ohlc.open) - yScale(ohlc.close)));
+            const height = Math.max(1, Math.round(Math.abs(yScale(ohlc.open) - yScale(ohlc.close))));
 
             candles.push({
                 // type: "line"

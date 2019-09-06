@@ -125,7 +125,7 @@ function drawOnCanvas(ctx, props: CandlestickSeriesProps, moreProps) {
 
     const candleData = getCandleData(props, xAccessor, xScale, yScale, plotData);
 
-    const wickNest = nest()
+    const wickNest = nest<any>()
         .key((d) => d.wick.stroke)
         .entries(candleData);
 
@@ -142,7 +142,7 @@ function drawOnCanvas(ctx, props: CandlestickSeriesProps, moreProps) {
         });
     });
 
-    const candleNest = nest()
+    const candleNest = nest<any>()
         .key((d) => d.stroke)
         .key((d) => d.fill)
         .entries(candleData);

@@ -158,7 +158,7 @@ export function getBarsSVG2(props, bars) {
 export function drawOnCanvas2(props, ctx, bars) {
     const { stroke } = props;
 
-    const nest = d3Nest()
+    const nest = d3Nest<any>()
         .key((d) => d.fill)
         .entries(bars);
 

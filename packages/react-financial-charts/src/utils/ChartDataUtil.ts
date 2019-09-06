@@ -1,6 +1,5 @@
 
 import { extent } from "d3-array";
-import { set } from "d3-collection";
 import flattenDeep from "lodash.flattendeep";
 import * as React from "react";
 
@@ -160,10 +159,10 @@ function yDomainFromYExtents(yExtents, yScale, plotData) {
         plotData.map(values(eachExtent)));
 
     const allYValues = flattenDeep(yValues);
-    // console.log(allYValues)
+
     const realYDomain = (yScale.invert)
         ? extent(allYValues)
-        : set(allYValues).values();
+        : [...new Set(allYValues).values()];
 
     return realYDomain;
 }

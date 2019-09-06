@@ -157,7 +157,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
                 .value(source)
                 .thresholds(bins);
 
-            const rollup = nest()
+            const rollup = nest<any, number>()
                 .key((d) => d.direction)
                 .sortKeys(orient === "right" ? descending : ascending)
                 .rollup((leaves) => sum<any>(leaves, (d) => d.volume));
@@ -193,7 +193,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
                 const ws = volumes.map((d) => {
                     return {
                         type: d.key,
-                        width: d.value * Math.abs(widthLocal) / totalVolume,
+                        width: d.value! * Math.abs(widthLocal) / totalVolume,
                     };
                 });
 

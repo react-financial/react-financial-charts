@@ -84,7 +84,7 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
 
         const { markerProps } = props;
 
-        const nest = d3Nest()
+        const nest = d3Nest<any>()
             .key((d) => d.fill)
             .key((d) => d.stroke)
             .entries(points);

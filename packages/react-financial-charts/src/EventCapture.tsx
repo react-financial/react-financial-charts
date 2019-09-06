@@ -153,7 +153,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         onMouseEnter(e);
     }
 
-    public handleLeave(e: React.MouseEvent) {
+    public handleLeave(e) {
         const { onMouseLeave } = this.props;
         if (onMouseLeave === undefined) {
             return;
@@ -306,6 +306,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     public cancelDrag() {
         const win = d3Window(this.node);
         select(win)
+            // @ts-ignore
             .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
             .on(MOUSEUP, null);
 
@@ -321,6 +322,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
         const win = d3Window(this.node);
         select(win)
+            // @ts-ignore
             .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
             .on(MOUSEUP, null);
 
@@ -465,6 +467,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
             const win = d3Window(this.node);
             select(win)
+                // @ts-ignore
                 .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
                 .on(MOUSEUP, null)
                 .on(TOUCHMOVE, null)
@@ -540,6 +543,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
                 const win = d3Window(this.node);
                 select(win)
+                    // @ts-ignore
                     .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
                     .on(MOUSEUP, null)
                     .on(TOUCHMOVE, this.handlePinchZoom, false)

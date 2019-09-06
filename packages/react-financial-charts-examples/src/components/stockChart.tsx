@@ -1,4 +1,3 @@
-// @ts-ignore
 import { format } from "d3-format";
 import { scaleTime } from "d3-scale";
 import { timeFormat } from "d3-time-format";

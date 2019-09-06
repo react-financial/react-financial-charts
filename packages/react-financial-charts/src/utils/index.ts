@@ -1,5 +1,4 @@
 import { bisector } from "d3-array";
-import { scaleOrdinal, schemeCategory10 } from "d3-scale";
 import identity from "./identity";
 import noop from "./noop";
 
@@ -153,8 +152,6 @@ export function getClosestItem(array, value, accessor) {
 
     return closest;
 }
-
-export const overlayColors = scaleOrdinal(schemeCategory10);
 
 export function head(array, accessor?) {
     if (accessor && array) {

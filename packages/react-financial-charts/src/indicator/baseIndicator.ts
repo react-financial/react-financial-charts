@@ -1,6 +1,8 @@
-import { overlayColors } from "../utils";
+import { scaleOrdinal } from "d3-scale";
+import { schemeCategory10 } from "d3-scale-chromatic";
 
 let i = 0;
+const overlayColors = scaleOrdinal<number, string>(schemeCategory10);
 
 export default function () {
 

@@ -9,6 +9,7 @@ import { AxisZoomCapture } from "./AxisZoomCapture";
 import { first, getStrokeDasharray, hexToRGBA, identity, isDefined, isNotDefined, last, strokeDashTypes, zipper } from "../utils";
 
 interface AxisProps {
+    readonly flexTicks?: boolean;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fontWeight?: number;
@@ -205,7 +206,7 @@ function tickHelper(props, scale) {
             const nodes = ticks.map((d) => ({ id: d.value, value: d.value, fy: d.y2, origX: d.x1 }));
 
             const simulation = forceSimulation(nodes)
-                .force("x", forceX((d) => d.origX).strength(1))
+                .force("x", forceX<any>((d) => d.origX).strength(1))
                 .force("collide", forceCollide(22))
                 .stop();
 

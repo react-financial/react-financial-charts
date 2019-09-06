@@ -5,6 +5,7 @@ import Axis from "./Axis";
 interface YAxisProps {
     readonly axisAt: number | "left" | "right" | "middle";
     readonly orient: "left" | "right";
+    readonly flexTicks?: boolean;
     readonly innerTickSize?: number;
     readonly outerTickSize?: number;
     readonly tickFormat?: any; // func

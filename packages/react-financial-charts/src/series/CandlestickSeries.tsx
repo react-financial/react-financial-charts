@@ -27,9 +27,9 @@ interface CandlestickSeriesProps {
 export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-candlestick",
-        wickClassName: "react-stockcharts-candlestick-wick",
-        candleClassName: "react-stockcharts-candlestick-candle",
+        className: "react-financial-charts-candlestick",
+        wickClassName: "react-financial-charts-candlestick-wick",
+        candleClassName: "react-financial-charts-candlestick-candle",
         yAccessor: (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
         classNames: (d) => d.close > d.open ? "up" : "down",
         width: plotDataLengthBarWidth,

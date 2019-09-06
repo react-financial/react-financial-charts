@@ -43,43 +43,43 @@ function shouldResetChart(thisProps, nextProps) {
 
 function getCursorStyle() {
     const tooltipStyle = `
-	.react-stockcharts-grabbing-cursor {
+	.react-financial-charts-grabbing-cursor {
 		pointer-events: all;
 		cursor: -moz-grabbing;
 		cursor: -webkit-grabbing;
 		cursor: grabbing;
 	}
-	.react-stockcharts-crosshair-cursor {
+	.react-financial-charts-crosshair-cursor {
 		pointer-events: all;
 		cursor: crosshair;
 	}
-	.react-stockcharts-tooltip-hover {
+	.react-financial-charts-tooltip-hover {
 		pointer-events: all;
 		cursor: pointer;
 	}
-	.react-stockcharts-avoid-interaction {
+	.react-financial-charts-avoid-interaction {
 		pointer-events: none;
 	}
-	.react-stockcharts-enable-interaction {
+	.react-financial-charts-enable-interaction {
 		pointer-events: all;
 	}
-	.react-stockcharts-tooltip {
+	.react-financial-charts-tooltip {
 		pointer-events: all;
 		cursor: pointer;
 	}
-	.react-stockcharts-default-cursor {
+	.react-financial-charts-default-cursor {
 		cursor: default;
 	}
-	.react-stockcharts-move-cursor {
+	.react-financial-charts-move-cursor {
 		cursor: move;
 	}
-	.react-stockcharts-pointer-cursor {
+	.react-financial-charts-pointer-cursor {
 		cursor: pointer;
 	}
-	.react-stockcharts-ns-resize-cursor {
+	.react-financial-charts-ns-resize-cursor {
 		cursor: ns-resize;
 	}
-	.react-stockcharts-ew-resize-cursor {
+	.react-financial-charts-ew-resize-cursor {
 		cursor: ew-resize;
 	}`;
     return (<style type="text/css">{tooltipStyle}</style>);
@@ -1242,7 +1242,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                             onPanEnd={this.handlePanEnd}
                         />
 
-                        <g className="react-stockcharts-avoid-interaction">
+                        <g className="react-financial-charts-avoid-interaction">
                             {this.props.children}
                         </g>
                     </g>

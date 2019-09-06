@@ -622,8 +622,8 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         const className = this.state.cursorOverrideClass !== undefined
             ? this.state.cursorOverrideClass
             : !useCrossHairStyleCursor ? "" : this.state.panInProgress
-                ? "react-stockcharts-grabbing-cursor"
-                : "react-stockcharts-crosshair-cursor";
+                ? "react-financial-charts-grabbing-cursor"
+                : "react-financial-charts-crosshair-cursor";
 
         const interactionProps = disableInteraction || {
             onMouseDown: this.handleMouseDown,

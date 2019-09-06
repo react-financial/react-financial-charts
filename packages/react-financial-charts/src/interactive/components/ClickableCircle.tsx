@@ -25,7 +25,7 @@ interface ClickableCircleProps {
 export class ClickableCircle extends React.Component<ClickableCircleProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-interactive-line-edge",
+        className: "react-financial-charts-interactive-line-edge",
         onDragStart: noop,
         onDrag: noop,
         onDragComplete: noop,

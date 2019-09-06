@@ -57,7 +57,7 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
 
         const bars = getBars(this.props, moreProps, yAccessor);
         return (
-            <g className="react-stockcharts-bar-series">
+            <g className="react-financial-charts-bar-series">
                 {getBarsSVG2(this.props, bars)}
             </g>
         );

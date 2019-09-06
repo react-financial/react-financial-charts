@@ -56,7 +56,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
         }
 
         return (
-            <g className={`react-stockcharts-crosshair ${className}`}>
+            <g className={`react-financial-charts-crosshair ${className}`}>
                 {lines.map(({ strokeDasharray, ...rest }, idx) =>
                     <line
                         key={idx}

@@ -21,7 +21,7 @@ interface PointAndFigureSeriesProps {
 export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-point-and-figure",
+        className: "react-financial-charts-point-and-figure",
         strokeWidth: 1,
         stroke: {
             up: "#6BA583",

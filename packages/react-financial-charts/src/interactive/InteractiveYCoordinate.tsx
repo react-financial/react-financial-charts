@@ -164,7 +164,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
                             onDelete={this.handleDelete}
                             onDrag={this.handleDrag}
                             onDragComplete={this.handleDragComplete}
-                            edgeInteractiveCursor="react-stockcharts-move-cursor"
+                            edgeInteractiveCursor="react-financial-charts-move-cursor"
                         />
                     );
                 })}

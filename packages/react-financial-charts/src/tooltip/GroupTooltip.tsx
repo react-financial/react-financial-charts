@@ -150,7 +150,7 @@ interface GroupTooltipProps {
 export class GroupTooltip extends React.Component<GroupTooltipProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-tooltip react-stockcharts-group-tooltip",
+        className: "react-financial-charts-tooltip react-financial-charts-group-tooltip",
         layout: "horizontal",
         displayFormat: format(".2f"),
         displayValuesFor: defaultDisplayValuesFor,

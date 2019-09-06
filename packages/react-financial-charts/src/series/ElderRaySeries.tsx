@@ -19,7 +19,7 @@ interface ElderRaySeriesProps {
 export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-elderray-series",
+        className: "react-financial-charts-elderray-series",
         straightLineStroke: "#000000",
         straightLineOpacity: 0.3,
         opacity: 0.5,
@@ -42,7 +42,7 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
             <g className={className}>
                 <OverlayBarSeries
                     baseAt={this.yAccessorForBarBase}
-                    className="react-stockcharts-elderray-bar"
+                    className="react-financial-charts-elderray-bar"
                     stroke={stroke}
                     fill={this.fillForEachBar}
                     opacity={opacity}
@@ -50,7 +50,7 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
                     clip={clip}
                     yAccessor={[this.yAccessorBullTop, this.yAccessorBearTop, this.yAccessorBullBottom, this.yAccessorBearBottom]} />
                 <StraightLine
-                    className="react-stockcharts-elderray-straight-line"
+                    className="react-financial-charts-elderray-straight-line"
                     yValue={0}
                     stroke={straightLineStroke}
                     opacity={straightLineOpacity} />

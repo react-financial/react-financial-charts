@@ -29,7 +29,7 @@ export class AreaSeries extends React.Component<AreaSeriesProps> {
         strokeDasharray: "Solid",
         opacity: 0.5,
         fill: "#4682B4",
-        className: "react-stockcharts-area",
+        className: "react-financial-charts-area",
     };
 
     public render() {

@@ -81,7 +81,7 @@ interface MovingAverageTooltipProps {
 export class MovingAverageTooltip extends React.Component<MovingAverageTooltipProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-tooltip react-stockcharts-moving-average-tooltip",
+        className: "react-financial-charts-tooltip react-financial-charts-moving-average-tooltip",
         displayFormat: format(".2f"),
         displayValuesFor: defaultDisplayValuesFor,
         origin: [0, 10],

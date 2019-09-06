@@ -21,7 +21,7 @@ interface KagiSeriesProps {
 export class KagiSeries extends React.Component<KagiSeriesProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-kagi",
+        className: "react-financial-charts-kagi",
         strokeWidth: 2,
         stroke: {
             yang: "#6BA583",

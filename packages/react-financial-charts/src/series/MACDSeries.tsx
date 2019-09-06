@@ -26,7 +26,7 @@ interface MACDSeriesProps {
 export class MACDSeries extends React.Component<MACDSeriesProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-macd-series",
+        className: "react-financial-charts-macd-series",
         zeroLineStroke: "#000000",
         zeroLineOpacity: 0.3,
         opacity: 0.6,

@@ -15,7 +15,7 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
 
     public static defaultProps = {
         r: 3,
-        className: "react-stockcharts-current-coordinate",
+        className: "react-financial-charts-current-coordinate",
     };
 
     public render() {

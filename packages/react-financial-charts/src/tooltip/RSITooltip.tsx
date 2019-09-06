@@ -29,7 +29,7 @@ export class RSITooltip extends React.Component<RSITooltipProps> {
         displayFormat: format(".2f"),
         displayValuesFor: defaultDisplayValuesFor,
         origin: [0, 0],
-        className: "react-stockcharts-tooltip",
+        className: "react-financial-charts-tooltip",
     };
 
     public render() {

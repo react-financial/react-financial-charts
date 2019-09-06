@@ -21,7 +21,7 @@ interface LabelAnnotationProps {
 export class LabelAnnotation extends React.Component<LabelAnnotationProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-labelannotation",
+        className: "react-financial-charts-labelannotation",
         textAnchor: "middle",
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,

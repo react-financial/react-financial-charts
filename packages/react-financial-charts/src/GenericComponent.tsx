@@ -227,7 +227,7 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
                     /* && !prevHover */
                     && amIOnTop(this.suscriberId)
                     && isDefined(this.props.onHover)) {
-                    setCursorClass("react-stockcharts-pointer-cursor");
+                    setCursorClass("react-financial-charts-pointer-cursor");
                     this.iSetTheCursorClass = true;
                 } else if (this.moreProps.hovering
                     && this.props.selected

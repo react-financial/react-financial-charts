@@ -44,7 +44,7 @@ const defaultDisplay = (props, _, itemsToDisplay) => {
 
     return (
         <g
-            className={`react-stockcharts-tooltip-hover ${className}`}
+            className={`react-financial-charts-tooltip-hover ${className}`}
             transform={`translate(${x}, ${y})`}
             onClick={onClick}>
             <ToolTipText

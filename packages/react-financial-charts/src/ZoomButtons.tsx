@@ -87,7 +87,7 @@ class ZoomButtons extends React.Component<ZoomButtonsProps> {
         zoomIn.lineTo(zoomInX, textY + hLength);
 
         return (
-            <g className="react-stockcharts-zoom-button">
+            <g className="react-financial-charts-zoom-button">
                 <rect
                     x={zoomOutX - w / 2}
                     y={y}
@@ -139,7 +139,7 @@ class ZoomButtons extends React.Component<ZoomButtonsProps> {
                     stroke={textFill}
                     strokeWidth={textStrokeWidth} />
                 <rect
-                    className="react-stockcharts-enable-interaction out"
+                    className="react-financial-charts-enable-interaction out"
                     onClick={this.handleZoomOut}
                     x={zoomOutX - w / 2}
                     y={y}
@@ -149,7 +149,7 @@ class ZoomButtons extends React.Component<ZoomButtonsProps> {
                     width={w}
                     fill="none" />
                 <rect
-                    className="react-stockcharts-enable-interaction reset"
+                    className="react-financial-charts-enable-interaction reset"
                     onClick={onReset}
                     x={resetX - w / 2}
                     y={y}
@@ -159,7 +159,7 @@ class ZoomButtons extends React.Component<ZoomButtonsProps> {
                     width={w}
                     fill="none" />
                 <rect
-                    className="react-stockcharts-enable-interaction in"
+                    className="react-financial-charts-enable-interaction in"
                     onClick={this.handleZoomIn}
                     x={zoomInX - w / 2}
                     y={y}

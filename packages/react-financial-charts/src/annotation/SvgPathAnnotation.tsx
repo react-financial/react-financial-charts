@@ -17,7 +17,7 @@ interface SvgPathAnnotationProps {
 export class SvgPathAnnotation extends React.Component<SvgPathAnnotationProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-svgpathannotation",
+        className: "react-financial-charts-svgpathannotation",
         opacity: 1,
         x: ({ xScale, xAccessor, datum }) => xScale(xAccessor(datum)),
     };

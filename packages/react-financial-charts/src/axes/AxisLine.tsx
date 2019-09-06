@@ -27,7 +27,7 @@ function d3_scaleRange(scale) {
 export class AxisLine extends React.Component<AxisLineProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-axis-line",
+        className: "react-financial-charts-axis-line",
         shapeRendering: "crispEdges",
         fill: "none",
         stroke: "#000000",

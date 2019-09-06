@@ -117,7 +117,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
                     position={getValueFromOverride(override, idx, "position", each.position)}
                     onDrag={this.handleDrag}
                     onDragComplete={this.handleDragComplete}
-                    edgeInteractiveCursor="react-stockcharts-move-cursor"
+                    edgeInteractiveCursor="react-financial-charts-move-cursor"
                 />;
             })}
             <GenericChartComponent

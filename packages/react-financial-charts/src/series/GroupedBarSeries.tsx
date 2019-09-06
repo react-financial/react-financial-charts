@@ -44,7 +44,7 @@ export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {
         const { xAccessor } = moreProps;
 
         return (
-            <g className="react-stockcharts-grouped-bar-series">
+            <g className="react-financial-charts-grouped-bar-series">
                 {svgHelper(this.props, moreProps, xAccessor, identityStack, this.postProcessor)}
             </g>
         );

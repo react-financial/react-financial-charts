@@ -27,7 +27,7 @@ interface EdgeIndicatorProps {
 export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-edgeindicator",
+        className: "react-financial-charts-edgeindicator",
         type: "horizontal",
         orient: "left",
         edgeAt: "left",

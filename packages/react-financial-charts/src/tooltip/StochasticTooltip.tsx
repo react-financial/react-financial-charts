@@ -38,7 +38,7 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
         displayFormat: format(".2f"),
         displayValuesFor: defaultDisplayValuesFor,
         origin: [0, 0],
-        className: "react-stockcharts-tooltip",
+        className: "react-financial-charts-tooltip",
         label: "STO",
     };
 

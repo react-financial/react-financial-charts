@@ -153,8 +153,8 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                     hoverText={hoverTextWithDefault}
                     onDrag={this.handleDragLine}
                     onDragComplete={this.handleDragLineComplete}
-                    edgeInteractiveCursor="react-stockcharts-move-cursor"
-                    lineInteractiveCursor="react-stockcharts-move-cursor"
+                    edgeInteractiveCursor="react-financial-charts-move-cursor"
+                    lineInteractiveCursor="react-financial-charts-move-cursor"
                 />;
             })}
             {tempLine}

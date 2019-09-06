@@ -22,7 +22,7 @@ export class Square extends React.Component<SquareProps> {
         strokeWidth: 1,
         opacity: 0.5,
         fill: "#4682B4",
-        className: "react-stockcharts-marker-rect",
+        className: "react-financial-charts-marker-rect",
     };
 
     public static drawOnCanvas = (props, point, ctx) => {

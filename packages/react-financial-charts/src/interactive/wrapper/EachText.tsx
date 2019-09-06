@@ -116,7 +116,7 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
                 <InteractiveText
                     ref={this.saveNodeType("text")}
                     selected={selected || hover}
-                    interactiveCursorClass="react-stockcharts-move-cursor"
+                    interactiveCursorClass="react-financial-charts-move-cursor"
                     {...hoverHandler}
                     onDragStart={this.handleDragStart}
                     onDrag={this.handleDrag}

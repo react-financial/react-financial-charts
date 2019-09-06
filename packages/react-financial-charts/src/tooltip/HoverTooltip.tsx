@@ -77,7 +77,7 @@ class HoverTooltip extends React.Component<HoverTooltipProps> {
                     height={height}
                     fill={bgFill}
                     opacity={bgOpacity} />
-                <g className="react-stockcharts-tooltip-content" transform={`translate(${x}, ${y})`}>
+                <g className="react-financial-charts-tooltip-content" transform={`translate(${x}, ${y})`}>
                     {backgroundShapeSVG(this.props, bgShape)}
                     {tooltipSVG(this.props, content)}
                 </g>

@@ -111,7 +111,7 @@ export class EachInteractiveYCoordinate extends React.Component<EachInteractiveY
                     ref={this.saveNodeType("priceCoordinate")}
                     selected={selected && !closeIconHover}
                     hovering={hover || closeIconHover}
-                    interactiveCursorClass="react-stockcharts-move-cursor"
+                    interactiveCursorClass="react-financial-charts-move-cursor"
                     {...hoverHandler}
                     {...dragProps}
                     yValue={yValue}

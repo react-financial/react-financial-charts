@@ -29,7 +29,7 @@ interface BollingerBandTooltipProps {
 export class BollingerBandTooltip extends React.Component<BollingerBandTooltipProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-tooltip react-stockcharts-bollingerband-tooltip",
+        className: "react-financial-charts-tooltip react-financial-charts-bollingerband-tooltip",
         displayFormat: format(".2f"),
         displayValuesFor: defaultDisplayValuesFor,
         origin: [0, 10],

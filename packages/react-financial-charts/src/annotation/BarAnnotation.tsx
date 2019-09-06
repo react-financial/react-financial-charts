@@ -34,7 +34,7 @@ interface BarAnnotationProps {
 export class BarAnnotation extends React.Component<BarAnnotationProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-bar-annotation",
+        className: "react-financial-charts-bar-annotation",
         opacity: 1,
         fill: "#000000",
         textAnchor: "middle",

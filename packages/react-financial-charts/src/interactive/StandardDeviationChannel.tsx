@@ -148,7 +148,7 @@ export class StandardDeviationChannel extends React.Component<StandardDeviationC
 
                     onDrag={this.handleDragLine}
                     onDragComplete={this.handleDragLineComplete}
-                    edgeInteractiveCursor="react-stockcharts-move-cursor"
+                    edgeInteractiveCursor="react-financial-charts-move-cursor"
                 />;
             })}
             {tempLine}

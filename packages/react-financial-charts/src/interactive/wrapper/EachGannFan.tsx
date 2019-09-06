@@ -128,14 +128,14 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
                 {this.getEdgeCircle({
                     xy: startXY,
                     dragHandler: this.handleLine1Edge1Drag,
-                    cursor: "react-stockcharts-move-cursor",
+                    cursor: "react-financial-charts-move-cursor",
                     fill: edgeFill,
                     edge: "edge1",
                 })}
                 {this.getEdgeCircle({
                     xy: endXY,
                     dragHandler: this.handleLine1Edge2Drag,
-                    cursor: "react-stockcharts-move-cursor",
+                    cursor: "react-financial-charts-move-cursor",
                     fill: edgeFill,
                     edge: "edge2",
                 })}
@@ -158,7 +158,7 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
                     fontFamily={fontFamily}
                     fontSize={fontSize}
                     fontFill={fontFill}
-                    interactiveCursorClass="react-stockcharts-move-cursor"
+                    interactiveCursorClass="react-financial-charts-move-cursor"
                     onDragStart={this.handleDragStart}
                     onDrag={this.handleFanDrag}
                     onDragComplete={onDragComplete}

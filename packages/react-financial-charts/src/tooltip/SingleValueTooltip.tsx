@@ -39,7 +39,7 @@ export class SingleValueTooltip extends React.Component<SingleValueTooltipProps>
         yAccessor: identity,
         xInitDisplay: "n/a",
         yInitDisplay: "n/a",
-        className: "react-stockcharts-tooltip",
+        className: "react-financial-charts-tooltip",
     };
 
     public render() {

@@ -225,7 +225,7 @@ class Cursor extends React.Component<CursorProps> {
         const { className, useXCursorShape } = this.props;
 
         return (
-            <g className={`react-stockcharts-crosshair ${className}`}>
+            <g className={`react-financial-charts-crosshair ${className}`}>
                 {cursors.map(({ strokeDasharray, id, ...rest }, idx) => {
                     if (useXCursorShape && id === "xCursor") {
                         const {

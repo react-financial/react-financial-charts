@@ -62,7 +62,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
             top: "Solid",
             bottom: "Solid",
         },
-        className: "react-stockcharts-alternating-area",
+        className: "react-financial-charts-alternating-area",
     };
 
     private clipPathId1: string;

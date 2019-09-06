@@ -22,7 +22,7 @@ interface SARSeriesProps {
 export class SARSeries extends React.Component<SARSeriesProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-sar",
+        className: "react-financial-charts-sar",
         fill: {
             falling: "#4682B4",
             rising: "#15EC2E",

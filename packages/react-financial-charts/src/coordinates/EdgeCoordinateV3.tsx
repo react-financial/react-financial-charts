@@ -14,7 +14,7 @@ export function renderSVG(props) {
     if (edge.line !== undefined && isDefined(edge.line)) {
         line = (
             <line
-                className="react-stockcharts-cross-hair"
+                className="react-financial-charts-cross-hair"
                 strokeOpacity={edge.line.opacity}
                 stroke={edge.line.stroke}
                 strokeDasharray={getStrokeDasharray(edge.line.strokeDasharray)}

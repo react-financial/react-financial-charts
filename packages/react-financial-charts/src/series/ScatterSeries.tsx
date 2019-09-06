@@ -17,7 +17,7 @@ interface ScatterSeriesProps {
 export class ScatterSeries extends React.Component<ScatterSeriesProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-scatter",
+        className: "react-financial-charts-scatter",
     };
 
     public render() {

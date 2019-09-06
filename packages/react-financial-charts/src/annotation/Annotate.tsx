@@ -12,7 +12,7 @@ interface AnnotateProps {
 export class Annotate extends React.Component<AnnotateProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-annotate react-stockcharts-default-cursor",
+        className: "react-financial-charts-annotate react-financial-charts-default-cursor",
     };
 
     public render() {
@@ -32,7 +32,7 @@ export class Annotate extends React.Component<AnnotateProps> {
         const data = this.plotfilter(when, plotData);
 
         return (
-            <g className={`react-stockcharts-enable-interaction ${className}`}>
+            <g className={`react-financial-charts-enable-interaction ${className}`}>
                 {data.map((d: any, idx) => {
                     return (
                         <Annotation key={idx}

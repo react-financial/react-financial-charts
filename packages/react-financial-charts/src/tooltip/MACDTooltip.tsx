@@ -37,7 +37,7 @@ interface MACDTooltipProps {
 export class MACDTooltip extends React.Component<MACDTooltipProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-tooltip",
+        className: "react-financial-charts-tooltip",
         displayFormat: format(".2f"),
         displayValuesFor: defaultDisplayValuesFor,
         origin: [0, 0],

@@ -43,7 +43,7 @@ interface RSISeriesProps {
 export class RSISeries extends React.Component<RSISeriesProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-rsi-series",
+        className: "react-financial-charts-rsi-series",
         stroke: {
             line: "#000000",
             top: "#B8C2CC",

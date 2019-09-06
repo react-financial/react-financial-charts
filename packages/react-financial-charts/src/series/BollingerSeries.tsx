@@ -20,8 +20,8 @@ interface BollingerSeriesProps {
 export class BollingerSeries extends React.Component<BollingerSeriesProps> {
 
     public static defaultProps = {
-        className: "react-stockcharts-bollinger-band-series",
-        areaClassName: "react-stockcharts-bollinger-band-series-area",
+        className: "react-financial-charts-bollinger-band-series",
+        areaClassName: "react-financial-charts-bollinger-band-series-area",
         opacity: 0.2,
     };
 

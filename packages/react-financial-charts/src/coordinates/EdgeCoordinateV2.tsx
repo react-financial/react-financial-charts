@@ -13,7 +13,7 @@ export function renderSVG(props) {
 
     if (edge.line !== undefined && isDefined(edge.line)) {
         line = <line
-            className="react-stockcharts-cross-hair" opacity={edge.line.opacity} stroke={edge.line.stroke}
+            className="react-financial-charts-cross-hair" opacity={edge.line.opacity} stroke={edge.line.stroke}
             x1={edge.line.x1} y1={edge.line.y1}
             x2={edge.line.x2} y2={edge.line.y2} />;
     }

@@ -32,14 +32,14 @@ export class XAxis extends React.Component<XAxisProps> {
         showTicks: true,
         showTickLabel: true,
         showDomain: true,
-        className: "react-stockcharts-x-axis",
+        className: "react-financial-charts-x-axis",
         ticks: 10,
         outerTickSize: 0,
         fill: "none",
         stroke: "#000000",
         strokeWidth: 1,
         opacity: 1,
-        domainClassName: "react-stockcharts-axis-domain",
+        domainClassName: "react-financial-charts-axis-domain",
         innerTickSize: 5,
         tickPadding: 6,
         tickLabelFill: "#000000",
@@ -74,7 +74,7 @@ export class XAxis extends React.Component<XAxisProps> {
                 getMouseDelta={getMouseDelta}
                 zoomEnabled={this.props.zoomEnabled && zoomEnabled}
                 axisZoomCallback={this.axisZoomCallback}
-                zoomCursorClassName="react-stockcharts-ew-resize-cursor" />
+                zoomCursorClassName="react-financial-charts-ew-resize-cursor" />
         );
     }
 

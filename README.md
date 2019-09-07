@@ -78,6 +78,22 @@ To start up a development server run:
 npm start
 ```
 
+## Roadmap
+
+- [x] Convert to typescript
+- [x] Bump dependencies to latest
+- [x] Remove React 16 warnings
+- [x] Add CI
+- [x] Fix passive scrolling issues
+- [x] Implement PRs from react-stockcharts
+- [ ] Add all typings
+- [ ] Fix issues with empty datasets
+- [ ] Remove all UNSAFE methods
+- [ ] Add full test suite
+- [ ] Expand examples
+- [ ] Generate documentation from typings
+- [ ] Split project into multiple
+
 ## LICENSE
 
 [MIT](./LICENSE)

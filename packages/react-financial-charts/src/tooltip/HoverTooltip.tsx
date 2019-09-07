@@ -23,17 +23,17 @@ interface HoverTooltipProps {
 class HoverTooltip extends React.Component<HoverTooltipProps> {
 
     public static defaultProps = {
-        tooltipSVG,
-        tooltipCanvas,
-        origin,
+        tooltipSVG: defaultTooltipSVG,
+        tooltipCanvas: defaultTooltipCanvas,
+        origin: defaultOrigin,
         fill: "#D4E2FD",
         bgFill: "#D4E2FD",
         bgOpacity: 0.5,
         stroke: "#9B9BFF",
         fontFill: "#000000",
         opacity: 0.8,
-        backgroundShapeSVG,
-        backgroundShapeCanvas,
+        backgroundShapeSVG: defaultBackgroundShapeSVG,
+        backgroundShapeCanvas: defaultBackgroundShapeCanvas,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
     };
@@ -100,7 +100,7 @@ const PADDING = 5;
 const X = 10;
 const Y = 10;
 
-function backgroundShapeSVG({ fill, stroke, opacity }, { height, width }) {
+function defaultBackgroundShapeSVG({ fill, stroke, opacity }, { height, width }) {
     return <rect
         height={height}
         width={width}
@@ -109,7 +109,7 @@ function backgroundShapeSVG({ fill, stroke, opacity }, { height, width }) {
         stroke={stroke} />;
 }
 
-function tooltipSVG({ fontFamily, fontSize, fontFill }, content) {
+function defaultTooltipSVG({ fontFamily, fontSize, fontFill }, content) {
     const tspans: any[] = [];
     const startY = Y + fontSize * 0.9;
 
@@ -127,7 +127,7 @@ function tooltipSVG({ fontFamily, fontSize, fontFill }, content) {
     </text>;
 }
 
-function backgroundShapeCanvas(props, { width, height }, ctx) {
+function defaultBackgroundShapeCanvas(props, { width, height }, ctx) {
     const { fill, stroke, opacity } = props;
 
     ctx.fillStyle = hexToRGBA(fill, opacity);
@@ -138,7 +138,7 @@ function backgroundShapeCanvas(props, { width, height }, ctx) {
     ctx.stroke();
 }
 
-function tooltipCanvas({ fontFamily, fontSize, fontFill }, content, ctx) {
+function defaultTooltipCanvas({ fontFamily, fontSize, fontFill }, content, ctx) {
     const startY = Y + fontSize * 0.9;
     ctx.font = `${fontSize}px ${fontFamily}`;
     ctx.fillStyle = fontFill;
@@ -233,7 +233,7 @@ function normalizeY(y, bgSize) {
         : y - bgSize.height - PADDING;
 }
 
-function origin(props, moreProps, bgSize, pointWidth) {
+function defaultOrigin(props, moreProps, bgSize, pointWidth) {
     const { chartId, yAccessor } = props;
     const { mouseXY, xAccessor, currentItem, xScale, chartConfig, width } = moreProps;
 
@@ -246,7 +246,7 @@ function origin(props, moreProps, bgSize, pointWidth) {
     if (isDefined(chartId) && isDefined(yAccessor)
         && isDefined(chartConfig) && isDefined(chartConfig.findIndex)) {
         const yValue = yAccessor(currentItem);
-        const chartIndex = chartConfig.findIndex(x => x.id === chartId);
+        const chartIndex = chartConfig.findIndex((c) => c.id === chartId);
 
         y = Math.round(chartConfig[chartIndex].yScale(yValue));
     }

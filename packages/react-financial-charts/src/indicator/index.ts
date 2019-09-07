@@ -23,5 +23,5 @@ import * as defaultOptionsForAppearance from "./defaultOptionsForAppearance";
 
 export {
     defaultOptionsForComputation,
-    defaultOptionsForAppearance
+    defaultOptionsForAppearance,
 };

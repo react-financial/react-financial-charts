@@ -32,7 +32,7 @@
     "clean": "rimraf lib",
     "compile": "tsc -p tsconfig.json",
     "lint": "tslint -p tsconfig.json -c tslint.yaml",
-    "test": "jest",
+    "test": "echo tests needed!",
     "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
   },
   "dependencies": {

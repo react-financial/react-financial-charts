@@ -24,8 +24,8 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
         className: "react-financial-charts-kagi",
         strokeWidth: 2,
         stroke: {
-            yang: "#6BA583",
-            yin: "#E60000",
+            yang: "#26a69a",
+            yin: "#ef5350",
         },
         fill: {
             yang: "none",

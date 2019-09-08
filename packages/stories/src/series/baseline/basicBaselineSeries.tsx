@@ -2,18 +2,18 @@ import * as React from "react";
 import { Chart, ChartCanvas } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts/lib/axes";
 import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
-import { CandlestickSeries } from "react-financial-charts/lib/series";
+import { AlternatingFillAreaSeries } from "react-financial-charts/lib/series";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData, withOHLCData, withSize } from "../../data";
 
-interface BasicCandlestickProps {
+interface BasicBaselineSeriesProps {
     readonly data: IOHLCData[];
     readonly height: number;
     readonly width: number;
     readonly ratio: number;
 }
 
-class BasicCandlestick extends React.Component<BasicCandlestickProps> {
+class BasicBaselineSeries extends React.Component<BasicBaselineSeriesProps> {
 
     private readonly margin = { left: 0, right: 70, top: 0, bottom: 24 };
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
@@ -40,6 +40,7 @@ class BasicCandlestick extends React.Component<BasicCandlestickProps> {
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
         const xExtents = [start, end];
+        const base = 56;
 
         return (
             <ChartCanvas
@@ -57,7 +58,9 @@ class BasicCandlestick extends React.Component<BasicCandlestickProps> {
                 <Chart
                     id={1}
                     yExtents={this.candleChartExtents}>
-                    <CandlestickSeries />
+                    <AlternatingFillAreaSeries
+                        yAccessor={this.areaSeriesAccessor}
+                        baseAt={base} />
                     <XAxis
                         axisAt="bottom"
                         orient="bottom"
@@ -71,9 +74,13 @@ class BasicCandlestick extends React.Component<BasicCandlestickProps> {
         );
     }
 
+    private readonly areaSeriesAccessor = (data: IOHLCData) => {
+        return data.close;
+    }
+
     private readonly candleChartExtents = (data: IOHLCData) => {
         return [data.high, data.low];
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(BasicCandlestick)));
+export default withOHLCData()(withSize()(withDeviceRatio()(BasicBaselineSeries)));

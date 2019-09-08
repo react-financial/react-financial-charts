@@ -5,32 +5,32 @@ import { AreaSeries } from "./AreaSeries";
 import { SVGComponent } from "./SVGComponent";
 
 interface AlternatingFillAreaSeriesProps {
-    stroke: {
+    stroke?: {
         top: string;
         bottom: string;
     };
-    strokeWidth: {
+    strokeWidth?: {
         top: number;
         bottom: number;
     };
-    strokeOpacity: {
+    strokeOpacity?: {
         top: number;
         bottom: number;
     };
-    fill: {
+    fill?: {
         top: string;
         bottom: string;
     };
-    fillOpacity: {
+    fillOpacity?: {
         top: number,
         bottom: number,
     };
-    strokeDasharray: {
+    strokeDasharray?: {
         top: strokeDashTypes;
         bottom: strokeDashTypes;
     };
     className?: string;
-    yAccessor: any; // func;
+    yAccessor: (data: any) => number;
     baseAt: number;
     interpolation?: any; // func
 }
@@ -39,8 +39,8 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
 
     public static defaultProps = {
         stroke: {
-            top: "#38C172",
-            bottom: "#E3342F",
+            top: "#26a69a",
+            bottom: "#ef5350",
         },
         strokeWidth: {
             top: 2,
@@ -51,68 +51,79 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
             bottom: 1,
         },
         fill: {
-            top: "#A2F5BF",
-            bottom: "#EF5753",
+            top: "#26a69a",
+            bottom: "#ef5350",
         },
         fillOpacity: {
-            top: 0.5,
-            bottom: 0.5,
+            top: 0.1,
+            bottom: 0.1,
         },
         strokeDasharray: {
-            top: "Solid",
-            bottom: "Solid",
+            top: "Solid" as strokeDashTypes,
+            bottom: "Solid" as strokeDashTypes,
         },
         className: "react-financial-charts-alternating-area",
     };
 
-    private clipPathId1: string;
-    private clipPathId2: string;
+    private clipPathId1 = `alternating-area-clip-${String(Math.round(Math.random() * 10000 * 10000))}`;
+    private clipPathId2 = `alternating-area-clip-${String(Math.round(Math.random() * 10000 * 10000))}`;
 
-    public constructor(props) {
-        super(props);
-        this.renderClip = this.renderClip.bind(this);
-        this.topClip = this.topClip.bind(this);
-        this.bottomClip = this.bottomClip.bind(this);
-        this.baseAt = this.baseAt.bind(this);
+    public render() {
+        const {
+            className,
+            yAccessor,
+            interpolation,
+            stroke = AlternatingFillAreaSeries.defaultProps.stroke,
+            strokeWidth = AlternatingFillAreaSeries.defaultProps.strokeWidth,
+            strokeOpacity = AlternatingFillAreaSeries.defaultProps.strokeOpacity,
+            strokeDasharray = AlternatingFillAreaSeries.defaultProps.strokeDasharray,
+            fill = AlternatingFillAreaSeries.defaultProps.fill,
+            fillOpacity = AlternatingFillAreaSeries.defaultProps.fillOpacity,
+        } = this.props;
 
-        const id1 = String(Math.round(Math.random() * 10000 * 10000));
-        this.clipPathId1 = `alternating-area-clip-${id1}`;
+        const style1 = { clipPath: `url(#${this.clipPathId1})` };
+        const style2 = { clipPath: `url(#${this.clipPathId2})` };
 
-        const id2 = String(Math.round(Math.random() * 10000 * 10000));
-        this.clipPathId2 = `alternating-area-clip-${id2}`;
-    }
-
-    public topClip(ctx, moreProps) {
-        const { chartConfig } = moreProps;
-        const { baseAt } = this.props;
-        const { yScale, width } = chartConfig;
-
-        ctx.beginPath();
-        ctx.rect(
-            0,
-            0,
-            width,
-            yScale(baseAt),
+        return (
+            <g className={className}>
+                <SVGComponent>
+                    {this.renderClip}
+                </SVGComponent>
+                <AreaSeries
+                    style={style1}
+                    canvasClip={this.topClip}
+                    yAccessor={yAccessor}
+                    interpolation={interpolation}
+                    baseAt={this.baseAt}
+                    fill={fill.top}
+                    opacity={fillOpacity.top}
+                    stroke={stroke.top}
+                    strokeOpacity={strokeOpacity.top}
+                    strokeDasharray={strokeDasharray.top}
+                    strokeWidth={strokeWidth.top}
+                />
+                <AreaSeries
+                    style={style2}
+                    canvasClip={this.bottomClip}
+                    yAccessor={yAccessor}
+                    interpolation={interpolation}
+                    baseAt={this.baseAt}
+                    fill={fill.bottom}
+                    opacity={fillOpacity.bottom}
+                    stroke={stroke.bottom}
+                    strokeOpacity={strokeOpacity.bottom}
+                    strokeDasharray={strokeDasharray.bottom}
+                    strokeWidth={strokeWidth.bottom}
+                />
+            </g>
         );
-        ctx.clip();
     }
 
-    public bottomClip(ctx, moreProps) {
-        const { chartConfig } = moreProps;
-        const { baseAt } = this.props;
-        const { yScale, width, height } = chartConfig;
-
-        ctx.beginPath();
-        ctx.rect(
-            0,
-            yScale(baseAt),
-            width,
-            height - yScale(baseAt),
-        );
-        ctx.clip();
+    private readonly baseAt = (yScale) => {
+        return yScale(this.props.baseAt);
     }
 
-    public renderClip(moreProps) {
+    private readonly renderClip = (moreProps) => {
         const { chartConfig } = moreProps;
         const { baseAt } = this.props;
         const { yScale, width, height } = chartConfig;
@@ -139,61 +150,33 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         );
     }
 
-    public baseAt(yScale) {
-        return yScale(this.props.baseAt);
+    private readonly bottomClip = (ctx, moreProps) => {
+        const { chartConfig } = moreProps;
+        const { baseAt } = this.props;
+        const { yScale, width, height } = chartConfig;
+
+        ctx.beginPath();
+        ctx.rect(
+            0,
+            yScale(baseAt),
+            width,
+            height - yScale(baseAt),
+        );
+        ctx.clip();
     }
 
-    public render() {
-        const { className, yAccessor, interpolation } = this.props;
-        const {
-            stroke,
-            strokeWidth,
-            strokeOpacity,
-            strokeDasharray,
+    private readonly topClip = (ctx, moreProps) => {
+        const { chartConfig } = moreProps;
+        const { baseAt } = this.props;
+        const { yScale, width } = chartConfig;
 
-            fill,
-            fillOpacity,
-        } = this.props;
-
-        const style1 = { clipPath: `url(#${this.clipPathId1})` };
-        const style2 = { clipPath: `url(#${this.clipPathId2})` };
-
-        return (
-            <g className={className}>
-                <SVGComponent>
-                    {this.renderClip}
-                </SVGComponent>
-                <AreaSeries
-                    style={style1}
-                    canvasClip={this.topClip}
-
-                    yAccessor={yAccessor}
-                    interpolation={interpolation}
-                    baseAt={this.baseAt}
-
-                    fill={fill.top}
-                    opacity={fillOpacity.top}
-                    stroke={stroke.top}
-                    strokeOpacity={strokeOpacity.top}
-                    strokeDasharray={strokeDasharray.top}
-                    strokeWidth={strokeWidth.top}
-                />
-                <AreaSeries
-                    style={style2}
-                    canvasClip={this.bottomClip}
-
-                    yAccessor={yAccessor}
-                    interpolation={interpolation}
-                    baseAt={this.baseAt}
-
-                    fill={fill.bottom}
-                    opacity={fillOpacity.bottom}
-                    stroke={stroke.bottom}
-                    strokeOpacity={strokeOpacity.bottom}
-                    strokeDasharray={strokeDasharray.bottom}
-                    strokeWidth={strokeWidth.bottom}
-                />
-            </g>
+        ctx.beginPath();
+        ctx.rect(
+            0,
+            0,
+            width,
+            yScale(baseAt),
         );
+        ctx.clip();
     }
 }

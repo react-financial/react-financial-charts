@@ -20,7 +20,7 @@ interface StockChartProps {
 class StockChart extends React.Component<StockChartProps> {
 
     private readonly margin = { left: 0, right: 70, top: 0, bottom: 24 };
-    private readonly pricesDisplayFormat = format(".5f");
+    private readonly pricesDisplayFormat = format(".2f");
     private readonly timeDisplayFormat = timeFormat("%d %b");
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
         .inputDateAccessor((d: IOHLCData) => d.date);
@@ -72,11 +72,14 @@ class StockChart extends React.Component<StockChartProps> {
                         innerTickSize={-1 * gridHeight}
                         axisAt="bottom"
                         orient="bottom"
+                        tickStroke="#e0e3eb"
                         ticks={6} />
                     <YAxis
                         innerTickSize={-1 * gridWidth}
                         axisAt="right"
                         orient="right"
+                        tickFormat={this.pricesDisplayFormat}
+                        tickStroke="#e0e3eb"
                         ticks={5} />
                     <OHLCTooltip origin={[8, 16]} />
                 </Chart>

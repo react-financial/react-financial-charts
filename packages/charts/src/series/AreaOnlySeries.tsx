@@ -7,17 +7,17 @@ import { getAxisCanvas } from "../GenericComponent";
 import { colorToRGBA, first, functor, isDefined } from "../utils";
 
 interface AreaOnlySeriesProps {
-    className?: string;
-    yAccessor: any; // func
-    stroke?: string;
-    fill?: string;
-    opacity?: number;
-    defined?: any; // func
-    base?: number | any; // func
-    interpolation?: any; // func
-    canvasClip?: any; // func
-    style?: React.CSSProperties;
-    canvasGradient?: any; // func
+    readonly className?: string;
+    readonly yAccessor: (data: any) => number;
+    readonly stroke?: string;
+    readonly fill?: string;
+    readonly opacity?: number;
+    readonly defined?: any; // func
+    readonly base?: number | ((yScale: any, d: [number, number], moreProps: any) => number);
+    readonly interpolation?: any; // func
+    readonly canvasClip?: any; // func
+    readonly style?: React.CSSProperties;
+    readonly canvasGradient?: any; // func
 }
 
 export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {

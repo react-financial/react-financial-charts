@@ -16,7 +16,7 @@ interface AxisProps {
     readonly orient?: "top" | "left" | "right" | "bottom";
     readonly innerTickSize?: number;
     readonly outerTickSize?: number;
-    readonly tickFormat?: any; // func
+    readonly tickFormat?: (data: any) => string;
     readonly tickPadding?: number;
     readonly tickSize?: number;
     readonly ticks?: number;

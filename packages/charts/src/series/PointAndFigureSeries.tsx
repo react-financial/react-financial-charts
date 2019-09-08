@@ -5,17 +5,17 @@ import { getAxisCanvas } from "../GenericComponent";
 import { isDefined, isNotDefined } from "../utils";
 
 interface PointAndFigureSeriesProps {
-    className?: string;
-    strokeWidth: number;
-    stroke: {
+    readonly className?: string;
+    readonly clip?: boolean;
+    readonly fill?: {
         up: string,
         down: string,
     };
-    fill: {
+    readonly stroke?: {
         up: string,
         down: string,
     };
-    clip: boolean;
+    readonly strokeWidth?: number;
 }
 
 export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesProps> {
@@ -52,7 +52,12 @@ export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesPr
         const { xAccessor } = moreProps;
         const { xScale, chartConfig: { yScale }, plotData } = moreProps;
 
-        const { stroke, fill, strokeWidth, className } = this.props;
+        const {
+            stroke = PointAndFigureSeries.defaultProps.stroke,
+            fill = PointAndFigureSeries.defaultProps.fill,
+            strokeWidth,
+            className,
+        } = this.props;
 
         const columns = getColumns(xScale, xAccessor, yScale, plotData);
 

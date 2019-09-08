@@ -4,16 +4,16 @@ import OverlayBarSeries from "./OverlayBarSeries";
 import { StraightLine } from "./StraightLine";
 
 interface ElderRaySeriesProps {
-    className?: string;
-    yAccessor: any; // func
-    opacity?: number;
-    stroke?: boolean;
-    bullPowerFill?: string;
-    bearPowerFill?: string;
-    straightLineStroke?: string;
-    straightLineOpacity?: number;
-    widthRatio?: number;
-    clip: boolean;
+    readonly className?: string;
+    readonly yAccessor: any; // func
+    readonly opacity?: number;
+    readonly stroke?: boolean;
+    readonly bullPowerFill?: string;
+    readonly bearPowerFill?: string;
+    readonly straightLineStroke?: string;
+    readonly straightLineOpacity?: number;
+    readonly widthRatio?: number;
+    readonly clip?: boolean;
 }
 
 export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {

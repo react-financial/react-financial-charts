@@ -2,20 +2,20 @@ import * as React from "react";
 import { Chart, ChartCanvas } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts/lib/axes";
 import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
-import { CandlestickSeries } from "react-financial-charts/lib/series";
+import { BarSeries } from "react-financial-charts/lib/series";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData, withOHLCData, withSize } from "../../data";
 
-interface BasicCandlestickProps {
+interface BasicBarSeriesProps {
     readonly data: IOHLCData[];
     readonly height: number;
     readonly width: number;
     readonly ratio: number;
 }
 
-class BasicCandlestick extends React.Component<BasicCandlestickProps> {
+class BasicBarSeries extends React.Component<BasicBarSeriesProps> {
 
-    private readonly margin = { left: 0, right: 70, top: 0, bottom: 24 };
+    private readonly margin = { left: 0, right: 90, top: 0, bottom: 24 };
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
         .inputDateAccessor((d: IOHLCData) => d.date);
 
@@ -56,8 +56,8 @@ class BasicCandlestick extends React.Component<BasicCandlestickProps> {
                 xExtents={xExtents}>
                 <Chart
                     id={1}
-                    yExtents={this.candleChartExtents}>
-                    <CandlestickSeries />
+                    yExtents={this.yExtents}>
+                    <BarSeries yAccessor={this.yAccessor} />
                     <XAxis
                         axisAt="bottom"
                         orient="bottom"
@@ -71,9 +71,13 @@ class BasicCandlestick extends React.Component<BasicCandlestickProps> {
         );
     }
 
-    private readonly candleChartExtents = (data: IOHLCData) => {
-        return [data.high, data.low];
+    private readonly yAccessor = (data: IOHLCData) => {
+        return data.volume;
+    }
+
+    private readonly yExtents = (data: IOHLCData) => {
+        return data.volume;
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(BasicCandlestick)));
+export default withOHLCData()(withSize()(withDeviceRatio()(BasicBarSeries)));

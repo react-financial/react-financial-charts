@@ -9,19 +9,19 @@ import { first, functor, isDefined, isNotDefined, plotDataLengthBarWidth } from 
 import { drawOnCanvas2, getBarsSVG2 } from "./StackedBarSeries";
 
 interface OverlayBarSeriesProps {
-    baseAt: number | any; // func
-    direction: "up" | "down";
-    stroke: boolean;
-    widthRatio: number;
-    opacity: number;
-    fill: string | any; // func
-    className: string | any; // func
-    xAccessor?: any; // func
-    yAccessor?: any[]; // func
-    xScale?: any; // func
-    yScale?: any; // func
-    plotData?: number[];
-    clip: boolean;
+    readonly baseAt: number | any; // func
+    readonly direction: "up" | "down";
+    readonly stroke: boolean;
+    readonly widthRatio: number;
+    readonly opacity: number;
+    readonly fill: string | any; // func
+    readonly className: string | any; // func
+    readonly xAccessor?: any; // func
+    readonly yAccessor?: any[]; // func
+    readonly xScale?: any; // func
+    readonly yScale?: any; // func
+    readonly plotData?: number[];
+    readonly clip: boolean;
 }
 
 export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {

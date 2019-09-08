@@ -249,7 +249,6 @@ export function toObject(array, iteratee = identity) {
 // copied from https://github.com/lodash/lodash/blob/master/mapValue.js
 export function mapValue(object, iteratee) {
     object = Object(object);
-    // eslint-disable-next-line prefer-const
     const result = {};
 
     Object.keys(object).forEach((key) => {
@@ -265,8 +264,6 @@ export function mapValue(object, iteratee) {
 // copied from https://github.com/lodash/lodash/blob/master/mapObject.js
 export function mapObject(object = {}, iteratee = identity) {
     const props = Object.keys(object);
-
-    // eslint-disable-next-line prefer-const
     const result = new Array(props.length);
 
     props.forEach((key, index) => {

@@ -9,11 +9,11 @@ import { getAxisCanvas } from "../GenericComponent";
 import { accumulatingWindow, colorToRGBA, functor, head, identity, last } from "../utils";
 
 interface VolumeProfileSeriesProps {
-    className?: string;
-    opacity?: number;
-    showSessionBackground?: boolean;
-    sessionBackGround?: string;
-    sessionBackGroundOpacity?: number;
+    readonly className?: string;
+    readonly opacity?: number;
+    readonly showSessionBackground?: boolean;
+    readonly sessionBackGround?: string;
+    readonly sessionBackGroundOpacity?: number;
 }
 
 export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProps> {
@@ -71,12 +71,22 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
             <g className={className}>
                 {sessionBgSvg}
                 {rects.map((d, i) => <g key={i}>
-                    <rect x={d.x} y={d.y}
-                        width={d.w1} height={d.height}
-                        fill={d.fill1} stroke={d.stroke1} fillOpacity={opacity} />
-                    <rect x={d.x + d.w1} y={d.y}
-                        width={d.w2} height={d.height}
-                        fill={d.fill2} stroke={d.stroke2} fillOpacity={opacity} />
+                    <rect
+                        x={d.x}
+                        y={d.y}
+                        width={d.w1}
+                        height={d.height}
+                        fill={d.fill1}
+                        stroke={d.stroke1}
+                        fillOpacity={opacity} />
+                    <rect
+                        x={d.x + d.w1}
+                        y={d.y}
+                        width={d.w2}
+                        height={d.height}
+                        fill={d.fill2}
+                        stroke={d.stroke2}
+                        fillOpacity={opacity} />
                 </g>)}
             </g>
         );

@@ -34,8 +34,8 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
             down: "none",
         },
         fill: {
-            up: "#6BA583",
-            down: "#E60000",
+            up: "#26a69a",
+            down: "#ef5350",
             partial: "#4682B4",
         },
         yAccessor: (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),

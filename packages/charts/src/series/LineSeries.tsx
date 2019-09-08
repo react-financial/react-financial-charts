@@ -13,37 +13,37 @@ import {
 } from "../utils";
 
 interface LineSeriesProps {
-    className?: string;
-    strokeWidth?: number;
-    strokeOpacity?: number;
-    stroke?: string;
-    hoverStrokeWidth?: number;
-    fill?: string;
-    defined?: any; // func
-    hoverTolerance?: number;
-    strokeDasharray?: strokeDashTypes;
-    highlightOnHover?: boolean;
-    onClick?: any; // func
-    onDoubleClick?: any; // func
-    onHover?: any; // func
-    onUnHover?: any; // func
-    onContextMenu?: any; // func
-    yAccessor: (data: any) => number;
-    connectNulls?: boolean;
-    interpolation?: any; // func
-    canvasClip?: any; // func
-    style?: React.CSSProperties;
+    readonly className?: string;
+    readonly strokeWidth?: number;
+    readonly strokeOpacity?: number;
+    readonly stroke?: string;
+    readonly hoverStrokeWidth?: number;
+    readonly fill?: string;
+    readonly defined?: any; // func
+    readonly hoverTolerance?: number;
+    readonly strokeDasharray?: strokeDashTypes;
+    readonly highlightOnHover?: boolean;
+    readonly onClick?: any; // func
+    readonly onDoubleClick?: any; // func
+    readonly onHover?: any; // func
+    readonly onUnHover?: any; // func
+    readonly onContextMenu?: any; // func
+    readonly yAccessor: (data: any) => number;
+    readonly connectNulls?: boolean;
+    readonly interpolation?: any; // func
+    readonly canvasClip?: any; // func
+    readonly style?: React.CSSProperties;
 }
 
 export class LineSeries extends React.Component<LineSeriesProps> {
 
     public static defaultProps = {
-        className: "line ",
-        strokeWidth: 1,
+        className: "line",
+        strokeWidth: 3,
         strokeOpacity: 1,
         hoverStrokeWidth: 4,
         fill: "none",
-        stroke: "#4682B4",
+        stroke: "#2196f3",
         strokeDasharray: "Solid",
         defined: (d) => !isNaN(d),
         hoverTolerance: 6,

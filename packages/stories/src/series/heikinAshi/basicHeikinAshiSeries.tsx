@@ -1,19 +1,20 @@
 import * as React from "react";
 import { Chart, ChartCanvas } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts/lib/axes";
+import { heikinAshi } from "react-financial-charts/lib/indicator";
 import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
 import { CandlestickSeries } from "react-financial-charts/lib/series";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData, withOHLCData, withSize } from "../../data";
 
-interface BasicCandlestickProps {
+interface BasicHeikinAshiSeriesProps {
     readonly data: IOHLCData[];
     readonly height: number;
     readonly width: number;
     readonly ratio: number;
 }
 
-class BasicCandlestick extends React.Component<BasicCandlestickProps> {
+class BasicHeikinAshiSeries extends React.Component<BasicHeikinAshiSeriesProps> {
 
     private readonly margin = { left: 0, right: 70, top: 0, bottom: 24 };
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
@@ -30,12 +31,16 @@ class BasicCandlestick extends React.Component<BasicCandlestickProps> {
 
         const { margin, xScaleProvider } = this;
 
+        const calculator = heikinAshi();
+
+        const calculatedData = calculator(initialData);
+
         const {
             data,
             xScale,
             xAccessor,
             displayXAccessor,
-        } = xScaleProvider(initialData);
+        } = xScaleProvider(calculatedData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -76,4 +81,4 @@ class BasicCandlestick extends React.Component<BasicCandlestickProps> {
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(BasicCandlestick)));
+export default withOHLCData()(withSize()(withDeviceRatio()(BasicHeikinAshiSeries)));

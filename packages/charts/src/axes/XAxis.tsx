@@ -9,7 +9,7 @@ interface XAxisProps {
     readonly orient: "top" | "bottom";
     readonly innerTickSize?: number;
     readonly outerTickSize?: number;
-    readonly tickFormat?: any; // func
+    readonly tickFormat?: (data: any) => string;
     readonly tickPadding?: number;
     readonly tickSize?: number;
     readonly tickLabelFill?: string;
@@ -44,7 +44,7 @@ export class XAxis extends React.Component<XAxisProps> {
         innerTickSize: 5,
         tickPadding: 6,
         tickLabelFill: "#000000",
-        tickStroke: "#e0e3eb",
+        tickStroke: "#000000",
         tickStrokeOpacity: 1,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,

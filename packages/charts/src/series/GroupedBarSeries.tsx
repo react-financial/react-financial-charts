@@ -5,14 +5,14 @@ import { getAxisCanvas } from "../GenericComponent";
 import { drawOnCanvasHelper, identityStack, StackedBarSeries, svgHelper } from "./StackedBarSeries";
 
 interface GroupedBarSeriesProps {
-    baseAt: number | any; // func
-    direction: "up" | "down";
-    stroke: boolean;
-    widthRatio: number;
-    opacity: number;
-    fill: string | any; // func
-    className: string | any; // func
-    yAccessor: any[]; // func
+    readonly baseAt: number | any; // func
+    readonly direction: "up" | "down";
+    readonly stroke: boolean;
+    readonly widthRatio: number;
+    readonly opacity: number;
+    readonly fill: string | any; // func
+    readonly className: string | any; // func
+    readonly yAccessor: any[]; // func
 }
 
 export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {

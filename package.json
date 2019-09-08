@@ -12,7 +12,8 @@
     "start": "lerna run start --stream",
     "test": "lerna run test --stream",
     "prepublishOnly": "npm run build",
-    "publish": "lerna publish from-package --no-git-reset --yes"
+    "publish": "lerna publish from-package --no-git-reset --yes",
+    "release": "lerna version --no-push"
   },
   "workspaces": [
     "packages/*"

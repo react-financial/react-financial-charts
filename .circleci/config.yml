@@ -30,3 +30,9 @@ jobs:
       - run:
           name: test
           command: npm test
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build

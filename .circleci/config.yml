@@ -31,8 +31,24 @@ jobs:
           name: test
           command: npm test
 
+  deploy:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+      - run:
+          command: |
+            npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+            npm run publish
+
 workflows:
   version: 2
-  build:
+  build-and-deploy:
     jobs:
       - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master

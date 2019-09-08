@@ -3,7 +3,7 @@ import * as React from "react";
 import GenericChartComponent from "../../GenericChartComponent";
 import { getMouseCanvas } from "../../GenericComponent";
 
-import { hexToRGBA, isDefined, noop } from "../../utils";
+import { colorToRGBA, isDefined, noop } from "../../utils";
 
 interface InteractiveTextProps {
     bgFill: string;
@@ -124,7 +124,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
 
         const { x, y, rect } = this.helper(this.props, moreProps, this.textWidth);
 
-        ctx.fillStyle = hexToRGBA(bgFill, bgOpacity);
+        ctx.fillStyle = colorToRGBA(bgFill, bgOpacity);
 
         ctx.beginPath();
         ctx.fillRect(rect.x, rect.y, rect.width, rect.height);

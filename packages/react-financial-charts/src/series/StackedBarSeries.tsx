@@ -6,7 +6,7 @@ import * as React from "react";
 import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas } from "../GenericComponent";
 
-import { functor, head, hexToRGBA, identity, plotDataLengthBarWidth } from "../utils";
+import { colorToRGBA, functor, head, identity, plotDataLengthBarWidth } from "../utils";
 
 interface StackedBarSeriesProps {
     readonly baseAt: number | any; // func
@@ -169,7 +169,7 @@ export function drawOnCanvas2(props, ctx, bars) {
         }
         const fillStyle = head(values).width <= 1
             ? key
-            : hexToRGBA(key, props.opacity);
+            : colorToRGBA(key, props.opacity);
         ctx.fillStyle = fillStyle;
 
         values.forEach((d) => {

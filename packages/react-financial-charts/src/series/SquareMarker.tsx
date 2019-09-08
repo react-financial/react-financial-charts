@@ -1,5 +1,5 @@
 import * as React from "react";
-import { functor, hexToRGBA } from "../utils";
+import { colorToRGBA, functor } from "../utils";
 
 interface SquareProps {
     stroke?: string;
@@ -30,7 +30,7 @@ export class Square extends React.Component<SquareProps> {
         ctx.strokeStyle = stroke;
         ctx.lineWidth = strokeWidth;
         if (fill !== "none") {
-            ctx.fillStyle = hexToRGBA(fill, opacity);
+            ctx.fillStyle = colorToRGBA(fill, opacity);
         }
         Square.drawOnCanvasWithNoStateChange(props, point, ctx);
     }

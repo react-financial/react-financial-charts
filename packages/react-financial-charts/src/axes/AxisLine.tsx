@@ -1,5 +1,5 @@
 import * as React from "react";
-import { first, hexToRGBA, last } from "../utils";
+import { colorToRGBA, first, last } from "../utils";
 
 interface AxisLineProps {
     className?: string;
@@ -14,16 +14,6 @@ interface AxisLineProps {
     range: number[];
 }
 
-/*
-function d3_scaleExtent(domain) {
-	var start = domain[0], stop = domain[domain.length - 1];
-	return start < stop ? [start, stop] : [stop, start];
-}
-
-function d3_scaleRange(scale) {
-	return scale.rangeExtent ? scale.rangeExtent() : d3_scaleExtent(scale.range());
-}
-*/
 export class AxisLine extends React.Component<AxisLineProps> {
 
     public static defaultProps = {
@@ -43,10 +33,9 @@ export class AxisLine extends React.Component<AxisLineProps> {
         const sign = orient === "top" || orient === "left" ? -1 : 1;
         const xAxis = (orient === "bottom" || orient === "top");
 
-        // var range = d3_scaleRange(xAxis ? xScale : yScale);
-
         ctx.lineWidth = strokeWidth;
-        ctx.strokeStyle = hexToRGBA(stroke, opacity);
+
+        ctx.strokeStyle = colorToRGBA(stroke, opacity);
 
         ctx.beginPath();
 

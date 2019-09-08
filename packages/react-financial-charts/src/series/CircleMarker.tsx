@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { functor, hexToRGBA } from "../utils";
+import { colorToRGBA, functor } from "../utils";
 
 interface CircleProps {
     stroke?: string;
@@ -34,7 +34,7 @@ export class Circle extends React.Component<CircleProps> {
         ctx.lineWidth = strokeWidth;
 
         if (fill !== "none") {
-            ctx.fillStyle = hexToRGBA(fill, opacity);
+            ctx.fillStyle = colorToRGBA(fill, opacity);
         }
 
         Circle.drawOnCanvasWithNoStateChange(props, point, ctx);

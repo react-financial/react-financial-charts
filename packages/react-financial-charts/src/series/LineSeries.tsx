@@ -5,9 +5,9 @@ import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas, getMouseCanvas } from "../GenericComponent";
 
 import {
+    colorToRGBA,
     getClosestItemIndexes,
     getStrokeDasharray,
-    hexToRGBA,
     isDefined,
     strokeDashTypes,
 } from "../utils";
@@ -122,7 +122,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
     private readonly drawOnCanvas = (ctx, moreProps) => {
         const {
             yAccessor,
-            stroke,
+            stroke = LineSeries.defaultProps.stroke,
             strokeOpacity,
             strokeWidth,
             hoverStrokeWidth,
@@ -144,7 +144,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
 
         ctx.lineWidth = hovering ? hoverStrokeWidth : strokeWidth;
 
-        ctx.strokeStyle = hexToRGBA(stroke, strokeOpacity);
+        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
         ctx.setLineDash(getStrokeDasharray(strokeDasharray).split(","));
 
         const dataSeries = d3Line()

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { hexToRGBA, identity, isNotDefined } from "../utils";
+import { colorToRGBA, identity, isNotDefined } from "../utils";
 
 function tickTransform_svg_axisX(scale, tick) {
     return [Math.round(scale(tick)), 0];
@@ -92,7 +92,7 @@ export class AxisTicks extends React.Component<AxisTicksProps> {
 
         const { tickStroke, tickStrokeOpacity, textAnchor, fontSize, fontFamily } = result;
 
-        ctx.strokeStyle = hexToRGBA(tickStroke, tickStrokeOpacity);
+        ctx.strokeStyle = colorToRGBA(tickStroke, tickStrokeOpacity);
 
         ctx.font = `${fontSize}px ${fontFamily}`;
         ctx.fillStyle = tickStroke;

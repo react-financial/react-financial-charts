@@ -2,7 +2,7 @@ import * as React from "react";
 
 import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas } from "../GenericComponent";
-import { getStrokeDasharray, hexToRGBA, strokeDashTypes } from "../utils";
+import { colorToRGBA, getStrokeDasharray, strokeDashTypes } from "../utils";
 
 interface StraightLineProps {
     className?: string;
@@ -60,14 +60,17 @@ export class StraightLine extends React.Component<StraightLineProps> {
     }
 
     private readonly drawOnCanvas = (ctx, moreProps) => {
-        const { type, stroke, strokeWidth, opacity, strokeDasharray } = this.props;
+        const {
+            type,
+            stroke = StraightLine.defaultProps.stroke,
+            strokeWidth, opacity, strokeDasharray } = this.props;
         const { yValue, xValue } = this.props;
         const { xScale } = moreProps;
         const { chartConfig: { yScale, width, height } } = moreProps;
 
         ctx.beginPath();
 
-        ctx.strokeStyle = hexToRGBA(stroke, opacity);
+        ctx.strokeStyle = colorToRGBA(stroke, opacity);
         ctx.lineWidth = strokeWidth;
 
         const { x1, y1, x2, y2 } = this.getLineCoordinates(type, xScale, yScale, xValue, yValue, width, height);

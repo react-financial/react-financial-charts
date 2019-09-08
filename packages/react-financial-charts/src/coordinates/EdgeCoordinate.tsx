@@ -1,7 +1,7 @@
 
 import * as React from "react";
 
-import { hexToRGBA, isDefined } from "../utils";
+import { colorToRGBA, isDefined } from "../utils";
 
 const helper = (props) => {
     const { coordinate: displayCoordinate, show, type, orient, edgeAt, hideLine } = props;
@@ -92,7 +92,7 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
         if (isDefined(edge.coordinateBase)) {
             const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
 
-            ctx.fillStyle = hexToRGBA(edge.coordinateBase.fill, edge.coordinateBase.opacity);
+            ctx.fillStyle = colorToRGBA(edge.coordinateBase.fill, edge.coordinateBase.opacity);
 
             const x = edge.coordinateBase.edgeXRect;
             const y = edge.coordinateBase.edgeYRect;
@@ -127,7 +127,7 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
         }
 
         if (edge.line !== undefined) {
-            ctx.strokeStyle = hexToRGBA(edge.line.stroke, edge.line.opacity);
+            ctx.strokeStyle = colorToRGBA(edge.line.stroke, edge.line.opacity);
 
             ctx.beginPath();
             ctx.moveTo(edge.line.x1, edge.line.y1);

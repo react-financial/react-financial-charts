@@ -1,5 +1,5 @@
 import * as React from "react";
-import { functor, hexToRGBA } from "../utils";
+import { colorToRGBA, functor } from "../utils";
 
 interface TriangleProps {
     direction?: "top" | "bottom" | "left" | "right" | "hide";
@@ -32,7 +32,7 @@ export class Triangle extends React.Component<TriangleProps> {
         ctx.strokeStyle = stroke;
         ctx.lineWidth = strokeWidth;
         if (fill !== "none") {
-            ctx.fillStyle = hexToRGBA(fill, opacity);
+            ctx.fillStyle = colorToRGBA(fill, opacity);
         }
         Triangle.drawOnCanvasWithNoStateChange(props, point, ctx);
     }

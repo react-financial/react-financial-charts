@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import GenericComponent from "../GenericComponent";
 
-import { first, hexToRGBA, isDefined, isNotDefined, last } from "../utils";
+import { colorToRGBA, first, isDefined, isNotDefined, last } from "../utils";
 
 interface HoverTooltipProps {
     chartId?: number | string;
@@ -130,7 +130,7 @@ function defaultTooltipSVG({ fontFamily, fontSize, fontFill }, content) {
 function defaultBackgroundShapeCanvas(props, { width, height }, ctx) {
     const { fill, stroke, opacity } = props;
 
-    ctx.fillStyle = hexToRGBA(fill, opacity);
+    ctx.fillStyle = colorToRGBA(fill, opacity);
     ctx.strokeStyle = stroke;
     ctx.beginPath();
     ctx.rect(0, 0, width, height);
@@ -174,7 +174,7 @@ function drawOnCanvas(ctx, props, context, pointer, height) {
 
     const { x, y, content, centerX, pointWidth, bgSize } = pointer;
 
-    ctx.fillStyle = hexToRGBA(bgFill, bgOpacity);
+    ctx.fillStyle = colorToRGBA(bgFill, bgOpacity);
     ctx.beginPath();
     ctx.rect(centerX - pointWidth / 2, 0, pointWidth, height);
     ctx.fill();

@@ -4,8 +4,8 @@ import GenericChartComponent from "../../GenericChartComponent";
 import { getMouseCanvas } from "../../GenericComponent";
 
 import {
+    colorToRGBA,
     getStrokeDasharray,
-    hexToRGBA,
     isDefined,
     noop,
     strokeDashTypes,
@@ -130,7 +130,7 @@ class StraightLine extends React.Component<StraightLineProps> {
         const { x1, y1, x2, y2 } = helper(this.props, moreProps);
 
         ctx.lineWidth = strokeWidth;
-        ctx.strokeStyle = hexToRGBA(stroke, strokeOpacity);
+        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
         ctx.setLineDash(getStrokeDasharray(strokeDasharray).split(","));
 
         ctx.beginPath();

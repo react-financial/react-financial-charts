@@ -10,7 +10,7 @@
       "hoist": true
     },
     "version": {
-      "allowBranch": "master",
+      "allowBranch": "release",
       "conventionalCommits": true,
       "gitRemote": "upstream",
       "message": "chore(release): publish %v"

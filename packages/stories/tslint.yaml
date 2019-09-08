@@ -8,4 +8,3 @@ rules:
   space-before-function-paren: false
   max-line-length:
     options: [140]
-  no-console: false

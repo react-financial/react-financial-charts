@@ -4,7 +4,7 @@ import * as React from "react";
 import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas } from "../GenericComponent";
 
-import { first, functor, hexToRGBA, isDefined } from "../utils";
+import { colorToRGBA, first, functor, isDefined } from "../utils";
 
 interface AreaOnlySeriesProps {
     className?: string;
@@ -43,7 +43,10 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
 
     private readonly renderSVG = (moreProps) => {
         const { yAccessor, defined, base, style } = this.props;
-        const { stroke, fill, className = "line", opacity, interpolation } = this.props;
+        const {
+            stroke,
+            fill = AreaOnlySeries.defaultProps.fill,
+            className = "line", opacity, interpolation } = this.props;
 
         const { xScale, chartConfig: { yScale }, plotData, xAccessor } = moreProps;
 
@@ -70,7 +73,7 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
                 style={style}
                 d={data}
                 stroke={stroke}
-                fill={hexToRGBA(fill, opacity)}
+                fill={colorToRGBA(fill, opacity)}
                 className={newClassName}
             />
         );
@@ -78,7 +81,9 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
 
     private readonly drawOnCanvas = (ctx, moreProps) => {
         const { yAccessor, defined, base, canvasGradient } = this.props;
-        const { fill, stroke, opacity, interpolation, canvasClip } = this.props;
+        const {
+            fill = AreaOnlySeries.defaultProps.fill,
+            stroke, opacity, interpolation, canvasClip } = this.props;
 
         const { xScale, chartConfig: { yScale }, plotData, xAccessor } = moreProps;
 
@@ -90,7 +95,7 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         if (canvasGradient != null) {
             ctx.fillStyle = canvasGradient(moreProps, ctx);
         } else {
-            ctx.fillStyle = hexToRGBA(fill, opacity);
+            ctx.fillStyle = colorToRGBA(fill, opacity);
         }
         ctx.strokeStyle = stroke;
 

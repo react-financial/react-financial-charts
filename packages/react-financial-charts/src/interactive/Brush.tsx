@@ -3,8 +3,8 @@ import * as React from "react";
 import GenericChartComponent from "../GenericChartComponent";
 import { getMouseCanvas } from "../GenericComponent";
 import {
+    colorToRGBA,
     getStrokeDasharray,
-    hexToRGBA,
     isDefined,
     noop,
 } from "../utils";
@@ -88,15 +88,18 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         const { rect } = this.state;
         if (isDefined(rect)) {
             const { x, y, height, width } = rect;
-            const { stroke, fill, strokeDashArray } = this.props;
+            const {
+                stroke = Brush.defaultProps.stroke,
+                fill = Brush.defaultProps.fill,
+                strokeDashArray } = this.props;
             const { strokeOpacity, fillOpacity } = this.props;
 
             const dashArray = getStrokeDasharray(strokeDashArray)
                 .split(",")
                 .map((d) => +d);
 
-            ctx.strokeStyle = hexToRGBA(stroke, strokeOpacity);
-            ctx.fillStyle = hexToRGBA(fill, fillOpacity);
+            ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
+            ctx.fillStyle = colorToRGBA(fill, fillOpacity);
             ctx.setLineDash(dashArray);
             ctx.beginPath();
             ctx.fillRect(x, y, width, height);

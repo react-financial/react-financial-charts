@@ -6,7 +6,7 @@ import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas } from "../GenericComponent";
 import { AxisZoomCapture } from "./AxisZoomCapture";
 
-import { first, getStrokeDasharray, hexToRGBA, identity, isDefined, isNotDefined, last, strokeDashTypes, zipper } from "../utils";
+import { colorToRGBA, first, getStrokeDasharray, identity, isDefined, isNotDefined, last, strokeDashTypes, zipper } from "../utils";
 
 interface AxisProps {
     readonly flexTicks?: boolean;
@@ -300,7 +300,7 @@ function drawAxisLine(ctx, props, range) {
     const xAxis = (orient === "bottom" || orient === "top");
 
     ctx.lineWidth = strokeWidth;
-    ctx.strokeStyle = hexToRGBA(stroke, opacity);
+    ctx.strokeStyle = colorToRGBA(stroke, opacity);
 
     ctx.beginPath();
 
@@ -414,7 +414,7 @@ function drawTicks(ctx, result) {
     const { tickStroke, tickStrokeOpacity, tickLabelFill } = result;
     const { textAnchor, fontSize, fontFamily, fontWeight, ticks, showTickLabel } = result;
 
-    ctx.strokeStyle = hexToRGBA(tickStroke, tickStrokeOpacity);
+    ctx.strokeStyle = colorToRGBA(tickStroke, tickStrokeOpacity);
 
     ctx.fillStyle = tickStroke;
 

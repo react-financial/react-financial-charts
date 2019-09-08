@@ -3,7 +3,7 @@ import * as React from "react";
 import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas, getMouseCanvas } from "../GenericComponent";
 
-import { first, hexToRGBA, isDefined, last } from "../utils";
+import { colorToRGBA, first, isDefined, last } from "../utils";
 
 interface SARSeriesProps {
     className?: string;
@@ -98,7 +98,7 @@ export class SARSeries extends React.Component<SARSeriesProps> {
                 ? fill.falling
                 : fill.rising;
 
-            ctx.fillStyle = hexToRGBA(color, opacity);
+            ctx.fillStyle = colorToRGBA(color, opacity);
             ctx.strokeStyle = color;
 
             ctx.beginPath();

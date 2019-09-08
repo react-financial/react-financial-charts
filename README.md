@@ -86,13 +86,15 @@ npm start
 - [x] Add CI
 - [x] Fix passive scrolling issues
 - [x] Implement PRs from react-stockcharts
-- [ ] Add all typings
+- [x] Add all typings
+- [ ] Correct all class props
 - [ ] Fix issues with empty datasets
+- [ ] Migrate to new React Context API
 - [ ] Remove all UNSAFE methods
 - [ ] Add full test suite
 - [ ] Expand examples
 - [ ] Generate documentation from typings
-- [ ] Split project into multiple
+- [ ] Split project into multiple packages
 
 ## LICENSE
 

@@ -6,7 +6,7 @@ import * as React from "react";
 import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas } from "../GenericComponent";
 
-import { accumulatingWindow, functor, head, hexToRGBA, identity, last } from "../utils";
+import { accumulatingWindow, colorToRGBA, functor, head, identity, last } from "../utils";
 
 interface VolumeProfileSeriesProps {
     className?: string;
@@ -86,7 +86,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         const { opacity, sessionBackGround, sessionBackGroundOpacity, showSessionBackground } = props;
 
         if (showSessionBackground) {
-            ctx.fillStyle = hexToRGBA(sessionBackGround, sessionBackGroundOpacity);
+            ctx.fillStyle = colorToRGBA(sessionBackGround, sessionBackGroundOpacity);
 
             sessionBg.forEach((each) => {
                 const { x, y, height, width } = each;
@@ -102,7 +102,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
             const { x, y, height, w1, w2, stroke1, stroke2, fill1, fill2 } = each;
 
             if (w1 > 0) {
-                ctx.fillStyle = hexToRGBA(fill1, opacity);
+                ctx.fillStyle = colorToRGBA(fill1, opacity);
                 if (stroke1 !== "none") { ctx.strokeStyle = stroke1; }
 
                 ctx.beginPath();
@@ -114,7 +114,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
             }
 
             if (w2 > 0) {
-                ctx.fillStyle = hexToRGBA(fill2, opacity);
+                ctx.fillStyle = colorToRGBA(fill2, opacity);
                 if (stroke2 !== "none") { ctx.strokeStyle = stroke2; }
 
                 ctx.beginPath();

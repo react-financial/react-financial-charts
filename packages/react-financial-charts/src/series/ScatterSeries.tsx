@@ -4,7 +4,7 @@ import * as React from "react";
 import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas } from "../GenericComponent";
 
-import { functor, hexToRGBA } from "../utils";
+import { colorToRGBA, functor } from "../utils";
 
 interface ScatterSeriesProps {
     className?: string;
@@ -72,7 +72,7 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
             return {
                 x: xScale(xAccessor(d)),
                 y: yScale(yAccessor(d)),
-                fill: hexToRGBA(fill(d), mProps.opacity),
+                fill: colorToRGBA(fill(d), mProps.opacity),
                 stroke: stroke(d),
                 datum: d,
                 marker: Marker,

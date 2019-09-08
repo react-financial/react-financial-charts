@@ -7,7 +7,7 @@ import { getMouseCanvas } from "../../GenericComponent";
 import { generateLine, isHovering2 } from "./StraightLine";
 
 import {
-    hexToRGBA, isDefined,
+    colorToRGBA, isDefined,
     isNotDefined, noop,
 } from "../../utils";
 
@@ -117,7 +117,7 @@ export class GannFan extends React.Component<GannFanProps> {
         const lines = this.helper(this.props, moreProps);
 
         ctx.lineWidth = strokeWidth;
-        ctx.strokeStyle = hexToRGBA(stroke, strokeOpacity);
+        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
 
         ctx.font = `${fontSize}px ${fontFamily}`;
         ctx.fillStyle = fontFill;
@@ -137,7 +137,7 @@ export class GannFan extends React.Component<GannFanProps> {
         const pairsOfLines = pairs(lines);
 
         pairsOfLines.forEach(([line1, line2], idx) => {
-            ctx.fillStyle = hexToRGBA(fill[idx], fillOpacity);
+            ctx.fillStyle = colorToRGBA(fill[idx], fillOpacity);
 
             ctx.beginPath();
             ctx.moveTo(line1.x1, line1.y1);

@@ -4,7 +4,7 @@ import { drawOnCanvas } from "../../coordinates/EdgeCoordinateV3";
 import { getYCoordinate } from "../../coordinates/MouseCoordinateY";
 import GenericChartComponent from "../../GenericChartComponent";
 import { getMouseCanvas } from "../../GenericComponent";
-import { getStrokeDasharrayCanvas, hexToRGBA, isDefined, noop } from "../../utils";
+import { colorToRGBA, getStrokeDasharrayCanvas, isDefined, noop } from "../../utils";
 
 interface InteractiveYCoordinateProps {
     bgFill: string;
@@ -107,7 +107,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
 
         const { x1, x2, y, rect } = values;
 
-        ctx.strokeStyle = hexToRGBA(stroke, strokeOpacity);
+        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
 
         ctx.beginPath();
         if (selected || hovering) {
@@ -136,7 +136,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
 
         ctx.setLineDash([]);
 
-        ctx.fillStyle = hexToRGBA(bgFill, bgOpacity);
+        ctx.fillStyle = colorToRGBA(bgFill, bgOpacity);
 
         ctx.fillRect(rect.x, rect.y, this.width, rect.height);
         ctx.strokeRect(rect.x, rect.y, this.width, rect.height);

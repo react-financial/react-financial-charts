@@ -2,7 +2,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import GenericComponent from "../GenericComponent";
 
-import { functor, hexToRGBA, isDefined } from "../utils";
+import { colorToRGBA, functor, isDefined } from "../utils";
 import { helper, LabelAnnotation } from "./LabelAnnotation";
 
 interface LabelProps {
@@ -108,7 +108,7 @@ function drawOnCanvas(ctx, props, moreProps) {
     ctx.rotate(radians);
 
     ctx.font = `${fontSize}px ${fontFamily}`;
-    ctx.fillStyle = hexToRGBA(fill, opacity);
+    ctx.fillStyle = colorToRGBA(fill, opacity);
     ctx.textAlign = textAnchor === "middle" ? "center" : textAnchor;
 
     ctx.beginPath();

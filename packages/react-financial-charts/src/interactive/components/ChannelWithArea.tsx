@@ -5,7 +5,7 @@ import GenericChartComponent from "../../GenericChartComponent";
 import { getMouseCanvas } from "../../GenericComponent";
 import { generateLine, isHovering } from "./StraightLine";
 
-import { hexToRGBA, isDefined, isNotDefined, noop } from "../../utils";
+import { colorToRGBA, isDefined, isNotDefined, noop } from "../../utils";
 
 interface ChannelWithAreaProps {
     startXY?: number[];
@@ -116,7 +116,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
             const { x1, y1, x2, y2 } = line1;
 
             ctx.lineWidth = strokeWidth;
-            ctx.strokeStyle = hexToRGBA(stroke, strokeOpacity);
+            ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
 
             ctx.beginPath();
             ctx.moveTo(x1, y1);
@@ -134,7 +134,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
                 ctx.lineTo(x2, line2Y2);
                 ctx.stroke();
 
-                ctx.fillStyle = hexToRGBA(fill, fillOpacity);
+                ctx.fillStyle = colorToRGBA(fill, fillOpacity);
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);
 

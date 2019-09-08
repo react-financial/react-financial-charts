@@ -2,7 +2,7 @@ import * as React from "react";
 
 import GenericChartComponent from "../../GenericChartComponent";
 import { getMouseCanvas } from "../../GenericComponent";
-import { hexToRGBA, isDefined, noop } from "../../utils";
+import { colorToRGBA, isDefined, noop } from "../../utils";
 
 interface ClickableCircleProps {
     readonly xyProvider?: any; // func
@@ -87,8 +87,8 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
         const [x, y] = this.helper(this.props, moreProps);
 
         ctx.lineWidth = strokeWidth;
-        ctx.fillStyle = hexToRGBA(fill, fillOpacity);
-        ctx.strokeStyle = hexToRGBA(stroke, strokeOpacity);
+        ctx.fillStyle = colorToRGBA(fill, fillOpacity);
+        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
 
         ctx.beginPath();
         ctx.arc(x, y, r, 0, 2 * Math.PI, false);

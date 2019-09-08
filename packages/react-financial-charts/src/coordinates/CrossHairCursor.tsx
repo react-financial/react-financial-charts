@@ -2,7 +2,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import GenericComponent, { getMouseCanvas } from "../GenericComponent";
 
-import { getStrokeDasharray, hexToRGBA, isDefined, isNotDefined, strokeDashTypes } from "../utils";
+import { colorToRGBA, getStrokeDasharray, isDefined, isNotDefined, strokeDashTypes } from "../utils";
 
 interface CrossHairCursorProps {
     readonly className?: string;
@@ -86,7 +86,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
                     .split(",")
                     .map((d) => +d);
 
-                ctx.strokeStyle = hexToRGBA(line.stroke, line.opacity);
+                ctx.strokeStyle = colorToRGBA(line.stroke, line.opacity);
                 ctx.lineWidth = 1;
                 ctx.setLineDash(dashArray);
                 ctx.beginPath();

@@ -1,7 +1,7 @@
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
-import { hexToRGBA, isDefined } from "../utils";
+import { colorToRGBA, isDefined } from "../utils";
 import { PureComponent } from "../utils/PureComponent";
 
 interface BackgroundTextProps {
@@ -77,10 +77,10 @@ class BackgroundText extends PureComponent<BackgroundTextProps> {
 
         const text = getText(interval);
 
-        ctx.strokeStyle = hexToRGBA(stroke, strokeOpacity);
+        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
 
         ctx.font = `${fontSize}px ${fontFamily}`;
-        ctx.fillStyle = hexToRGBA(fill, opacity);
+        ctx.fillStyle = colorToRGBA(fill, opacity);
         ctx.textAlign = textAnchor === "middle" ? "center" : textAnchor;
 
         if (stroke !== "none") {

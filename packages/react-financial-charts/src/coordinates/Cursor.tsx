@@ -3,9 +3,9 @@ import * as React from "react";
 import GenericComponent, { getMouseCanvas } from "../GenericComponent";
 
 import {
+    colorToRGBA,
     first,
     getStrokeDasharray,
-    hexToRGBA,
     isNotDefined,
     last,
     strokeDashTypes,
@@ -169,7 +169,7 @@ class Cursor extends React.Component<CursorProps> {
                         const xShapeStroke = this.getXCursorShapeStroke(
                             moreProps,
                         );
-                        ctx.strokeStyle = hexToRGBA(
+                        ctx.strokeStyle = colorToRGBA(
                             xShapeStroke,
                             xCursorShapeOpacity,
                         );
@@ -183,7 +183,7 @@ class Cursor extends React.Component<CursorProps> {
                     ctx.beginPath();
                     ctx.fillStyle =
                         xShapeFill != null
-                            ? hexToRGBA(xShapeFill, xCursorShapeOpacity)
+                            ? colorToRGBA(xShapeFill, xCursorShapeOpacity)
                             : "rgba(0, 0, 0, 0)"; // ="transparent"
 
                     ctx.beginPath();
@@ -202,7 +202,7 @@ class Cursor extends React.Component<CursorProps> {
                         );
                     ctx.fill();
                 } else {
-                    ctx.strokeStyle = hexToRGBA(line.stroke, line.opacity);
+                    ctx.strokeStyle = colorToRGBA(line.stroke, line.opacity);
                     ctx.setLineDash(dashArray);
                     ctx.beginPath();
                     ctx.moveTo(line.x1, line.y1);

@@ -8,7 +8,7 @@ import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/li
 import { BarSeries, CandlestickSeries } from "react-financial-charts/lib/series";
 import { OHLCTooltip } from "react-financial-charts/lib/tooltip";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
-import { IOHLCData } from "../stores";
+import { IOHLCData, withOHLCData, withSize } from "../../data";
 
 interface StockChartProps {
     readonly data: IOHLCData[];
@@ -19,7 +19,7 @@ interface StockChartProps {
 
 class StockChart extends React.Component<StockChartProps> {
 
-    private readonly margin = { left: 32, right: 70, top: 32, bottom: 32 };
+    private readonly margin = { left: 0, right: 70, top: 0, bottom: 24 };
     private readonly pricesDisplayFormat = format(".5f");
     private readonly timeDisplayFormat = timeFormat("%d %b");
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
@@ -78,7 +78,7 @@ class StockChart extends React.Component<StockChartProps> {
                         axisAt="right"
                         orient="right"
                         ticks={5} />
-                    <OHLCTooltip />
+                    <OHLCTooltip origin={[8, 16]} />
                 </Chart>
                 <Chart
                     id={2}
@@ -136,4 +136,4 @@ class StockChart extends React.Component<StockChartProps> {
     }
 }
 
-export default withDeviceRatio()(StockChart);
+export default withOHLCData()(withSize()(withDeviceRatio()(StockChart)));

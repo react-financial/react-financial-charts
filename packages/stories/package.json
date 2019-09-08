@@ -1,14 +1,14 @@
 {
-  "name": "react-financial-charts-examples",
+  "name": "@react-financial-charts/stories",
   "version": "0.0.0",
-  "description": "Example charts",
+  "description": "Stories for react financial charts",
   "private": true,
   "author": "reactivemarkets",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "webpack --config webpack.config.js",
-    "start": "webpack-dev-server --progress --config webpack.config.js"
+    "clean": "rimraf ../docs lib",
+    "docs": "build-storybook -c .storybook -o ../../docs",
+    "start": "start-storybook"
   },
   "dependencies": {
     "d3-dsv": "^1.1.1",
@@ -16,7 +16,7 @@
     "d3-time-format": "^2.1.3",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-financial-charts": "file:../react-financial-charts",
+    "react-financial-charts": "file:../charts",
     "react-virtualized-auto-sizer": "^1.0.2"
   }
 }

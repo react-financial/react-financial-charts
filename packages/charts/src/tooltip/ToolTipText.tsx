@@ -7,7 +7,7 @@ export class ToolTipText extends React.Component<ToolTipTextProps> {
 
     public static defaultProps = {
         className: "react-financial-charts-tooltip",
-        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
+        fontFamily: "'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 11,
     };
 

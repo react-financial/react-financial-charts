@@ -87,13 +87,14 @@ npm start
 - [x] Fix passive scrolling issues
 - [x] Implement PRs from react-stockcharts
 - [x] Add all typings
-- [ ] Move examples to storybook
+- [x] Move examples to storybook
 - [ ] Correct all class props
 - [ ] Fix issues with empty datasets
 - [ ] Migrate to new React Context API
 - [ ] Remove all UNSAFE methods
+- [ ] Add all series' to storybook
+- [ ] Add documentation to storybook
 - [ ] Add full test suite
-- [ ] Generate documentation from typings
 - [ ] Split project into multiple packages
 
 ## LICENSE

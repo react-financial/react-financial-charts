@@ -19,7 +19,7 @@
     "prestart": "npm run build",
     "prepublishOnly": "npm run build",
     "publish": "lerna publish from-package --no-git-reset --yes",
-    "release": "lerna version --no-push --yes",
+    "release": "lerna version --yes",
     "watch": "lerna run watch --parallel"
   },
   "workspaces": [

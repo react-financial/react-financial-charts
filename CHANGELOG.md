@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/markmcdowell/react-financial-charts/compare/v0.1.0...v0.1.1) (2019-09-09)
+
+
+### Bug Fixes
+
+* adding missing readme from package ([1f38c35](https://github.com/markmcdowell/react-financial-charts/commit/1f38c35))
+* specifing release branch as master ([acd2982](https://github.com/markmcdowell/react-financial-charts/commit/acd2982))
+
+
+
+
+
 # 0.1.0 (2019-09-08)
 
 

@@ -97,7 +97,7 @@ jobs:
             npm install -g --silent gh-pages
             git config user.email "ci-build@reactivemarkets.com"
             git config user.name "ci-build"
-            gh-pages --message "docs: updating from ${CIRCLE_SHA1}" [skip ci]" --dist docs
+            gh-pages --message "docs: updating from ${CIRCLE_SHA1} [skip ci]" --dist docs
 
 workflows:
   version: 2

@@ -8,4 +8,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* moving examples to storybook ([3ce0955](https://gitlab.com/reactivemarkets/react-financial-charts/commit/3ce0955))
+* moving examples to storybook ([3ce0955](https://github.com/reactivemarkets/react-financial-charts/commit/3ce0955))

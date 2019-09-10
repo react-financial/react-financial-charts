@@ -58,8 +58,8 @@ export default function () {
 
         const zip = zipper()
             .combine((macdValue, signalValue) => ({
-                macdValue,
-                signalValue,
+                macd: macdValue,
+                signal: signalValue,
                 divergence: (isDefined(macdValue) && isDefined(signalValue)) ? macdValue - signalValue : undefined,
             }));
 

@@ -79,11 +79,12 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { yAccessor, defined, base, canvasGradient } = this.props;
         const {
             fill = AreaOnlySeries.defaultProps.fill,
-            stroke, opacity, interpolation, canvasClip } = this.props;
+            stroke,
+            opacity, interpolation, canvasClip } = this.props;
 
         const { xScale, chartConfig: { yScale }, plotData, xAccessor } = moreProps;
 
@@ -97,7 +98,10 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         } else {
             ctx.fillStyle = colorToRGBA(fill, opacity);
         }
-        ctx.strokeStyle = stroke;
+
+        if (stroke !== undefined) {
+            ctx.strokeStyle = stroke;
+        }
 
         ctx.beginPath();
         const newBase = functor(base);

@@ -48,7 +48,7 @@ export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor } = moreProps;
 
         drawOnCanvasHelper(ctx, this.props, moreProps, xAccessor, d3Stack);
@@ -133,9 +133,7 @@ export const rotateXY = (array) => array.map((each) => {
 });
 
 export function getBarsSVG2(props, bars) {
-    /* eslint-disable react/prop-types */
     const { opacity } = props;
-    /* eslint-enable react/prop-types */
 
     return bars.map((d, idx) => {
         if (d.width <= 1) {
@@ -155,7 +153,7 @@ export function getBarsSVG2(props, bars) {
     });
 }
 
-export function drawOnCanvas2(props, ctx, bars) {
+export function drawOnCanvas2(props, ctx: CanvasRenderingContext2D, bars) {
     const { stroke } = props;
 
     const nest = d3Nest<any>()

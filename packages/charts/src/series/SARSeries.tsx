@@ -6,17 +6,17 @@ import { getAxisCanvas, getMouseCanvas } from "../GenericComponent";
 import { colorToRGBA, first, isDefined, last } from "../utils";
 
 interface SARSeriesProps {
-    className?: string;
-    fill: {
+    readonly className?: string;
+    readonly fill?: {
         falling: string;
         rising: string;
     };
-    yAccessor: any; // func
-    opacity: number;
-    onClick?: any; // func
-    onDoubleClick?: any; // func
-    onContextMenu?: any; // func
-    highlightOnHover?: boolean;
+    readonly yAccessor: any; // func
+    readonly opacity?: number;
+    readonly onClick?: any; // func
+    readonly onDoubleClick?: any; // func
+    readonly onContextMenu?: any; // func
+    readonly highlightOnHover?: boolean;
 }
 
 export class SARSeries extends React.Component<SARSeriesProps> {
@@ -58,7 +58,11 @@ export class SARSeries extends React.Component<SARSeriesProps> {
     }
 
     private readonly renderSVG = (moreProps) => {
-        const { className, yAccessor, fill } = this.props;
+        const {
+            className,
+            yAccessor,
+            fill = SARSeries.defaultProps.fill,
+        } = this.props;
         const { xAccessor, plotData, xScale, chartConfig: { yScale } } = moreProps;
 
         return <g className={className}>
@@ -82,8 +86,12 @@ export class SARSeries extends React.Component<SARSeriesProps> {
         </g>;
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
-        const { yAccessor, fill, opacity } = this.props;
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+        const {
+            yAccessor,
+            fill = SARSeries.defaultProps.fill,
+            opacity,
+        } = this.props;
         const { xAccessor, plotData, xScale, chartConfig: { yScale }, hovering } = moreProps;
 
         const width = xScale(xAccessor(last(plotData))) - xScale(xAccessor(first(plotData)));

@@ -5,22 +5,22 @@ import { LineSeries } from "./LineSeries";
 import { StraightLine } from "./StraightLine";
 
 interface MACDSeriesProps {
-    className?: string;
-    yAccessor?: any; // func
-    opacity?: number;
-    divergenceStroke?: boolean;
-    zeroLineStroke?: string;
-    zeroLineOpacity?: number;
-    clip: boolean;
-    stroke: {
+    readonly className?: string;
+    readonly yAccessor?: any; // func
+    readonly opacity?: number;
+    readonly divergenceStroke?: boolean;
+    readonly zeroLineStroke?: string;
+    readonly zeroLineOpacity?: number;
+    readonly clip?: boolean;
+    readonly stroke: {
         macd: string;
         signal: string;
     };
-    fill: {
+    readonly fill: {
         divergence: string | any; // func
     };
-    widthRatio?: number;
-    width?: number | any; // func
+    readonly widthRatio?: number;
+    readonly width?: number | any; // func
 }
 
 export class MACDSeries extends React.Component<MACDSeriesProps> {
@@ -57,12 +57,10 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
                     yAccessor={this.yAccessorForDivergence} />
                 <LineSeries
                     yAccessor={this.yAccessorForMACD}
-                    stroke={stroke.macd}
-                    fill="none" />
+                    stroke={stroke.macd} />
                 <LineSeries
                     yAccessor={this.yAccessorForSignal}
-                    stroke={stroke.signal}
-                    fill="none" />
+                    stroke={stroke.signal} />
                 <StraightLine
                     stroke={zeroLineStroke}
                     opacity={zeroLineOpacity}

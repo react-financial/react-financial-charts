@@ -5,21 +5,21 @@ import { getAxisCanvas } from "../GenericComponent";
 import { isDefined } from "../utils";
 
 interface RenkoSeriesProps {
-    classNames?: {
+    readonly classNames?: {
         up: string,
         down: string,
     };
-    stroke: {
+    readonly stroke?: {
         up: string,
         down: string,
     };
-    fill: {
+    readonly fill?: {
         up: string,
         down: string,
         partial: string,
     };
-    yAccessor: any; // func
-    clip: boolean;
+    readonly yAccessor?: any; // func
+    readonly clip?: boolean;
 }
 
 export class RenkoSeries extends React.Component<RenkoSeriesProps> {
@@ -77,7 +77,7 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor } = moreProps;
         const { xScale, chartConfig: { yScale }, plotData } = moreProps;
 
@@ -89,7 +89,7 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
     }
 }
 
-function drawOnCanvas(ctx, renko) {
+function drawOnCanvas(ctx: CanvasRenderingContext2D, renko) {
     renko.forEach((d) => {
         ctx.beginPath();
 

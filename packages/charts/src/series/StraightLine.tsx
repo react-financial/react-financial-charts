@@ -5,14 +5,14 @@ import { getAxisCanvas } from "../GenericComponent";
 import { colorToRGBA, getStrokeDasharray, strokeDashTypes } from "../utils";
 
 interface StraightLineProps {
-    className?: string;
-    type?: "vertical" | "horizontal";
-    stroke?: string;
-    strokeWidth?: number;
-    strokeDasharray?: strokeDashTypes;
-    opacity: number;
-    yValue?: number;
-    xValue?: number;
+    readonly className?: string;
+    readonly type?: "vertical" | "horizontal";
+    readonly stroke?: string;
+    readonly strokeWidth?: number;
+    readonly strokeDasharray?: strokeDashTypes;
+    readonly opacity: number;
+    readonly yValue?: number;
+    readonly xValue?: number;
 }
 
 export class StraightLine extends React.Component<StraightLineProps> {
@@ -59,11 +59,12 @@ export class StraightLine extends React.Component<StraightLineProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {
             type,
             stroke = StraightLine.defaultProps.stroke,
-            strokeWidth, opacity, strokeDasharray } = this.props;
+            strokeWidth = StraightLine.defaultProps.strokeWidth,
+            opacity, strokeDasharray } = this.props;
         const { yValue, xValue } = this.props;
         const { xScale } = moreProps;
         const { chartConfig: { yScale, width, height } } = moreProps;
@@ -75,7 +76,9 @@ export class StraightLine extends React.Component<StraightLineProps> {
 
         const { x1, y1, x2, y2 } = this.getLineCoordinates(type, xScale, yScale, xValue, yValue, width, height);
 
-        ctx.setLineDash(getStrokeDasharray(strokeDasharray).split(","));
+        const lineDash = getStrokeDasharray(strokeDasharray).split(",").map((dash) => Number(dash));
+
+        ctx.setLineDash(lineDash);
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();

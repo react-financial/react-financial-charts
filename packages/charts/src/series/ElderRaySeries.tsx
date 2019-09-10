@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import OverlayBarSeries from "./OverlayBarSeries";
+import { OverlayBarSeries } from "./OverlayBarSeries";
 import { StraightLine } from "./StraightLine";
 
 interface ElderRaySeriesProps {

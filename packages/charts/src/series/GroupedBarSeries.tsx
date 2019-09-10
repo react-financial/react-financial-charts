@@ -8,11 +8,12 @@ interface GroupedBarSeriesProps {
     readonly baseAt: number | any; // func
     readonly direction: "up" | "down";
     readonly stroke: boolean;
-    readonly widthRatio: number;
+    readonly widthRatio?: number;
     readonly opacity: number;
     readonly fill: string | any; // func
     readonly className: string | any; // func
     readonly yAccessor: any[]; // func
+    readonly spaceBetweenBar?: number;
 }
 
 export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {
@@ -34,7 +35,7 @@ export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor } = moreProps;
 
         drawOnCanvasHelper(ctx, this.props, moreProps, xAccessor, identityStack, this.postProcessor);

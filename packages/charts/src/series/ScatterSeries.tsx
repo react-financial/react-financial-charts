@@ -7,11 +7,11 @@ import { getAxisCanvas } from "../GenericComponent";
 import { colorToRGBA, functor } from "../utils";
 
 interface ScatterSeriesProps {
-    className?: string;
-    yAccessor: (data: any) => number;
-    marker?: any; // func
-    markerProvider?: any; // func
-    markerProps?: object;
+    readonly className?: string;
+    readonly yAccessor: (data: any) => number;
+    readonly marker?: any; // func
+    readonly markerProvider?: any; // func
+    readonly markerProps?: object;
 }
 
 export class ScatterSeries extends React.Component<ScatterSeriesProps> {
@@ -37,15 +37,17 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
 
         const points = this.helper(this.props, moreProps, xAccessor);
 
-        return <g className={className}>
-            {points.map((point, idx) => {
-                const { marker: Marker } = point;
-                return <Marker key={idx} {...markerProps} point={point} />;
-            })}
-        </g>;
+        return (
+            <g className={className}>
+                {points.map((point, idx) => {
+                    const { marker: Marker } = point;
+                    return <Marker key={idx} {...markerProps} point={point} />;
+                })}
+            </g>
+        );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor } = moreProps;
 
         const points = this.helper(this.props, moreProps, xAccessor);
@@ -53,12 +55,14 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
         this.drawOnCanvasHelper(ctx, this.props, points);
     }
 
-    private readonly helper = (props, moreProps, xAccessor) => {
+    private readonly helper = (props: ScatterSeriesProps, moreProps, xAccessor) => {
         const { yAccessor, markerProvider, markerProps } = props;
         let { marker: Marker } = props;
         const { xScale, chartConfig: { yScale }, plotData } = moreProps;
 
-        if (!(markerProvider || Marker)) { throw new Error("required prop, either marker or markerProvider missing"); }
+        if (!(markerProvider || Marker)) {
+            throw new Error("required prop, either marker or markerProvider missing");
+        }
 
         return plotData.map((d) => {
 
@@ -80,7 +84,7 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
         });
     }
 
-    private readonly drawOnCanvasHelper = (ctx, props, points) => {
+    private readonly drawOnCanvasHelper = (ctx: CanvasRenderingContext2D, props: ScatterSeriesProps, points) => {
 
         const { markerProps } = props;
 

@@ -12,7 +12,7 @@ interface CandlestickSeriesProps {
     readonly className?: string;
     readonly wickClassName?: string;
     readonly candleClassName?: string;
-    readonly candleStrokeWidth?: number | string;
+    readonly candleStrokeWidth?: number;
     readonly widthRatio?: number;
     readonly width?: number | any; // func
     readonly classNames?: string | any; // func
@@ -56,7 +56,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         drawOnCanvas(ctx, this.props, moreProps);
     }
 
@@ -119,8 +119,11 @@ function getCandlesSVG(props: CandlestickSeriesProps, candleData) {
     return candles;
 }
 
-function drawOnCanvas(ctx, props: CandlestickSeriesProps, moreProps) {
-    const { opacity, candleStrokeWidth } = props;
+function drawOnCanvas(ctx: CanvasRenderingContext2D, props: CandlestickSeriesProps, moreProps) {
+    const {
+        opacity,
+        candleStrokeWidth = CandlestickSeries.defaultProps.candleStrokeWidth,
+    } = props;
     const { xScale, chartConfig: { yScale }, plotData, xAccessor } = moreProps;
 
     const candleData = getCandleData(props, xAccessor, xScale, yScale, plotData);

@@ -1,19 +1,21 @@
 import * as React from "react";
 import { Chart, ChartCanvas } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts/lib/axes";
+import { rsi } from "react-financial-charts/lib/indicator";
 import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
-import { LineSeries } from "react-financial-charts/lib/series";
+import { RSISeries } from "react-financial-charts/lib/series";
+import { RSITooltip } from "react-financial-charts/lib/tooltip";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData, withOHLCData, withSize } from "../../data";
 
-interface BasicLineSeriesProps {
+interface RSIIndicatorProps {
     readonly data: IOHLCData[];
     readonly height: number;
     readonly width: number;
     readonly ratio: number;
 }
 
-class BasicLineSeries extends React.Component<BasicLineSeriesProps> {
+class RSIIndicator extends React.Component<RSIIndicatorProps> {
 
     private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
@@ -28,6 +30,14 @@ class BasicLineSeries extends React.Component<BasicLineSeriesProps> {
             width,
         } = this.props;
 
+        const calculator = rsi()
+            // @ts-ignore
+            .options({ windowSize: 14 })
+            .merge((d: any, c: any) => { d.rsi = c; })
+            .accessor((d: any) => d.rsi);
+
+        const calculatedData = calculator(initialData);
+
         const { margin, xScaleProvider } = this;
 
         const {
@@ -35,7 +45,7 @@ class BasicLineSeries extends React.Component<BasicLineSeriesProps> {
             xScale,
             xAccessor,
             displayXAccessor,
-        } = xScaleProvider(initialData);
+        } = xScaleProvider(calculatedData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -55,8 +65,7 @@ class BasicLineSeries extends React.Component<BasicLineSeriesProps> {
                 xExtents={xExtents}>
                 <Chart
                     id={1}
-                    yExtents={this.candleChartExtents}>
-                    <LineSeries yAccessor={this.areaSeriesAccessor} strokeWidth={3} />
+                    yExtents={[0, 100]}>
                     <XAxis
                         axisAt="bottom"
                         orient="bottom"
@@ -64,19 +73,18 @@ class BasicLineSeries extends React.Component<BasicLineSeriesProps> {
                     <YAxis
                         axisAt="right"
                         orient="right"
-                        ticks={5} />
+                        tickValues={[30, 50, 70]} />
+
+                    <RSISeries yAccessor={(d: any) => d.rsi} />
+
+                    <RSITooltip
+                        origin={[8, 16]}
+                        yAccessor={(d: any) => d.rsi}
+                        options={calculator.options()} />
                 </Chart>
             </ChartCanvas>
         );
     }
-
-    private readonly areaSeriesAccessor = (data: IOHLCData) => {
-        return data.close;
-    }
-
-    private readonly candleChartExtents = (data: IOHLCData) => {
-        return [data.high, data.low];
-    }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(BasicLineSeries)));
+export default withOHLCData()(withSize()(withDeviceRatio()(RSIIndicator)));

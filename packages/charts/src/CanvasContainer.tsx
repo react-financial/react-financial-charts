@@ -20,7 +20,7 @@ class CanvasContainer extends React.Component<CanvasContainerProps> {
         this.drawCanvas = {};
     }
 
-    public setDrawCanvas(node) {
+    public setDrawCanvas(node: HTMLCanvasElement) {
         if (isDefined(node)) {
             this.drawCanvas[node.id] = node.getContext("2d");
         } else {

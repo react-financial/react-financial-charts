@@ -298,46 +298,46 @@ function isInteractionEnabled(xScale, xAccessor, data) {
 }
 
 interface ChartCanvasProps {
-    width: number;
-    height: number;
-    margin?: {
+    readonly width: number;
+    readonly height: number;
+    readonly margin?: {
         bottom: number;
         left: number;
         right: number;
         top: number;
     };
-    ratio: number;
-    type: "svg" | "hybrid";
-    pointsPerPxThreshold?: number;
-    minPointsPerPxThreshold?: number;
-    data: any[];
-    xAccessor?: any; // func
-    xExtents?: any[] | any; // func
-    zoomAnchor?: any; // func
-    className?: string;
-    seriesName: string;
-    zIndex?: number;
-    xScale: any; // func
-    postCalculator?: any; // func
-    flipXScale?: boolean;
-    useCrossHairStyleCursor?: boolean;
-    padding?: number | {
+    readonly ratio: number;
+    readonly type?: "svg" | "hybrid";
+    readonly pointsPerPxThreshold?: number;
+    readonly minPointsPerPxThreshold?: number;
+    readonly data: any[];
+    readonly xAccessor?: any; // func
+    readonly xExtents?: any[] | any; // func
+    readonly zoomAnchor?: any; // func
+    readonly className?: string;
+    readonly seriesName: string;
+    readonly zIndex?: number;
+    readonly xScale: any; // func
+    readonly postCalculator?: any; // func
+    readonly flipXScale?: boolean;
+    readonly useCrossHairStyleCursor?: boolean;
+    readonly padding?: number | {
         bottom: number;
         left: number;
         right: number;
         top: number;
     };
-    defaultFocus?: boolean;
-    zoomMultiplier?: number;
-    onLoadMore?: any; // func
-    displayXAccessor: any; // func
-    mouseMoveEvent?: boolean;
-    panEvent?: boolean;
-    clamp?: string | boolean | any; // func
-    zoomEvent?: boolean;
-    onSelect?: any; // func
-    maintainPointsPerPixelOnResize?: boolean;
-    disableInteraction?: boolean;
+    readonly defaultFocus?: boolean;
+    readonly zoomMultiplier?: number;
+    readonly onLoadMore?: any; // func
+    readonly displayXAccessor: any; // func
+    readonly mouseMoveEvent?: boolean;
+    readonly panEvent?: boolean;
+    readonly clamp?: string | boolean | any; // func
+    readonly zoomEvent?: boolean;
+    readonly onSelect?: any; // func
+    readonly maintainPointsPerPixelOnResize?: boolean;
+    readonly disableInteraction?: boolean;
 }
 
 interface ChartCanvasState {
@@ -352,7 +352,7 @@ interface ChartCanvasState {
 export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasState> {
 
     public static defaultProps = {
-        margin: { top: 20, right: 30, bottom: 30, left: 80 },
+        margin: { top: 0, right: 40, bottom: 40, left: 0 },
         type: "hybrid",
         pointsPerPxThreshold: 2,
         minPointsPerPxThreshold: 1 / 100,
@@ -1170,7 +1170,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     public render() {
 
         const {
-            type,
+            type = ChartCanvas.defaultProps.type,
             height,
             width,
             margin = ChartCanvas.defaultProps.margin,

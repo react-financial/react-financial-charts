@@ -48,7 +48,6 @@ class BasicBaselineSeries extends React.Component<BasicBaselineSeriesProps> {
                 ratio={ratio}
                 width={width}
                 margin={margin}
-                type="hybrid"
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"

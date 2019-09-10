@@ -47,7 +47,6 @@ class BasicAreaSeries extends React.Component<BasicAreaSeriesProps> {
                 ratio={ratio}
                 width={width}
                 margin={margin}
-                type="hybrid"
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"

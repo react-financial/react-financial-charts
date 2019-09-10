@@ -47,7 +47,6 @@ class BasicCandlestick extends React.Component<BasicCandlestickProps> {
                 ratio={ratio}
                 width={width}
                 margin={margin}
-                type="hybrid"
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"

@@ -52,7 +52,6 @@ class BasicKagiSeries extends React.Component<BasicKagiSeriesProps> {
                 ratio={ratio}
                 width={width}
                 margin={margin}
-                type="hybrid"
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"

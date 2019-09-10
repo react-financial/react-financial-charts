@@ -52,7 +52,6 @@ class BasicRenkoSeries extends React.Component<BasicRenkoSeriesProps> {
                 ratio={ratio}
                 width={width}
                 margin={margin}
-                type="hybrid"
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"

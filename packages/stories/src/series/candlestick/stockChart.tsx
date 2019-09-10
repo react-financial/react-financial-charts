@@ -58,7 +58,6 @@ class StockChart extends React.Component<StockChartProps> {
                 ratio={ratio}
                 width={width}
                 margin={margin}
-                type="hybrid"
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"

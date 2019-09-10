@@ -27,7 +27,7 @@ interface WithOHLCState {
     message: string;
 }
 
-export function withOHLCData() {
+export function withOHLCData(dataSet = "MSFT") {
     return <TProps extends WithOHLCDataProps>(OriginalComponent: React.ComponentClass<TProps>) => {
         return class WithOHLCData extends React.Component<Omit<TProps, "data">, WithOHLCState> {
 
@@ -40,7 +40,7 @@ export function withOHLCData() {
             }
 
             public componentDidMount() {
-                fetch("https://cdn.rawgit.com/rrag/react-stockcharts/master/docs/data/MSFT.tsv")
+                fetch(`https://raw.githubusercontent.com/reactivemarkets/react-financial-charts/master/packages/stories/src/data/${dataSet}.tsv`)
                     .then((response) => response.text())
                     .then((data) => tsvParse(data, parseData()))
                     .then((data) => {

@@ -3,7 +3,7 @@ import * as React from "react";
 import BasicCandlestick from "./basicCandlestick";
 import StockChart from "./stockChart";
 
-storiesOf("CandleStick", module)
+storiesOf("Series|Candles", module)
     .add("Basic", () => {
         return (
             <BasicCandlestick />

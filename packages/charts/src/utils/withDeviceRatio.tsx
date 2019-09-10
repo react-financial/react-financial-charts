@@ -1,10 +1,10 @@
 import * as React from "react";
 
-interface WithRatioProps {
+export interface WithRatioProps {
     readonly ratio: number;
 }
 
-interface WithRatioState {
+export interface WithRatioState {
     ratio: number;
 }
 

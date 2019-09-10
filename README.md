@@ -1,5 +1,8 @@
 # React Financial Charts
 
+[![CircleCI](https://circleci.com/gh/reactivemarkets/react-financial-charts/tree/master.svg?style=shield)](https://circleci.com/gh/reactivemarkets/react-financial-charts/tree/master)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=reactivemarkets/react-financial-charts)](https://dependabot.com) [![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/reactivemarkets/react-financial-charts/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react-financial-charts.svg?style=flat)](https://www.npmjs.com/package/react-financial-charts)
+
 > **Note:** this repo is a fork of [react-stockcharts](https://github.com/rrag/react-stockcharts), renamed, converted to typescript and bug fixes applied due to the original project being unmaintained.
 
 Charts dedicated to finance.
@@ -55,7 +58,7 @@ npm install react-financial-charts
 
 ## Documentation
 
-> **TODO**: The examples are currently serving as docs.
+[Stories](https://reactivemarkets.github.io/react-financial-charts/)
 
 ## Contributing
 

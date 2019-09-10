@@ -1,8 +1,10 @@
 {
     "compilerOptions": {
-        "outDir": "lib",
-        "module": "commonjs",
-        "target": "es5",
+        "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
         "lib": [
             "es5",
             "es6",
@@ -10,22 +12,21 @@
             "es2017",
             "dom"
         ],
-        "sourceMap": true,
-        "jsx": "react",
+        "module": "commonjs",
         "moduleResolution": "node",
-        "forceConsistentCasingInFileNames": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noImplicitAny": true,
-        "strictNullChecks": true,
         "noUnusedLocals": true,
-        "allowSyntheticDefaultImports": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "strict": true
+        "outDir": "lib",
+        "removeComments": true,
+        "sourceMap": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "target": "es5"
     },
     "include": [
-        "src/**/*"
+        "src"
     ],
     "exclude": [
         "node_modules",

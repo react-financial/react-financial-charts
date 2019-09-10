@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import BasicBarSeries from "./basicBarSeries";
 
-storiesOf("Bar Series", module)
+storiesOf("Series|Bar", module)
     .add("Basic", () => {
         return (
             <BasicBarSeries />

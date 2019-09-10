@@ -15,7 +15,7 @@ interface BasicBaselineSeriesProps {
 
 class BasicBaselineSeries extends React.Component<BasicBaselineSeriesProps> {
 
-    private readonly margin = { left: 0, right: 70, top: 0, bottom: 24 };
+    private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
         .inputDateAccessor((d: IOHLCData) => d.date);
 

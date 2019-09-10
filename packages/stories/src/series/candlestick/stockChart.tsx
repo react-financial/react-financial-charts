@@ -19,7 +19,7 @@ interface StockChartProps {
 
 class StockChart extends React.Component<StockChartProps> {
 
-    private readonly margin = { left: 0, right: 70, top: 0, bottom: 24 };
+    private readonly margin = { left: 0, right: 48, top: 0, bottom: 24 };
     private readonly pricesDisplayFormat = format(".2f");
     private readonly timeDisplayFormat = timeFormat("%d %b");
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()

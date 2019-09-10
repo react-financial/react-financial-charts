@@ -39,7 +39,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
 
     public static defaultProps = {
         className: "line",
-        strokeWidth: 3,
+        strokeWidth: 1,
         strokeOpacity: 1,
         hoverStrokeWidth: 4,
         fill: "none",
@@ -119,13 +119,13 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {
             yAccessor,
             stroke = LineSeries.defaultProps.stroke,
             strokeOpacity,
-            strokeWidth,
-            hoverStrokeWidth,
+            strokeWidth = LineSeries.defaultProps.strokeWidth,
+            hoverStrokeWidth = LineSeries.defaultProps.hoverStrokeWidth,
             defined,
             strokeDasharray,
             interpolation,
@@ -145,7 +145,10 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         ctx.lineWidth = hovering ? hoverStrokeWidth : strokeWidth;
 
         ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
-        ctx.setLineDash(getStrokeDasharray(strokeDasharray).split(","));
+
+        const lineDash = getStrokeDasharray(strokeDasharray).split(",").map((dash) => Number(dash));
+
+        ctx.setLineDash(lineDash);
 
         const dataSeries = d3Line()
             .x((d) => Math.round(xScale(xAccessor(d))))

@@ -4,19 +4,19 @@ import { LineSeries } from "./LineSeries";
 import { StraightLine } from "./StraightLine";
 
 interface StochasticSeriesProps {
-    className?: string;
-    yAccessor: any; // func
-    stroke: {
+    readonly className?: string;
+    readonly yAccessor: any; // func
+    readonly stroke: {
         top: string;
         middle: string;
         bottom: string;
         dLine: string;
         kLine: string;
     };
-    overSold: number;
-    middle: number;
-    overBought: number;
-    refLineOpacity: number;
+    readonly overSold: number;
+    readonly middle: number;
+    readonly overBought: number;
+    readonly refLineOpacity: number;
 }
 
 export class StochasticSeries extends React.Component<StochasticSeriesProps> {

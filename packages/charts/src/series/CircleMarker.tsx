@@ -3,17 +3,17 @@ import * as React from "react";
 import { colorToRGBA, functor } from "../utils";
 
 interface CircleProps {
-    stroke?: string;
-    fill?: string;
-    opacity?: number;
-    point: {
+    readonly stroke?: string;
+    readonly fill?: string;
+    readonly opacity?: number;
+    readonly point: {
         x: number,
         y: number,
         datum: any,
     };
-    className?: string;
-    strokeWidth?: number;
-    r: number | any; // func
+    readonly className?: string;
+    readonly strokeWidth?: number;
+    readonly r: number | ((datum: any) => number);
 }
 
 export class Circle extends React.Component<CircleProps> {
@@ -26,9 +26,14 @@ export class Circle extends React.Component<CircleProps> {
         className: "react-financial-charts-marker-circle",
     };
 
-    public static drawOnCanvas = (props, point, ctx) => {
+    public static drawOnCanvas = (props: CircleProps, point, ctx: CanvasRenderingContext2D) => {
 
-        const { stroke, fill, opacity, strokeWidth } = props;
+        const {
+            stroke = Circle.defaultProps.stroke,
+            fill = Circle.defaultProps.fill,
+            opacity,
+            strokeWidth = Circle.defaultProps.strokeWidth,
+        } = props;
 
         ctx.strokeStyle = stroke;
         ctx.lineWidth = strokeWidth;
@@ -40,7 +45,7 @@ export class Circle extends React.Component<CircleProps> {
         Circle.drawOnCanvasWithNoStateChange(props, point, ctx);
     }
 
-    public static drawOnCanvasWithNoStateChange = (props, point, ctx) => {
+    public static drawOnCanvasWithNoStateChange = (props: CircleProps, point, ctx: CanvasRenderingContext2D) => {
 
         const { r } = props;
         const radius = functor(r)(point.datum);
@@ -55,6 +60,7 @@ export class Circle extends React.Component<CircleProps> {
     public render() {
         const { className, stroke, strokeWidth, opacity, fill, point, r } = this.props;
         const radius = functor(r)(point.datum);
+
         return (
             <circle
                 className={className}

@@ -7,9 +7,9 @@ import { StraightLine } from "./StraightLine";
 import { SVGComponent } from "./SVGComponent";
 
 interface RSISeriesProps {
-    className?: string;
-    yAccessor: any; // func
-    stroke: {
+    readonly className?: string;
+    readonly yAccessor: any; // func
+    readonly stroke?: {
         line: strokeDashTypes;
         top: string;
         middle: string;
@@ -17,27 +17,27 @@ interface RSISeriesProps {
         outsideThreshold: string;
         insideThreshold: string;
     };
-    opacity: {
+    readonly opacity?: {
         top: number;
         middle: number;
         bottom: number;
     };
-    strokeDasharray: {
+    readonly strokeDasharray?: {
         line: strokeDashTypes;
         top: strokeDashTypes;
         middle: strokeDashTypes;
         bottom: strokeDashTypes;
     };
-    strokeWidth: {
+    readonly strokeWidth?: {
         outsideThreshold: number;
         insideThreshold: number;
         top: number;
         middle: number;
         bottom: number;
     };
-    overSold: number;
-    middle: number;
-    overBought: number;
+    readonly overSold?: number;
+    readonly middle?: number;
+    readonly overBought?: number;
 }
 
 export class RSISeries extends React.Component<RSISeriesProps> {
@@ -58,10 +58,10 @@ export class RSISeries extends React.Component<RSISeriesProps> {
             bottom: 1,
         },
         strokeDasharray: {
-            line: "Solid",
-            top: "ShortDash",
-            middle: "ShortDash",
-            bottom: "ShortDash",
+            line: "Solid" as strokeDashTypes,
+            top: "ShortDash" as strokeDashTypes,
+            middle: "ShortDash" as strokeDashTypes,
+            bottom: "ShortDash" as strokeDashTypes,
         },
         strokeWidth: {
             outsideThreshold: 1,
@@ -75,21 +75,17 @@ export class RSISeries extends React.Component<RSISeriesProps> {
         overBought: 30,
     };
 
-    private clipPathId1: string;
-    private clipPathId2: string;
-
-    constructor(props) {
-        super(props);
-
-        const id1 = String(Math.round(Math.random() * 10000 * 10000));
-        this.clipPathId1 = `rsi-clip-${id1}`;
-
-        const id2 = String(Math.round(Math.random() * 10000 * 10000));
-        this.clipPathId2 = `rsi-clip-${id2}`;
-    }
+    private clipPathId1 = `rsi-clip-${String(Math.round(Math.random() * 10000 * 10000))}`;
+    private clipPathId2 = `rsi-clip-${String(Math.round(Math.random() * 10000 * 10000))}`;
 
     public render() {
-        const { className, stroke, opacity, strokeDasharray, strokeWidth } = this.props;
+        const {
+            className,
+            stroke = RSISeries.defaultProps.stroke,
+            opacity = RSISeries.defaultProps.opacity,
+            strokeDasharray = RSISeries.defaultProps.strokeDasharray,
+            strokeWidth = RSISeries.defaultProps.strokeWidth,
+        } = this.props;
         const { yAccessor } = this.props;
         const { overSold, middle, overBought } = this.props;
 
@@ -177,7 +173,7 @@ export class RSISeries extends React.Component<RSISeriesProps> {
         );
     }
 
-    private readonly mainClip = (ctx, moreProps) => {
+    private readonly mainClip = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { chartConfig } = moreProps;
         const { overSold, overBought } = this.props;
         const { yScale, width, height } = chartConfig;
@@ -198,7 +194,7 @@ export class RSISeries extends React.Component<RSISeriesProps> {
         ctx.clip();
     }
 
-    private readonly topAndBottomClip = (ctx, moreProps) => {
+    private readonly topAndBottomClip = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { chartConfig } = moreProps;
         const { overSold, overBought } = this.props;
         const { yScale, width } = chartConfig;

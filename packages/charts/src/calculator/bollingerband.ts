@@ -66,7 +66,7 @@ export default function () {
             });
 
         const zip = zipper()
-            .combine((datum, meanValue) => ({ datum, meanValue }));
+            .combine((datum, meanValue) => ({ datum, mean: meanValue }));
 
         // @ts-ignore
         const tuples = zip(data, meanAlgorithm(data));

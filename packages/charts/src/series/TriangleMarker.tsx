@@ -2,9 +2,9 @@ import * as React from "react";
 import { colorToRGBA, functor } from "../utils";
 
 interface TriangleProps {
-    direction?: "top" | "bottom" | "left" | "right" | "hide";
-    stroke?: string | any; // func
-    fill?: string | any;
+    direction?: "top" | "bottom" | "left" | "right" | "hide" | ((datum: any) => any);
+    stroke?: string | ((datum) => string);
+    fill?: string | ((datum) => string);
     opacity?: number;
     point: {
         x: number,
@@ -13,7 +13,7 @@ interface TriangleProps {
     };
     className?: string;
     strokeWidth?: number;
-    width?: number | any; // func
+    width?: number | ((datum: any) => number);
 }
 
 export class Triangle extends React.Component<TriangleProps> {
@@ -27,17 +27,23 @@ export class Triangle extends React.Component<TriangleProps> {
         className: "react-financial-charts-marker-triangle",
     };
 
-    public static drawOnCanvas = (props, point, ctx) => {
-        const { stroke, fill, opacity, strokeWidth } = props;
-        ctx.strokeStyle = stroke;
+    public static drawOnCanvas = (props: TriangleProps, point, ctx: CanvasRenderingContext2D) => {
+        const {
+            opacity,
+            strokeWidth = Triangle.defaultProps.strokeWidth,
+        } = props;
+
+        ctx.strokeStyle = getStrokeColor(props);
         ctx.lineWidth = strokeWidth;
+
+        const fill = getFillColor(props);
         if (fill !== "none") {
             ctx.fillStyle = colorToRGBA(fill, opacity);
         }
         Triangle.drawOnCanvasWithNoStateChange(props, point, ctx);
     }
 
-    public static drawOnCanvasWithNoStateChange = (props, point, ctx) => {
+    public static drawOnCanvasWithNoStateChange = (props: TriangleProps, point, ctx: CanvasRenderingContext2D) => {
 
         const { width } = props;
         const w = functor(width)(point.datum);
@@ -101,7 +107,7 @@ export class Triangle extends React.Component<TriangleProps> {
     }
 }
 
-function getTrianglePoints(width) {
+function getTrianglePoints(width: number) {
     const innerHypotenuse = (width / 2) * (1 / Math.cos(30 * Math.PI / 180));
     const innerOpposite = (width / 2) * (1 / Math.tan(60 * Math.PI / 180));
     return {
@@ -110,20 +116,29 @@ function getTrianglePoints(width) {
     };
 }
 
-function getFillColor(props) {
-    const { fill, point } = props;
+function getFillColor(props: TriangleProps) {
+    const {
+        fill = Triangle.defaultProps.fill,
+        point,
+    } = props;
 
     return fill instanceof Function ? fill(point.datum) : fill;
 }
 
-function getStrokeColor(props) {
-    const { stroke, point } = props;
+function getStrokeColor(props: TriangleProps) {
+    const {
+        stroke = Triangle.defaultProps.stroke,
+        point,
+    } = props;
 
     return stroke instanceof Function ? stroke(point.datum) : stroke;
 }
 
-function getRotationInDegrees(props, point) {
-    const { direction } = props;
+function getRotationInDegrees(props: TriangleProps, point) {
+    const {
+        direction = Triangle.defaultProps.direction,
+    } = props;
+
     const directionVal = direction instanceof Function ? direction(point.datum) : direction;
     if (directionVal === "hide") {
         return null;

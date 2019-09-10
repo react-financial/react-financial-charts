@@ -73,7 +73,7 @@ interface MovingAverageTooltipProps {
         type: string;
         stroke: string;
         windowSize: number;
-        echo: any;
+        echo?: any;
     }>;
 }
 

@@ -1,16 +1,10 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import BasicCandlestick from "./basicCandlestick";
-import StockChart from "./stockChart";
+import BasicCandlestickSeries from "./basicCandlestick";
 
-storiesOf("Series|Candles", module)
-    .add("Basic", () => {
+storiesOf("Series", module)
+    .add("Candles", () => {
         return (
-            <BasicCandlestick />
-        );
-    })
-    .add("Stock Chart", () => {
-        return (
-            <StockChart />
+            <BasicCandlestickSeries />
         );
     });

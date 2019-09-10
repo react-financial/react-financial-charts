@@ -46,7 +46,6 @@ export class DrawingObjectSelector extends React.Component<DrawingObjectSelector
                 && Array.isArray(valueArray)
                 && valueArray.length > 0;
             if (valuePresent) {
-                // console.log("Value present for ", each.type, each.chartId);
                 const morePropsForChart = getMorePropsForChart(
                     moreProps, each.chartId,
                 );

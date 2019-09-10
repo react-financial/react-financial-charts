@@ -15,15 +15,15 @@ import {
 import { functor, isDefined } from "../utils";
 
 interface BarSeriesProps {
-    baseAt?: number | any; // func
-    stroke?: boolean;
-    width?: number | any; // func
-    yAccessor: any; // func
-    opacity?: number;
-    fill?: number | any; // func
-    className?: number | any; // func
-    clip?: boolean;
-    swapScales?: boolean;
+    readonly baseAt?: number | any; // func
+    readonly stroke?: boolean;
+    readonly width?: number | any; // func
+    readonly yAccessor: any; // func
+    readonly opacity?: number;
+    readonly fill?: number | any; // func
+    readonly className?: number | any; // func
+    readonly clip?: boolean;
+    readonly swapScales?: boolean;
 }
 
 export class BarSeries extends React.Component<BarSeriesProps> {
@@ -44,7 +44,7 @@ export class BarSeries extends React.Component<BarSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         if (this.props.swapScales) {
             const { xAccessor } = moreProps;
             drawOnCanvasHelper(ctx, this.props, moreProps, xAccessor, identityStack);

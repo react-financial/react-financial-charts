@@ -4,17 +4,17 @@ import { AreaOnlySeries } from "./AreaOnlySeries";
 import { LineSeries } from "./LineSeries";
 
 interface BollingerSeriesProps {
-    yAccessor: any; // func
-    className?: string;
-    areaClassName?: string;
-    opacity?: number;
-    type?: string;
-    stroke: {
+    readonly yAccessor: any; // func
+    readonly className?: string;
+    readonly areaClassName?: string;
+    readonly opacity?: number;
+    readonly type?: string;
+    readonly stroke: {
         top: string,
         middle: string,
         bottom: string,
     };
-    fill: string;
+    readonly fill: string;
 }
 
 export class BollingerSeries extends React.Component<BollingerSeriesProps> {

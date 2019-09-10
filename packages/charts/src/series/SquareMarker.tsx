@@ -2,17 +2,17 @@ import * as React from "react";
 import { colorToRGBA, functor } from "../utils";
 
 interface SquareProps {
-    stroke?: string;
-    fill: string;
-    opacity: number;
-    point: {
+    readonly stroke?: string;
+    readonly fill: string;
+    readonly opacity: number;
+    readonly point: {
         x: number,
         y: number,
         datum: any,
     };
-    className?: string;
-    strokeWidth?: number;
-    width: number | any; // func
+    readonly className?: string;
+    readonly strokeWidth?: number;
+    readonly width: number | ((datum: any) => number);
 }
 
 export class Square extends React.Component<SquareProps> {
@@ -25,8 +25,14 @@ export class Square extends React.Component<SquareProps> {
         className: "react-financial-charts-marker-rect",
     };
 
-    public static drawOnCanvas = (props, point, ctx) => {
-        const { stroke, fill, opacity, strokeWidth } = props;
+    public static drawOnCanvas = (props: SquareProps, point, ctx: CanvasRenderingContext2D) => {
+        const {
+            stroke = Square.defaultProps.stroke,
+            fill,
+            opacity,
+            strokeWidth = Square.defaultProps.strokeWidth,
+        } = props;
+
         ctx.strokeStyle = stroke;
         ctx.lineWidth = strokeWidth;
         if (fill !== "none") {
@@ -35,7 +41,7 @@ export class Square extends React.Component<SquareProps> {
         Square.drawOnCanvasWithNoStateChange(props, point, ctx);
     }
 
-    public static drawOnCanvasWithNoStateChange = (props, point, ctx) => {
+    public static drawOnCanvasWithNoStateChange = (props: SquareProps, point, ctx: CanvasRenderingContext2D) => {
         const { width } = props;
         const w = functor(width)(point.datum);
         const x = point.x - (w / 2);
@@ -47,10 +53,7 @@ export class Square extends React.Component<SquareProps> {
     }
 
     public render() {
-        const {
-            className, stroke, strokeWidth,
-            opacity, fill, point, width,
-        } = this.props;
+        const { className, stroke, strokeWidth, opacity, fill, point, width } = this.props;
         const w = functor(width)(point.datum);
         const x = point.x - (w / 2);
         const y = point.y - (w / 2);

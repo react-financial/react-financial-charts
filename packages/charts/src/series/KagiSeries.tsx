@@ -15,7 +15,7 @@ interface KagiSeriesProps {
         yang: string;
         yin: string;
     };
-    readonly strokeWidth: number;
+    readonly strokeWidth?: number;
 }
 
 export class KagiSeries extends React.Component<KagiSeriesProps> {

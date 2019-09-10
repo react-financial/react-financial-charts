@@ -46,7 +46,7 @@ export function renderSVG(props) {
                 >
                     <path
                         d={path}
-                        className="react-stockchart-text-background"
+                        className="react-financial-charts-text-background"
                         height={rectHeight}
                         width={rectWidth}
                         stroke={edge.coordinateBase.stroke}
@@ -60,7 +60,7 @@ export function renderSVG(props) {
             ) : (
                     <rect
                         key={1}
-                        className="react-stockchart-text-background"
+                        className="react-financial-charts-text-background"
                         x={edge.coordinateBase.edgeXRect}
                         y={edge.coordinateBase.edgeYRect}
                         height={rectHeight}

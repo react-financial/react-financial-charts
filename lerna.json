@@ -12,6 +12,7 @@
     "version": {
       "allowBranch": "master",
       "conventionalCommits": true,
+      "createRelease": "github",
       "gitRemote": "upstream",
       "message": "chore(release): publish %v"
     }

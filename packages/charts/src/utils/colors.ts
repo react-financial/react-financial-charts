@@ -1,11 +1,15 @@
 import { colorPresets } from "./colorPresets";
 
 export const colorToRGBA = (inputColor: string, opacity: number = 1) => {
-    if (inputColor.charAt(0) === "#") {
+    if (inputColor.startsWith("#")) {
         return hexToRGBA(inputColor.trim(), opacity);
     }
 
-    if (inputColor.indexOf("rgb(") !== -1 || inputColor.indexOf("rgba(") !== -1) {
+    if (inputColor.startsWith("rgba")) {
+        return inputColor;
+    }
+
+    if (inputColor.startsWith("rgb")) {
         return rgbToRGBA(inputColor.trim(), opacity);
     }
 
@@ -31,6 +35,7 @@ export const rgbToRGBA = (inputRGB: string, opacity: number = 1) => {
         throw new Error(`invalid inputRGB: ${inputRGB}`);
     }
     const [, r, g, b] = res;
+
     return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 

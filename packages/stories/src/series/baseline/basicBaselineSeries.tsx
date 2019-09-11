@@ -56,28 +56,22 @@ class BasicBaselineSeries extends React.Component<BasicBaselineSeriesProps> {
                 xExtents={xExtents}>
                 <Chart
                     id={1}
-                    yExtents={this.candleChartExtents}>
+                    yExtents={this.yExtents}>
                     <AlternatingFillAreaSeries
-                        yAccessor={this.areaSeriesAccessor}
+                        yAccessor={this.yAccessor}
                         baseAt={base} />
-                    <XAxis
-                        axisAt="bottom"
-                        orient="bottom"
-                        ticks={6} />
-                    <YAxis
-                        axisAt="right"
-                        orient="right"
-                        ticks={5} />
+                    <XAxis ticks={6} />
+                    <YAxis ticks={5} />
                 </Chart>
             </ChartCanvas>
         );
     }
 
-    private readonly areaSeriesAccessor = (data: IOHLCData) => {
+    private readonly yAccessor = (data: IOHLCData) => {
         return data.close;
     }
 
-    private readonly candleChartExtents = (data: IOHLCData) => {
+    private readonly yExtents = (data: IOHLCData) => {
         return [data.high, data.low];
     }
 }

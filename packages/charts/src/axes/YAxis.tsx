@@ -4,7 +4,7 @@ import { strokeDashTypes } from "../utils";
 import Axis from "./Axis";
 
 interface YAxisProps {
-    readonly axisAt: number | "left" | "right" | "middle";
+    readonly axisAt?: number | "left" | "right" | "middle";
     readonly className?: string;
     readonly domainClassName?: string;
     readonly fill?: string;
@@ -16,7 +16,7 @@ interface YAxisProps {
     readonly innerTickSize?: number;
     readonly onContextMenu?: any; // func
     readonly onDoubleClick?: any; // func
-    readonly orient: "left" | "right";
+    readonly orient?: "left" | "right";
     readonly outerTickSize?: number;
     readonly showDomain?: boolean;
     readonly showTicks?: boolean;
@@ -42,30 +42,32 @@ interface YAxisProps {
 export class YAxis extends React.Component<YAxisProps> {
 
     public static defaultProps = {
-        showTicks: true,
-        showTickLabel: true,
-        showDomain: true,
+        axisAt: "right",
         className: "react-financial-charts-y-axis",
-        ticks: 10,
-        outerTickSize: 0,
         domainClassName: "react-financial-charts-axis-domain",
         fill: "none",
-        stroke: "#000000",
-        strokeWidth: 1,
-        strokeOpacity: 1,
-        opacity: 1,
-        innerTickSize: 5,
-        tickPadding: 6,
-        tickLabelFill: "#000000",
-        tickStroke: "#000000",
-        tickStrokeOpacity: 1,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
         fontWeight: 400,
+        getMouseDelta: (startXY, mouseXY) => startXY[1] - mouseXY[1],
+        innerTickSize: 5,
+        outerTickSize: 0,
+        opacity: 1,
+        orient: "right",
+        showTicks: true,
+        showTickLabel: true,
+        showDomain: true,
+        stroke: "#000000",
+        strokeWidth: 1,
+        strokeOpacity: 1,
+        tickPadding: 6,
+        tickLabelFill: "#000000",
+        ticks: 10,
+        tickStroke: "#000000",
+        tickStrokeOpacity: 1,
         yZoomWidth: 40,
         zoomEnabled: true,
         zoomCursorClassName: "react-financial-charts-ns-resize-cursor",
-        getMouseDelta: (startXY, mouseXY) => startXY[1] - mouseXY[1],
     };
 
     public static contextTypes = {

@@ -3,8 +3,8 @@ import * as React from "react";
 import BasicBarSeries from "./basicBarSeries";
 
 storiesOf("Series", module)
-    .add("Bar", () => {
-        return (
-            <BasicBarSeries />
-        );
+    .add("Bar", () => <BasicBarSeries />, {
+        options: {
+            showPanel: true,
+        },
     });

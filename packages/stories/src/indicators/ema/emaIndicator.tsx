@@ -17,7 +17,7 @@ interface ChartProps {
 
 class EMAIndicator extends React.Component<ChartProps> {
 
-    private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };
+    private readonly margin = { left: 0, right: 40, top: 8, bottom: 24 };
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
         .inputDateAccessor((d: IOHLCData) => d.date);
 
@@ -74,14 +74,8 @@ class EMAIndicator extends React.Component<ChartProps> {
                 <Chart
                     id={1}
                     yExtents={[0, 100]}>
-                    <XAxis
-                        axisAt="bottom"
-                        orient="bottom"
-                        ticks={6} />
-                    <YAxis
-                        axisAt="right"
-                        orient="right"
-                        ticks={5} />
+                    <XAxis ticks={6} />
+                    <YAxis ticks={5} />
 
                     <LineSeries yAccessor={ema26.accessor()} stroke={ema26.stroke()} />
                     <LineSeries yAccessor={ema12.accessor()} stroke={ema12.stroke()} />

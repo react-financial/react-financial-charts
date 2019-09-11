@@ -29,8 +29,8 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
     public static defaultProps = {
         className: "react-financial-charts-edgeindicator",
         type: "horizontal",
-        orient: "left",
-        edgeAt: "left",
+        orient: "right",
+        edgeAt: "right",
         textFill: "#FFFFFF",
         displayFormat: format(".2f"),
         yAxisPad: 0,

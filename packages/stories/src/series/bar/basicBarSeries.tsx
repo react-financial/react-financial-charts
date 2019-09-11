@@ -57,14 +57,8 @@ class BasicBarSeries extends React.Component<BasicBarSeriesProps> {
                     id={1}
                     yExtents={this.yExtents}>
                     <BarSeries yAccessor={this.yAccessor} />
-                    <XAxis
-                        axisAt="bottom"
-                        orient="bottom"
-                        ticks={6} />
-                    <YAxis
-                        axisAt="right"
-                        orient="right"
-                        ticks={5} />
+                    <XAxis ticks={6} />
+                    <YAxis ticks={5} />
                 </Chart>
             </ChartCanvas>
         );

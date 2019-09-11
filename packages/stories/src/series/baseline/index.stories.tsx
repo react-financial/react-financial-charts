@@ -3,8 +3,8 @@ import * as React from "react";
 import BasicBaselineSeries from "./basicBaselineSeries";
 
 storiesOf("Series", module)
-    .add("Baseline", () => {
-        return (
-            <BasicBaselineSeries />
-        );
+    .add("Baseline", () => <BasicBaselineSeries />, {
+        options: {
+            showPanel: true,
+        },
     });

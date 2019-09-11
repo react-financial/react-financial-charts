@@ -62,14 +62,8 @@ class BasicPointAndFigureSeries extends React.Component<BasicPointAndFigureSerie
                     id={1}
                     yExtents={this.yExtents}>
                     <PointAndFigureSeries />
-                    <XAxis
-                        axisAt="bottom"
-                        orient="bottom"
-                        ticks={6} />
-                    <YAxis
-                        axisAt="right"
-                        orient="right"
-                        ticks={5} />
+                    <XAxis ticks={6} />
+                    <YAxis ticks={5} />
                 </Chart>
             </ChartCanvas>
         );

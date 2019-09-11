@@ -55,26 +55,20 @@ class BasicAreaSeries extends React.Component<BasicAreaSeriesProps> {
                 xExtents={xExtents}>
                 <Chart
                     id={1}
-                    yExtents={this.candleChartExtents}>
-                    <AreaSeries yAccessor={this.areaSeriesAccessor} />
-                    <XAxis
-                        axisAt="bottom"
-                        orient="bottom"
-                        ticks={6} />
-                    <YAxis
-                        axisAt="right"
-                        orient="right"
-                        ticks={5} />
+                    yExtents={this.yExtents}>
+                    <AreaSeries yAccessor={this.yAccessor} />
+                    <XAxis ticks={6} />
+                    <YAxis ticks={5} />
                 </Chart>
             </ChartCanvas>
         );
     }
 
-    private readonly areaSeriesAccessor = (data: IOHLCData) => {
+    private readonly yAccessor = (data: IOHLCData) => {
         return data.close;
     }
 
-    private readonly candleChartExtents = (data: IOHLCData) => {
+    private readonly yExtents = (data: IOHLCData) => {
         return [data.high, data.low];
     }
 }

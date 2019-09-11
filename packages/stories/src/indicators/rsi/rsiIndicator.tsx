@@ -66,14 +66,8 @@ class RSIIndicator extends React.Component<RSIIndicatorProps> {
                 <Chart
                     id={1}
                     yExtents={[0, 100]}>
-                    <XAxis
-                        axisAt="bottom"
-                        orient="bottom"
-                        ticks={6} />
-                    <YAxis
-                        axisAt="right"
-                        orient="right"
-                        tickValues={[30, 50, 70]} />
+                    <XAxis ticks={6} />
+                    <YAxis tickValues={[30, 50, 70]} />
 
                     <RSISeries yAccessor={(d: any) => d.rsi} />
 

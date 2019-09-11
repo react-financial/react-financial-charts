@@ -55,22 +55,16 @@ class BasicCandlestick extends React.Component<BasicCandlestickProps> {
                 xExtents={xExtents}>
                 <Chart
                     id={1}
-                    yExtents={this.candleChartExtents}>
+                    yExtents={this.yExtents}>
                     <CandlestickSeries />
-                    <XAxis
-                        axisAt="bottom"
-                        orient="bottom"
-                        ticks={6} />
-                    <YAxis
-                        axisAt="right"
-                        orient="right"
-                        ticks={5} />
+                    <XAxis ticks={6} />
+                    <YAxis ticks={5} />
                 </Chart>
             </ChartCanvas>
         );
     }
 
-    private readonly candleChartExtents = (data: IOHLCData) => {
+    private readonly yExtents = (data: IOHLCData) => {
         return [data.high, data.low];
     }
 }

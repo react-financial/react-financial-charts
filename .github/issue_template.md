@@ -1,7 +1,8 @@
 #### I'm submitting a...
 
-- [ ] bug report
-- [ ] feature request
+- [ ] bug
+- [ ] feature
+- [ ] chore
 
 #### What is the current behavior
 

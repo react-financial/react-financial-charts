@@ -4,9 +4,10 @@ import * as React from "react";
 import { Chart, ChartCanvas } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts/lib/axes";
 import { CrossHairCursor, EdgeIndicator, MouseCoordinateX, MouseCoordinateY } from "react-financial-charts/lib/coordinates";
+import { ema } from "react-financial-charts/lib/indicator";
 import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
-import { BarSeries, CandlestickSeries } from "react-financial-charts/lib/series";
-import { OHLCTooltip } from "react-financial-charts/lib/tooltip";
+import { BarSeries, CandlestickSeries, LineSeries } from "react-financial-charts/lib/series";
+import { MovingAverageTooltip, OHLCTooltip } from "react-financial-charts/lib/tooltip";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData, withOHLCData, withSize } from "../../data";
 
@@ -34,6 +35,22 @@ class StockChart extends React.Component<StockChartProps> {
             width,
         } = this.props;
 
+        const ema12 = ema()
+            // @ts-ignore
+            .id(1)
+            .options({ windowSize: 12 })
+            .merge((d: any, c: any) => { d.ema12 = c; })
+            .accessor((d: any) => d.ema12);
+
+        const ema26 = ema()
+            // @ts-ignore
+            .id(2)
+            .options({ windowSize: 26 })
+            .merge((d: any, c: any) => { d.ema26 = c; })
+            .accessor((d: any) => d.ema26);
+
+        const calculatedData = ema26(ema12(initialData));
+
         const { margin, xScaleProvider } = this;
 
         const {
@@ -41,7 +58,7 @@ class StockChart extends React.Component<StockChartProps> {
             xScale,
             xAccessor,
             displayXAccessor,
-        } = xScaleProvider(initialData);
+        } = xScaleProvider(calculatedData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -91,6 +108,8 @@ class StockChart extends React.Component<StockChartProps> {
                     id={3}
                     yExtents={this.candleChartExtents}>
                     <CandlestickSeries />
+                    <LineSeries yAccessor={ema26.accessor()} stroke={ema26.stroke()} />
+                    <LineSeries yAccessor={ema12.accessor()} stroke={ema12.stroke()} />
                     <MouseCoordinateX displayFormat={this.timeDisplayFormat} />
                     <MouseCoordinateY displayFormat={this.pricesDisplayFormat} />
                     <EdgeIndicator
@@ -99,6 +118,23 @@ class StockChart extends React.Component<StockChartProps> {
                         lineStroke={this.openCloseColor}
                         displayFormat={this.pricesDisplayFormat}
                         yAccessor={this.yEdgeIndicator} />
+                    <MovingAverageTooltip
+                        origin={[8, 24]}
+                        options={[
+                            {
+                                yAccessor: ema26.accessor(),
+                                type: "EMA",
+                                stroke: ema26.stroke(),
+                                windowSize: ema26.options().windowSize,
+                            },
+                            {
+                                yAccessor: ema12.accessor(),
+                                type: "EMA",
+                                stroke: ema12.stroke(),
+                                windowSize: ema12.options().windowSize,
+                            },
+                        ]}
+                    />
                 </Chart>
                 <CrossHairCursor />
             </ChartCanvas>

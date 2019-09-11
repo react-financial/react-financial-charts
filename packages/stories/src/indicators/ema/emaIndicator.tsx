@@ -81,7 +81,7 @@ class EMAIndicator extends React.Component<ChartProps> {
                     <LineSeries yAccessor={ema12.accessor()} stroke={ema12.stroke()} />
 
                     <MovingAverageTooltip
-                        origin={[8, 16]}
+                        origin={[8, 0]}
                         options={[
                             {
                                 yAccessor: ema26.accessor(),

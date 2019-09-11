@@ -3,8 +3,8 @@ import * as React from "react";
 import EMAIndicator from "./emaIndicator";
 
 storiesOf("Indicators", module)
-    .add("EMA", () => {
-        return (
-            <EMAIndicator />
-        );
+    .add("EMA", () => <EMAIndicator />, {
+        options: {
+            showPanel: true,
+        },
     });

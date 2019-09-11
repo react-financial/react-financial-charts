@@ -4,7 +4,7 @@ import { strokeDashTypes } from "../utils";
 import Axis from "./Axis";
 
 interface XAxisProps {
-    readonly axisAt: number | "top" | "bottom" | "middle";
+    readonly axisAt?: number | "top" | "bottom" | "middle";
     readonly className?: string;
     readonly domainClassName?: string;
     readonly fill?: string;
@@ -16,7 +16,7 @@ interface XAxisProps {
     readonly innerTickSize?: number;
     readonly onContextMenu?: any; // func
     readonly onDoubleClick?: any; // func
-    readonly orient: "top" | "bottom";
+    readonly orient?: "top" | "bottom";
     readonly outerTickSize?: number;
     readonly showDomain?: boolean;
     readonly showTicks?: boolean;
@@ -42,30 +42,32 @@ interface XAxisProps {
 export class XAxis extends React.Component<XAxisProps> {
 
     public static defaultProps = {
+        axisAt: "bottom",
         className: "react-financial-charts-x-axis",
         domainClassName: "react-financial-charts-axis-domain",
         fill: "none",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
+        fontSize: 12,
+        fontWeight: 400,
+        getMouseDelta: (startXY: [number, number], mouseXY: [number, number]) => startXY[0] - mouseXY[0],
+        opacity: 1,
+        orient: "bottom",
+        outerTickSize: 0,
+        innerTickSize: 5,
         showTicks: true,
         showTickLabel: true,
         showDomain: true,
         stroke: "#000000",
         strokeWidth: 1,
         strokeOpacity: 1,
-        opacity: 1,
-        outerTickSize: 0,
-        innerTickSize: 5,
         ticks: 10,
         tickPadding: 6,
         tickLabelFill: "#000000",
         tickStroke: "#000000",
         tickStrokeOpacity: 1,
-        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
-        fontSize: 12,
-        fontWeight: 400,
         xZoomHeight: 25,
         zoomEnabled: true,
         zoomCursorClassName: "react-financial-charts-ew-resize-cursor",
-        getMouseDelta: (startXY: [number, number], mouseXY: [number, number]) => startXY[0] - mouseXY[0],
     };
 
     public static contextTypes = {

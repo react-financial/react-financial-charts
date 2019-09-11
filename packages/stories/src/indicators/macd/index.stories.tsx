@@ -3,8 +3,8 @@ import * as React from "react";
 import MACDIndicator from "./macdIndicator";
 
 storiesOf("Indicators", module)
-    .add("MACD", () => {
-        return (
-            <MACDIndicator />
-        );
+    .add("MACD", () => <MACDIndicator />, {
+        options: {
+            showPanel: true,
+        },
     });

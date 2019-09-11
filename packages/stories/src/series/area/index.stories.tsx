@@ -3,8 +3,8 @@ import * as React from "react";
 import BasicAreaSeries from "./basicAreaSeries";
 
 storiesOf("Series", module)
-    .add("Area", () => {
-        return (
-            <BasicAreaSeries />
-        );
+    .add("Area", () => <BasicAreaSeries />, {
+        options: {
+            showPanel: true,
+        },
     });

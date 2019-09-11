@@ -69,14 +69,10 @@ class StockChart extends React.Component<StockChartProps> {
                     yExtents={this.candleChartExtents}>
                     <XAxis
                         innerTickSize={-1 * gridHeight}
-                        axisAt="bottom"
-                        orient="bottom"
                         tickStroke="#e0e3eb"
                         ticks={6} />
                     <YAxis
                         innerTickSize={-1 * gridWidth}
-                        axisAt="right"
-                        orient="right"
                         tickFormat={this.pricesDisplayFormat}
                         tickStroke="#e0e3eb"
                         ticks={5} />
@@ -95,18 +91,10 @@ class StockChart extends React.Component<StockChartProps> {
                     id={3}
                     yExtents={this.candleChartExtents}>
                     <CandlestickSeries />
-                    <MouseCoordinateX
-                        at="bottom"
-                        orient="bottom"
-                        displayFormat={this.timeDisplayFormat} />
-                    <MouseCoordinateY
-                        at="right"
-                        orient="right"
-                        displayFormat={this.pricesDisplayFormat} />
+                    <MouseCoordinateX displayFormat={this.timeDisplayFormat} />
+                    <MouseCoordinateY displayFormat={this.pricesDisplayFormat} />
                     <EdgeIndicator
                         itemType="last"
-                        orient="right"
-                        edgeAt="right"
                         fill={this.openCloseColor}
                         lineStroke={this.openCloseColor}
                         displayFormat={this.pricesDisplayFormat}

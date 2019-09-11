@@ -3,8 +3,8 @@ import * as React from "react";
 import StockChart from "./stockChart";
 
 storiesOf("Showcase|Charts", module)
-    .add("Stockchart", () => {
-        return (
-            <StockChart />
-        );
+    .add("Stockchart", () => <StockChart />, {
+        options: {
+            showPanel: false,
+        },
     });

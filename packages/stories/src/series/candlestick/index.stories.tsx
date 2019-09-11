@@ -3,8 +3,8 @@ import * as React from "react";
 import BasicCandlestickSeries from "./basicCandlestick";
 
 storiesOf("Series", module)
-    .add("Candles", () => {
-        return (
-            <BasicCandlestickSeries />
-        );
+    .add("Candles", () => <BasicCandlestickSeries />, {
+        options: {
+            showPanel: true,
+        },
     });

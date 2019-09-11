@@ -79,14 +79,8 @@ class MACDIndicator extends React.Component<MACDIndicatorProps> {
                 <Chart
                     id={1}
                     yExtents={calculator.accessor()}>
-                    <XAxis
-                        axisAt="bottom"
-                        orient="bottom"
-                        ticks={6} />
-                    <YAxis
-                        axisAt="right"
-                        orient="right"
-                        ticks={2} />
+                    <XAxis ticks={6} />
+                    <YAxis ticks={2} />
 
                     <MACDSeries
                         yAccessor={this.yAccessor}

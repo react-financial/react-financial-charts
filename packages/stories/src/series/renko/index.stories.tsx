@@ -3,8 +3,8 @@ import * as React from "react";
 import BasicRenkoSeries from "./basicRenkoSeries";
 
 storiesOf("Series", module)
-    .add("Renko", () => {
-        return (
-            <BasicRenkoSeries />
-        );
+    .add("Renko", () => <BasicRenkoSeries />, {
+        options: {
+            showPanel: true,
+        },
     });

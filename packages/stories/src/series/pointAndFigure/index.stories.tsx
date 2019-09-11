@@ -3,8 +3,8 @@ import * as React from "react";
 import BasicPointAndFigureSeries from "./basicPointAndFigureSeries";
 
 storiesOf("Series", module)
-    .add("Point & Figure", () => {
-        return (
-            <BasicPointAndFigureSeries />
-        );
+    .add("Point & Figure", () => <BasicPointAndFigureSeries />, {
+        options: {
+            showPanel: true,
+        },
     });

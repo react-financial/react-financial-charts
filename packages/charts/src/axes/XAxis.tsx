@@ -5,43 +5,56 @@ import Axis from "./Axis";
 
 interface XAxisProps {
     readonly axisAt: number | "top" | "bottom" | "middle";
+    readonly className?: string;
+    readonly domainClassName?: string;
+    readonly fill?: string;
     readonly flexTicks?: boolean;
-    readonly orient: "top" | "bottom";
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly fontWeight?: number;
+    readonly getMouseDelta?: (startXY: [number, number], mouseXY: [number, number]) => number;
     readonly innerTickSize?: number;
+    readonly onContextMenu?: any; // func
+    readonly onDoubleClick?: any; // func
+    readonly orient: "top" | "bottom";
     readonly outerTickSize?: number;
+    readonly showDomain?: boolean;
+    readonly showTicks?: boolean;
+    readonly showTickLabel?: boolean;
+    readonly stroke?: string;
+    readonly strokeOpacity?: number;
+    readonly strokeWidth?: number;
     readonly tickFormat?: (data: any) => string;
     readonly tickPadding?: number;
     readonly tickSize?: number;
     readonly tickLabelFill?: string;
     readonly ticks?: number;
     readonly tickStroke?: string;
+    readonly tickStrokeOpacity?: number;
     readonly tickStrokeWidth?: number;
     readonly tickStrokeDasharray?: strokeDashTypes;
     readonly tickValues?: number[];
-    readonly showTicks?: boolean;
-    readonly className?: string;
-    readonly zoomEnabled?: boolean;
-    readonly onContextMenu?: any; // func
-    readonly onDoubleClick?: any; // func
-    readonly getMouseDelta?: (startXY: number[], mouseXY: number[]) => number;
     readonly xZoomHeight?: number;
+    readonly zoomEnabled?: boolean;
+    readonly zoomCursorClassName?: string;
 }
 
 export class XAxis extends React.Component<XAxisProps> {
 
     public static defaultProps = {
+        className: "react-financial-charts-x-axis",
+        domainClassName: "react-financial-charts-axis-domain",
+        fill: "none",
         showTicks: true,
         showTickLabel: true,
         showDomain: true,
-        className: "react-financial-charts-x-axis",
-        ticks: 10,
-        outerTickSize: 0,
-        fill: "none",
         stroke: "#000000",
         strokeWidth: 1,
+        strokeOpacity: 1,
         opacity: 1,
-        domainClassName: "react-financial-charts-axis-domain",
+        outerTickSize: 0,
         innerTickSize: 5,
+        ticks: 10,
         tickPadding: 6,
         tickLabelFill: "#000000",
         tickStroke: "#000000",
@@ -51,7 +64,8 @@ export class XAxis extends React.Component<XAxisProps> {
         fontWeight: 400,
         xZoomHeight: 25,
         zoomEnabled: true,
-        getMouseDelta: (startXY, mouseXY) => startXY[0] - mouseXY[0],
+        zoomCursorClassName: "react-financial-charts-ew-resize-cursor",
+        getMouseDelta: (startXY: [number, number], mouseXY: [number, number]) => startXY[0] - mouseXY[0],
     };
 
     public static contextTypes = {
@@ -62,20 +76,25 @@ export class XAxis extends React.Component<XAxisProps> {
     public render() {
         const {
             getMouseDelta = XAxis.defaultProps.getMouseDelta,
+            outerTickSize = XAxis.defaultProps.outerTickSize,
+            stroke = XAxis.defaultProps.stroke,
+            strokeWidth = XAxis.defaultProps.strokeWidth,
             zoomEnabled,
             ...rest
         } = this.props;
 
-        const { ...moreProps } = helper(this.props, this.context);
+        const { ...moreProps } = this.helper(this.props, this.context);
 
         return (
             <Axis
                 {...rest}
                 {...moreProps}
                 getMouseDelta={getMouseDelta}
+                outerTickSize={outerTickSize}
+                stroke={stroke}
+                strokeWidth={strokeWidth}
                 zoomEnabled={this.props.zoomEnabled && zoomEnabled}
-                axisZoomCallback={this.axisZoomCallback}
-                zoomCursorClassName="react-financial-charts-ew-resize-cursor" />
+                axisZoomCallback={this.axisZoomCallback} />
         );
     }
 
@@ -84,51 +103,52 @@ export class XAxis extends React.Component<XAxisProps> {
 
         xAxisZoom(newXDomain);
     }
-}
 
-function helper(props: XAxisProps, context) {
-    const {
-        axisAt,
-        xZoomHeight = XAxis.defaultProps.xZoomHeight,
-        orient,
-    } = props;
-    const { chartConfig: { width, height } } = context;
+    private readonly helper = (props: XAxisProps, context) => {
+        const {
+            axisAt,
+            xZoomHeight = XAxis.defaultProps.xZoomHeight,
+            orient,
+        } = props;
+        const { chartConfig: { width, height } } = context;
 
-    let axisLocation;
-    const x = 0;
-    const w = width;
-    const h = xZoomHeight;
+        let axisLocation;
+        const x = 0;
+        const w = width;
+        const h = xZoomHeight;
 
-    if (axisAt === "top") {
-        axisLocation = 0;
-    } else if (axisAt === "bottom") {
-        axisLocation = height;
-    } else if (axisAt === "middle") {
-        axisLocation = (height) / 2;
-    } else {
-        axisLocation = axisAt;
+        if (axisAt === "top") {
+            axisLocation = 0;
+        } else if (axisAt === "bottom") {
+            axisLocation = height;
+        } else if (axisAt === "middle") {
+            axisLocation = (height) / 2;
+        } else {
+            axisLocation = axisAt;
+        }
+
+        const y = (orient === "top") ? -xZoomHeight : 0;
+
+        return {
+            transform: [0, axisLocation],
+            range: [0, width],
+            getScale: this.getXScale,
+            bg: { x, y, h, w },
+        };
     }
 
-    const y = (orient === "top") ? -xZoomHeight : 0;
+    private readonly getXScale = (moreProps) => {
+        const { xScale: scale, width } = moreProps;
 
-    return {
-        transform: [0, axisLocation],
-        range: [0, width],
-        getScale: getXScale,
-        bg: { x, y, h, w },
-    };
-}
+        if (scale.invert) {
+            const trueRange = [0, width];
+            const trueDomain = trueRange.map(scale.invert);
+            return scale
+                .copy()
+                .domain(trueDomain)
+                .range(trueRange);
+        }
 
-function getXScale(moreProps) {
-    const { xScale: scale, width } = moreProps;
-
-    if (scale.invert) {
-        const trueRange = [0, width];
-        const trueDomain = trueRange.map(scale.invert);
-        return scale.copy()
-            .domain(trueDomain)
-            .range(trueRange);
+        return scale;
     }
-
-    return scale;
 }

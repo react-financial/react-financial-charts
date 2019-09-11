@@ -9,13 +9,36 @@ import { AxisZoomCapture } from "./AxisZoomCapture";
 import { colorToRGBA, first, getStrokeDasharray, identity, isDefined, isNotDefined, last, strokeDashTypes, zipper } from "../utils";
 
 interface AxisProps {
+    readonly axisZoomCallback?: any; // func
+    readonly bg: {
+        h: number;
+        x: number;
+        w: number;
+        y: number;
+    };
+    readonly className?: string;
+    readonly domainClassName?: string;
+    readonly edgeClip: boolean;
+    readonly fill?: string;
     readonly flexTicks?: boolean;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fontWeight?: number;
-    readonly orient?: "top" | "left" | "right" | "bottom";
+    readonly getMouseDelta: any; // func
+    readonly getScale: any; // func
     readonly innerTickSize?: number;
-    readonly outerTickSize?: number;
+    readonly inverted?: boolean;
+    readonly onContextMenu?: any; // func
+    readonly onDoubleClick?: any; // func
+    readonly orient?: "top" | "left" | "right" | "bottom";
+    readonly outerTickSize: number;
+    readonly range: number[];
+    readonly showDomain?: boolean;
+    readonly showTicks?: boolean;
+    readonly showTickLabel?: boolean;
+    readonly stroke: string;
+    readonly strokeOpacity?: number;
+    readonly strokeWidth: number;
     readonly tickFormat?: (data: any) => string;
     readonly tickPadding?: number;
     readonly tickSize?: number;
@@ -28,43 +51,28 @@ interface AxisProps {
     readonly tickValues?: number[] | any; // func
     readonly tickInterval?: number;
     readonly tickIntervalFunction?: any; // func
-    readonly showDomain?: boolean;
-    readonly showTicks?: boolean;
-    readonly showTickLabel?: boolean;
-    readonly className?: string;
-    readonly axisZoomCallback?: any; // func
-    readonly zoomEnabled?: boolean;
-    readonly inverted?: boolean;
-    readonly zoomCursorClassName?: string;
     readonly transform: number[];
-    readonly range: number[];
-    readonly getMouseDelta: any; // func
-    readonly getScale: any; // func
-    readonly bg: {
-        h: number;
-        x: number;
-        w: number;
-        y: number;
-    };
-    readonly edgeClip: boolean;
-    readonly onContextMenu?: any; // func
-    readonly onDoubleClick?: any; // func
+    readonly zoomEnabled?: boolean;
+    readonly zoomCursorClassName?: string;
 }
 
 class Axis extends React.Component<AxisProps> {
 
     public static defaultProps = {
+        edgeClip: false,
         zoomEnabled: false,
         zoomCursorClassName: "",
-        edgeClip: false,
     };
 
-    private node;
+    private node?: GenericChartComponent;
 
     public render() {
-        const { bg, axisZoomCallback, className, zoomCursorClassName, zoomEnabled, getScale, inverted } = this.props;
-        const { transform, getMouseDelta, edgeClip } = this.props;
-        const { onContextMenu, onDoubleClick } = this.props;
+        const {
+            bg, axisZoomCallback, className,
+            zoomCursorClassName, zoomEnabled, getScale,
+            inverted, transform, getMouseDelta,
+            edgeClip, onContextMenu, onDoubleClick,
+        } = this.props;
 
         const zoomCapture = zoomEnabled
             ? <AxisZoomCapture
@@ -97,12 +105,12 @@ class Axis extends React.Component<AxisProps> {
         );
     }
 
-    private readonly saveNode = (node) => {
+    private readonly saveNode = (node: GenericChartComponent) => {
         this.node = node;
     }
 
     private readonly getMoreProps = () => {
-        return this.node.getMoreProps();
+        return this.node!.getMoreProps();
     }
 
     private readonly renderSVG = (moreProps) => {
@@ -118,13 +126,16 @@ class Axis extends React.Component<AxisProps> {
         </g>;
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { showDomain, showTicks, transform, range, getScale } = this.props;
 
         ctx.save();
         ctx.translate(transform[0], transform[1]);
 
-        if (showDomain) { drawAxisLine(ctx, this.props, range); }
+        if (showDomain) {
+            drawAxisLine(ctx, this.props, range);
+        }
+
         if (showTicks) {
             const tickProps = tickHelper(this.props, getScale(moreProps));
             drawTicks(ctx, tickProps);
@@ -136,14 +147,25 @@ class Axis extends React.Component<AxisProps> {
 
 function tickHelper(props, scale) {
     const {
-        orient, innerTickSize, tickFormat, tickPadding,
-        tickLabelFill, tickStrokeWidth, tickStrokeDasharray,
-        fontSize, fontFamily, fontWeight, showTicks, flexTicks,
+        orient,
+        innerTickSize,
+        tickFormat,
+        tickPadding,
+        tickLabelFill,
+        tickStrokeWidth,
+        tickStrokeDasharray,
+        fontSize,
+        fontFamily,
+        fontWeight,
+        showTicks,
+        flexTicks,
         showTickLabel,
-    } = props;
-    const {
-        ticks: tickArguments, tickValues: tickValuesProp,
-        tickStroke, tickStrokeOpacity, tickInterval, tickIntervalFunction,
+        ticks: tickArguments,
+        tickValues: tickValuesProp,
+        tickStroke,
+        tickStrokeOpacity,
+        tickInterval,
+        tickIntervalFunction,
     } = props;
 
     let tickValues;
@@ -172,7 +194,7 @@ function tickHelper(props, scale) {
 
     const format = isNotDefined(tickFormat)
         ? baseFormat
-        : (d) => tickFormat(d) || "";
+        : (d: any) => tickFormat(d) || "";
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
     const tickSpacing = Math.max(innerTickSize, 0) + tickPadding;
@@ -266,9 +288,8 @@ function tickHelper(props, scale) {
     };
 }
 
-function axisLineSVG(props, range) {
-    const { orient, outerTickSize } = props;
-    const { domainClassName, fill, stroke, strokeWidth, opacity } = props;
+function axisLineSVG(props: AxisProps, range) {
+    const { domainClassName, orient, outerTickSize, fill, stroke, strokeWidth, strokeOpacity } = props;
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
 
@@ -285,22 +306,22 @@ function axisLineSVG(props, range) {
             className={domainClassName}
             d={d}
             fill={fill}
-            opacity={opacity}
+            opacity={strokeOpacity}
             stroke={stroke}
             strokeWidth={strokeWidth} >
         </path>
     );
 }
 
-function drawAxisLine(ctx, props, range) {
+function drawAxisLine(ctx: CanvasRenderingContext2D, props: AxisProps, range) {
 
-    const { orient, outerTickSize, stroke, strokeWidth, opacity } = props;
+    const { orient, outerTickSize, stroke, strokeWidth, strokeOpacity } = props;
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
     const xAxis = (orient === "bottom" || orient === "top");
 
     ctx.lineWidth = strokeWidth;
-    ctx.strokeStyle = colorToRGBA(stroke, opacity);
+    ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
 
     ctx.beginPath();
 
@@ -409,7 +430,7 @@ function axisTicksSVG(props, scale) {
     );
 }
 
-function drawTicks(ctx, result) {
+function drawTicks(ctx: CanvasRenderingContext2D, result) {
 
     const { tickStroke, tickStrokeOpacity, tickLabelFill } = result;
     const { textAnchor, fontSize, fontFamily, fontWeight, ticks, showTickLabel } = result;
@@ -433,7 +454,7 @@ function drawTicks(ctx, result) {
     }
 }
 
-function drawEachTick(ctx, tick, result) {
+function drawEachTick(ctx: CanvasRenderingContext2D, tick, result) {
     const { tickStrokeWidth, tickStrokeDasharray } = result;
 
     ctx.beginPath();
@@ -441,11 +462,14 @@ function drawEachTick(ctx, tick, result) {
     ctx.moveTo(tick.x1, tick.y1);
     ctx.lineTo(tick.x2, tick.y2);
     ctx.lineWidth = tickStrokeWidth;
-    ctx.setLineDash(getStrokeDasharray(tickStrokeDasharray).split(","));
+
+    const lineDash = getStrokeDasharray(tickStrokeDasharray).split(",").map((dash) => Number(dash));
+
+    ctx.setLineDash(lineDash);
     ctx.stroke();
 }
 
-function drawEachTickLabel(ctx, tick, result) {
+function drawEachTickLabel(ctx: CanvasRenderingContext2D, tick, result) {
     const { canvas_dy, format } = result;
 
     ctx.beginPath();

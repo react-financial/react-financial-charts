@@ -24,7 +24,7 @@ const defaultCustomX = (props: CrossHairCursorProps, moreProps) => {
 export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
 
     public static defaultProps = {
-        stroke: "#4a4a4a",
+        stroke: "#37474F",
         opacity: 0.8,
         strokeDasharray: "Dash",
         snapX: true,

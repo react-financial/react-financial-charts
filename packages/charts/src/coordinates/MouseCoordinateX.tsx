@@ -46,7 +46,7 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
         strokeWidth: 1,
         orient: "bottom",
         at: "bottom",
-        fill: "#4a4a4a",
+        fill: "#37474F",
         opacity: 1,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,

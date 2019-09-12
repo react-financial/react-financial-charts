@@ -134,7 +134,7 @@ jobs:
       - run:
           name: Deploy documentation
           command: |
-            sudo npm install -g --silent gh-pages
+            npm install -g --silent gh-pages
             git config user.email "ci-build@reactivemarkets.com"
             git config user.name "ci-build"
             gh-pages --message "docs: updating from ${CIRCLE_SHA1} [skip ci]" --dist docs

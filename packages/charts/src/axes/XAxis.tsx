@@ -79,6 +79,7 @@ export class XAxis extends React.Component<XAxisProps> {
         const {
             getMouseDelta = XAxis.defaultProps.getMouseDelta,
             outerTickSize = XAxis.defaultProps.outerTickSize,
+            showTicks,
             stroke = XAxis.defaultProps.stroke,
             strokeWidth = XAxis.defaultProps.strokeWidth,
             zoomEnabled,
@@ -93,9 +94,10 @@ export class XAxis extends React.Component<XAxisProps> {
                 {...moreProps}
                 getMouseDelta={getMouseDelta}
                 outerTickSize={outerTickSize}
+                showTicks={showTicks}
                 stroke={stroke}
                 strokeWidth={strokeWidth}
-                zoomEnabled={this.props.zoomEnabled && zoomEnabled}
+                zoomEnabled={zoomEnabled && showTicks}
                 axisZoomCallback={this.axisZoomCallback} />
         );
     }

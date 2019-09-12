@@ -12,7 +12,10 @@ jobs:
 
       - run:
           name: restore-packages
-          command: npm ci
+          command: |
+            if [ ! -d node_modules ]; then
+              npm ci
+            fi
 
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
@@ -31,6 +34,37 @@ jobs:
           name: test
           command: npm test
 
+  build-coverage:
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+
+      - run:
+          name: restore-packages
+          command: |
+            if [ ! -d node_modules ]; then
+              npm ci
+            fi
+
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+
+      - run:
+          name: test
+          command: npm test
+
+      - run:
+          name: coverage
+          command: |
+            npm install -g --silent codecov
+            codecov -f packages/charts/coverage/*.json
+
   build-docs:
     docker:
       - image: circleci/node:10.15
@@ -42,7 +76,10 @@ jobs:
 
       - run:
           name: restore-packages
-          command: npm ci
+          command: |
+            if [ ! -d node_modules ]; then
+              npm ci
+            fi
 
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
@@ -69,7 +106,10 @@ jobs:
 
       - run:
           name: restore-packages
-          command: npm ci
+          command: |
+            if [ ! -d node_modules ]; then
+              npm ci
+            fi
 
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
@@ -107,6 +147,10 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - build-coverage:
+          filters:
+            branches:
+              only: master
       - build-docs:
           filters:
             branches:

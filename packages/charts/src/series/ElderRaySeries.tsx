@@ -1,42 +1,50 @@
 import * as React from "react";
 
+import { strokeDashTypes } from "../utils";
 import { OverlayBarSeries } from "./OverlayBarSeries";
 import { StraightLine } from "./StraightLine";
 
 interface ElderRaySeriesProps {
-    readonly className?: string;
-    readonly yAccessor: any; // func
-    readonly opacity?: number;
-    readonly stroke?: boolean;
-    readonly bullPowerFill?: string;
     readonly bearPowerFill?: string;
+    readonly bullPowerFill?: string;
+    readonly className?: string;
+    readonly clip?: boolean;
+    readonly stroke?: boolean;
+    readonly strokeOpacity?: number;
     readonly straightLineStroke?: string;
     readonly straightLineOpacity?: number;
+    readonly straightLineStrokeDasharray?: strokeDashTypes;
     readonly widthRatio?: number;
-    readonly clip?: boolean;
+    readonly yAccessor: (data: any) => { bearPower: number, bullPower: number };
 }
 
 export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
 
     public static defaultProps = {
+        bearPowerFill: "#ef5350",
+        bullPowerFill: "#26a69a",
         className: "react-financial-charts-elderray-series",
-        straightLineStroke: "#000000",
-        straightLineOpacity: 0.3,
-        opacity: 0.5,
-        stroke: true,
-        bullPowerFill: "#6BA583",
-        bearPowerFill: "#FF0000",
-        widthRatio: 0.8,
         clip: true,
+        opacity: 0.7,
+        stroke: true,
+        strokeOpacity: 0.7,
+        straightLineStroke: "#000000",
+        straightLineStrokeDasharray: "Dash",
+        straightLineOpacity: 0.7,
+        widthRatio: 0.8,
     };
 
     public render() {
-        const { className, opacity, stroke,
+        const {
+            className,
+            clip,
+            stroke,
+            strokeOpacity,
             straightLineStroke,
+            straightLineStrokeDasharray,
             straightLineOpacity,
             widthRatio,
         } = this.props;
-        const { clip } = this.props;
 
         return (
             <g className={className}>
@@ -45,7 +53,7 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
                     className="react-financial-charts-elderray-bar"
                     stroke={stroke}
                     fill={this.fillForEachBar}
-                    opacity={opacity}
+                    opacity={strokeOpacity}
                     widthRatio={widthRatio}
                     clip={clip}
                     yAccessor={[this.yAccessorBullTop, this.yAccessorBearTop, this.yAccessorBullBottom, this.yAccessorBearBottom]} />
@@ -53,27 +61,28 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
                     className="react-financial-charts-elderray-straight-line"
                     yValue={0}
                     stroke={straightLineStroke}
+                    strokeDasharray={straightLineStrokeDasharray}
                     opacity={straightLineOpacity} />
             </g>
         );
     }
 
-    private readonly yAccessorBullTop = (d) => {
+    private readonly yAccessorBullTop = (d: any) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && (yAccessor(d).bullPower > 0 ? yAccessor(d).bullPower : undefined);
     }
 
-    private readonly yAccessorBearTop = (d) => {
+    private readonly yAccessorBearTop = (d: any) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && (yAccessor(d).bearPower > 0 ? yAccessor(d).bearPower : undefined);
     }
 
-    private readonly yAccessorBullBottom = (d) => {
+    private readonly yAccessorBullBottom = (d: any) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && (yAccessor(d).bullPower < 0 ? 0 : undefined);
     }
 
-    private readonly yAccessorBearBottom = (d) => {
+    private readonly yAccessorBearBottom = (d: any) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && (yAccessor(d).bullPower < 0
             || yAccessor(d).bullPower * yAccessor(d).bearPower < 0 // bullPower is +ve and bearPower is -ve

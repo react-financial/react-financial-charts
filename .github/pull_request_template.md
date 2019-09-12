@@ -1,8 +1,6 @@
 <!--
 Thank you for your pull request. Please provide a description above and review
 the requirements below.
-
-Contributors guide: ../CONTRIBUTING.md
 -->
 
 #### Checklist

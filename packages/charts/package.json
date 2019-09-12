@@ -1,6 +1,6 @@
 {
   "name": "react-financial-charts",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "React charts specific to finance.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",

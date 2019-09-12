@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/reactivemarkets/react-financial-charts/compare/v0.1.5...v0.2.0) (2019-09-12)
+
+
+### Bug Fixes
+
+* **axis:** only allow zoom if the ticks are showing ([fb96940](https://github.com/reactivemarkets/react-financial-charts/commit/fb96940))
+
+
+### Features
+
+* **elder-ray:** allowing stroke dash to be set on the zero line ([71e9a9b](https://github.com/reactivemarkets/react-financial-charts/commit/71e9a9b))
+
+
+
+
+
 ## [0.1.5](https://github.com/reactivemarkets/react-financial-charts/compare/v0.1.4...v0.1.5) (2019-09-11)
 
 

@@ -4,10 +4,10 @@ import * as React from "react";
 import { Chart, ChartCanvas } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts/lib/axes";
 import { CrossHairCursor, EdgeIndicator, MouseCoordinateX, MouseCoordinateY } from "react-financial-charts/lib/coordinates";
-import { ema } from "react-financial-charts/lib/indicator";
+import { elderRay, ema } from "react-financial-charts/lib/indicator";
 import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
-import { BarSeries, CandlestickSeries, LineSeries } from "react-financial-charts/lib/series";
-import { MovingAverageTooltip, OHLCTooltip } from "react-financial-charts/lib/tooltip";
+import { BarSeries, CandlestickSeries, ElderRaySeries, LineSeries } from "react-financial-charts/lib/series";
+import { MovingAverageTooltip, OHLCTooltip, SingleValueTooltip } from "react-financial-charts/lib/tooltip";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData, withOHLCData, withSize } from "../../data";
 
@@ -49,7 +49,9 @@ class StockChart extends React.Component<StockChartProps> {
             .merge((d: any, c: any) => { d.ema26 = c; })
             .accessor((d: any) => d.ema26);
 
-        const calculatedData = ema26(ema12(initialData));
+        const elder: any = elderRay();
+
+        const calculatedData = elder(ema26(ema12(initialData)));
 
         const { margin, xScaleProvider } = this;
 
@@ -66,8 +68,12 @@ class StockChart extends React.Component<StockChartProps> {
 
         const gridWidth = width - margin.left - margin.right;
         const gridHeight = height - margin.top - margin.bottom;
-        const barChartHeight = gridHeight / 2;
-        const barChartOrigin = (_: number, h: number) => [0, h - (gridHeight / 2)];
+
+        const elderRayHeight = 100;
+        const elderRayOrigin = (_: number, h: number) => [0, h - elderRayHeight];
+        const barChartHeight = gridHeight / 4;
+        const barChartOrigin = (_: number, h: number) => [0, h - barChartHeight - elderRayHeight];
+        const chartHeight = gridHeight - elderRayHeight;
 
         return (
             <ChartCanvas
@@ -83,11 +89,9 @@ class StockChart extends React.Component<StockChartProps> {
                 xExtents={xExtents}>
                 <Chart
                     id={1}
+                    height={chartHeight}
                     yExtents={this.candleChartExtents}>
-                    <XAxis
-                        innerTickSize={-1 * gridHeight}
-                        tickStroke="#e0e3eb"
-                        ticks={6} />
+                    <XAxis showTicks={false} />
                     <YAxis
                         innerTickSize={-1 * gridWidth}
                         tickFormat={this.pricesDisplayFormat}
@@ -106,11 +110,11 @@ class StockChart extends React.Component<StockChartProps> {
                 </Chart>
                 <Chart
                     id={3}
+                    height={chartHeight}
                     yExtents={this.candleChartExtents}>
                     <CandlestickSeries />
                     <LineSeries yAccessor={ema26.accessor()} stroke={ema26.stroke()} />
                     <LineSeries yAccessor={ema12.accessor()} stroke={ema12.stroke()} />
-                    <MouseCoordinateX displayFormat={this.timeDisplayFormat} />
                     <MouseCoordinateY displayFormat={this.pricesDisplayFormat} />
                     <EdgeIndicator
                         itemType="last"
@@ -135,6 +139,29 @@ class StockChart extends React.Component<StockChartProps> {
                             },
                         ]}
                     />
+                </Chart>
+                <Chart
+                    id={4}
+                    height={elderRayHeight}
+                    yExtents={[0, elder.accessor()]}
+                    origin={elderRayOrigin}
+                    padding={{ top: 8, bottom: 8 }}>
+                    <XAxis
+                        innerTickSize={-1 * gridHeight}
+                        tickStroke="#e0e3eb"
+                        ticks={6} />
+                    <YAxis ticks={4} tickFormat={this.pricesDisplayFormat} />
+
+                    <MouseCoordinateX displayFormat={this.timeDisplayFormat} />
+                    <MouseCoordinateY displayFormat={this.pricesDisplayFormat} />
+
+                    <ElderRaySeries yAccessor={elder.accessor()} />
+
+                    <SingleValueTooltip
+                        yAccessor={elder.accessor()}
+                        yLabel="Elder Ray"
+                        yDisplayFormat={(d: any) => `${this.pricesDisplayFormat(d.bullPower)}, ${this.pricesDisplayFormat(d.bearPower)}`}
+                        origin={[8, 16]} />
                 </Chart>
                 <CrossHairCursor />
             </ChartCanvas>

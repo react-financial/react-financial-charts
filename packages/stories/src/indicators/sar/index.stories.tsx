@@ -1,10 +1,10 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import markdown from "./notes.md";
-import RSIIndicator from "./rsiIndicator";
+import SARIndicator from "./sarIndicator";
 
 storiesOf("Indicators", module)
-    .add("RSI", () => <RSIIndicator />, {
+    .add("SAR", () => <SARIndicator />, {
         notes: {
             markdown,
         },

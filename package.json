@@ -29,6 +29,7 @@
   "devDependencies": {
     "@babel/core": "^7.6.0",
     "@storybook/addon-knobs": "^5.1.11",
+    "@storybook/addon-notes": "^5.1.11",
     "@storybook/react": "^5.1.11",
     "@types/d3-array": "^2.0.0",
     "@types/d3-collection": "^1.0.8",

@@ -1,10 +1,10 @@
-import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { KagiSeries } from "react-financial-charts/lib/series";
 import BasicKagiSeries from "./basicKagiSeries";
 
-storiesOf("Series", module)
-    .add("Kagi", () => <BasicKagiSeries />, {
-        options: {
-            showPanel: true,
-        },
-    });
+export default {
+    title: "Visualization|Series/Kagi",
+    component: KagiSeries,
+};
+
+export const basic = () => <BasicKagiSeries />;

@@ -1,14 +1,13 @@
-import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { LineSeries } from "react-financial-charts/lib/series";
 import EMAIndicator from "./emaIndicator";
-import markdown from "./notes.md";
 
-storiesOf("Indicators", module)
-    .add("EMA", () => <EMAIndicator />, {
-        notes: {
-            markdown,
-        },
-        options: {
-            showPanel: true,
-        },
-    });
+export default {
+    title: "Visualization|Indicator/EMA",
+    component: LineSeries,
+    parameters: {
+        componentSubtitle: "Moving averages smooth the price data to form a trend following indicator.",
+    },
+};
+
+export const basic = () => <EMAIndicator />;

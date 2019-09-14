@@ -1,17 +1,20 @@
 import { addParameters, configure } from "@storybook/react";
-import theme from "./theme";
+import { create } from '@storybook/theming';
 
 addParameters({
     options: {
-        theme,
+        theme: create({
+            base: "light",
+            brandTitle: 'React Financial Charts',
+            brandUrl: 'https://github.com/reactivemarkets/react-financial-charts',
+        }),
     },
 });
 
-function loadStories() {
-    const req = require.context("../src", true, /.stories.tsx$/);
-    req
-        .keys()
-        .forEach(filename => req(filename));
-}
-
-configure(loadStories, module);
+configure(
+    [
+        require.context("../src", true, /\.stories\.mdx$/),
+        require.context("../src", true, /\.stories\.tsx$/),
+    ],
+    module
+);

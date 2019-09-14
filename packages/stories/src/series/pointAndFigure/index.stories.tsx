@@ -1,10 +1,10 @@
-import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { PointAndFigureSeries } from "react-financial-charts/lib/series";
 import BasicPointAndFigureSeries from "./basicPointAndFigureSeries";
 
-storiesOf("Series", module)
-    .add("Point & Figure", () => <BasicPointAndFigureSeries />, {
-        options: {
-            showPanel: true,
-        },
-    });
+export default {
+    title: "Visualization|Series/Point & Figure",
+    component: PointAndFigureSeries,
+};
+
+export const basic = () => <BasicPointAndFigureSeries />;

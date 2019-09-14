@@ -6,12 +6,12 @@ interface WithSizeProps {
     readonly height: number;
 }
 
-export function withSize() {
+export function withSize(minHeight = 300) {
     return <TProps extends WithSizeProps>(OriginalComponent: React.ComponentClass<TProps>) => {
         return class WithSize extends React.Component<Omit<TProps, "width" | "height">> {
             public render() {
                 return (
-                    <AutoSizer>
+                    <AutoSizer style={{ minHeight }}>
                         {({ height, width }) => {
                             return (
                                 <OriginalComponent

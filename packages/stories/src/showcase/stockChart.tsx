@@ -9,7 +9,7 @@ import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/li
 import { BarSeries, CandlestickSeries, ElderRaySeries, LineSeries } from "react-financial-charts/lib/series";
 import { MovingAverageTooltip, OHLCTooltip, SingleValueTooltip } from "react-financial-charts/lib/tooltip";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
-import { IOHLCData, withOHLCData, withSize } from "../../data";
+import { IOHLCData, withOHLCData, withSize } from "../data";
 
 interface StockChartProps {
     readonly data: IOHLCData[];
@@ -189,4 +189,4 @@ class StockChart extends React.Component<StockChartProps> {
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(StockChart)));
+export default withOHLCData()(withSize(600)(withDeviceRatio()(StockChart)));

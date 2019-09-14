@@ -1,14 +1,16 @@
-import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import markdown from "./notes.md";
+import { SARSeries } from "react-financial-charts/lib/series";
 import SARIndicator from "./sarIndicator";
 
-storiesOf("Indicators", module)
-    .add("SAR", () => <SARIndicator />, {
-        notes: {
-            markdown,
-        },
-        options: {
-            showPanel: true,
-        },
-    });
+export default {
+    title: "Visualization|Indicator/SAR",
+    component: SARSeries,
+    parameters: {
+        componentSubtitle: `SAR stands for 'stop and reverse'.
+        The indicator is below prices as they're rising and above
+        prices as they're falling. In this regard, the indicator
+        stops and reverses when the price trend reverses and breaks above or below the indicator.`,
+    },
+};
+
+export const basic = () => <SARIndicator />;

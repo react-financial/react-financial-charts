@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
         "declaration": true,
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
@@ -10,7 +11,6 @@
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "outDir": "lib",
-        "removeComments": true,
         "sourceMap": true,
         "strict": true,
         "target": "es2017"

@@ -8,22 +8,22 @@ import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 interface BollingerBandTooltipProps {
-    className?: string;
-    yAccessor: any; // func
-    displayValuesFor?: any; // func
-    displayFormat: any; // func
-    origin: number[];
-    onClick?: any; // func
-    options: {
+    readonly className?: string;
+    readonly displayValuesFor?: any; // func
+    readonly displayFormat: any; // func
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly labelFill?: string;
+    readonly origin?: number[];
+    readonly onClick?: any; // func
+    readonly options: {
         sourcePath: string;
         windowSize: number;
         multiplier: number;
         movingAverageType: string;
     };
-    textFill?: string;
-    labelFill?: string;
-    fontFamily?: string;
-    fontSize?: number;
+    readonly textFill?: string;
+    readonly yAccessor?: any; // func
 }
 
 export class BollingerBandTooltip extends React.Component<BollingerBandTooltipProps> {
@@ -32,7 +32,8 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
         className: "react-financial-charts-tooltip react-financial-charts-bollingerband-tooltip",
         displayFormat: format(".2f"),
         displayValuesFor: defaultDisplayValuesFor,
-        origin: [0, 10],
+        origin: [8, 8],
+        yAccessor: (data: any) => data.bb,
     };
 
     public render() {

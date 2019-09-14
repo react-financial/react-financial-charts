@@ -4,30 +4,41 @@ import { AreaOnlySeries } from "./AreaOnlySeries";
 import { LineSeries } from "./LineSeries";
 
 interface BollingerSeriesProps {
-    readonly yAccessor: any; // func
-    readonly className?: string;
     readonly areaClassName?: string;
+    readonly className?: string;
+    readonly fill?: string;
     readonly opacity?: number;
-    readonly type?: string;
-    readonly stroke: {
+    readonly stroke?: {
         top: string,
         middle: string,
         bottom: string,
     };
-    readonly fill: string;
+    readonly yAccessor?: any; // func
 }
 
 export class BollingerSeries extends React.Component<BollingerSeriesProps> {
 
     public static defaultProps = {
-        className: "react-financial-charts-bollinger-band-series",
         areaClassName: "react-financial-charts-bollinger-band-series-area",
-        opacity: 0.2,
+        className: "react-financial-charts-bollinger-band-series",
+        fill: "#26a69a",
+        opacity: 0.05,
+        stroke: {
+            top: "#26a69a",
+            middle: "#812828",
+            bottom: "#26a69a",
+        },
+        yAccessor: (data: any) => data.bb,
     };
 
     public render() {
-        const { areaClassName, className, opacity } = this.props;
-        const { stroke, fill } = this.props;
+        const {
+            areaClassName,
+            className,
+            opacity,
+            stroke = BollingerSeries.defaultProps.stroke,
+            fill,
+        } = this.props;
 
         return (
             <g className={className}>
@@ -47,7 +58,8 @@ export class BollingerSeries extends React.Component<BollingerSeriesProps> {
                     className={areaClassName}
                     yAccessor={this.yAccessorForTop}
                     base={this.yAccessorForScalledBottom}
-                    stroke="none" fill={fill}
+                    stroke="none"
+                    fill={fill}
                     opacity={opacity} />
             </g>
         );

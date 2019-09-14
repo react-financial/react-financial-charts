@@ -147,10 +147,7 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - build-coverage:
-          filters:
-            branches:
-              only: master
+      - build-coverage
       - build-docs:
           filters:
             branches:

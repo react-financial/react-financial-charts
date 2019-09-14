@@ -1,10 +1,10 @@
-import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { CandlestickSeries } from "react-financial-charts/lib/series";
 import BasicHeikinAshiSeries from "./basicHeikinAshiSeries";
 
-storiesOf("Series", module)
-    .add("Heikin Ashi", () => <BasicHeikinAshiSeries />, {
-        options: {
-            showPanel: true,
-        },
-    });
+export default {
+    title: "Visualization|Series/Heikin Ashi",
+    component: CandlestickSeries,
+};
+
+export const basic = () => <BasicHeikinAshiSeries />;

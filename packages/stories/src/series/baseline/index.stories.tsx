@@ -1,10 +1,10 @@
-import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { AlternatingFillAreaSeries } from "react-financial-charts/lib/series";
 import BasicBaselineSeries from "./basicBaselineSeries";
 
-storiesOf("Series", module)
-    .add("Baseline", () => <BasicBaselineSeries />, {
-        options: {
-            showPanel: true,
-        },
-    });
+export default {
+    title: "Visualization|Series/Baseline",
+    component: AlternatingFillAreaSeries,
+};
+
+export const basic = () => <BasicBaselineSeries />;

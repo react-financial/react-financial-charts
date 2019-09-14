@@ -1,35 +1,41 @@
-import * as React from "react";
+import React, { Component } from "react";
 
 import { strokeDashTypes } from "../utils";
 import { AreaOnlySeries } from "./AreaOnlySeries";
 import { LineSeries } from "./LineSeries";
 
 interface AreaSeriesProps {
-    readonly stroke?: string;
-    readonly strokeWidth?: number;
-    readonly canvasGradient?: any; // func
-    readonly fill?: string;
-    readonly strokeOpacity?: number;
-    readonly opacity?: number;
-    readonly className?: string;
-    readonly yAccessor: (data: any) => number;
     readonly baseAt?: number | ((yScale: any, d: [number, number], moreProps: any) => number);
-    readonly interpolation?: any; // func
     readonly canvasClip?: any; // func
-    readonly style?: React.CSSProperties;
+    readonly canvasGradient?: any; // func
+    readonly className?: string;
+    readonly fill?: string;
+    readonly interpolation?: any; // func
+    readonly opacity?: number;
+    /**
+     * Stroke color
+     */
+    readonly stroke?: string;
     readonly strokeDasharray?: strokeDashTypes;
+    readonly strokeOpacity?: number;
+    readonly strokeWidth?: number;
+    readonly style?: React.CSSProperties;
+    readonly yAccessor: (data: any) => number;
 }
 
-export class AreaSeries extends React.Component<AreaSeriesProps> {
+/**
+ * `AreaSeries` component
+ */
+export class AreaSeries extends Component<AreaSeriesProps> {
 
     public static defaultProps = {
+        className: "react-financial-charts-area",
+        fill: "#2196f3",
+        opacity: 0.1,
         stroke: "#2196f3",
         strokeWidth: 3,
         strokeOpacity: 1,
         strokeDasharray: "Solid",
-        opacity: 0.1,
-        fill: "#2196f3",
-        className: "react-financial-charts-area",
     };
 
     public render() {

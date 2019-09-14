@@ -1,10 +1,10 @@
-import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { CandlestickSeries } from "react-financial-charts/lib/series";
 import BasicCandlestickSeries from "./basicCandlestick";
 
-storiesOf("Series", module)
-    .add("Candles", () => <BasicCandlestickSeries />, {
-        options: {
-            showPanel: true,
-        },
-    });
+export default {
+    title: "Visualization|Series/Candles",
+    component: CandlestickSeries,
+};
+
+export const basic = () => <BasicCandlestickSeries />;

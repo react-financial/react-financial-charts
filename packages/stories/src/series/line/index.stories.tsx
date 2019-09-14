@@ -1,10 +1,10 @@
-import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { LineSeries } from "react-financial-charts/lib/series";
 import BasicLineSeries from "./basicLineSeries";
 
-storiesOf("Series", module)
-    .add("Line", () => <BasicLineSeries />, {
-        options: {
-            showPanel: true,
-        },
-    });
+export default {
+    title: "Visualization|Series/Line",
+    component: LineSeries,
+};
+
+export const basic = () => <BasicLineSeries />;

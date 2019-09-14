@@ -1,10 +1,10 @@
-import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { RenkoSeries } from "react-financial-charts/lib/series";
 import BasicRenkoSeries from "./basicRenkoSeries";
 
-storiesOf("Series", module)
-    .add("Renko", () => <BasicRenkoSeries />, {
-        options: {
-            showPanel: true,
-        },
-    });
+export default {
+    title: "Visualization|Series/Renko",
+    component: RenkoSeries,
+};
+
+export const basic = () => <BasicRenkoSeries />;

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/markmcdowell/react-financial-charts/compare/v0.2.0...v0.2.1) (2019-09-14)
+
+
+### Bug Fixes
+
+* **bollinger:** correcting props ([91d7f60](https://github.com/markmcdowell/react-financial-charts/commit/91d7f60))
+* **ohlc:** correcting props ([86bb4b2](https://github.com/markmcdowell/react-financial-charts/commit/86bb4b2))
+
+
+
+
+
 # [0.2.0](https://github.com/markmcdowell/react-financial-charts/compare/v0.1.5...v0.2.0) (2019-09-12)
 
 

@@ -6,26 +6,26 @@ import { getMouseCanvas } from "../../GenericComponent";
 import { colorToRGBA, isDefined, noop } from "../../utils";
 
 interface InteractiveTextProps {
-    bgFill: string;
-    bgOpacity: number;
-    bgStrokeWidth: number;
-    bgStroke: string;
-    textFill: string;
-    fontFamily: string;
-    fontSize: number;
-    fontWeight: number | string;
-    fontStyle: string;
-    text: string;
-    onDragStart: any; // func
-    onDrag: any; // func
-    onDragComplete: any; // func
-    onHover?: any; // func
-    onUnHover?: any; // func
-    position?: any;
-    defaultClassName?: string;
-    interactiveCursorClass?: string;
-    tolerance: number;
-    selected: boolean;
+    readonly bgFill: string;
+    readonly bgOpacity: number;
+    readonly bgStrokeWidth: number;
+    readonly bgStroke: string;
+    readonly textFill: string;
+    readonly fontFamily: string;
+    readonly fontSize: number;
+    readonly fontWeight: number | string;
+    readonly fontStyle: string;
+    readonly text: string;
+    readonly onDragStart: any; // func
+    readonly onDrag: any; // func
+    readonly onDragComplete: any; // func
+    readonly onHover?: any; // func
+    readonly onUnHover?: any; // func
+    readonly position?: any;
+    readonly defaultClassName?: string;
+    readonly interactiveCursorClass?: string;
+    readonly tolerance: number;
+    readonly selected: boolean;
 }
 
 export class InteractiveText extends React.Component<InteractiveTextProps> {
@@ -99,7 +99,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
         return false;
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {
             bgFill,
             bgOpacity,

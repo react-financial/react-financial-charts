@@ -9,14 +9,14 @@ import { getAxisCanvas } from "../GenericComponent";
 import { colorToRGBA, functor, head, identity, plotDataLengthBarWidth } from "../utils";
 
 interface StackedBarSeriesProps {
-    readonly baseAt: number | any; // func
-    readonly direction: "up" | "down";
-    readonly stroke: boolean;
-    readonly width: number | any; // func
-    readonly opacity: number;
-    readonly fill: string | any; // func
-    readonly className: string | any; // func
-    readonly clip: boolean;
+    readonly baseAt?: number | any; // func
+    readonly direction?: "up" | "down";
+    readonly stroke?: boolean;
+    readonly width?: number | any; // func
+    readonly opacity?: number;
+    readonly fill?: string | any; // func
+    readonly className?: string | any; // func
+    readonly clip?: boolean;
 }
 
 export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {

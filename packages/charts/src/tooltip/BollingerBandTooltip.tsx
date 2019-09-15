@@ -1,29 +1,30 @@
 import { format } from "d3-format";
 import * as React from "react";
-import GenericChartComponent from "../GenericChartComponent";
-import { default as defaultDisplayValuesFor } from "./displayValuesFor";
 
+import GenericChartComponent from "../GenericChartComponent";
 import { functor, isDefined } from "../utils";
+
+import { default as defaultDisplayValuesFor } from "./displayValuesFor";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 interface BollingerBandTooltipProps {
     readonly className?: string;
-    readonly displayValuesFor?: any; // func
-    readonly displayFormat: any; // func
+    readonly displayFormat: any; // Func
+    readonly displayValuesFor?: any; // Func
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly labelFill?: string;
-    readonly origin?: number[];
-    readonly onClick?: any; // func
+    readonly onClick?: any; // Func
     readonly options: {
+        movingAverageType: string;
+        multiplier: number;
         sourcePath: string;
         windowSize: number;
-        multiplier: number;
-        movingAverageType: string;
     };
+    readonly origin?: number[];
     readonly textFill?: string;
-    readonly yAccessor?: any; // func
+    readonly yAccessor?: any; // Func
 }
 
 export class BollingerBandTooltip extends React.Component<BollingerBandTooltipProps> {
@@ -74,6 +75,7 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
         const { sourcePath, windowSize, multiplier, movingAverageType } = options;
         const tooltipLabel = `BB(${sourcePath}, ${windowSize}, ${multiplier}, ${movingAverageType}): `;
         const tooltipValue = `${top}, ${middle}, ${bottom}`;
+
         return (
             <g transform={`translate(${x}, ${y})`}
                 className={this.props.className} onClick={onClick}>

@@ -6,18 +6,18 @@ import GenericComponent from "../GenericComponent";
 import { colorToRGBA, first, isDefined, isNotDefined, last } from "../utils";
 
 interface HoverTooltipProps {
-    chartId?: number | string;
-    yAccessor?: any; // func
-    tooltipSVG?: any; // func
-    backgroundShapeSVG?: any; // func
-    bgwidth?: number;
-    bgheight?: number;
-    bgFill: string;
-    bgOpacity: number;
-    tooltipContent: any; // func
-    origin: number[] | any; // func
-    fontFamily?: string;
-    fontSize?: number;
+    readonly chartId?: number | string;
+    readonly yAccessor?: any; // func
+    readonly tooltipSVG?: any; // func
+    readonly backgroundShapeSVG?: any; // func
+    readonly bgwidth?: number;
+    readonly bgheight?: number;
+    readonly bgFill: string;
+    readonly bgOpacity: number;
+    readonly tooltipContent: any; // func
+    readonly origin: number[] | any; // func
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
 }
 
 class HoverTooltip extends React.Component<HoverTooltipProps> {
@@ -84,7 +84,7 @@ class HoverTooltip extends React.Component<HoverTooltipProps> {
             </g>
         );
     }
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const pointer = helper(this.props, moreProps, ctx);
         const { height } = moreProps;
 
@@ -156,7 +156,7 @@ function defaultTooltipCanvas({ fontFamily, fontSize, fontFill }, content, ctx) 
     }
 }
 
-function drawOnCanvas(ctx, props, context, pointer, height) {
+function drawOnCanvas(ctx: CanvasRenderingContext2D, props, context, pointer, height) {
 
     const { margin, ratio } = context;
     const { bgFill, bgOpacity } = props;
@@ -186,7 +186,7 @@ function drawOnCanvas(ctx, props, context, pointer, height) {
     ctx.restore();
 }
 
-function calculateTooltipSize({ fontFamily, fontSize, fontFill }, content, ctx) {
+function calculateTooltipSize({ fontFamily, fontSize, fontFill }, content, ctx?) {
     if (isNotDefined(ctx)) {
         const canvas = document.createElement("canvas");
         ctx = canvas.getContext("2d");

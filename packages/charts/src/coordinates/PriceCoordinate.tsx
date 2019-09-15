@@ -6,26 +6,26 @@ import { functor, strokeDashTypes } from "../utils";
 import { drawOnCanvas, renderSVG } from "./EdgeCoordinateV3";
 
 interface PriceCoordinateProps {
-    displayFormat: any; // func
-    yAxisPad?: number;
-    rectWidth?: number;
-    rectHeight?: number;
-    orient?: "bottom" | "top" | "left" | "right";
-    at?: "bottom" | "top" | "left" | "right";
-    price?: number;
-    dx?: number;
-    arrowWidth?: number;
-    opacity?: number;
-    lineOpacity?: number;
-    lineStroke?: string;
-    fontFamily?: string;
-    fontSize?: number;
-    fill?: string | any; // func
-    strokeDasharray?: strokeDashTypes;
-    stroke?: string;
-    strokeOpacity?: number;
-    strokeWidth?: number;
-    textFill?: string | any; // func
+    readonly displayFormat: any; // func
+    readonly yAxisPad?: number;
+    readonly rectWidth?: number;
+    readonly rectHeight?: number;
+    readonly orient?: "bottom" | "top" | "left" | "right";
+    readonly at?: "bottom" | "top" | "left" | "right";
+    readonly price?: number;
+    readonly dx?: number;
+    readonly arrowWidth?: number;
+    readonly opacity?: number;
+    readonly lineOpacity?: number;
+    readonly lineStroke?: string;
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly fill?: string | any; // func
+    readonly strokeDasharray?: strokeDashTypes;
+    readonly stroke?: string;
+    readonly strokeOpacity?: number;
+    readonly strokeWidth?: number;
+    readonly textFill?: string | any; // func
 }
 
 export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
@@ -63,7 +63,7 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const props = this.helper(this.props, moreProps);
         drawOnCanvas(ctx, props);
     }

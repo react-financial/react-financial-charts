@@ -27,11 +27,18 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
 
     public static defaultProps = {
         className: "react-financial-charts-macd-series",
+        fill: {
+            divergence: "#4682B4",
+        },
         zeroLineStroke: "#000000",
         zeroLineOpacity: 0.3,
         opacity: 0.6,
         divergenceStroke: false,
         clip: true,
+        stroke: {
+            macd: "#0093FF",
+            signal: "#D84315",
+        },
         widthRatio: 0.5,
         width: BarSeries.defaultProps.width,
     };

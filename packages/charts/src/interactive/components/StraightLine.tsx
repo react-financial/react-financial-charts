@@ -12,37 +12,35 @@ import {
 } from "../../utils";
 
 interface StraightLineProps {
-    x1Value: any;
-    x2Value: any;
-    y1Value: any;
-    y2Value: any;
-
-    interactiveCursorClass?: string;
-    stroke: string;
-    strokeWidth: number;
-    strokeOpacity: number;
-    strokeDasharray: strokeDashTypes;
-    type:
+    readonly x1Value: any;
+    readonly x2Value: any;
+    readonly y1Value: any;
+    readonly y2Value: any;
+    readonly interactiveCursorClass?: string;
+    readonly stroke: string;
+    readonly strokeWidth: number;
+    readonly strokeOpacity: number;
+    readonly strokeDasharray: strokeDashTypes;
+    readonly type:
     "XLINE" | // extends from -Infinity to +Infinity
     "RAY" | // extends to +/-Infinity in one direction
     "LINE"; // extends between the set bounds
-
-    onEdge1Drag: any; // func
-    onEdge2Drag: any; // func
-    onDragStart: any; // func
-    onDrag: any; // func
-    onDragComplete: any; // func
-    onHover?: any; // func
-    onUnHover?: any; // func
-    defaultClassName?: string;
-    r: number;
-    edgeFill: string;
-    edgeStroke: string;
-    edgeStrokeWidth: number;
-    withEdge: boolean;
-    children: any; // func
-    tolerance: number;
-    selected: boolean;
+    readonly onEdge1Drag: any; // func
+    readonly onEdge2Drag: any; // func
+    readonly onDragStart: any; // func
+    readonly onDrag: any; // func
+    readonly onDragComplete: any; // func
+    readonly onHover?: any; // func
+    readonly onUnHover?: any; // func
+    readonly defaultClassName?: string;
+    readonly r: number;
+    readonly edgeFill: string;
+    readonly edgeStroke: string;
+    readonly edgeStrokeWidth: number;
+    readonly withEdge: boolean;
+    readonly children: any; // func
+    readonly tolerance: number;
+    readonly selected: boolean;
 }
 
 class StraightLine extends React.Component<StraightLineProps> {
@@ -125,13 +123,16 @@ class StraightLine extends React.Component<StraightLineProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, strokeOpacity, strokeDasharray } = this.props;
         const { x1, y1, x2, y2 } = helper(this.props, moreProps);
 
         ctx.lineWidth = strokeWidth;
         ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
-        ctx.setLineDash(getStrokeDasharray(strokeDasharray).split(","));
+
+        const lineDash = getStrokeDasharray(strokeDasharray).split(",").map((dash) => Number(dash));
+
+        ctx.setLineDash(lineDash);
 
         ctx.beginPath();
         ctx.moveTo(x1, y1);

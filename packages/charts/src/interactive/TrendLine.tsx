@@ -15,24 +15,24 @@ import StraightLine from "./components/StraightLine";
 import { EachTrendLine } from "./wrapper/EachTrendLine";
 
 interface TrendLineProps {
-    snap: boolean;
-    enabled: boolean;
-    snapTo?: any; // func
-    shouldDisableSnap: any; // func
-    onStart: any; // func
-    onComplete: any; // func
-    onSelect?: any; // func
-    currentPositionStroke?: string;
-    currentPositionStrokeWidth?: number;
-    currentPositionstrokeOpacity?: number;
-    currentPositionRadius?: number;
-    type:
+    readonly snap: boolean;
+    readonly enabled: boolean;
+    readonly snapTo?: any; // func
+    readonly shouldDisableSnap: any; // func
+    readonly onStart: any; // func
+    readonly onComplete: any; // func
+    readonly onSelect?: any; // func
+    readonly currentPositionStroke?: string;
+    readonly currentPositionStrokeWidth?: number;
+    readonly currentPositionstrokeOpacity?: number;
+    readonly currentPositionRadius?: number;
+    readonly type:
     "XLINE" | // extends from -Infinity to +Infinity
     "RAY" | // extends to +/-Infinity in one direction
     "LINE"; // extends between the set bounds
-    hoverText: object;
-    trends: any[];
-    appearance: {
+    readonly hoverText: object;
+    readonly trends: any[];
+    readonly appearance: {
         stroke: string;
         strokeOpacity: number;
         strokeWidth: number;
@@ -103,11 +103,21 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
     }
 
     public render() {
-        const { appearance } = this.props;
-        const { enabled, snap, shouldDisableSnap, snapTo, type } = this.props;
-        const { currentPositionRadius, currentPositionStroke } = this.props;
-        const { currentPositionstrokeOpacity, currentPositionStrokeWidth } = this.props;
-        const { hoverText, trends } = this.props;
+        const {
+            appearance,
+            currentPositionstrokeOpacity,
+            currentPositionRadius = TrendLine.defaultProps.currentPositionRadius,
+            currentPositionStroke,
+            currentPositionStrokeWidth,
+            enabled,
+            hoverText,
+            shouldDisableSnap,
+            snap,
+            snapTo,
+            trends,
+            type,
+        } = this.props;
+
         const { current, override } = this.state;
 
         const tempLine = isDefined(current) && isDefined(current.end)

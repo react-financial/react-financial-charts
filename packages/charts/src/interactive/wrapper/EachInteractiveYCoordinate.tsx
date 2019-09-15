@@ -7,31 +7,31 @@ import { ClickableShape } from "../components/ClickableShape";
 import { InteractiveYCoordinate } from "../components/InteractiveYCoordinate";
 
 interface EachInteractiveYCoordinateProps {
-    index?: number;
-    draggable: boolean;
-    yValue: number;
-    bgFill: string;
-    bgOpacity: number;
-    stroke: string;
-    strokeWidth: number;
-    strokeOpacity: number;
-    strokeDasharray: string;
-    textFill: string;
-    fontWeight: string;
-    fontFamily: string;
-    fontStyle: string;
-    fontSize: number;
-    text: string;
-    selected: boolean;
-    edge: object;
-    textBox: {
+    readonly index?: number;
+    readonly draggable: boolean;
+    readonly yValue: number;
+    readonly bgFill: string;
+    readonly bgOpacity: number;
+    readonly stroke: string;
+    readonly strokeWidth: number;
+    readonly strokeOpacity: number;
+    readonly strokeDasharray: string;
+    readonly textFill: string;
+    readonly fontWeight: string;
+    readonly fontFamily: string;
+    readonly fontStyle: string;
+    readonly fontSize: number;
+    readonly text: string;
+    readonly selected: boolean;
+    readonly edge: object;
+    readonly textBox: {
         closeIcon: any;
         left: number;
         padding: any;
     };
-    onDrag: any; // func
-    onDragComplete: any; // func
-    onDelete: any; // func
+    readonly onDrag: any; // func
+    readonly onDragComplete: any; // func
+    readonly onDelete: any; // func
 }
 
 interface EachInteractiveYCoordinateState {

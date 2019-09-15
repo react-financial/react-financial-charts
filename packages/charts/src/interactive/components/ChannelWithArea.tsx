@@ -8,27 +8,27 @@ import { generateLine, isHovering } from "./StraightLine";
 import { colorToRGBA, isDefined, isNotDefined, noop } from "../../utils";
 
 interface ChannelWithAreaProps {
-    startXY?: number[];
-    endXY?: number[];
-    dy?: number;
-    interactiveCursorClass?: string;
-    stroke: string;
-    strokeWidth: number;
-    fill: string;
-    fillOpacity: number;
-    strokeOpacity: number;
-    type:
+    readonly startXY?: number[];
+    readonly endXY?: number[];
+    readonly dy?: number;
+    readonly interactiveCursorClass?: string;
+    readonly stroke: string;
+    readonly strokeWidth: number;
+    readonly fill: string;
+    readonly fillOpacity: number;
+    readonly strokeOpacity: number;
+    readonly type:
     "XLINE" | // extends from -Infinity to +Infinity
     "RAY" | // extends to +/-Infinity in one direction
     "LINE"; // extends between the set bounds
-    onDragStart: any; // func
-    onDrag: any; // func
-    onDragComplete: any; // func
-    onHover?: any; // func
-    onUnHover?: any; // func
-    defaultClassName?: string;
-    tolerance: number;
-    selected: boolean;
+    readonly onDragStart: any; // func
+    readonly onDrag: any; // func
+    readonly onDragComplete: any; // func
+    readonly onHover?: any; // func
+    readonly onUnHover?: any; // func
+    readonly defaultClassName?: string;
+    readonly tolerance: number;
+    readonly selected: boolean;
 }
 
 export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
@@ -108,7 +108,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
         }
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;
         const { line1, line2 } = helper(this.props, moreProps);
 

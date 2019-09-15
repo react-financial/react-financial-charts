@@ -16,14 +16,14 @@ import { functor, isDefined } from "../utils";
 
 interface BarSeriesProps {
     readonly baseAt?: number | any; // func
-    readonly stroke?: boolean;
-    readonly width?: number | any; // func
-    readonly yAccessor: any; // func
-    readonly opacity?: number;
-    readonly fill?: number | any; // func
     readonly className?: number | any; // func
     readonly clip?: boolean;
+    readonly fill?: number | any; // func
+    readonly opacity?: number;
+    readonly stroke?: boolean;
     readonly swapScales?: boolean;
+    readonly width?: number | any; // func
+    readonly yAccessor: any; // func
 }
 
 export class BarSeries extends React.Component<BarSeriesProps> {

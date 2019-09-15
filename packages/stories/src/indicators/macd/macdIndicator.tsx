@@ -19,8 +19,8 @@ class MACDIndicator extends React.Component<MACDIndicatorProps> {
 
     private readonly macdAppearance = {
         stroke: {
-            macd: "#FF0000",
-            signal: "#00F300",
+            macd: "#0093FF",
+            signal: "#D84315",
         },
         fill: {
             divergence: "#4682B4",

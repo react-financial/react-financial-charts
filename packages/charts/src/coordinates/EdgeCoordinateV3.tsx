@@ -197,7 +197,7 @@ function helper(props) {
     };
 }
 
-export function drawOnCanvas(ctx, props) {
+export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
     const { fontSize, fontFamily } = props;
 
     ctx.font = `${fontSize}px ${fontFamily}`;

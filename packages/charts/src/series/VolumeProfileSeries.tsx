@@ -49,7 +49,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor, width } = moreProps;
         const { rects, sessionBg } = this.helper(this.props, moreProps, xAccessor, width);
 
@@ -92,7 +92,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         );
     }
 
-    private readonly drawOnCanvasContext = (ctx, props, rects, sessionBg) => {
+    private readonly drawOnCanvasContext = (ctx: CanvasRenderingContext2D, props, rects, sessionBg) => {
         const { opacity, sessionBackGround, sessionBackGroundOpacity, showSessionBackground } = props;
 
         if (showSessionBackground) {

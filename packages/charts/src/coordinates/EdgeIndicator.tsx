@@ -8,20 +8,20 @@ import { drawOnCanvas, renderSVG } from "./EdgeCoordinateV3";
 import { first, functor, isDefined, last, noop, strokeDashTypes } from "../utils";
 
 interface EdgeIndicatorProps {
-    yAccessor?: any; // func
-    type?: "horizontal";
-    className?: string;
-    fill?: string | any; // func
-    lineStroke?: string | any; // func
-    textFill?: string | any; // func
-    itemType: "first" | "last";
-    orient?: "left" | "right";
-    edgeAt?: "left" | "right";
-    displayFormat?: any; // func
-    rectHeight?: number;
-    rectWidth?: number;
-    arrowWidth?: number;
-    lineStrokeDasharray?: strokeDashTypes;
+    readonly yAccessor?: any; // func
+    readonly type?: "horizontal";
+    readonly className?: string;
+    readonly fill?: string | any; // func
+    readonly lineStroke?: string | any; // func
+    readonly textFill?: string | any; // func
+    readonly itemType: "first" | "last";
+    readonly orient?: "left" | "right";
+    readonly edgeAt?: "left" | "right";
+    readonly displayFormat?: any; // func
+    readonly rectHeight?: number;
+    readonly rectWidth?: number;
+    readonly arrowWidth?: number;
+    readonly lineStrokeDasharray?: strokeDashTypes;
 }
 
 export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
@@ -64,7 +64,7 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const edge = this.helper(this.props, moreProps);
         const props = {
             ...this.props,

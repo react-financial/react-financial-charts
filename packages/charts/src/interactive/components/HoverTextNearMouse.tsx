@@ -7,15 +7,15 @@ const PADDING = 10;
 const MIN_WIDTH = PADDING;
 
 interface HoverTextNearMouseProps {
-    fontFamily: string;
-    fontSize: number;
-    fill: string;
-    text: string;
-    bgFill: string;
-    bgOpacity: number;
-    bgWidth: number | string;
-    bgHeight: number | string;
-    show: boolean;
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly fill?: string;
+    readonly text: string;
+    readonly bgFill?: string;
+    readonly bgOpacity?: number;
+    readonly bgWidth: number | string;
+    readonly bgHeight: number | string;
+    readonly show: boolean;
 }
 
 interface HoverTextNearMouseState {

@@ -79,7 +79,7 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, fill } = this.props;
         const { fillOpacity, strokeOpacity } = this.props;
         const { r } = this.props;

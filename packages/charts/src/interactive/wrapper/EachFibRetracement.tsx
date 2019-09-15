@@ -11,14 +11,14 @@ import { Text } from "../components/Text";
 import { getNewXY } from "./EachTrendLine";
 
 interface EachFibRetracementProps {
-    x1: any;
-    x2: any;
-    y1: number;
-    y2: number;
-    yDisplayFormat: any; // func
-    type: string;
-    selected: boolean;
-    appearance: {
+    readonly x1: any;
+    readonly x2: any;
+    readonly y1: number;
+    readonly y2: number;
+    readonly yDisplayFormat: any; // func
+    readonly type: string;
+    readonly selected: boolean;
+    readonly appearance: {
         stroke: string;
         strokeWidth: number;
         strokeOpacity: number;
@@ -31,8 +31,8 @@ interface EachFibRetracementProps {
         edgeStrokeWidth: number;
         r: number;
     };
-    interactive: boolean;
-    hoverText: {
+    readonly interactive: boolean;
+    readonly hoverText: {
         enable: boolean;
         fontFamily: string;
         fontSize: number;
@@ -44,9 +44,9 @@ interface EachFibRetracementProps {
         bgHeight: number | string;
         selectedText: string;
     };
-    index?: number;
-    onDrag: any; // func
-    onDragComplete: any; // func
+    readonly index?: number;
+    readonly onDrag: any; // func
+    readonly onDragComplete: any; // func
 }
 
 interface EachFibRetracementState {

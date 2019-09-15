@@ -3,11 +3,11 @@ import * as React from "react";
 import { isDefined } from "./utils";
 
 interface CanvasContainerProps {
-    readonly width: number;
     readonly height: number;
-    readonly type: string;
-    readonly zIndex?: number;
     readonly ratio: number;
+    readonly type: string;
+    readonly width: number;
+    readonly zIndex?: number;
 }
 
 class CanvasContainer extends React.Component<CanvasContainerProps> {

@@ -11,22 +11,22 @@ import {
 import { EachFibRetracement } from "./wrapper/EachFibRetracement";
 
 interface FibonacciRetracementProps {
-    enabled: boolean;
-    width?: number;
-    onStart?: any; // func
-    onComplete?: any; // func
-    onSelect?: any; // func
-    type:
+    readonly enabled: boolean;
+    readonly width?: number;
+    readonly onStart?: any; // func
+    readonly onComplete?: any; // func
+    readonly onSelect?: any; // func
+    readonly type:
     "EXTEND" | // extends from -Infinity to +Infinity
     "RAY" | // extends to +/-Infinity in one direction
     "BOUND"; // extends between the set bounds
-    hoverText: object;
-    currentPositionStroke?: string;
-    currentPositionStrokeWidth?: number;
-    currentPositionOpacity?: number;
-    currentPositionRadius?: number;
-    retracements: any[];
-    appearance: {
+    readonly hoverText: object;
+    readonly currentPositionStroke?: string;
+    readonly currentPositionStrokeWidth?: number;
+    readonly currentPositionOpacity?: number;
+    readonly currentPositionRadius?: number;
+    readonly retracements: any[];
+    readonly appearance: {
         stroke: string;
         strokeWidth: number;
         strokeOpacity: number;
@@ -106,17 +106,15 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
 
     public render() {
         const { current, override } = this.state;
-        const { retracements } = this.props;
 
         const {
             appearance,
-            type,
-        } = this.props;
-        const {
             currentPositionStroke,
             currentPositionOpacity,
             currentPositionStrokeWidth,
-            currentPositionRadius,
+            currentPositionRadius = FibonacciRetracement.defaultProps.currentPositionRadius,
+            retracements,
+            type,
         } = this.props;
 
         const { enabled, hoverText } = this.props;

@@ -66,7 +66,7 @@ class BackgroundText extends PureComponent<BackgroundTextProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, props, { interval }, getText) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, props, { interval }, getText) => {
         ctx.clearRect(-1, -1, ctx.canvas.width + 2, ctx.canvas.height + 2);
         ctx.save();
 

@@ -11,15 +11,15 @@ import {
 import { EachGannFan } from "./wrapper/EachGannFan";
 
 interface GannFanProps {
-    enabled: boolean;
-    onStart: any; // func
-    onComplete: any; // func
-    onSelect?: any; // func
-    currentPositionStroke?: string;
-    currentPositionStrokeWidth?: number;
-    currentPositionOpacity?: number;
-    currentPositionRadius?: number;
-    appearance: {
+    readonly enabled: boolean;
+    readonly onStart: any; // func
+    readonly onComplete: any; // func
+    readonly onSelect?: any; // func
+    readonly currentPositionStroke?: string;
+    readonly currentPositionStrokeWidth?: number;
+    readonly currentPositionOpacity?: number;
+    readonly currentPositionRadius?: number;
+    readonly appearance: {
         stroke: string;
         strokeOpacity: number;
         fillOpacity: number;
@@ -33,8 +33,8 @@ interface GannFanProps {
         fontSize: number;
         fontFill: string;
     };
-    hoverText: object;
-    fans: any[];
+    readonly hoverText: object;
+    readonly fans: any[];
 }
 
 interface GannFanState {
@@ -106,10 +106,17 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
     }
 
     public render() {
-        const { enabled, appearance } = this.props;
-        const { currentPositionRadius, currentPositionStroke } = this.props;
-        const { currentPositionOpacity, currentPositionStrokeWidth } = this.props;
-        const { hoverText, fans } = this.props;
+        const {
+            appearance,
+            currentPositionOpacity,
+            currentPositionRadius = GannFan.defaultProps.currentPositionRadius,
+            currentPositionStroke,
+            currentPositionStrokeWidth,
+            enabled,
+            fans,
+            hoverText,
+        } = this.props;
+
         const { current, override } = this.state;
         const overrideIndex = isDefined(override) ? override.index : null;
 

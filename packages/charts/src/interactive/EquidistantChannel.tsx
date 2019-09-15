@@ -12,17 +12,17 @@ import {
 import { EachEquidistantChannel } from "./wrapper/EachEquidistantChannel";
 
 interface EquidistantChannelProps {
-    enabled: boolean;
-    onStart: any; // func
-    onComplete: any; // func
-    onSelect: any; // func
-    currentPositionStroke?: string;
-    currentPositionStrokeWidth?: number;
-    currentPositionOpacity?: number;
-    currentPositionRadius?: number;
-    hoverText: object;
-    channels: any[];
-    appearance: {
+    readonly enabled: boolean;
+    readonly onStart: any; // func
+    readonly onComplete: any; // func
+    readonly onSelect: any; // func
+    readonly currentPositionStroke?: string;
+    readonly currentPositionStrokeWidth?: number;
+    readonly currentPositionOpacity?: number;
+    readonly currentPositionRadius?: number;
+    readonly hoverText: object;
+    readonly channels: any[];
+    readonly appearance: {
         stroke: string;
         strokeOpacity: number;
         strokeWidth: number;
@@ -94,12 +94,19 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
     }
 
     public render() {
-        const { appearance } = this.props;
-        const { enabled } = this.props;
-        const { currentPositionRadius, currentPositionStroke } = this.props;
-        const { currentPositionOpacity, currentPositionStrokeWidth } = this.props;
-        const { channels, hoverText } = this.props;
+        const {
+            appearance,
+            channels,
+            currentPositionOpacity,
+            currentPositionRadius = EquidistantChannel.defaultProps.currentPositionRadius,
+            currentPositionStroke,
+            currentPositionStrokeWidth,
+            enabled,
+            hoverText,
+        } = this.props;
+
         const { current, override } = this.state;
+
         const overrideIndex = isDefined(override) ? override.index : null;
 
         const tempChannel = isDefined(current) && isDefined(current.endXY)

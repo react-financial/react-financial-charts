@@ -89,7 +89,7 @@ export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesPr
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor } = moreProps;
         const { xScale, chartConfig: { yScale }, plotData } = moreProps;
         const columns = getColumns(xScale, xAccessor, yScale, plotData);
@@ -98,7 +98,7 @@ export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesPr
     }
 }
 
-function drawOnCanvas(ctx, props, columns) {
+function drawOnCanvas(ctx: CanvasRenderingContext2D, props, columns) {
     const { stroke, fill, strokeWidth } = props;
 
     ctx.lineWidth = strokeWidth;

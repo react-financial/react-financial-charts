@@ -14,16 +14,16 @@ import { MouseLocationIndicator } from "./components/MouseLocationIndicator";
 import { EachLinearRegressionChannel } from "./wrapper/EachLinearRegressionChannel";
 
 interface StandardDeviationChannelProps {
-    enabled: boolean;
-    snapTo?: any; // func
-    onStart?: any; // func
-    onComplete: any; // func
-    onSelect?: any; // func
-    currentPositionStroke?: string;
-    currentPositionStrokeWidth?: number;
-    currentPositionOpacity?: number;
-    currentPositionRadius?: number;
-    appearance: {
+    readonly enabled: boolean;
+    readonly snapTo?: any; // func
+    readonly onStart?: any; // func
+    readonly onComplete: any; // func
+    readonly onSelect?: any; // func
+    readonly currentPositionStroke?: string;
+    readonly currentPositionStrokeWidth?: number;
+    readonly currentPositionOpacity?: number;
+    readonly currentPositionRadius?: number;
+    readonly appearance: {
         stroke?: string;
         strokeOpacity?: number;
         strokeWidth?: number;
@@ -34,8 +34,8 @@ interface StandardDeviationChannelProps {
         edgeFill?: string;
         r?: number;
     };
-    hoverText: object;
-    channels: any[];
+    readonly hoverText: object;
+    readonly channels: any[];
 }
 
 interface StandardDeviationChannelState {
@@ -97,11 +97,17 @@ export class StandardDeviationChannel extends React.Component<StandardDeviationC
     }
 
     public render() {
-        const { appearance } = this.props;
-        const { enabled, snapTo } = this.props;
-        const { currentPositionRadius, currentPositionStroke } = this.props;
-        const { currentPositionOpacity, currentPositionStrokeWidth } = this.props;
-        const { hoverText, channels } = this.props;
+        const {
+            appearance,
+            channels,
+            currentPositionOpacity,
+            currentPositionRadius = StandardDeviationChannel.defaultProps.currentPositionRadius,
+            currentPositionStroke,
+            currentPositionStrokeWidth,
+            enabled,
+            hoverText,
+            snapTo,
+        } = this.props;
         const { current, override } = this.state;
 
         const eachDefaultAppearance = {

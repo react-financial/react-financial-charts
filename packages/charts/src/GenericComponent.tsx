@@ -453,11 +453,11 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
         return (morePropsDecorator || identity)(moreProps);
     }
 
-    public preCanvasDraw(ctx, moreProps) {
+    public preCanvasDraw(ctx: CanvasRenderingContext2D, moreProps) {
         // do nothing
     }
 
-    public postCanvasDraw(ctx, moreProps) {
+    public postCanvasDraw(ctx: CanvasRenderingContext2D, moreProps) {
         // empty
     }
 

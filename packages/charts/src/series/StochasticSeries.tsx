@@ -5,18 +5,18 @@ import { StraightLine } from "./StraightLine";
 
 interface StochasticSeriesProps {
     readonly className?: string;
-    readonly yAccessor: any; // func
-    readonly stroke: {
+    readonly overBought?: number;
+    readonly overSold?: number;
+    readonly middle?: number;
+    readonly refLineOpacity?: number;
+    readonly stroke?: {
         top: string;
         middle: string;
         bottom: string;
         dLine: string;
         kLine: string;
     };
-    readonly overSold: number;
-    readonly middle: number;
-    readonly overBought: number;
-    readonly refLineOpacity: number;
+    readonly yAccessor: any; // func
 }
 
 export class StochasticSeries extends React.Component<StochasticSeriesProps> {
@@ -37,8 +37,11 @@ export class StochasticSeries extends React.Component<StochasticSeriesProps> {
     };
 
     public render() {
-        const { className, stroke, refLineOpacity } = this.props;
-        const { overSold, middle, overBought } = this.props;
+        const {
+            className,
+            stroke = StochasticSeries.defaultProps.stroke,
+            refLineOpacity, overSold, middle, overBought } = this.props;
+
         return (
             <g className={className}>
                 <LineSeries

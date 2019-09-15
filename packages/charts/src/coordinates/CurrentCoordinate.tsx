@@ -29,7 +29,7 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const circle = this.helper(this.props, moreProps);
         if (!circle) { return null; }
 

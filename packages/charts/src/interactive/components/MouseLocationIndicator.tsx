@@ -7,18 +7,18 @@ import { functor, getClosestValue, isDefined, noop, shallowEqual } from "../../u
 import { getXValue } from "../../utils/ChartDataUtil";
 
 interface MouseLocationIndicatorProps {
-    enabled: boolean;
-    snap: boolean;
-    shouldDisableSnap: any; // func;
-    snapTo?: any; // func;
-    onMouseMove: any; // func;
-    onMouseDown: any; // func;
-    onClick: any; // func;
-    r?: number;
-    stroke: string;
-    strokeWidth: number;
-    opacity: number;
-    disablePan: boolean;
+    readonly enabled: boolean;
+    readonly snap: boolean;
+    readonly shouldDisableSnap: any; // func;
+    readonly snapTo?: any; // func;
+    readonly onMouseMove: any; // func;
+    readonly onMouseDown: any; // func;
+    readonly onClick: any; // func;
+    readonly r: number;
+    readonly stroke: string;
+    readonly strokeWidth: number;
+    readonly opacity: number;
+    readonly disablePan: boolean;
 }
 
 export class MouseLocationIndicator extends React.Component<MouseLocationIndicatorProps> {
@@ -116,7 +116,7 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
         }
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { enabled, r, stroke, strokeWidth } = this.props;
         const { x, y } = this.mutableState;
         const { show } = moreProps;

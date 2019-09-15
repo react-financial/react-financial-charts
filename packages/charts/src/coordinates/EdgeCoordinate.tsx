@@ -50,20 +50,20 @@ const helper = (props) => {
 };
 
 interface EdgeCoordinateProps {
-    className?: string;
-    type: "vertical" | "horizontal";
-    coordinate: any;
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-    orient?: "bottom" | "top" | "left" | "right";
-    rectWidth?: number;
-    hideLine?: boolean;
-    fill?: string;
-    opacity?: number;
-    fontFamily: string;
-    fontSize: number;
+    readonly className?: string;
+    readonly type: "vertical" | "horizontal";
+    readonly coordinate: any;
+    readonly x1: number;
+    readonly y1: number;
+    readonly x2: number;
+    readonly y2: number;
+    readonly orient?: "bottom" | "top" | "left" | "right";
+    readonly rectWidth?: number;
+    readonly hideLine?: boolean;
+    readonly fill?: string;
+    readonly opacity?: number;
+    readonly fontFamily: string;
+    readonly fontSize: number;
 }
 
 export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
@@ -82,7 +82,7 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
         arrowWidth: 10,
     };
 
-    public static drawOnCanvasStatic = (ctx, props) => {
+    public static drawOnCanvasStatic = (ctx: CanvasRenderingContext2D, props) => {
         props = { ...EdgeCoordinate.defaultProps, ...props };
 
         const edge = helper(props);

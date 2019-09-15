@@ -9,25 +9,25 @@ import { isHovering2 } from "./StraightLine";
 import { colorToRGBA, getClosestItemIndexes, isDefined, noop, zipper } from "../../utils";
 
 interface LinearRegressionChannelWithAreaProps {
-    x1Value: any;
-    x2Value: any;
-    type:
+    readonly x1Value: any;
+    readonly x2Value: any;
+    readonly type:
     "SD" | // standard deviation channel
     "Raff"; // Raff Regression Channel
-    interactiveCursorClass?: string;
-    stroke: string;
-    strokeWidth: number;
-    fill: string;
-    fillOpacity: number;
-    strokeOpacity: number;
-    onDragStart: any; // func
-    onDrag: any; // func
-    onDragComplete: any; // func
-    onHover?: any; // func
-    onUnHover?: any; // func
-    defaultClassName?: string;
-    tolerance: number;
-    selected: boolean;
+    readonly interactiveCursorClass?: string;
+    readonly stroke: string;
+    readonly strokeWidth: number;
+    readonly fill: string;
+    readonly fillOpacity: number;
+    readonly strokeOpacity: number;
+    readonly onDragStart: any; // func
+    readonly onDrag: any; // func
+    readonly onDragComplete: any; // func
+    readonly onHover?: any; // func
+    readonly onUnHover?: any; // func
+    readonly defaultClassName?: string;
+    readonly tolerance: number;
+    readonly selected: boolean;
 }
 
 export class LinearRegressionChannelWithArea extends React.Component<LinearRegressionChannelWithAreaProps> {
@@ -109,7 +109,7 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;
         const { x1, y1, x2, y2, dy } = helper(this.props, moreProps);
 

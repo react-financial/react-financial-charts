@@ -9,3 +9,4 @@ export { default as HoverTooltip } from "./HoverTooltip";
 export * from "./ToolTipText";
 export * from "./ToolTipTSpanLabel";
 export * from "./GroupTooltip";
+export * from "./SingleTooltip";

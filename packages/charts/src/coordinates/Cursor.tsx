@@ -12,17 +12,17 @@ import {
 } from "../utils";
 
 interface CursorProps {
-    className?: string;
-    stroke?: string;
-    strokeDasharray?: strokeDashTypes;
-    snapX?: boolean;
-    opacity?: number;
-    disableYCursor?: boolean;
-    useXCursorShape?: boolean;
-    xCursorShapeFill?: string | any; // func
-    xCursorShapeStroke: string | any; // func
-    xCursorShapeStrokeDasharray?: strokeDashTypes;
-    xCursorShapeOpacity?: number;
+    readonly className?: string;
+    readonly disableYCursor?: boolean;
+    readonly opacity?: number;
+    readonly snapX?: boolean;
+    readonly stroke?: string;
+    readonly strokeDasharray?: strokeDashTypes;
+    readonly useXCursorShape?: boolean;
+    readonly xCursorShapeFill?: string | any; // func
+    readonly xCursorShapeStroke: string | any; // func
+    readonly xCursorShapeStrokeDasharray?: strokeDashTypes;
+    readonly xCursorShapeOpacity?: number;
 }
 
 const defaultCustomSnapX = (props: CursorProps, moreProps) => {
@@ -136,7 +136,7 @@ class Cursor extends React.Component<CursorProps> {
         return disableYCursor ? [xCursor] : [yCursor, xCursor];
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const cursors = this.getXYCursor(this.props, moreProps);
 
         if (cursors !== undefined) {

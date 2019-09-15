@@ -2,16 +2,16 @@ import * as React from "react";
 import { colorToRGBA, first, last } from "../utils";
 
 interface AxisLineProps {
-    className?: string;
-    shapeRendering?: string;
-    orient: string;
-    scale: any; // func
-    outerTickSize?: number;
-    fill?: string;
-    stroke?: string;
-    strokeWidth?: number;
-    opacity?: number;
-    range: number[];
+    readonly className?: string;
+    readonly shapeRendering?: string;
+    readonly orient: string;
+    readonly scale: any; // func
+    readonly outerTickSize?: number;
+    readonly fill?: string;
+    readonly stroke?: string;
+    readonly strokeWidth?: number;
+    readonly opacity?: number;
+    readonly range: number[];
 }
 
 export class AxisLine extends React.Component<AxisLineProps> {

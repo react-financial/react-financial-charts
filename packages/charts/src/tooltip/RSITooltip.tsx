@@ -8,19 +8,19 @@ import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 interface RSITooltipProps {
-    origin: number[] | any; // func
-    options: {
+    readonly origin: number[] | any; // func
+    readonly options: {
         windowSize: number;
     };
-    className?: string;
-    fontFamily?: string;
-    fontSize?: number;
-    onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
-    yAccessor: any; // func
-    displayFormat: any; // func
-    displayValuesFor?: any; // func
-    textFill?: string;
-    labelFill?: string;
+    readonly className?: string;
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
+    readonly yAccessor: any; // func
+    readonly displayFormat: any; // func
+    readonly displayValuesFor?: any; // func
+    readonly textFill?: string;
+    readonly labelFill?: string;
 }
 
 export class RSITooltip extends React.Component<RSITooltipProps> {

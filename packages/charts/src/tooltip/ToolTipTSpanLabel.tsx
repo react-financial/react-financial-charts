@@ -1,7 +1,6 @@
 import * as React from "react";
 
 interface ToolTipTSpanLabelProps extends React.SVGProps<SVGTSpanElement> {
-    readonly fill: string | undefined;
 }
 
 export class ToolTipTSpanLabel extends React.Component<ToolTipTSpanLabelProps> {

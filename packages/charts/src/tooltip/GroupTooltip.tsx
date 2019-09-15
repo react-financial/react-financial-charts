@@ -2,151 +2,34 @@ import { format } from "d3-format";
 import * as React from "react";
 import GenericChartComponent from "../GenericChartComponent";
 import { default as defaultDisplayValuesFor } from "./displayValuesFor";
+import { layouts, SingleTooltip } from "./SingleTooltip";
 import { ToolTipText } from "./ToolTipText";
-import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
-
-type layouts =
-    "horizontal" |
-    "horizontalRows" |
-    "horizontalInline" |
-    "vertical" |
-    "verticalRows";
-
-interface SingleTooltipProps {
-    origin: number[];
-    yLabel: string;
-    yValue: string;
-    onClick?: ((details: any, event: React.MouseEvent) => void);
-    fontFamily?: string;
-    labelFill: string;
-    valueFill: string;
-    fontSize?: number;
-    withShape: boolean;
-    forChart: number | string;
-    options: any;
-    layout: layouts;
-}
-
-export class SingleTooltip extends React.Component<SingleTooltipProps> {
-
-    public static defaultProps = {
-        labelFill: "#4682B4",
-        valueFill: "#000000",
-        withShape: false,
-    };
-
-    /*
-	 * Renders the value next to the label.
-	 */
-    public renderValueNextToLabel() {
-        const { origin, yLabel, yValue, labelFill, valueFill, withShape, fontSize, fontFamily } = this.props;
-
-        return (
-            <g transform={`translate(${origin[0]}, ${origin[1]})`} onClick={this.handleClick}>
-                {withShape ? <rect x="0" y="-6" width="6" height="6" fill={valueFill} /> : null}
-                <ToolTipText x={withShape ? 8 : 0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
-                    <ToolTipTSpanLabel fill={labelFill}>{yLabel}: </ToolTipTSpanLabel>
-                    <tspan fill={valueFill}>{yValue}</tspan>
-                </ToolTipText>
-            </g>
-        );
-    }
-
-    /*
-	 * Renders the value beneath the label.
-	 */
-    public renderValueBeneathToLabel() {
-        const { origin, yLabel, yValue, labelFill, valueFill, withShape, fontSize, fontFamily } = this.props;
-
-        return (
-            <g transform={`translate(${origin[0]}, ${origin[1]})`} onClick={this.handleClick}>
-                {withShape ? <line x1={0} y1={2} x2={0} y2={28} stroke={valueFill} strokeWidth="4px" /> : null}
-                <ToolTipText x={5} y={11} fontFamily={fontFamily} fontSize={fontSize}>
-                    <ToolTipTSpanLabel fill={labelFill}>{yLabel}</ToolTipTSpanLabel>
-                    <tspan x="5" dy="15" fill={valueFill}>{yValue}</tspan>
-                </ToolTipText>
-            </g>
-        );
-    }
-
-    /*
-	 * Renders the value next to the label.
-	 * The parent component must have a "text"-element.
-	 */
-    public renderInline() {
-        const { yLabel, yValue, labelFill, valueFill, fontSize, fontFamily } = this.props;
-
-        return (
-            <tspan onClick={this.handleClick} fontFamily={fontFamily} fontSize={fontSize}>
-                <ToolTipTSpanLabel fill={labelFill}>{yLabel}:&nbsp;</ToolTipTSpanLabel>
-                <tspan fill={valueFill}>{yValue}&nbsp;&nbsp;</tspan>
-            </tspan>
-        );
-    }
-
-    public render() {
-
-        const { layout } = this.props;
-        let comp: JSX.Element | null = null;
-
-        switch (layout) {
-            case "horizontal":
-                comp = this.renderValueNextToLabel();
-                break;
-            case "horizontalRows":
-                comp = this.renderValueBeneathToLabel();
-                break;
-            case "horizontalInline":
-                comp = this.renderInline();
-                break;
-            case "vertical":
-                comp = this.renderValueNextToLabel();
-                break;
-            case "verticalRows":
-                comp = this.renderValueBeneathToLabel();
-                break;
-            default:
-                comp = this.renderValueNextToLabel();
-        }
-
-        return comp;
-    }
-
-    private readonly handleClick = (e: React.MouseEvent) => {
-        const { onClick, forChart, options } = this.props;
-
-        if (onClick !== undefined) {
-            onClick({ chartId: forChart, ...options }, e);
-        }
-    }
-}
 
 interface GroupTooltipProps {
-    className?: string;
-    layout: layouts;
-    position: "topRight" | "bottomLeft" | "bottomRight";
-    displayFormat: any; // func
-    origin: number[];
-    displayValuesFor: any; // func
-    onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
-    fontFamily?: string;
-    fontSize?: number;
-    width?: number; // "width" only be used, if layout is "horizontal" or "horizontalRows".
-    verticalSize?: number;  // "verticalSize" only be used, if layout is "vertical", "verticalRows".
-    options: Array<{
+    readonly className?: string;
+    readonly layout: layouts;
+    readonly position: "topRight" | "bottomLeft" | "bottomRight";
+    readonly displayFormat: any; // func
+    readonly origin: number[];
+    readonly displayValuesFor: any; // func
+    readonly onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly width?: number; // "width" only be used, if layout is "horizontal" or "horizontalRows".
+    readonly verticalSize?: number;  // "verticalSize" only be used, if layout is "vertical", "verticalRows".
+    readonly options: Array<{
         labelFill?: string;
         yLabel: string | any; // func
         yAccessor: any;
         valueFill?: string;
         withShape?: boolean;
     }>;
-    yAccessor: any; // func
-    labelFill?: string;
-    valueFill?: string;
-    withShape: boolean; // "withShape" is ignored, if layout is "horizontalInline" or "vertical".
+    readonly yAccessor: any; // func
+    readonly labelFill?: string;
+    readonly valueFill?: string;
+    readonly withShape: boolean; // "withShape" is ignored, if layout is "horizontalInline" or "vertical".
 }
 
-// tslint:disable-next-line: max-classes-per-file
 export class GroupTooltip extends React.Component<GroupTooltipProps> {
 
     public static defaultProps = {
@@ -159,7 +42,17 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         verticalSize: 13,
     };
 
-    public getPosition(moreProps) {
+    public render() {
+        return (
+            <GenericChartComponent
+                clip={false}
+                svgDraw={this.renderSVG}
+                drawOn={["mousemove"]}
+            />
+        );
+    }
+
+    private readonly getPosition = (moreProps) => {
         const { position } = this.props;
         const { height, width } = moreProps.chartConfig;
 
@@ -189,16 +82,6 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         }
 
         return { xyPos, textAnchor };
-    }
-
-    public render() {
-        return (
-            <GenericChartComponent
-                clip={false}
-                svgDraw={this.renderSVG}
-                drawOn={["mousemove"]}
-            />
-        );
     }
 
     private readonly renderSVG = (moreProps) => {
@@ -232,21 +115,23 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
                 return [0, 0];
             };
 
-            return <SingleTooltip
-                key={idx}
-                layout={layout}
-                origin={orig()}
-                yLabel={each.yLabel}
-                yValue={yDisplayValue}
-                options={each}
-                forChart={chartId}
-                onClick={onClick}
-                fontFamily={fontFamily}
-                fontSize={fontSize}
-                labelFill={each.labelFill}
-                valueFill={each.valueFill}
-                withShape={each.withShape}
-            />;
+            return (
+                <SingleTooltip
+                    key={idx}
+                    layout={layout}
+                    origin={orig()}
+                    yLabel={each.yLabel}
+                    yValue={yDisplayValue}
+                    options={each}
+                    forChart={chartId}
+                    onClick={onClick}
+                    fontFamily={fontFamily}
+                    fontSize={fontSize}
+                    labelFill={each.labelFill}
+                    valueFill={each.valueFill}
+                    withShape={each.withShape}
+                />
+            );
         });
 
         return (

@@ -52,7 +52,7 @@ class GenericChartComponent extends GenericComponent {
         this.preEvaluate = this.preEvaluate.bind(this);
     }
 
-    public preCanvasDraw(ctx, moreProps) {
+    public preCanvasDraw(ctx: CanvasRenderingContext2D, moreProps) {
 
         super.preCanvasDraw(ctx, moreProps);
 
@@ -83,7 +83,7 @@ class GenericChartComponent extends GenericComponent {
         }
     }
 
-    public postCanvasDraw(ctx, moreProps) {
+    public postCanvasDraw(ctx: CanvasRenderingContext2D, moreProps) {
         super.postCanvasDraw(ctx, moreProps);
         ctx.restore();
     }

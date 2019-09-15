@@ -3,7 +3,7 @@ import * as React from "react";
 import { colorToRGBA, functor } from "../utils";
 
 interface CircleProps {
-    readonly stroke?: string;
+    readonly className?: string;
     readonly fill?: string;
     readonly opacity?: number;
     readonly point: {
@@ -11,9 +11,9 @@ interface CircleProps {
         y: number,
         datum: any,
     };
-    readonly className?: string;
-    readonly strokeWidth?: number;
     readonly r: number | ((datum: any) => number);
+    readonly stroke?: string;
+    readonly strokeWidth?: number;
 }
 
 export class Circle extends React.Component<CircleProps> {

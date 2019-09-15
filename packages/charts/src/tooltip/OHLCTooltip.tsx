@@ -66,21 +66,21 @@ const defaultDisplay = (props, _, itemsToDisplay) => {
 };
 
 interface OHLCTooltipProps {
-    className?: string;
-    accessor?: any; // func
-    xDisplayFormat?: any; // func
-    children?: any; // func
-    volumeFormat?: any; // func
-    percentFormat?: any; // func
-    ohlcFormat?: any; // func
-    origin?: number[] | any; // func
-    fontFamily?: string;
-    fontSize?: number;
-    onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
-    displayValuesFor?: any; // func
-    textFill?: string;
-    labelFill?: string;
-    displayTexts?: any;
+    readonly className?: string;
+    readonly accessor?: any; // func
+    readonly xDisplayFormat?: any; // func
+    readonly children?: any; // func
+    readonly volumeFormat?: any; // func
+    readonly percentFormat?: any; // func
+    readonly ohlcFormat?: any; // func
+    readonly origin?: number[] | any; // func
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
+    readonly displayValuesFor?: any; // func
+    readonly textFill?: string;
+    readonly labelFill?: string;
+    readonly displayTexts?: any;
 }
 
 export class OHLCTooltip extends React.Component<OHLCTooltipProps> {

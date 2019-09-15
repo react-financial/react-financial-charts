@@ -101,7 +101,7 @@ function helper(props) {
     };
 }
 
-export function drawOnCanvas(ctx, props) {
+export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
     const edge = helper(props);
 
     if (edge === null) { return; }

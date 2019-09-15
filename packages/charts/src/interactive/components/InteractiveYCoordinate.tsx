@@ -7,34 +7,34 @@ import { getMouseCanvas } from "../../GenericComponent";
 import { colorToRGBA, getStrokeDasharrayCanvas, isDefined, noop } from "../../utils";
 
 interface InteractiveYCoordinateProps {
-    bgFill: string;
-    bgOpacity: number;
-    stroke: string;
-    strokeWidth: number;
-    strokeOpacity: number;
-    strokeDasharray: string;
-    textFill: string;
-    fontFamily: string;
-    fontSize: number;
-    fontWeight: number | string;
-    fontStyle: string;
-    text: string;
-    edge: object;
-    textBox: {
+    readonly bgFill: string;
+    readonly bgOpacity: number;
+    readonly stroke: string;
+    readonly strokeWidth: number;
+    readonly strokeOpacity: number;
+    readonly strokeDasharray: string;
+    readonly textFill: string;
+    readonly fontFamily: string;
+    readonly fontSize: number;
+    readonly fontWeight: number | string;
+    readonly fontStyle: string;
+    readonly text: string;
+    readonly edge: object;
+    readonly textBox: {
         closeIcon: any;
         padding: any;
     };
-    yValue: number;
-    onDragStart: any; // func
-    onDrag: any; // func
-    onDragComplete: any; // func
-    onHover?: any; // func
-    onUnHover?: any; // func
-    defaultClassName?: string;
-    interactiveCursorClass?: string;
-    tolerance: number;
-    selected: boolean;
-    hovering: boolean;
+    readonly yValue: number;
+    readonly onDragStart: any; // func
+    readonly onDrag: any; // func
+    readonly onDragComplete: any; // func
+    readonly onHover?: any; // func
+    readonly onUnHover?: any; // func
+    readonly defaultClassName?: string;
+    readonly interactiveCursorClass?: string;
+    readonly tolerance: number;
+    readonly selected: boolean;
+    readonly hovering: boolean;
 }
 
 export class InteractiveYCoordinate extends React.Component<InteractiveYCoordinateProps> {
@@ -80,7 +80,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         throw new Error("svg not implemented");
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {
             bgFill,
             bgOpacity,

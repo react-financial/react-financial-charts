@@ -5,19 +5,19 @@ import GenericChartComponent from "../GenericChartComponent";
 import { getMouseCanvas } from "../GenericComponent";
 
 interface MouseCoordinateXV2Props {
-    xPosition?: any; // func
-    drawCoordinate?: any; // func
-    displayFormat: any; // func
-    at?: "bottom" | "top";
-    orient?: "bottom" | "top";
-    text?: {
+    readonly xPosition?: any; // func
+    readonly drawCoordinate?: any; // func
+    readonly displayFormat: any; // func
+    readonly at?: "bottom" | "top";
+    readonly orient?: "bottom" | "top";
+    readonly text?: {
         fontStyle: string,
         fontWeight: string,
         fontFamily: string,
         fontSize: number,
         fill: string | any, // func
     };
-    bg: {
+    readonly bg: {
         fill: string | any, // func
         stroke: string,
         strokeWidth: number,
@@ -28,8 +28,8 @@ interface MouseCoordinateXV2Props {
             bottom: number,
         },
     };
-    dx?: number;
-    dy?: number;
+    readonly dx?: number;
+    readonly dy?: number;
 }
 
 export class MouseCoordinateXV2 extends React.Component<MouseCoordinateXV2Props> {
@@ -72,7 +72,7 @@ export class MouseCoordinateXV2 extends React.Component<MouseCoordinateXV2Props>
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { show, currentItem } = moreProps;
         const { drawCoordinate } = this.props;
 
@@ -88,7 +88,7 @@ function defaultXPosition(props, moreProps) {
     return xAccessor(currentItem);
 }
 
-function getXCoordinateInfo(ctx, props, moreProps) {
+function getXCoordinateInfo(ctx: CanvasRenderingContext2D, props, moreProps) {
     const { xPosition } = props;
     const xValue = xPosition(props, moreProps);
     const { at, displayFormat } = props;
@@ -111,7 +111,7 @@ function getXCoordinateInfo(ctx, props, moreProps) {
 }
 
 function defaultDrawCoordinate(
-    ctx,
+    ctx: CanvasRenderingContext2D,
     shape,
     props,
     moreProps,

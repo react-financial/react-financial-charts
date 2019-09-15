@@ -19,30 +19,30 @@ import {
 } from "../utils";
 
 interface AxisZoomCaptureProps {
-    innerTickSize?: number;
-    outerTickSize?: number;
-    tickFormat?: any; // func
-    tickPadding?: number;
-    tickSize?: number;
-    ticks?: number;
-    tickValues?: number[];
-    showDomain?: boolean;
-    showTicks?: boolean;
-    className?: string;
-    axisZoomCallback?: any; // func
-    inverted?: boolean;
-    bg: {
+    readonly innerTickSize?: number;
+    readonly outerTickSize?: number;
+    readonly tickFormat?: any; // func
+    readonly tickPadding?: number;
+    readonly tickSize?: number;
+    readonly ticks?: number;
+    readonly tickValues?: number[];
+    readonly showDomain?: boolean;
+    readonly showTicks?: boolean;
+    readonly className?: string;
+    readonly axisZoomCallback?: any; // func
+    readonly inverted?: boolean;
+    readonly bg: {
         h: number;
         x: number;
         w: number;
         y: number;
     };
-    zoomCursorClassName?: string;
-    getMoreProps: any; // func
-    getScale: any; // func
-    getMouseDelta: any; // func
-    onDoubleClick: any; // func
-    onContextMenu: any; // func
+    readonly zoomCursorClassName?: string;
+    readonly getMoreProps: any; // func
+    readonly getScale: any; // func
+    readonly getMouseDelta: any; // func
+    readonly onDoubleClick: any; // func
+    readonly onContextMenu: any; // func
 }
 
 interface AxisZoomCaptureState {

@@ -26,7 +26,7 @@ interface TickProps {
 
 class Tick extends React.Component<TickProps> {
 
-    public static drawOnCanvasStatic = (tick, ctx, result) => {
+    public static drawOnCanvasStatic = (tick, ctx: CanvasRenderingContext2D, result) => {
         const { scale, tickTransform, canvas_dy, x, y, x2, y2, format } = result;
 
         const origin = tickTransform(scale, tick);
@@ -82,7 +82,7 @@ export class AxisTicks extends React.Component<AxisTicksProps> {
         tickStrokeOpacity: 1,
     };
 
-    public static drawOnCanvasStatic = (props, ctx, xScale, yScale) => {
+    public static drawOnCanvasStatic = (props, ctx: CanvasRenderingContext2D, xScale, yScale) => {
         props = { ...AxisTicks.defaultProps, ...props };
 
         const { orient } = props;

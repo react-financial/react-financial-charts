@@ -84,14 +84,14 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor } = moreProps;
 
         drawOnCanvas(ctx, this.props, moreProps, xAccessor);
     }
 }
 
-function drawOnCanvas(ctx, props, moreProps, xAccessor) {
+function drawOnCanvas(ctx: CanvasRenderingContext2D, props, moreProps, xAccessor) {
     const { stroke, strokeWidth, currentValueStroke } = props;
     const { xScale, chartConfig: { yScale }, plotData } = moreProps;
 

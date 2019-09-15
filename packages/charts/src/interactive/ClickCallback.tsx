@@ -5,14 +5,14 @@ import { getMouseCanvas } from "../GenericComponent";
 import { noop } from "../utils";
 
 interface ClickCallbackProps {
-    disablePan: boolean;
-    onMouseDown?: any; // func
-    onClick?: any; // func
-    onDoubleClick?: any; // func
-    onContextMenu?: any; // func
-    onMouseMove?: any; // func
-    onPan?: any; // func
-    onPanEnd?: any; // func
+    readonly disablePan: boolean;
+    readonly onMouseDown?: any; // func
+    readonly onClick?: any; // func
+    readonly onDoubleClick?: any; // func
+    readonly onContextMenu?: any; // func
+    readonly onMouseMove?: any; // func
+    readonly onPan?: any; // func
+    readonly onPanEnd?: any; // func
 }
 
 export class ClickCallback extends React.Component<ClickCallbackProps> {

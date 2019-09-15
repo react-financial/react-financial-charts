@@ -5,39 +5,48 @@ import { AreaSeries } from "./AreaSeries";
 import { SVGComponent } from "./SVGComponent";
 
 interface AlternatingFillAreaSeriesProps {
-    stroke?: {
+    readonly baseAt: number;
+    readonly className?: string;
+    readonly fill?: {
         top: string;
         bottom: string;
     };
-    strokeWidth?: {
-        top: number;
-        bottom: number;
-    };
-    strokeOpacity?: {
-        top: number;
-        bottom: number;
-    };
-    fill?: {
-        top: string;
-        bottom: string;
-    };
-    fillOpacity?: {
+    readonly fillOpacity?: {
         top: number,
         bottom: number,
     };
-    strokeDasharray?: {
+    readonly interpolation?: any; // func
+    readonly stroke?: {
+        top: string;
+        bottom: string;
+    };
+    readonly strokeWidth?: {
+        top: number;
+        bottom: number;
+    };
+    readonly strokeOpacity?: {
+        top: number;
+        bottom: number;
+    };
+    readonly strokeDasharray?: {
         top: strokeDashTypes;
         bottom: strokeDashTypes;
     };
-    className?: string;
-    yAccessor: (data: any) => number;
-    baseAt: number;
-    interpolation?: any; // func
+    readonly yAccessor: (data: any) => number;
 }
 
 export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAreaSeriesProps> {
 
     public static defaultProps = {
+        className: "react-financial-charts-alternating-area",
+        fill: {
+            top: "#26a69a",
+            bottom: "#ef5350",
+        },
+        fillOpacity: {
+            top: 0.1,
+            bottom: 0.1,
+        },
         stroke: {
             top: "#26a69a",
             bottom: "#ef5350",
@@ -50,19 +59,10 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
             top: 1,
             bottom: 1,
         },
-        fill: {
-            top: "#26a69a",
-            bottom: "#ef5350",
-        },
-        fillOpacity: {
-            top: 0.1,
-            bottom: 0.1,
-        },
         strokeDasharray: {
             top: "Solid" as strokeDashTypes,
             bottom: "Solid" as strokeDashTypes,
         },
-        className: "react-financial-charts-alternating-area",
     };
 
     private clipPathId1 = `alternating-area-clip-${String(Math.round(Math.random() * 10000 * 10000))}`;

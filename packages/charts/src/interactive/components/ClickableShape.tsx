@@ -7,26 +7,26 @@ import { colorToRGBA } from "../../utils";
 import { isHovering2 } from "./StraightLine";
 
 interface ClickableShapeProps {
-    fontWeight: string;
-    fontFamily: string;
-    fontStyle: string;
-    fontSize: number;
-    stroke: string;
-    strokeOpacity: number;
-    strokeWidth: number;
-    text: string;
-    textBox: {
+    readonly fontWeight: string;
+    readonly fontFamily: string;
+    readonly fontStyle: string;
+    readonly fontSize: number;
+    readonly stroke: string;
+    readonly strokeOpacity: number;
+    readonly strokeWidth: number;
+    readonly text: string;
+    readonly textBox: {
         closeIcon: any;
         left: number;
         padding: any;
     };
-    hovering?: boolean;
-    interactiveCursorClass?: string;
-    show?: boolean;
-    onHover?: any; // func
-    onUnHover?: any; // func
-    onClick?: any; // func
-    yValue: number;
+    readonly hovering?: boolean;
+    readonly interactiveCursorClass?: string;
+    readonly show?: boolean;
+    readonly onHover?: any; // func
+    readonly onUnHover?: any; // func
+    readonly onClick?: any; // func
+    readonly yValue: number;
 }
 
 export class ClickableShape extends React.Component<ClickableShapeProps> {
@@ -68,7 +68,7 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
         throw new Error("svg not implemented");
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, strokeOpacity, hovering, textBox } = this.props;
 
         const [x, y] = this.helper(this.props, moreProps, ctx);

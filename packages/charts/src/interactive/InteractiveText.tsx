@@ -15,10 +15,10 @@ import {
 import { EachText } from "./wrapper/EachText";
 
 interface InteractiveTextProps {
-    onChoosePosition: any; // func
-    onDragComplete: any; // func
-    onSelect?: any; // func
-    defaultText: {
+    readonly onChoosePosition: any; // func
+    readonly onDragComplete: any; // func
+    readonly onSelect?: any; // func
+    readonly defaultText: {
         bgFill: string;
         bgOpacity: number;
         bgStrokeWidth?: number;
@@ -30,9 +30,9 @@ interface InteractiveTextProps {
         fontSize: number;
         text: string;
     };
-    hoverText: object;
-    textList: any[];
-    enabled: boolean;
+    readonly hoverText: object;
+    readonly textList: any[];
+    readonly enabled: boolean;
 }
 
 interface InteractiveTextState {

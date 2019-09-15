@@ -54,7 +54,7 @@ export class Label extends React.Component<LabelProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         drawOnCanvas2(ctx, this.props, this.context, moreProps);
     }
 
@@ -77,7 +77,7 @@ function getYScale(chartConfig) {
     return Array.isArray(chartConfig) ? undefined : chartConfig.yScale;
 }
 
-function drawOnCanvas2(ctx, props, context, moreProps) {
+function drawOnCanvas2(ctx: CanvasRenderingContext2D, props, context, moreProps) {
     ctx.save();
 
     const { canvasOriginX, canvasOriginY, margin, ratio } = context;
@@ -96,7 +96,7 @@ function drawOnCanvas2(ctx, props, context, moreProps) {
 
 }
 
-function drawOnCanvas(ctx, props, moreProps) {
+function drawOnCanvas(ctx: CanvasRenderingContext2D, props, moreProps) {
     const { textAnchor, fontFamily, fontSize, opacity, rotate } = props;
     const { xScale, chartConfig, xAccessor } = moreProps;
 

@@ -14,11 +14,11 @@ import {
 import { EachInteractiveYCoordinate } from "./wrapper/EachInteractiveYCoordinate";
 
 interface InteractiveYCoordinateProps {
-    onChoosePosition: any; // func
-    onDragComplete: any; // func
-    onSelect?: any; // func
-    onDelete?: any; // func
-    defaultPriceCoordinate: {
+    readonly onChoosePosition: any; // func
+    readonly onDragComplete: any; // func
+    readonly onSelect?: any; // func
+    readonly onDelete?: any; // func
+    readonly defaultPriceCoordinate: {
         bgFill: string;
         bgOpacity: number;
         stroke: string;
@@ -54,9 +54,9 @@ interface InteractiveYCoordinateProps {
             fillOpacity: number;
         };
     };
-    hoverText: object;
-    yCoordinateList: any[];
-    enabled: boolean;
+    readonly hoverText: object;
+    readonly yCoordinateList: any[];
+    readonly enabled: boolean;
 }
 
 interface InteractiveYCoordinateState {

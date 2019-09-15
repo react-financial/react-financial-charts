@@ -10,17 +10,17 @@ import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 import { functor } from "../utils";
 
 interface SingleMAToolTipProps {
-    origin: number[];
-    color: string;
-    displayName: string;
-    value: string;
-    onClick?: ((details: any, event: React.MouseEvent<SVGRectElement, MouseEvent>) => void);
-    fontFamily?: string;
-    textFill?: string;
-    labelFill?: string;
-    fontSize?: number;
-    forChart: number | string;
-    options: any;
+    readonly origin: number[];
+    readonly color: string;
+    readonly displayName: string;
+    readonly value: string;
+    readonly onClick?: ((details: any, event: React.MouseEvent<SVGRectElement, MouseEvent>) => void);
+    readonly fontFamily?: string;
+    readonly textFill?: string;
+    readonly labelFill?: string;
+    readonly fontSize?: number;
+    readonly forChart: number | string;
+    readonly options: any;
 }
 
 export class SingleMAToolTip extends React.Component<SingleMAToolTipProps> {

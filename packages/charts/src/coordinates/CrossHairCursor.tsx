@@ -66,7 +66,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const lines = this.helper(this.props, moreProps);
 
         if (lines !== undefined && isDefined(lines)) {

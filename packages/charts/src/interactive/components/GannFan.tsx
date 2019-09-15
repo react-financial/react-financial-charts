@@ -12,25 +12,25 @@ import {
 } from "../../utils";
 
 interface GannFanProps {
-    startXY: number[];
-    endXY: number[];
-    interactiveCursorClass?: string;
-    stroke: string;
-    strokeWidth: number;
-    fill: string[];
-    strokeOpacity: number;
-    fillOpacity: number;
-    fontFamily: string;
-    fontSize: number;
-    fontFill: string;
-    onDragStart: any; // func
-    onDrag: any; // func
-    onDragComplete: any; // func
-    onHover?: any; // func
-    onUnHover?: any; // func
-    defaultClassName?: string;
-    tolerance: number;
-    selected: boolean;
+    readonly startXY: number[];
+    readonly endXY: number[];
+    readonly interactiveCursorClass?: string;
+    readonly stroke: string;
+    readonly strokeWidth: number;
+    readonly fill: string[];
+    readonly strokeOpacity: number;
+    readonly fillOpacity: number;
+    readonly fontFamily: string;
+    readonly fontSize: number;
+    readonly fontFill: string;
+    readonly onDragStart: any; // func
+    readonly onDrag: any; // func
+    readonly onDragComplete: any; // func
+    readonly onHover?: any; // func
+    readonly onUnHover?: any; // func
+    readonly defaultClassName?: string;
+    readonly tolerance: number;
+    readonly selected: boolean;
 }
 
 export class GannFan extends React.Component<GannFanProps> {
@@ -107,7 +107,7 @@ export class GannFan extends React.Component<GannFanProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {
             stroke, strokeWidth, strokeOpacity,
             fill, fillOpacity,

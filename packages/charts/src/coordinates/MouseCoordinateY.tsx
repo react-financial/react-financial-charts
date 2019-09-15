@@ -8,18 +8,18 @@ import { drawOnCanvas, renderSVG } from "./EdgeCoordinateV3";
 import { isNotDefined } from "../utils";
 
 interface MouseCoordinateYProps {
-    displayFormat: any; // func
-    yAxisPad?: number;
-    rectWidth?: number;
-    rectHeight?: number;
-    orient?: "bottom" | "top" | "left" | "right";
-    at?: "bottom" | "top" | "left" | "right";
-    dx?: number;
-    fill?: string;
-    opacity?: number;
-    fontFamily?: string;
-    fontSize?: number;
-    textFill?: string;
+    readonly displayFormat: any; // func
+    readonly yAxisPad?: number;
+    readonly rectWidth?: number;
+    readonly rectHeight?: number;
+    readonly orient?: "bottom" | "top" | "left" | "right";
+    readonly at?: "bottom" | "top" | "left" | "right";
+    readonly dx?: number;
+    readonly fill?: string;
+    readonly opacity?: number;
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly textFill?: string;
 }
 
 export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
@@ -60,7 +60,7 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
         return renderSVG(props);
     }
 
-    private readonly drawOnCanvas = (ctx, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const props = this.helper(this.props, moreProps);
         if (isNotDefined(props)) { return null; }
 

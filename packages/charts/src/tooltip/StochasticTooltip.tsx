@@ -9,27 +9,27 @@ import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 interface StochasticTooltipProps {
-    origin: number[] | any; // func
-    className?: string;
-    fontFamily?: string;
-    fontSize?: number;
-    labelFill?: string;
-    onClick?: any; // func
-    yAccessor: any; // func
-    options: {
+    readonly origin: number[] | any; // func
+    readonly className?: string;
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly labelFill?: string;
+    readonly onClick?: any; // func
+    readonly yAccessor: any; // func
+    readonly options: {
         windowSize: number;
         kWindowSize: number;
         dWindowSize: number;
     };
-    appearance: {
+    readonly appearance: {
         stroke: {
             dLine: string;
             kLine: string;
         },
     };
-    displayFormat: any; // func
-    displayValuesFor?: any; // func
-    label: string;
+    readonly displayFormat: any; // func
+    readonly displayValuesFor?: any; // func
+    readonly label: string;
 }
 
 export class StochasticTooltip extends React.Component<StochasticTooltipProps> {

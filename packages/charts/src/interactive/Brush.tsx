@@ -10,16 +10,16 @@ import {
 } from "../utils";
 
 interface BrushProps {
-    enabled: boolean;
-    onStart: any; // func
-    onBrush: any; // func
-    type?: "1D" | "2D";
-    stroke?: string;
-    fill?: string;
-    strokeOpacity?: number;
-    fillOpacity?: number;
-    interactiveState: object;
-    strokeDashArray?: string;
+    readonly enabled: boolean;
+    readonly onStart: any; // func
+    readonly onBrush: any; // func
+    readonly type?: "1D" | "2D";
+    readonly stroke?: string;
+    readonly fill?: string;
+    readonly strokeOpacity?: number;
+    readonly fillOpacity?: number;
+    readonly interactiveState: object;
+    readonly strokeDashArray?: string;
 }
 
 interface BrushState {

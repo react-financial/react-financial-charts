@@ -9,18 +9,18 @@ import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 interface MACDTooltipProps {
-    origin: number[] | any; // func
-    className?: string;
-    fontFamily?: string;
-    fontSize?: number;
-    labelFill?: string;
-    yAccessor: any; // func
-    options: {
+    readonly origin: number[] | any; // func
+    readonly className?: string;
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly labelFill?: string;
+    readonly yAccessor: any; // func
+    readonly options: {
         slow: number;
         fast: number;
         signal: number;
     };
-    appearance: {
+    readonly appearance: {
         stroke: {
             macd: string,
             signal: string,
@@ -29,9 +29,9 @@ interface MACDTooltipProps {
             divergence: string,
         },
     };
-    displayFormat: any; // func
-    displayValuesFor: any; // func
-    onClick?: any; // func
+    readonly displayFormat: any; // func
+    readonly displayValuesFor: any; // func
+    readonly onClick?: any; // func
 }
 
 export class MACDTooltip extends React.Component<MACDTooltipProps> {

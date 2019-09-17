@@ -30,7 +30,7 @@
     "@babel/core": "^7.6.0",
     "@storybook/addon-docs": "^5.2.0",
     "@storybook/react": "^5.2.0",
-    "@storybook/theming": "^5.2.0",
+    "@storybook/theming": "^5.2.1",
     "@types/d3-array": "^2.0.0",
     "@types/d3-collection": "^1.0.8",
     "@types/d3-dsv": "^1.0.36",

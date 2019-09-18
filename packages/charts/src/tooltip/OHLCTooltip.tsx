@@ -5,7 +5,7 @@ import * as React from "react";
 import GenericChartComponent from "../GenericChartComponent";
 import { default as defaultDisplayValuesFor } from "./displayValuesFor";
 
-import { functor, isDefined } from "../utils";
+import { functor, isDefined, last } from "../utils";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
@@ -81,6 +81,7 @@ interface OHLCTooltipProps {
     readonly textFill?: string;
     readonly labelFill?: string;
     readonly displayTexts?: any;
+    readonly lastAsDefault?: boolean;
 }
 
 export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
@@ -104,6 +105,7 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
         origin: [0, 0],
         children: defaultDisplay,
         displayTexts: displayTextsDefault,
+        lastAsDefault: false,
     };
 
     public render() {
@@ -117,20 +119,21 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
     }
 
     private readonly renderSVG = (moreProps) => {
-        const { displayValuesFor } = this.props;
         const {
+            displayValuesFor,
             xDisplayFormat,
             accessor,
             volumeFormat,
             ohlcFormat,
             percentFormat,
             displayTexts,
+            lastAsDefault,
         } = this.props;
 
-        const { chartConfig: { width, height } } = moreProps;
-        const { displayXAccessor } = moreProps;
+        const { chartConfig: { width, height }, displayXAccessor, fullData } = moreProps;
 
         const currentItem = displayValuesFor(this.props, moreProps);
+        const displayItem = lastAsDefault ? currentItem || last(fullData) : currentItem;
 
         let displayDate;
         let open;
@@ -141,8 +144,8 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
         let percent;
         displayDate = open = high = low = close = volume = percent = displayTexts.na;
 
-        if (isDefined(currentItem) && isDefined(accessor(currentItem))) {
-            const item = accessor(currentItem);
+        if (isDefined(displayItem) && isDefined(accessor(displayItem))) {
+            const item = accessor(displayItem);
             volume = isDefined(item.volume) ? volumeFormat(item.volume) : displayTexts.na;
 
             displayDate = xDisplayFormat(displayXAccessor(item));

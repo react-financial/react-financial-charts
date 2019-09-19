@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.2](https://github.com/markmcdowell/react-financial-charts/compare/v0.2.1...v0.2.2) (2019-09-19)
+
+
+### Bug Fixes
+
+* **ohlc:** Add option to display the last item as default ([c23b676](https://github.com/markmcdowell/react-financial-charts/commit/c23b676))
+* **props:** correcting more props ([4942299](https://github.com/markmcdowell/react-financial-charts/commit/4942299))
+* **props:** correcting more props ([f22fb3c](https://github.com/markmcdowell/react-financial-charts/commit/f22fb3c))
+
+
+
+
+
 ## [0.2.1](https://github.com/markmcdowell/react-financial-charts/compare/v0.2.0...v0.2.1) (2019-09-14)
 
 

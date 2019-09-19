@@ -1,6 +1,5 @@
-import { merge, rebind } from "../utils";
-
 import { change } from "../calculator";
+import { merge, rebind } from "../utils";
 
 import baseIndicator from "./baseIndicator";
 

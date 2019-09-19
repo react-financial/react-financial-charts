@@ -13,26 +13,26 @@ import {
 } from "../utils";
 
 interface LineSeriesProps {
+    readonly canvasClip?: any; // func
     readonly className?: string;
-    readonly strokeWidth?: number;
-    readonly strokeOpacity?: number;
-    readonly stroke?: string;
-    readonly hoverStrokeWidth?: number;
-    readonly fill?: string;
+    readonly connectNulls?: boolean;
     readonly defined?: any; // func
-    readonly hoverTolerance?: number;
-    readonly strokeDasharray?: strokeDashTypes;
+    readonly fill?: string;
     readonly highlightOnHover?: boolean;
+    readonly hoverStrokeWidth?: number;
+    readonly hoverTolerance?: number;
+    readonly interpolation?: any; // func
     readonly onClick?: any; // func
     readonly onDoubleClick?: any; // func
     readonly onHover?: any; // func
     readonly onUnHover?: any; // func
     readonly onContextMenu?: any; // func
-    readonly yAccessor: (data: any) => number;
-    readonly connectNulls?: boolean;
-    readonly interpolation?: any; // func
-    readonly canvasClip?: any; // func
+    readonly stroke?: string;
+    readonly strokeDasharray?: strokeDashTypes;
+    readonly strokeOpacity?: number;
+    readonly strokeWidth?: number;
     readonly style?: React.CSSProperties;
+    readonly yAccessor: (data: any) => number;
 }
 
 export class LineSeries extends React.Component<LineSeriesProps> {

@@ -6,14 +6,14 @@ import { drawOnCanvasHelper, identityStack, StackedBarSeries, svgHelper } from "
 
 interface GroupedBarSeriesProps {
     readonly baseAt: number | any; // func
+    readonly className: string | any; // func
     readonly direction: "up" | "down";
+    readonly fill: string | any; // func
+    readonly opacity: number;
+    readonly spaceBetweenBar?: number;
     readonly stroke: boolean;
     readonly widthRatio?: number;
-    readonly opacity: number;
-    readonly fill: string | any; // func
-    readonly className: string | any; // func
     readonly yAccessor: any[]; // func
-    readonly spaceBetweenBar?: number;
 }
 
 export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {

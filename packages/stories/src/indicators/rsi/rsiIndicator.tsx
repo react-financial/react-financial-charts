@@ -8,14 +8,14 @@ import { RSITooltip } from "react-financial-charts/lib/tooltip";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData, withOHLCData, withSize } from "../../data";
 
-interface RSIIndicatorProps {
+interface ChartProps {
     readonly data: IOHLCData[];
     readonly height: number;
     readonly width: number;
     readonly ratio: number;
 }
 
-class RSIIndicator extends React.Component<RSIIndicatorProps> {
+class RSIIndicator extends React.Component<ChartProps> {
 
     private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()

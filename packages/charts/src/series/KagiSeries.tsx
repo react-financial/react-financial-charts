@@ -7,11 +7,11 @@ import { isDefined, isNotDefined } from "../utils";
 
 interface KagiSeriesProps {
     readonly className?: string;
-    readonly stroke?: {
+    readonly fill?: {
         yang: string;
         yin: string;
     };
-    readonly fill?: {
+    readonly stroke?: {
         yang: string;
         yin: string;
     };

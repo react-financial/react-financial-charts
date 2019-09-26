@@ -512,15 +512,18 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             fullData: this.fullData,
         };
     }
+
     public getCanvasContexts() {
         if (this.canvasContainerNode) {
             return this.canvasContainerNode.getCanvasContexts();
         }
     }
+
     public generateSubscriptionId() {
         this.lastSubscriptionId++;
         return this.lastSubscriptionId;
     }
+
     public clearBothCanvas() {
         const canvases = this.getCanvasContexts();
         if (canvases && canvases.axes) {
@@ -531,6 +534,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             ], this.props.ratio);
         }
     }
+
     public clearMouseCanvas() {
         const canvases = this.getCanvasContexts();
         if (canvases && canvases.mouseCoord) {
@@ -540,6 +544,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             ], this.props.ratio);
         }
     }
+
     public clearThreeCanvas() {
         const canvases = this.getCanvasContexts();
         if (canvases && canvases.axes) {
@@ -551,6 +556,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             ], this.props.ratio);
         }
     }
+
     public subscribe(id, rest) {
         const { getPanConditions = functor({
             draggable: false,
@@ -562,18 +568,22 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             getPanConditions,
         });
     }
+
     public unsubscribe(id) {
         this.subscriptions = this.subscriptions.filter((each) => each.id !== id);
     }
+
     public getAllPanConditions() {
         return this.subscriptions
             .map((each) => each.getPanConditions());
     }
+
     public setCursorClass(className) {
         if (this.eventCaptureNode != null) {
             this.eventCaptureNode.setCursorClass(className);
         }
     }
+
     public amIOnTop(id) {
         const dragableComponents = this.subscriptions
             .filter((each) => each.getPanConditions().draggable);
@@ -581,6 +591,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         return dragableComponents.length > 0
             && last(dragableComponents).id === id;
     }
+
     public handleContextMenu(mouseXY, e) {
         const { xAccessor, chartConfig, plotData, xScale } = this.state;
 
@@ -593,6 +604,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             currentCharts,
         }, e);
     }
+
     public calculateStateForDomain(newDomain) {
         const {
             xAccessor,
@@ -633,6 +645,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             chartConfig,
         };
     }
+
     public pinchZoomHelper(initialPinch, finalPinch) {
         const { xScale: initialPinchXScale } = initialPinch;
 
@@ -745,7 +758,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         if (this.panInProgress) {
             return;
         }
-        // console.log("zoomDirection ", zoomDirection, " mouseXY ", mouseXY);
+
         const { xAccessor, xScale: initialXScale, plotData: initialPlotData } = this.state;
         const {
             zoomMultiplier = ChartCanvas.defaultProps.zoomMultiplier,
@@ -1171,13 +1184,20 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
         const {
             type = ChartCanvas.defaultProps.type,
+            useCrossHairStyleCursor,
+            onSelect,
             height,
             width,
             margin = ChartCanvas.defaultProps.margin,
             className,
             zIndex = ChartCanvas.defaultProps.zIndex,
-            defaultFocus, ratio, mouseMoveEvent, panEvent, zoomEvent } = this.props;
-        const { useCrossHairStyleCursor, onSelect } = this.props;
+            defaultFocus,
+            ratio,
+            mouseMoveEvent,
+            panEvent,
+            zoomEvent,
+            disableInteraction,
+        } = this.props;
 
         const { plotData, xScale, xAccessor, chartConfig } = this.state;
         const dimensions = getDimensions(this.props);
@@ -1213,15 +1233,13 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                             mouseMove={mouseMoveEvent && interaction}
                             zoom={zoomEvent && interaction}
                             pan={panEvent && interaction}
-
                             width={dimensions.width}
                             height={dimensions.height}
                             chartConfig={chartConfig}
                             xScale={xScale}
                             xAccessor={xAccessor}
                             focus={defaultFocus}
-                            disableInteraction={this.props.disableInteraction}
-
+                            disableInteraction={disableInteraction}
                             getAllPanConditions={this.getAllPanConditions}
                             onContextMenu={this.handleContextMenu}
                             onClick={this.handleClick}
@@ -1230,11 +1248,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                             onMouseMove={this.handleMouseMove}
                             onMouseEnter={this.handleMouseEnter}
                             onMouseLeave={this.handleMouseLeave}
-
                             onDragStart={this.handleDragStart}
                             onDrag={this.handleDrag}
                             onDragComplete={this.handleDragEnd}
-
                             onZoom={this.handleZoom}
                             onPinchZoom={this.handlePinchZoom}
                             onPinchZoomEnd={this.handlePinchZoomEnd}

@@ -110,7 +110,10 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     }
 
     public componentDidMount() {
-        if (this.node) {
+
+        const { disableInteraction } = this.props;
+
+        if (!disableInteraction && this.node) {
             select(this.node)
                 .on(MOUSEENTER, this.handleEnter)
                 .on(MOUSELEAVE, this.handleLeave);
@@ -124,7 +127,10 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     }
 
     public componentWillUnmount() {
-        if (this.node) {
+
+        const { disableInteraction } = this.props;
+
+        if (!disableInteraction && this.node) {
             select(this.node)
                 .on(MOUSEENTER, null)
                 .on(MOUSELEAVE, null);
@@ -474,7 +480,6 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 .on(TOUCHEND, null);
 
             if (this.panHappened
-                // && !this.contextMenuClicked
                 && panEnabled
                 && onPanEnd) {
                 const { dx, dy } = this;
@@ -553,7 +558,6 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 const touch2Pos = touchPosition(getTouchProps(e.touches[1]), e);
 
                 if (this.panHappened
-                    // && !this.contextMenuClicked
                     && panEnabled
                     && onPanEnd) {
 
@@ -579,7 +583,6 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         const [touch1Pos, touch2Pos] = touches(this.node);
         const { xScale, zoom: zoomEnabled, onPinchZoom } = this.props;
 
-        // eslint-disable-next-line no-unused-vars
         const { chartsToPan, ...initialPinch } = this.state.pinchZoomStart;
 
         if (zoomEnabled && onPinchZoom) {
@@ -601,7 +604,6 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
         const { zoom: zoomEnabled, onPinchZoomEnd } = this.props;
 
-        // eslint-disable-next-line no-unused-vars
         const { chartsToPan, ...initialPinch } = this.state.pinchZoomStart;
 
         if (zoomEnabled && onPinchZoomEnd) {
@@ -623,11 +625,13 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
     public render() {
         const { height, width, disableInteraction, useCrossHairStyleCursor } = this.props;
-        const className = this.state.cursorOverrideClass !== undefined
-            ? this.state.cursorOverrideClass
-            : !useCrossHairStyleCursor ? "" : this.state.panInProgress
-                ? "react-financial-charts-grabbing-cursor"
-                : "react-financial-charts-crosshair-cursor";
+
+        const className = disableInteraction ? undefined :
+            this.state.cursorOverrideClass !== undefined
+                ? this.state.cursorOverrideClass
+                : !useCrossHairStyleCursor ? undefined : this.state.panInProgress
+                    ? "react-financial-charts-grabbing-cursor"
+                    : "react-financial-charts-crosshair-cursor";
 
         const interactionProps = disableInteraction || {
             onMouseDown: this.handleMouseDown,

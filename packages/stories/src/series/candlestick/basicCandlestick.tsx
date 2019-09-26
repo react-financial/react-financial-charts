@@ -6,14 +6,14 @@ import { CandlestickSeries } from "react-financial-charts/lib/series";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData, withOHLCData, withSize } from "../../data";
 
-interface BasicCandlestickProps {
+interface ChartProps {
     readonly data: IOHLCData[];
     readonly height: number;
     readonly width: number;
     readonly ratio: number;
 }
 
-class BasicCandlestick extends React.Component<BasicCandlestickProps> {
+class BasicCandlestick extends React.Component<ChartProps> {
 
     private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()

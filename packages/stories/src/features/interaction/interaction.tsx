@@ -2,18 +2,23 @@ import * as React from "react";
 import { Chart, ChartCanvas } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts/lib/axes";
 import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
-import { AlternatingFillAreaSeries } from "react-financial-charts/lib/series";
+import { CandlestickSeries } from "react-financial-charts/lib/series";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData, withOHLCData, withSize } from "../../data";
 
 interface ChartProps {
+    readonly clamp?: boolean;
     readonly data: IOHLCData[];
+    readonly disableInteraction?: boolean;
+    readonly disablePan?: boolean;
+    readonly disableZoom?: boolean;
     readonly height: number;
-    readonly width: number;
     readonly ratio: number;
+    readonly width: number;
+    readonly zoomAnchor?: any;
 }
 
-class BasicBaselineSeries extends React.Component<ChartProps> {
+class Interaction extends React.Component<ChartProps> {
 
     private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
@@ -22,10 +27,15 @@ class BasicBaselineSeries extends React.Component<ChartProps> {
     public render() {
 
         const {
+            clamp,
             data: initialData,
+            disablePan = false,
+            disableZoom = false,
+            disableInteraction,
             height,
             ratio,
             width,
+            zoomAnchor,
         } = this.props;
 
         const { margin, xScaleProvider } = this;
@@ -40,26 +50,28 @@ class BasicBaselineSeries extends React.Component<ChartProps> {
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
         const xExtents = [start, end];
-        const base = 56;
 
         return (
             <ChartCanvas
+                clamp={clamp}
                 height={height}
                 ratio={ratio}
                 width={width}
                 margin={margin}
                 data={data}
+                disableInteraction={disableInteraction}
                 displayXAccessor={displayXAccessor}
+                panEvent={!disablePan}
                 seriesName="Data"
                 xScale={xScale}
                 xAccessor={xAccessor}
-                xExtents={xExtents}>
+                xExtents={xExtents}
+                zoomEvent={!disableZoom}
+                zoomAnchor={zoomAnchor}>
                 <Chart
                     id={1}
                     yExtents={this.yExtents}>
-                    <AlternatingFillAreaSeries
-                        yAccessor={this.yAccessor}
-                        baseAt={base} />
+                    <CandlestickSeries />
                     <XAxis ticks={6} />
                     <YAxis ticks={5} />
                 </Chart>
@@ -67,13 +79,9 @@ class BasicBaselineSeries extends React.Component<ChartProps> {
         );
     }
 
-    private readonly yAccessor = (data: IOHLCData) => {
-        return data.close;
-    }
-
     private readonly yExtents = (data: IOHLCData) => {
         return [data.high, data.low];
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(BasicBaselineSeries)));
+export default withOHLCData()(withSize()(withDeviceRatio()(Interaction)));

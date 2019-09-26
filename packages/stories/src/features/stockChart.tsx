@@ -9,6 +9,7 @@ import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/li
 import { BarSeries, CandlestickSeries, ElderRaySeries, LineSeries } from "react-financial-charts/lib/series";
 import { MovingAverageTooltip, OHLCTooltip, SingleValueTooltip } from "react-financial-charts/lib/tooltip";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
+import { lastVisibleItemBasedZoomAnchor } from "react-financial-charts/lib/utils/zoomBehavior";
 import { IOHLCData, withOHLCData, withSize } from "../data";
 
 interface StockChartProps {
@@ -86,7 +87,8 @@ class StockChart extends React.Component<StockChartProps> {
                 seriesName="Data"
                 xScale={xScale}
                 xAccessor={xAccessor}
-                xExtents={xExtents}>
+                xExtents={xExtents}
+                zoomAnchor={lastVisibleItemBasedZoomAnchor}>
                 <Chart
                     id={1}
                     height={chartHeight}

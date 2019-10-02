@@ -3,3 +3,4 @@ extends: "tslint:recommended"
 rules:
   completed-docs: false
   interface-name: false
+  object-literal-sort-keys: false

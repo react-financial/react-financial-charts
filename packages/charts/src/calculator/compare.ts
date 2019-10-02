@@ -1,8 +1,15 @@
 import { head, isDefined, isNotDefined, path } from "../utils";
 import { Change as defaultOptions } from "./defaultOptionsForComputation";
 
+export interface CompareOptions {
+    readonly basePath: string;
+    readonly compareKeys: string[];
+    readonly mainKeys: string[];
+    readonly sourcePath: string;
+}
+
 export default function () {
-    let options = defaultOptions;
+    let options: CompareOptions = defaultOptions;
 
     const calculator = (data: any[]) => {
         const { basePath, mainKeys, compareKeys } = options;
@@ -48,12 +55,12 @@ export default function () {
         return compareData;
     };
 
-    calculator.options = (...x) => {
-        if (!x.length) {
+    calculator.options = (newOptions?: CompareOptions) => {
+        if (newOptions === undefined) {
             return options;
         }
 
-        options = { ...defaultOptions, ...x };
+        options = { ...defaultOptions, ...newOptions };
 
         return calculator;
     };

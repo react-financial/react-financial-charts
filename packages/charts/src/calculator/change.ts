@@ -1,7 +1,7 @@
 import { slidingWindow } from "../utils";
 import { Change as defaultOptions } from "./defaultOptionsForComputation";
 
-interface ChangeOptions {
+export interface ChangeOptions {
     readonly sourcePath: string;
     readonly basePath: string;
     readonly mainKeys: string[];
@@ -23,7 +23,6 @@ export default function () {
 
         const algo = slidingWindow()
             .windowSize(2)
-            // @ts-ignore
             .sourcePath(sourcePath)
             .accumulator(([prev, curr]) => {
                 const absoluteChange = curr - prev;

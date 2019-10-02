@@ -37,12 +37,10 @@ class ForceIndicator extends React.Component<ChartProps> {
         } = this.props;
 
         const fi = forceIndex()
-            // @ts-ignore
             .merge((d: any, c: any) => { d.fi = c; })
             .accessor((d: any) => d.fi);
 
         const fiEMA13 = ema()
-            // @ts-ignore
             .id(1)
             .options({ windowSize: 13, sourcePath: "fi" })
             .merge((d: any, c: any) => { d.fiEMA13 = c; })

@@ -44,7 +44,6 @@ export default function () {
 
         const kWindow = slidingWindow()
             .windowSize(windowSize)
-            // @ts-ignore
             .accumulator((values) => {
 
                 const highestHigh = max<any, number>(values, high);
@@ -65,13 +64,11 @@ export default function () {
 
         const kSmoothed = slidingWindow()
             .skipInitial(windowSize - 1)
-            // @ts-ignore
             .windowSize(kWindowSize)
             .accumulator((values) => mean(values));
 
         const dWindow = slidingWindow()
             .skipInitial(windowSize - 1 + kWindowSize - 1)
-            // @ts-ignore
             .windowSize(dWindowSize)
             .accumulator((values) => mean(values));
 

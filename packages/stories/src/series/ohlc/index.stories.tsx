@@ -3,8 +3,8 @@ import { OHLCSeries } from "react-financial-charts/lib/series";
 import BasicOHLCSeries from "./basicOHLCSeries";
 
 export default {
-    title: "Visualization|Series/OHLC",
     component: OHLCSeries,
+    title: "Visualization|Series/OHLC",
 };
 
 export const basic = () => <BasicOHLCSeries />;

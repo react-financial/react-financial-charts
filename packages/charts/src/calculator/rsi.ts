@@ -29,6 +29,11 @@ import { mean } from "d3-array";
 import { isDefined, last, path, slidingWindow } from "../utils";
 import { RSI as defaultOptions } from "./defaultOptionsForComputation";
 
+export interface RSIOptions {
+    windowSize: number;
+    sourcePath?: string;
+}
+
 export default function () {
 
     let options = defaultOptions;
@@ -43,7 +48,6 @@ export default function () {
         let prevAvgLoss;
         const rsiAlgorithm = slidingWindow()
             .windowSize(windowSize)
-            // @ts-ignore
             .accumulator((values) => {
 
                 const avgGain = isDefined(prevAvgGain)
@@ -73,7 +77,6 @@ export default function () {
 
         const gainsAndLossesCalculator = slidingWindow()
             .windowSize(2)
-            // @ts-ignore
             .undefinedValue(() => [0, 0])
             .accumulator((tuple) => {
                 const prev = tuple[0];
@@ -98,7 +101,7 @@ export default function () {
         return windowSize - 1;
     };
 
-    calculator.options = (newOptions?: any) => {
+    calculator.options = (newOptions?: RSIOptions) => {
         if (newOptions === undefined) {
             return options;
         }

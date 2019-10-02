@@ -17,11 +17,14 @@ export default function () {
 
     const underlyingAlgorithm = slidingWindow()
         .windowSize(2)
-        // @ts-ignore
         .undefinedValue("neutral")
         .accumulator(([prev, curr]) => {
-            if (isNotDefined(macdSource)) { throw new Error(`macdSource not defined for ${ALGORITHM_TYPE} calculator`); }
-            if (isNotDefined(emaSource)) { throw new Error(`emaSource not defined for ${ALGORITHM_TYPE} calculator`); }
+            if (isNotDefined(macdSource)) {
+                throw new Error(`macdSource not defined for ${ALGORITHM_TYPE} calculator`);
+            }
+            if (isNotDefined(emaSource)) {
+                throw new Error(`emaSource not defined for ${ALGORITHM_TYPE} calculator`);
+            }
 
             if (isDefined(macdSource(prev)) && isDefined(emaSource(prev))) {
                 const prevMACDDivergence = macdSource(prev).divergence;

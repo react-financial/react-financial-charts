@@ -29,6 +29,24 @@ THE SOFTWARE.
 import { functor, path } from "./index";
 import noop from "./noop";
 
+interface SlidingWindow {
+    (data: any[]): any[];
+    misc(): any;
+    misc(x: any): SlidingWindow;
+    accumulator(): any;
+    accumulator(x: any): SlidingWindow;
+    skipInitial(): number;
+    skipInitial(x: number): SlidingWindow;
+    source(): any;
+    source(source: any): SlidingWindow;
+    sourcePath(): any;
+    sourcePath(x: any): SlidingWindow;
+    windowSize(): number;
+    windowSize(windowSize: number): SlidingWindow;
+    undefinedValue(): any;
+    undefinedValue(x: any): SlidingWindow;
+}
+
 export default function () {
 
     let undefinedValue;
@@ -39,15 +57,18 @@ export default function () {
     let skipInitial = 0;
     let misc;
 
-    const slidingWindow = function (data) {
+    const slidingWindow = (data: any[]) => {
         const sourceFunction = source || path(sourcePath);
 
         // @ts-ignore
         const size = functor(windowSize).apply(this, arguments);
-        const windowData = data.slice(skipInitial, size + skipInitial).map(sourceFunction);
+        const windowData = data
+            .slice(skipInitial, size + skipInitial)
+            .map(sourceFunction);
+
         let accumulatorIdx = 0;
         const undef = functor(undefinedValue);
-        return data.map(function (d, i) {
+        return data.map((d, i) => {
 
             if (i < (skipInitial + size - 1)) {
                 return undef(sourceFunction(d), i, misc);
@@ -119,5 +140,5 @@ export default function () {
         return slidingWindow;
     };
 
-    return slidingWindow;
+    return slidingWindow as SlidingWindow;
 }

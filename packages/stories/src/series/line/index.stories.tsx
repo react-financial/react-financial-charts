@@ -3,8 +3,8 @@ import { LineSeries } from "react-financial-charts/lib/series";
 import BasicLineSeries from "./basicLineSeries";
 
 export default {
-    title: "Visualization|Series/Line",
     component: LineSeries,
+    title: "Visualization|Series/Line",
 };
 
 export const basic = () => <BasicLineSeries />;

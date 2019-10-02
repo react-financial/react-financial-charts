@@ -3,8 +3,8 @@ import { AlternatingFillAreaSeries } from "react-financial-charts/lib/series";
 import BasicBaselineSeries from "./basicBaselineSeries";
 
 export default {
-    title: "Visualization|Series/Baseline",
     component: AlternatingFillAreaSeries,
+    title: "Visualization|Series/Baseline",
 };
 
 export const basic = () => <BasicBaselineSeries />;

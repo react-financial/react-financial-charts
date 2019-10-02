@@ -13,7 +13,6 @@ export default function () {
                 return { open, high, low, close };
             })
             .accumulator(([prev, now]) => {
-                // console.log(prev, now);
                 const { date, volume } = now;
                 const close = (now.open + now.high + now.low + now.close) / 4;
                 const open = (prev.open + prev.close) / 2;

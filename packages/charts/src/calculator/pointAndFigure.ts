@@ -17,8 +17,6 @@ function createBox(d, dateAccessor, dateMutator) {
 
 function updateColumns(columnData, dateAccessor, dateMutator) {
     columnData.forEach(function (d) {
-        // var lastBox = d.boxes[d.boxes.length - 1];
-
         d.startOfYear = false;
         d.startOfQuarter = false;
         d.startOfMonth = false;
@@ -46,26 +44,21 @@ function updateColumns(columnData, dateAccessor, dateMutator) {
                 d.startOfQuarter = eachBox.startOfQuarter;
                 d.startOfMonth = eachBox.startOfMonth;
                 d.startOfWeek = eachBox.startOfWeek;
-                // d.displayDate = eachBox.displayDate;
                 dateMutator(d, dateAccessor(eachBox));
             }
             if (d.startOfMonth !== true && eachBox.startOfMonth) {
                 d.startOfMonth = eachBox.startOfMonth;
                 d.startOfWeek = eachBox.startOfWeek;
-                // d.displayDate = eachBox.displayDate;
                 dateMutator(d, dateAccessor(eachBox));
             }
             if (d.startOfWeek !== true && eachBox.startOfWeek) {
                 d.startOfWeek = eachBox.startOfWeek;
-                // d.displayDate = eachBox.displayDate;
                 dateMutator(d, dateAccessor(eachBox));
             }
         });
 
     });
 
-    // console.table(columnData);
-    // console.table(rawData);
     return columnData;
 }
 
@@ -106,7 +99,6 @@ export default function () {
                 box.startOfYear = d.startOfYear;
                 if (box.startOfYear) {
                     dateMutator(box, dateAccessor(d));
-                    // box.displayDate = d.displayDate;
                 }
             }
 
@@ -114,7 +106,6 @@ export default function () {
                 box.startOfQuarter = d.startOfQuarter;
                 if (box.startOfQuarter && !box.startOfYear) {
                     dateMutator(box, dateAccessor(d));
-                    // box.displayDate = d.displayDate;
                 }
             }
 
@@ -122,14 +113,12 @@ export default function () {
                 box.startOfMonth = d.startOfMonth;
                 if (box.startOfMonth && !box.startOfQuarter) {
                     dateMutator(box, dateAccessor(d));
-                    // box.displayDate = d.displayDate;
                 }
             }
             if (!box.startOfMonth && !box.startOfWeek) {
                 box.startOfWeek = d.startOfWeek;
                 if (box.startOfWeek && !box.startOfMonth) {
                     dateMutator(box, dateAccessor(d));
-                    // box.displayDate = d.displayDate;
                 }
             }
 

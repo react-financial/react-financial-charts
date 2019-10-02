@@ -17,12 +17,10 @@ export default function () {
         let reversalThreshold;
 
         if (reversalType === "ATR") {
-            // calculateATR(rawData, period);
             const atrAlgorithm = atr().options({ windowSize });
 
             const atrCalculator = merge()
                 .algorithm(atrAlgorithm)
-                // @ts-ignore
                 .merge((d, c) => { d["atr" + windowSize] = c; });
 
             atrCalculator(data);
@@ -77,7 +75,6 @@ export default function () {
                 line.startOfYear = d.startOfYear;
                 if (line.startOfYear) {
                     line.date = d.date;
-                    // line.displayDate = d.displayDate;
                 }
             }
 
@@ -85,7 +82,6 @@ export default function () {
                 line.startOfQuarter = d.startOfQuarter;
                 if (line.startOfQuarter && !line.startOfYear) {
                     line.date = d.date;
-                    // line.displayDate = d.displayDate;
                 }
             }
 
@@ -93,14 +89,12 @@ export default function () {
                 line.startOfMonth = d.startOfMonth;
                 if (line.startOfMonth && !line.startOfQuarter) {
                     line.date = d.date;
-                    // line.displayDate = d.displayDate;
                 }
             }
             if (!line.startOfWeek) {
                 line.startOfWeek = d.startOfWeek;
                 if (line.startOfWeek && !line.startOfMonth) {
                     line.date = d.date;
-                    // line.displayDate = d.displayDate;
                 }
             }
             line.volume = (line.volume || 0) + d.volume;
@@ -113,7 +107,6 @@ export default function () {
             // @ts-ignore
             const priceMovement = (source(d) - line.close);
 
-            // console.log(source(d), priceMovement)
             // @ts-ignore
             if ((line.close >= line.open /* going up */ && priceMovement > 0 /* and moving in same direction */)
                 // @ts-ignore

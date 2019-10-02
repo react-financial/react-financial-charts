@@ -3,6 +3,11 @@ import { sum } from "d3-array";
 import { slidingWindow } from "../utils";
 import { WMA as defaultOptions } from "./defaultOptionsForComputation";
 
+export interface WMAOptions {
+    sourcePath?: string;
+    windowSize: number;
+}
+
 export default function () {
 
     let options = defaultOptions;
@@ -14,7 +19,6 @@ export default function () {
 
         const waverage = slidingWindow()
             .windowSize(windowSize)
-            // @ts-ignore
             .sourcePath(sourcePath)
             .accumulator((values: number[]) => {
                 const total = sum(values, (v, i) => {
@@ -33,7 +37,7 @@ export default function () {
         return windowSize - 1;
     };
 
-    calculator.options = (newOptions?: any) => {
+    calculator.options = (newOptions?: WMAOptions) => {
         if (newOptions === undefined) {
             return options;
         }

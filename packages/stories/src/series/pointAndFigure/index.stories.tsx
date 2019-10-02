@@ -3,8 +3,8 @@ import { PointAndFigureSeries } from "react-financial-charts/lib/series";
 import BasicPointAndFigureSeries from "./basicPointAndFigureSeries";
 
 export default {
-    title: "Visualization|Series/Point & Figure",
     component: PointAndFigureSeries,
+    title: "Visualization|Series/Point & Figure",
 };
 
 export const basic = () => <BasicPointAndFigureSeries />;

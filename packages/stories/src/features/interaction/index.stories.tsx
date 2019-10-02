@@ -4,8 +4,8 @@ import { lastVisibleItemBasedZoomAnchor, mouseBasedZoomAnchor, rightDomainBasedZ
 import Interaction from "./interaction";
 
 export default {
-    title: "Features|Interaction",
     component: ChartCanvas,
+    title: "Features|Interaction",
 };
 
 export const clamp = () => <Interaction clamp />;

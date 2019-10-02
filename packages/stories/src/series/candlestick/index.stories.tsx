@@ -3,8 +3,8 @@ import { CandlestickSeries } from "react-financial-charts/lib/series";
 import BasicCandlestickSeries from "./basicCandlestick";
 
 export default {
-    title: "Visualization|Series/Candles",
     component: CandlestickSeries,
+    title: "Visualization|Series/Candles",
 };
 
 export const basic = () => <BasicCandlestickSeries />;

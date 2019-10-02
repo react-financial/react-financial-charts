@@ -58,13 +58,11 @@ export default function () {
             ? ema().options({ windowSize, sourcePath })
             : slidingWindow()
                 .windowSize(windowSize)
-                // @ts-ignore
                 .accumulator((values) => mean(values))
                 .sourcePath(sourcePath);
 
         const bollingerBandAlgorithm = slidingWindow()
             .windowSize(windowSize)
-            // @ts-ignore
             .accumulator((values) => {
                 const avg = last(values).mean;
                 const stdDev = deviation<any>(values, (each) => source(each.datum));
@@ -84,6 +82,7 @@ export default function () {
 
         // @ts-ignore
         const tuples = zip(data, meanAlgorithm(data));
+
         return bollingerBandAlgorithm(tuples);
     };
 

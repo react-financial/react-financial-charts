@@ -1,6 +1,11 @@
 import { path, slidingWindow } from "../utils";
 import { ForceIndex as defaultOptions } from "./defaultOptionsForComputation";
 
+export interface ForceIndexOptions {
+    readonly sourcePath: string;
+    readonly volumePath: string;
+}
+
 export default function () {
 
     let options = defaultOptions;
@@ -16,7 +21,6 @@ export default function () {
 
         const forceIndexCalulator = slidingWindow()
             .windowSize(2)
-            // @ts-ignore
             .accumulator(([prev, curr]) => (source(curr) - source(prev)) * volume(curr));
 
         const forceIndex = forceIndexCalulator(data);
@@ -28,7 +32,7 @@ export default function () {
         return 2;
     };
 
-    calculator.options = (newOptions?: { sourcePath: string, volumePath: string }) => {
+    calculator.options = (newOptions?: ForceIndexOptions) => {
         if (newOptions === undefined) {
             return options;
         }

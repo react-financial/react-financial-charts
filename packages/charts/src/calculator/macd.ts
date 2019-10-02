@@ -28,11 +28,11 @@ import { zip } from "d3-array";
 import { MACD as defaultOptions } from "./defaultOptionsForComputation";
 import ema from "./ema";
 
-interface MACDOptions {
+export interface MACDOptions {
     readonly fast: number;
     readonly slow: number;
     readonly signal: number;
-    readonly sourcePath: string;
+    readonly sourcePath?: string;
 }
 
 interface MACDCalculator {

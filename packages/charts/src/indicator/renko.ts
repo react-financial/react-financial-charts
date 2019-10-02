@@ -15,8 +15,7 @@ export default function () {
     const indicator = underlyingAlgorithm;
 
     rebind(indicator, base, "id", "stroke", "fill", "echo", "type");
-    rebind(indicator, underlyingAlgorithm, "dateAccessor", "dateMutator");
-    rebind(indicator, underlyingAlgorithm, "options");
+    rebind(indicator, underlyingAlgorithm, "options", "dateAccessor", "dateMutator");
 
     return indicator;
 }

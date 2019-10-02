@@ -3,8 +3,8 @@ import { RenkoSeries } from "react-financial-charts/lib/series";
 import BasicRenkoSeries from "./basicRenkoSeries";
 
 export default {
-    title: "Visualization|Series/Renko",
     component: RenkoSeries,
+    title: "Visualization|Series/Renko",
 };
 
 export const basic = () => <BasicRenkoSeries />;

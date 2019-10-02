@@ -16,8 +16,8 @@ import { IOHLCData, withOHLCData, withSize } from "../../data";
 interface ChartProps {
     readonly data: IOHLCData[];
     readonly height: number;
-    readonly width: number;
     readonly ratio: number;
+    readonly width: number;
 }
 
 class ElderRayIndicator extends React.Component<ChartProps> {
@@ -77,7 +77,7 @@ class ElderRayIndicator extends React.Component<ChartProps> {
                     <SingleValueTooltip
                         yAccessor={elder.accessor()}
                         yLabel="Elder Ray"
-                        yDisplayFormat={(d) => `${format(".2f")(d.bullPower)}, ${format(".2f")(d.bearPower)}`}
+                        yDisplayFormat={(d: any) => `${format(".2f")(d.bullPower)}, ${format(".2f")(d.bearPower)}`}
                         origin={[8, 8]} />
                 </Chart>
             </ChartCanvas>

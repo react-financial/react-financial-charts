@@ -2,9 +2,30 @@ import { merge, rebind } from "../utils";
 
 import { sar } from "../calculator";
 
+import { SAROptions } from "../calculator/sar";
 import baseIndicator from "./baseIndicator";
 
 const ALGORITHM_TYPE = "SMA";
+
+interface SARIndicator {
+    (data: any[], options?: { merge: boolean; }): any;
+    id(): number;
+    id(x: number): SARIndicator;
+    accessor(): any;
+    accessor(x: any): SARIndicator;
+    stroke(): string | any;
+    stroke(x: string | any): SARIndicator;
+    fill(): string | any;
+    fill(x: string | any): SARIndicator;
+    echo(): any;
+    echo(x: any): SARIndicator;
+    type(): string;
+    type(x: string): SARIndicator;
+    merge(): any;
+    merge(newMerge: any): SARIndicator;
+    options(): SAROptions;
+    options(newOptions: SAROptions): SARIndicator;
+}
 
 export default function () {
 
@@ -27,9 +48,8 @@ export default function () {
     };
 
     rebind(indicator, base, "id", "accessor", "stroke", "echo", "type");
-    rebind(indicator, underlyingAlgorithm, "undefinedLength");
-    rebind(indicator, underlyingAlgorithm, "options");
+    rebind(indicator, underlyingAlgorithm, "options", "undefinedLength");
     rebind(indicator, mergedAlgorithm, "merge");
 
-    return indicator;
+    return indicator as SARIndicator;
 }

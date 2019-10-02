@@ -3,8 +3,8 @@ import { KagiSeries } from "react-financial-charts/lib/series";
 import BasicKagiSeries from "./basicKagiSeries";
 
 export default {
-    title: "Visualization|Series/Kagi",
     component: KagiSeries,
+    title: "Visualization|Series/Kagi",
 };
 
 export const basic = () => <BasicKagiSeries />;

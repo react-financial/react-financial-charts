@@ -3,6 +3,11 @@ import { mean } from "d3-array";
 import { slidingWindow } from "../utils";
 import { SMA as defaultOptions } from "./defaultOptionsForComputation";
 
+export interface SMAOptions {
+    readonly sourcePath?: string;
+    readonly windowSize: number;
+}
+
 export default function () {
 
     let options = defaultOptions;
@@ -12,7 +17,6 @@ export default function () {
 
         const average = slidingWindow()
             .windowSize(windowSize)
-            // @ts-ignore
             .sourcePath(sourcePath)
             .accumulator((values) => mean(values));
 
@@ -25,7 +29,7 @@ export default function () {
         return windowSize - 1;
     };
 
-    calculator.options = (newOptions?: any) => {
+    calculator.options = (newOptions?: SMAOptions) => {
         if (newOptions === undefined) {
             return options;
         }

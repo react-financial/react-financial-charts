@@ -34,7 +34,6 @@ export default function () {
 
         const trueRangeAlgorithm = slidingWindow()
             .windowSize(2)
-            // @ts-ignore
             .source(source)
             .undefinedValue((d) => d.high - d.low) // the first TR value is simply the High minus the Low
             .accumulator((values) => {
@@ -49,7 +48,6 @@ export default function () {
 
         const atrAlgorithm = slidingWindow()
             .skipInitial(1) // trueRange starts from index 1 so ATR starts from 1
-            // @ts-ignore
             .windowSize(windowSize)
             .accumulator((values) => {
                 const tr = last(values);

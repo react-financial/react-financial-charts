@@ -18,12 +18,12 @@ interface ChartProps {
 class MACDIndicator extends React.Component<ChartProps> {
 
     private readonly macdAppearance = {
+        fill: {
+            divergence: "#4682B4",
+        },
         stroke: {
             macd: "#0093FF",
             signal: "#D84315",
-        },
-        fill: {
-            divergence: "#4682B4",
         },
     };
     private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };
@@ -40,11 +40,10 @@ class MACDIndicator extends React.Component<ChartProps> {
         } = this.props;
 
         const calculator = macd()
-            // @ts-ignore
             .options({
                 fast: 12,
-                slow: 26,
                 signal: 9,
+                slow: 26,
             })
             .merge((d: any, c: any) => { d.macd = c; })
             .accessor((d: any) => d.macd);

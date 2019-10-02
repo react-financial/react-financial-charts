@@ -34,9 +34,9 @@ class SARIndicator extends React.Component<ChartProps> {
         const maxAccelerationFactor = .2;
 
         const calculator = sar()
-            // @ts-ignore
             .options({
-                accelerationFactor, maxAccelerationFactor,
+                accelerationFactor,
+                maxAccelerationFactor,
             })
             .merge((d: any, c: any) => { d.sar = c; })
             .accessor((d: any) => d.sar);

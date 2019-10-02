@@ -36,6 +36,11 @@ import { sum } from "d3-array";
 import { slidingWindow } from "../utils";
 import { TMA as defaultOptions } from "./defaultOptionsForComputation";
 
+export interface TMAOptions {
+    readonly sourcePath?: string;
+    readonly windowSize: number;
+}
+
 export default function () {
     let options = defaultOptions;
 
@@ -49,7 +54,6 @@ export default function () {
 
         const triaverage = slidingWindow()
             .windowSize(windowSize)
-            // @ts-ignore
             .sourcePath(sourcePath)
             .accumulator((values: number[]) => {
                 const total = sum(values, (v, i) => {
@@ -70,7 +74,7 @@ export default function () {
         return windowSize - 1;
     };
 
-    calculator.options = (newOptions?: { windowSize: number, sourcePath: string }) => {
+    calculator.options = (newOptions?: TMAOptions) => {
         if (newOptions === undefined) {
             return options;
         }

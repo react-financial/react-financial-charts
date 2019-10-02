@@ -12,8 +12,8 @@ import { IOHLCData, withOHLCData, withSize } from "../../data";
 interface ChartProps {
     readonly data: IOHLCData[];
     readonly height: number;
-    readonly width: number;
     readonly ratio: number;
+    readonly width: number;
 }
 
 class ATRIndicator extends React.Component<ChartProps> {

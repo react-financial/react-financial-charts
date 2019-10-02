@@ -22,12 +22,10 @@ export default function () {
         let brickSize;
 
         if (reversalType === "ATR") {
-            // calculateATR(rawData, period);
             const atrAlgorithm = atr().options({ windowSize });
 
             const atrCalculator = merge()
                 .algorithm(atrAlgorithm)
-                // @ts-ignore
                 .merge((d, c) => { d["atr" + windowSize] = c; });
 
             atrCalculator(rawData);
@@ -78,7 +76,6 @@ export default function () {
 
                 brick.from = idx;
                 brick.fromDate = dateAccessor(d);
-                // indexMutator(brick, index++);
                 dateMutator(brick, dateAccessor(d));
             }
             brick.volume = (brick.volume || 0) + d.volume;
@@ -102,7 +99,6 @@ export default function () {
                 brick.startOfYear = d.startOfYear;
                 if (brick.startOfYear) {
                     dateMutator(brick, dateAccessor(d));
-                    // brick.displayDate = d.displayDate;
                 }
             }
 
@@ -110,7 +106,6 @@ export default function () {
                 brick.startOfQuarter = d.startOfQuarter;
                 if (brick.startOfQuarter && !brick.startOfYear) {
                     dateMutator(brick, dateAccessor(d));
-                    // brick.displayDate = d.displayDate;
                 }
             }
 
@@ -118,18 +113,15 @@ export default function () {
                 brick.startOfMonth = d.startOfMonth;
                 if (brick.startOfMonth && !brick.startOfQuarter) {
                     dateMutator(brick, dateAccessor(d));
-                    // brick.displayDate = d.displayDate;
                 }
             }
             if (!brick.startOfWeek) {
                 brick.startOfWeek = d.startOfWeek;
                 if (brick.startOfWeek && !brick.startOfMonth) {
                     dateMutator(brick, dateAccessor(d));
-                    // brick.displayDate = d.displayDate;
                 }
             }
 
-            // d.brick = JSON.stringify(brick);
             if (brickSize(d)) {
                 const noOfBricks = Math.floor(priceMovement / brickSize(d));
 

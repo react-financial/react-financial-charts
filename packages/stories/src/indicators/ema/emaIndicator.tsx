@@ -82,16 +82,16 @@ class EMAIndicator extends React.Component<ChartProps> {
                         origin={[8, 0]}
                         options={[
                             {
-                                yAccessor: ema26.accessor(),
-                                type: "EMA",
                                 stroke: ema26.stroke(),
+                                type: "EMA",
                                 windowSize: ema26.options().windowSize,
+                                yAccessor: ema26.accessor(),
                             },
                             {
-                                yAccessor: ema12.accessor(),
-                                type: "EMA",
                                 stroke: ema12.stroke(),
+                                type: "EMA",
                                 windowSize: ema12.options().windowSize,
+                                yAccessor: ema12.accessor(),
                             },
                         ]}
                     />

@@ -49,7 +49,6 @@ export default function () {
             ? ema().options({ windowSize, sourcePath })
             : slidingWindow()
                 .windowSize(windowSize)
-                // @ts-ignore
                 .accumulator((values) => mean(values)).sourcePath(sourcePath);
 
         return zip(data, meanAlgorithm(data))
@@ -79,12 +78,12 @@ export default function () {
         return calculator;
     };
 
-    calculator.options = (...x) => {
-        if (!x.length) {
+    calculator.options = (newOptions?: ElderRayOptions) => {
+        if (newOptions === undefined) {
             return options;
         }
 
-        options = { ...defaultOptions, ...x };
+        options = { ...defaultOptions, ...newOptions };
 
         return calculator;
     };

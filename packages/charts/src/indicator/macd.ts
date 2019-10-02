@@ -2,10 +2,31 @@ import { merge, rebind } from "../utils";
 
 import { macd } from "../calculator";
 
+import { MACDOptions } from "../calculator/macd";
 import baseIndicator from "./baseIndicator";
 import { MACD as appearanceOptions } from "./defaultOptionsForAppearance";
 
 const ALGORITHM_TYPE = "MACD";
+
+interface MACDIndicator {
+    (data: any[], options?: { merge: boolean; }): any;
+    id(): number;
+    id(x: number): MACDIndicator;
+    accessor(): any;
+    accessor(x: any): MACDIndicator;
+    stroke(): string | any;
+    stroke(x: string | any): MACDIndicator;
+    fill(): string | any;
+    fill(x: string | any): MACDIndicator;
+    echo(): any;
+    echo(x: any): MACDIndicator;
+    type(): string;
+    type(x: string): MACDIndicator;
+    merge(): any;
+    merge(newMerge: any): MACDIndicator;
+    options(): MACDOptions;
+    options(newOptions: MACDOptions): MACDIndicator;
+}
 
 export default function () {
 
@@ -36,5 +57,5 @@ export default function () {
     rebind(indicator, underlyingAlgorithm, "options", "undefinedLength");
     rebind(indicator, mergedAlgorithm, "merge", "skipUndefined");
 
-    return indicator;
+    return indicator as MACDIndicator;
 }

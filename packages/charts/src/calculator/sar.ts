@@ -19,11 +19,16 @@ function calc(prev, now) {
     };
 }
 
+export interface SAROptions {
+    readonly accelerationFactor: number;
+    readonly maxAccelerationFactor: number;
+}
+
 export default function () {
 
     let options = defaultOptions;
 
-    const calculator = (data) => {
+    const calculator = (data: any[]) => {
         const { accelerationFactor, maxAccelerationFactor } = options;
 
         const algorithm = mappedSlidingWindow()
@@ -83,6 +88,7 @@ export default function () {
                     };
 
                 const { date, high, low } = now;
+
                 return {
                     date,
                     high,
@@ -102,7 +108,7 @@ export default function () {
         return 1;
     };
 
-    calculator.options = (newOptions?: any) => {
+    calculator.options = (newOptions?: SAROptions) => {
         if (newOptions === undefined) {
             return options;
         }

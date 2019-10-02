@@ -31,7 +31,6 @@ class RSIIndicator extends React.Component<ChartProps> {
         } = this.props;
 
         const calculator = rsi()
-            // @ts-ignore
             .options({ windowSize: 14 })
             .merge((d: any, c: any) => { d.rsi = c; })
             .accessor((d: any) => d.rsi);

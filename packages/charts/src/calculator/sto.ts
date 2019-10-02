@@ -24,9 +24,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-import { max, mean, min } from "d3-array";
+import { max, mean, min, zip } from "d3-array";
 
-import { last, slidingWindow, zipper } from "../utils";
+import { last, slidingWindow } from "../utils";
 import { FullStochasticOscillator as defaultOptions } from "./defaultOptionsForComputation";
 
 export default function () {
@@ -35,7 +35,7 @@ export default function () {
 
     let source = (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close });
 
-    function calculator(data) {
+    const calculator = (data: any[]) => {
         const { windowSize, kWindowSize, dWindowSize } = options;
 
         const high = (d) => source(d).high;
@@ -75,33 +75,43 @@ export default function () {
             .windowSize(dWindowSize)
             .accumulator((values) => mean(values));
 
-        const stoAlgorithm = zipper()
-            .combine((K, D) => ({ K, D }));
-
         const kData = kSmoothed(kWindow(data));
         const dData = dWindow(kData);
 
         // @ts-ignore
-        const indicatorData = stoAlgorithm(kData, dData);
+        const indicatorData = zip(kData, dData)
+            .map((d) => {
+                return {
+                    K: d[0],
+                    D: d[1],
+                };
+            });
 
         return indicatorData;
-    }
-    calculator.undefinedLength = function () {
+    };
+
+    calculator.undefinedLength = () => {
         const { windowSize, kWindowSize, dWindowSize } = options;
         return windowSize + kWindowSize + dWindowSize;
     };
-    calculator.source = function (x) {
-        if (!arguments.length) {
+
+    calculator.source = (newSource?: any) => {
+        if (newSource === undefined) {
             return source;
         }
-        source = x;
+
+        source = newSource;
+
         return calculator;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: any) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 

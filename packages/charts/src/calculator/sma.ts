@@ -7,7 +7,7 @@ export default function () {
 
     let options = defaultOptions;
 
-    function calculator(data) {
+    const calculator = (data: any[]) => {
         const { windowSize, sourcePath } = options;
 
         const average = slidingWindow()
@@ -17,16 +17,21 @@ export default function () {
             .accumulator((values) => mean(values));
 
         return average(data);
-    }
-    calculator.undefinedLength = function () {
+    };
+
+    calculator.undefinedLength = () => {
         const { windowSize } = options;
+
         return windowSize - 1;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: any) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 

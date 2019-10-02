@@ -15,14 +15,16 @@ export default function () {
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        // @ts-ignore
         .merge((datum, i) => {
             return { ...datum, ...i };
         });
 
-    const indicator = function (data, options = { merge: true }) {
+    const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {
-            if (!base.accessor()) { throw new Error(`Set an accessor to ${ALGORITHM_TYPE} before calculating`); }
+            if (!base.accessor()) {
+                throw new Error(`Set an accessor to ${ALGORITHM_TYPE} before calculating`);
+            }
+
             return mergedAlgorithm(data);
         }
         return underlyingAlgorithm(data);

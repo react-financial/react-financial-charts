@@ -1,4 +1,4 @@
-import { nest as d3Nest } from "d3-collection";
+import { group } from "d3-array";
 import * as React from "react";
 
 import GenericChartComponent from "../GenericChartComponent";
@@ -88,20 +88,16 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
 
         const { markerProps } = props;
 
-        const nest = d3Nest<any>()
-            .key((d) => d.fill)
-            .key((d) => d.stroke)
-            .entries(points);
+        // @ts-ignore
+        const nest = group(points, (d) => d.fill, (d) => d.stroke);
 
-        nest.forEach((fillGroup) => {
-            const { key: fillKey, values: fillValues } = fillGroup;
+        nest.forEach((fillValues, fillKey) => {
 
             if (fillKey !== "none") {
                 ctx.fillStyle = fillKey;
             }
 
-            fillValues.forEach((strokeGroup) => {
-                const { values: strokeValues } = strokeGroup;
+            fillValues.forEach((strokeValues) => {
 
                 strokeValues.forEach((point) => {
                     const { marker } = point;

@@ -4,12 +4,32 @@ import { isDefined, last, slidingWindow } from "../utils";
 
 import { ATR as defaultOptions } from "./defaultOptionsForComputation";
 
+export interface ATROptions {
+    readonly windowSize: number;
+}
+
+export interface ATRSource {
+    readonly close: number;
+    readonly high: number;
+    readonly low: number;
+    readonly open: number;
+}
+
+export interface ATRCalculator {
+    (data: any[]): any;
+    undefinedLength(): number;
+    options(): ATROptions;
+    options(newOptions: ATROptions): ATRCalculator;
+    source(): (d: any) => ATRSource;
+    source(newSource: ((d: any) => ATRSource)): ATRCalculator;
+}
+
 export default function () {
 
-    let options = defaultOptions;
-    let source = (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close });
+    let options: ATROptions = defaultOptions;
+    let source = (d: any) => ({ open: d.open, high: d.high, low: d.low, close: d.close });
 
-    function calculator(data) {
+    const calculator = (data: any[]) => {
         const { windowSize } = options;
 
         const trueRangeAlgorithm = slidingWindow()
@@ -44,26 +64,33 @@ export default function () {
         const newData = atrAlgorithm(trueRangeAlgorithm(data));
 
         return newData;
-    }
-    calculator.undefinedLength = function () {
+    };
+
+    calculator.undefinedLength = () => {
         const { windowSize } = options;
+
         return windowSize - 1;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: ATROptions) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 
-    calculator.source = function (x) {
-        if (!arguments.length) {
+    calculator.source = (newSource?: (d: any) => ATRSource) => {
+        if (newSource === undefined) {
             return source;
         }
-        source = x;
+
+        source = newSource;
+
         return calculator;
     };
 
-    return calculator;
+    return calculator as ATRCalculator;
 }

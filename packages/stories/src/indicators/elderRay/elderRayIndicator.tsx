@@ -35,7 +35,8 @@ class ElderRayIndicator extends React.Component<ChartProps> {
             width,
         } = this.props;
 
-        const elder: any = elderRay();
+        const elder = elderRay();
+
         const changeCalculator = change();
 
         const calculatedData = changeCalculator(elder(initialData));

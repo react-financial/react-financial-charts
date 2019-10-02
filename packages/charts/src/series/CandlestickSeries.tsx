@@ -1,4 +1,4 @@
-import { nest } from "d3-collection";
+import { group } from "d3-array";
 import * as React from "react";
 
 import GenericChartComponent from "../GenericChartComponent";
@@ -139,12 +139,9 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
 
         const candleData = this.getCandleData(props, xAccessor, xScale, yScale, plotData);
 
-        const wickNest = nest<any>()
-            .key((d) => d.wick.stroke)
-            .entries(candleData);
+        const wickNest = group(candleData, (d) => d.wick.stroke);
 
-        wickNest.forEach((outer) => {
-            const { key, values } = outer;
+        wickNest.forEach((values, key) => {
             ctx.strokeStyle = key;
             ctx.fillStyle = key;
             values.forEach((each) => {
@@ -156,19 +153,15 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
             });
         });
 
-        const candleNest = nest<any>()
-            .key((d) => d.stroke)
-            .key((d) => d.fill)
-            .entries(candleData);
+        // @ts-ignore
+        const candleNest = group(candleData, (d) => d.stroke, (d) => d.fill);
 
-        candleNest.forEach((outer) => {
-            const { key: strokeKey, values: strokeValues } = outer;
+        candleNest.forEach((strokeValues, strokeKey) => {
             if (strokeKey !== "none") {
                 ctx.strokeStyle = strokeKey;
                 ctx.lineWidth = candleStrokeWidth;
             }
-            strokeValues.forEach((inner) => {
-                const { key, values } = inner;
+            strokeValues.forEach((values, key) => {
                 const fillStyle = head(values).width <= 1
                     ? key
                     : colorToRGBA(key, opacity);

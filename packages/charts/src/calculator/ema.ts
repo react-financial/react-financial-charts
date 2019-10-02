@@ -27,11 +27,23 @@ THE SOFTWARE.
 import { isNotDefined, path } from "../utils";
 import { EMA as defaultOptions } from "./defaultOptionsForComputation";
 
+export interface EMAOptions {
+    readonly windowSize: number;
+    readonly sourcePath?: string;
+}
+
+interface EMACalculator {
+    (data: any[]): Array<number | undefined>;
+    undefinedLength(): number;
+    options(): EMAOptions;
+    options(newOptions: EMAOptions): EMACalculator;
+}
+
 export default function () {
 
-    let options = defaultOptions;
+    let options: EMAOptions = defaultOptions;
 
-    function calculator(data) {
+    const calculator = (data: any[]) => {
         const { windowSize, sourcePath } = options;
 
         // @ts-ignore
@@ -60,18 +72,23 @@ export default function () {
                 return nextValue;
             }
         });
-    }
-    calculator.undefinedLength = function () {
+    };
+
+    calculator.undefinedLength = () => {
         const { windowSize } = options;
+
         return windowSize - 1;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: EMAOptions) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 
-    return calculator;
+    return calculator as EMACalculator;
 }

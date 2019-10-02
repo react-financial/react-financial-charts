@@ -1,10 +1,24 @@
 import { slidingWindow } from "../utils";
 import { Change as defaultOptions } from "./defaultOptionsForComputation";
 
-export default function () {
-    let options = defaultOptions;
+interface ChangeOptions {
+    readonly sourcePath: string;
+    readonly basePath: string;
+    readonly mainKeys: string[];
+    readonly compareKeys: string[];
+}
 
-    function calculator(data) {
+interface ChangeCalculator {
+    (data: any[]): any;
+    undefinedLength(): number;
+    options(): ChangeOptions;
+    options(newOptions: ChangeOptions): ChangeCalculator;
+}
+
+export default function () {
+    let options: ChangeOptions = defaultOptions;
+
+    const calculator = (data: any[]) => {
         const { sourcePath } = options;
 
         const algo = slidingWindow()
@@ -20,17 +34,21 @@ export default function () {
         const newData = algo(data);
 
         return newData;
-    }
-    calculator.undefinedLength = function () {
+    };
+
+    calculator.undefinedLength = () => {
         return 1;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: ChangeOptions) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 
-    return calculator;
+    return calculator as ChangeCalculator;
 }

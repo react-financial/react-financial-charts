@@ -1,4 +1,4 @@
-import { range as d3Range } from "d3-array";
+import { range as d3Range, zip } from "d3-array";
 import { forceCollide, forceSimulation, forceX } from "d3-force";
 import * as React from "react";
 
@@ -6,7 +6,7 @@ import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas } from "../GenericComponent";
 import { AxisZoomCapture } from "./AxisZoomCapture";
 
-import { colorToRGBA, first, getStrokeDasharray, identity, isDefined, isNotDefined, last, strokeDashTypes, zipper } from "../utils";
+import { colorToRGBA, first, getStrokeDasharray, identity, isDefined, isNotDefined, last, strokeDashTypes } from "../utils";
 
 interface AxisProps {
     readonly axisZoomCallback?: any; // func
@@ -234,8 +234,11 @@ function tickHelper(props, scale) {
 
             for (let i = 0; i < 100; ++i) { simulation.tick(); }
 
-            const zip = zipper()
-                .combine((a, b) => {
+            ticks = zip(ticks, nodes)
+                .map((d) => {
+                    const a: any = d[0];
+                    const b: any = d[1];
+
                     if (Math.abs(b.x - b.origX) > 0.01) {
                         return {
                             ...a,
@@ -245,9 +248,6 @@ function tickHelper(props, scale) {
                     }
                     return a;
                 });
-
-            // @ts-ignore
-            ticks = zip(ticks, nodes);
         }
 
     } else {

@@ -1,5 +1,4 @@
-import { merge } from "d3-array";
-import { nest as d3Nest } from "d3-collection";
+import { group, merge } from "d3-array";
 import { stack as d3Stack } from "d3-shape";
 import * as React from "react";
 
@@ -156,12 +155,10 @@ export function getBarsSVG2(props, bars) {
 export function drawOnCanvas2(props, ctx: CanvasRenderingContext2D, bars) {
     const { stroke } = props;
 
-    const nest = d3Nest<any>()
-        .key((d) => d.fill)
-        .entries(bars);
+    const nest = group(bars, (d: any) => d.fill);
 
-    nest.forEach((outer) => {
-        const { key, values } = outer;
+    nest.forEach((values, key) => {
+
         if (head(values).width > 1) {
             ctx.strokeStyle = key;
         }
@@ -179,7 +176,6 @@ export function drawOnCanvas2(props, ctx: CanvasRenderingContext2D, bars) {
                     ctx.strokeRect(d.x, d.y, d.width, d.height);
                 }
             }
-
         });
     });
 }

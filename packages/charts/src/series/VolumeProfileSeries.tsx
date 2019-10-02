@@ -1,5 +1,4 @@
-import { ascending, descending, histogram as d3Histogram, max, merge, sum, zip } from "d3-array";
-import { nest } from "d3-collection";
+import { ascending, descending, histogram as d3Histogram, max, merge, rollup, sum, zip } from "d3-array";
 import { scaleLinear } from "d3-scale";
 import * as React from "react";
 
@@ -167,10 +166,14 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
                 .value(source)
                 .thresholds(bins);
 
-            const rollup = nest<any, number>()
-                .key((d) => d.direction)
-                .sortKeys(orient === "right" ? descending : ascending)
-                .rollup((leaves) => sum<any>(leaves, (d) => d.volume));
+            const rolledup = (data: any[]) => {
+
+                const sortFunction = orient === "right" ? descending : ascending;
+
+                const sortedData = data.sort(sortFunction);
+
+                return rollup(sortedData, (leaves) => sum<any>(leaves, (d) => d.volume), (d) => d.direction);
+            };
 
             const values = histogram2(session);
 
@@ -178,10 +181,10 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
                 .map((arr) => arr.map((d) => {
                     return absoluteChange(d) > 0 ? { direction: "up", volume: volume(d) } : { direction: "down", volume: volume(d) };
                 }))
-                .map((arr) => rollup.entries(arr));
+                .map((arr) => Array.from(rolledup(arr)));
 
             const volumeValues = volumeInBins
-                .map((each) => sum(each.map((d) => d.value)));
+                .map((each) => sum(each.map((d) => d[1])));
 
             const base = (xScaleD) => head(xScaleD.range());
 
@@ -202,8 +205,8 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
 
                 const ws = volumes.map((d) => {
                     return {
-                        type: d.key,
-                        width: d.value! * Math.abs(widthLocal) / totalVolume,
+                        type: d[0],
+                        width: d[1] * Math.abs(widthLocal) / totalVolume,
                     };
                 });
 

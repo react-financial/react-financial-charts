@@ -1,4 +1,4 @@
-import { zipper } from "../utils";
+import { zip } from "d3-array";
 import { SmoothedForceIndex as defaultOptions } from "./defaultOptionsForComputation";
 import ema from "./ema";
 import forceIndex from "./forceIndex";
@@ -7,13 +7,10 @@ import sma from "./sma";
 export default function () {
 
     const underlyingAlgorithm = forceIndex();
-    const merge = zipper()
-        .combine((force, smoothed) => {
-            return { force, smoothed };
-        });
 
     let options = defaultOptions;
-    function calculator(data) {
+
+    const calculator = (data: any[]) => {
         const { smoothingType, smoothingWindow } = options;
         const { sourcePath, volumePath } = options;
 
@@ -33,19 +30,26 @@ export default function () {
         // @ts-ignore
         const smoothed = forceMA(force);
 
-        // @ts-ignore
-        return merge(force, smoothed);
-    }
+        return zip(force, smoothed)
+            .map((d) => ({
+                force: d[0],
+                smoothed: d[1],
+            }));
+    };
 
-    calculator.undefinedLength = function () {
+    calculator.undefinedLength = () => {
         const { smoothingWindow } = options;
+
         return underlyingAlgorithm.undefinedLength() + smoothingWindow - 1;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: any) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 

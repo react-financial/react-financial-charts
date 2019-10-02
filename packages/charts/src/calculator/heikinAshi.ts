@@ -4,7 +4,7 @@ export default function () {
 
     let source = identity;
 
-    function calculator(data) {
+    const calculator = (data: any[]) => {
         const algorithm = mappedSlidingWindow()
             .windowSize(2)
             // @ts-ignore
@@ -23,12 +23,15 @@ export default function () {
             });
 
         return algorithm(data);
-    }
-    calculator.source = function (x) {
-        if (!arguments.length) {
+    };
+
+    calculator.source = (newSource?: any) => {
+        if (newSource === undefined) {
             return source;
         }
-        source = x;
+
+        source = newSource;
+
         return calculator;
     };
 

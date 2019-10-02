@@ -32,7 +32,6 @@ class ATRIndicator extends React.Component<ChartProps> {
         } = this.props;
 
         const atr14 = atr()
-            // @ts-ignore
             .options({ windowSize: 14 })
             .merge((d: any, c: any) => { d.atr14 = c; })
             .accessor((d: any) => d.atr14);

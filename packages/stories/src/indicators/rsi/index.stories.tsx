@@ -3,11 +3,11 @@ import { RSISeries } from "react-financial-charts/lib/series";
 import RSIIndicator from "./rsiIndicator";
 
 export default {
+    title: "Visualization|Indicator/RSI",
     component: RSISeries,
     parameters: {
         componentSubtitle: "The Relative Strength Index (RSI) is a momentum oscillator that measures the speed and change of price movements.",
     },
-    title: "Visualization|Indicator/RSI",
 };
 
 export const basic = () => <RSIIndicator />;

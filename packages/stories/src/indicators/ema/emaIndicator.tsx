@@ -31,14 +31,12 @@ class EMAIndicator extends React.Component<ChartProps> {
         } = this.props;
 
         const ema12 = ema()
-            // @ts-ignore
             .id(1)
             .options({ windowSize: 12 })
             .merge((d: any, c: any) => { d.ema12 = c; })
             .accessor((d: any) => d.ema12);
 
         const ema26 = ema()
-            // @ts-ignore
             .id(2)
             .options({ windowSize: 26 })
             .merge((d: any, c: any) => { d.ema26 = c; })

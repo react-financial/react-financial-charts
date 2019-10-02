@@ -1,4 +1,4 @@
-import { nest } from "d3-collection";
+import { group } from "d3-array";
 import * as React from "react";
 import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas } from "../GenericComponent";
@@ -108,14 +108,11 @@ export class OHLCSeries extends React.Component<OHLCSeriesProps> {
 
         const { strokeWidth, bars } = barData;
 
-        const wickNest = nest<any>()
-            .key((d) => d.stroke)
-            .entries(bars);
+        const wickNest = group(bars, (d: any) => d.stroke);
 
         ctx.lineWidth = strokeWidth;
 
-        wickNest.forEach((outer) => {
-            const { key, values } = outer;
+        wickNest.forEach((values, key) => {
             ctx.strokeStyle = key;
             values.forEach((d) => {
                 ctx.beginPath();

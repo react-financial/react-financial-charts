@@ -30,6 +30,16 @@ import zipper from "./zipper";
 
 import { isNotDefined } from "./index";
 
+interface Merge {
+    (data: any[]): any;
+    algorithm(): any;
+    algorithm(newAlgorithm: any): Merge;
+    merge(): any;
+    merge(newMerge: any): Merge;
+    skipUndefined(): boolean;
+    skipUndefined(newSkipUndefined: boolean): Merge;
+}
+
 // applies an algorithm to an array, merging the result back into
 // the source array using the given merge function.
 export default function () {
@@ -38,7 +48,7 @@ export default function () {
     let skipUndefined = true;
     let merge = noop;
 
-    function mergeCompute(data) {
+    const mergeCompute = (data: any[]) => {
         const zip = zipper()
             .combine((datum, indicator) => {
                 const result = (skipUndefined && isNotDefined(indicator))
@@ -50,30 +60,37 @@ export default function () {
 
         // @ts-ignore
         return zip(data, algorithm(data));
-    }
+    };
 
-    mergeCompute.algorithm = function (x) {
-        if (!arguments.length) {
+    mergeCompute.algorithm = (newAlgorithm?: any) => {
+        if (newAlgorithm === undefined) {
             return algorithm;
         }
-        algorithm = x;
+
+        algorithm = newAlgorithm;
+
         return mergeCompute;
     };
 
-    mergeCompute.merge = function (x) {
-        if (!arguments.length) {
+    mergeCompute.merge = (newMerge?: any) => {
+        if (newMerge === undefined) {
             return merge;
         }
-        merge = x;
-        return mergeCompute;
-    };
-    mergeCompute.skipUndefined = function (x) {
-        if (!arguments.length) {
-            return skipUndefined;
-        }
-        skipUndefined = x;
+
+        merge = newMerge;
+
         return mergeCompute;
     };
 
-    return mergeCompute;
+    mergeCompute.skipUndefined = (newSkipUndefined?: boolean) => {
+        if (newSkipUndefined === undefined) {
+            return skipUndefined;
+        }
+
+        skipUndefined = newSkipUndefined;
+
+        return mergeCompute;
+    };
+
+    return mergeCompute as Merge;
 }

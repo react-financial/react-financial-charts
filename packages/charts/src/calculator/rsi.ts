@@ -33,7 +33,7 @@ export default function () {
 
     let options = defaultOptions;
 
-    function calculator(data) {
+    const calculator = (data: any[]) => {
         const { windowSize, sourcePath } = options;
 
         // @ts-ignore
@@ -90,17 +90,21 @@ export default function () {
         const rsiData = rsiAlgorithm(gainsAndLosses);
 
         return rsiData;
-    }
-    calculator.undefinedLength = function () {
+    };
+
+    calculator.undefinedLength = () => {
         const { windowSize } = options;
 
         return windowSize - 1;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: any) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 

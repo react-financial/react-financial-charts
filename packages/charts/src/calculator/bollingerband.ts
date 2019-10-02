@@ -31,10 +31,24 @@ import ema from "./ema";
 
 import { BollingerBand as defaultOptions } from "./defaultOptionsForComputation";
 
-export default function () {
-    let options = defaultOptions;
+export interface BollingerBandOptions {
+    readonly windowSize: number;
+    readonly sourcePath: string;
+    readonly multiplier: number;
+    readonly movingAverageType: string;
+}
 
-    function calculator(data) {
+interface BollingerBandCalculator {
+    (data: any[]): any;
+    undefinedLength(): number;
+    options(): BollingerBandOptions;
+    options(newOptions: BollingerBandOptions): BollingerBandCalculator;
+}
+
+export default function () {
+    let options: BollingerBandOptions = defaultOptions;
+
+    const calculator = (data: any[]) => {
         const { windowSize, multiplier, movingAverageType, sourcePath } = options;
 
         // @ts-ignore
@@ -71,18 +85,23 @@ export default function () {
         // @ts-ignore
         const tuples = zip(data, meanAlgorithm(data));
         return bollingerBandAlgorithm(tuples);
-    }
-    calculator.undefinedLength = function () {
+    };
+
+    calculator.undefinedLength = () => {
         const { windowSize } = options;
+
         return windowSize - 1;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: BollingerBandOptions) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 
-    return calculator;
+    return calculator as BollingerBandCalculator;
 }

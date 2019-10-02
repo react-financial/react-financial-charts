@@ -4,7 +4,7 @@ import { Change as defaultOptions } from "./defaultOptionsForComputation";
 export default function () {
     let options = defaultOptions;
 
-    function calculator(data) {
+    const calculator = (data: any[]) => {
         const { basePath, mainKeys, compareKeys } = options;
 
         // @ts-ignore
@@ -46,13 +46,17 @@ export default function () {
         });
 
         return compareData;
-    }
-    calculator.options = function (x) {
-        if (!arguments.length) {
+    };
+
+    calculator.options = (...x) => {
+        if (!x.length) {
             return options;
         }
+
         options = { ...defaultOptions, ...x };
+
         return calculator;
     };
+
     return calculator;
 }

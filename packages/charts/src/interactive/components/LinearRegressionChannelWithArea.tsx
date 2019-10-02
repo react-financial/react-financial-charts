@@ -1,4 +1,4 @@
-import { deviation, sum } from "d3-array";
+import { deviation, sum, zip } from "d3-array";
 import { path as d3Path } from "d3-path";
 import * as React from "react";
 
@@ -6,7 +6,7 @@ import GenericChartComponent from "../../GenericChartComponent";
 import { getMouseCanvas } from "../../GenericComponent";
 import { isHovering2 } from "./StraightLine";
 
-import { colorToRGBA, getClosestItemIndexes, isDefined, noop, zipper } from "../../utils";
+import { colorToRGBA, getClosestItemIndexes, isDefined, noop } from "../../utils";
 
 interface LinearRegressionChannelWithAreaProps {
     readonly x1Value: any;
@@ -191,11 +191,10 @@ function helper(props, moreProps) {
     const ys = array.map((d) => d.close);
     const n = array.length;
 
-    const combine = zipper()
-        .combine((x, y) => x * y);
-
-    // @ts-ignore
-    const xys = combine(xs, ys);
+    const xys = zip<number>(xs, ys)
+        .map((d) => {
+            return d[0] * d[1];
+        });
     const xSquareds = xs.map((x) => Math.pow(x, 2));
 
     const b = (n * sum(xys) - sum(xs) * sum(ys)) / (n * sum(xSquareds) - Math.pow(sum(xs), 2));

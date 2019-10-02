@@ -14,13 +14,12 @@ export default function () {
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        // @ts-ignore
         .merge((datum, i) => {
             datum.absoluteChange = i.absoluteChange;
             datum.percentChange = i.percentChange;
         });
 
-    const indicator = function (data, options = { merge: true }) {
+    const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {
             return mergedAlgorithm(data);
         }

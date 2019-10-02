@@ -39,7 +39,7 @@ import { TMA as defaultOptions } from "./defaultOptionsForComputation";
 export default function () {
     let options = defaultOptions;
 
-    function calculator(data) {
+    const calculator = (data: any[]) => {
         const { windowSize, sourcePath } = options;
 
         const n = Math.floor(windowSize / 2);
@@ -62,16 +62,21 @@ export default function () {
 
         return triaverage(data);
 
-    }
-    calculator.undefinedLength = function () {
+    };
+
+    calculator.undefinedLength = () => {
         const { windowSize } = options;
+
         return windowSize - 1;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: { windowSize: number, sourcePath: string }) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 

@@ -31,7 +31,6 @@ class BollingerIndicator extends React.Component<ChartProps> {
         } = this.props;
 
         const calculator = bollingerBand()
-            // @ts-ignore
             .merge((d: any, c: any) => { d.bb = c; })
             .accessor((d: any) => d.bb);
 

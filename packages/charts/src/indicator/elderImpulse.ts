@@ -41,7 +41,6 @@ export default function () {
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        // @ts-ignore
         .merge((datum, i) => { datum.elderImpulse = i; });
 
     const indicator = function (data, options = { merge: true }) {

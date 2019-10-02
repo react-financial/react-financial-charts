@@ -9,7 +9,7 @@ export default function () {
     let dateAccessor = (d) => d.date;
     let dateMutator = (d, date) => { d.date = date; };
 
-    function calculator(data) {
+    const calculator = (data: any[]) => {
         const { reversalType, windowSize, reversal, sourcePath } = options;
 
         // @ts-ignore
@@ -204,23 +204,37 @@ export default function () {
         if (!line.added) { kagiData.push(line); }
 
         return kagiData;
-    }
-    calculator.options = function (x) {
-        if (!arguments.length) {
+    };
+
+    calculator.options = (newOptions?: any) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
-    calculator.dateMutator = function (x) {
-        if (!arguments.length) { return dateMutator; }
-        dateMutator = x;
+
+    calculator.dateMutator = (newDateMutator?: any) => {
+        if (newDateMutator === undefined) {
+            return dateMutator;
+        }
+
+        dateMutator = newDateMutator;
+
         return calculator;
     };
-    calculator.dateAccessor = function (x) {
-        if (!arguments.length) { return dateAccessor; }
-        dateAccessor = x;
+
+    calculator.dateAccessor = (newDateAccessor?: any) => {
+        if (newDateAccessor === undefined) {
+            return dateAccessor;
+        }
+
+        dateAccessor = newDateAccessor;
+
         return calculator;
     };
+
     return calculator;
 }

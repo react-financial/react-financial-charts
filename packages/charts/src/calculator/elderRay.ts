@@ -24,19 +24,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-import { mean } from "d3-array";
+import { mean, zip } from "d3-array";
 
 import ema from "./ema";
 
-import { isDefined, slidingWindow, zipper } from "../utils";
+import { slidingWindow } from "../utils";
 import { ElderRay as defaultOptions } from "./defaultOptionsForComputation";
+
+export interface ElderRayOptions {
+    readonly movingAverageType: string;
+    readonly sourcePath: string;
+    readonly windowSize: number;
+}
 
 export default function () {
 
     let options = defaultOptions;
     let ohlc = (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close });
 
-    function calculator(data) {
+    const calculator = (data: any[]) => {
         const { windowSize, sourcePath, movingAverageType } = options;
 
         const meanAlgorithm = movingAverageType === "ema"
@@ -46,33 +52,40 @@ export default function () {
                 // @ts-ignore
                 .accumulator((values) => mean(values)).sourcePath(sourcePath);
 
-        const zip = zipper()
-            .combine((datum, meanValue) => {
-                const bullPower = isDefined(meanValue) ? ohlc(datum).high - meanValue : undefined;
-                const bearPower = isDefined(meanValue) ? ohlc(datum).low - meanValue : undefined;
+        return zip(data, meanAlgorithm(data))
+            .map((d) => {
+                const datum = d[0];
+                const meanValue = d[1];
+
+                const bullPower = meanValue !== undefined ? ohlc(datum).high - meanValue : undefined;
+                const bearPower = meanValue !== undefined ? ohlc(datum).low - meanValue : undefined;
                 return { bullPower, bearPower };
             });
+    };
 
-        // @ts-ignore
-        const newData = zip(data, meanAlgorithm(data));
-        return newData;
-    }
-    calculator.undefinedLength = function () {
+    calculator.undefinedLength = () => {
         const { windowSize } = options;
+
         return windowSize - 1;
     };
-    calculator.ohlc = function (x) {
-        if (!arguments.length) {
+
+    calculator.ohlc = (ohlcAccessor?: (d: any) => any) => {
+        if (ohlcAccessor === undefined) {
             return ohlc;
         }
-        ohlc = x;
+
+        ohlc = ohlcAccessor;
+
         return calculator;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (...x) => {
+        if (!x.length) {
             return options;
         }
+
         options = { ...defaultOptions, ...x };
+
         return calculator;
     };
 

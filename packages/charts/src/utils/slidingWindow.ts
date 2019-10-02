@@ -48,7 +48,7 @@ export default function () {
         let accumulatorIdx = 0;
         const undef = functor(undefinedValue);
         return data.map(function (d, i) {
-            // console.log(d, i);
+
             if (i < (skipInitial + size - 1)) {
                 return undef(sourceFunction(d), i, misc);
             }
@@ -70,6 +70,7 @@ export default function () {
         undefinedValue = x;
         return slidingWindow;
     };
+
     slidingWindow.windowSize = function (x) {
         if (!arguments.length) {
             return windowSize;
@@ -77,6 +78,7 @@ export default function () {
         windowSize = x;
         return slidingWindow;
     };
+
     slidingWindow.misc = function (x) {
         if (!arguments.length) {
             return misc;
@@ -84,6 +86,7 @@ export default function () {
         misc = x;
         return slidingWindow;
     };
+
     slidingWindow.accumulator = function (x) {
         if (!arguments.length) {
             return accumulator;
@@ -91,6 +94,7 @@ export default function () {
         accumulator = x;
         return slidingWindow;
     };
+
     slidingWindow.skipInitial = function (x) {
         if (!arguments.length) {
             return skipInitial;
@@ -98,6 +102,7 @@ export default function () {
         skipInitial = x;
         return slidingWindow;
     };
+
     slidingWindow.sourcePath = function (x) {
         if (!arguments.length) {
             return sourcePath;
@@ -105,6 +110,7 @@ export default function () {
         sourcePath = x;
         return slidingWindow;
     };
+
     slidingWindow.source = function (x) {
         if (!arguments.length) {
             return source;

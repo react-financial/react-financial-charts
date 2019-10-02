@@ -23,7 +23,7 @@ export default function () {
 
     let options = defaultOptions;
 
-    function calculator(data) {
+    const calculator = (data) => {
         const { accelerationFactor, maxAccelerationFactor } = options;
 
         const algorithm = mappedSlidingWindow()
@@ -94,18 +94,21 @@ export default function () {
             });
 
         const calculatedData = algorithm(data).map((d) => d.sar);
-        // console.log(calculatedData);
 
         return calculatedData;
-    }
-    calculator.undefinedLength = function () {
+    };
+
+    calculator.undefinedLength = () => {
         return 1;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: any) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 

@@ -5,7 +5,7 @@ export default function () {
 
     let options = defaultOptions;
 
-    function calculator(data) {
+    const calculator = (data: any[]) => {
         const { sourcePath, volumePath } = options;
 
         // @ts-ignore
@@ -22,15 +22,19 @@ export default function () {
         const forceIndex = forceIndexCalulator(data);
 
         return forceIndex;
-    }
-    calculator.undefinedLength = function () {
+    };
+
+    calculator.undefinedLength = () => {
         return 2;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: { sourcePath: string, volumePath: string }) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 

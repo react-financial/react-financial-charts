@@ -23,16 +23,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+import { zip } from "d3-array";
 
+import { MACD as defaultOptions } from "./defaultOptionsForComputation";
 import ema from "./ema";
 
-import { isDefined, zipper } from "../utils";
-import { MACD as defaultOptions } from "./defaultOptionsForComputation";
+interface MACDOptions {
+    readonly fast: number;
+    readonly slow: number;
+    readonly signal: number;
+    readonly sourcePath: string;
+}
+
+interface MACDCalculator {
+    (data: any[]): Array<{
+        macd: number | undefined;
+        signal: number | undefined;
+        divergence: number | undefined;
+    }>;
+    undefinedLength(): number;
+    options(): MACDOptions;
+    options(newOptions: MACDOptions): MACDCalculator;
+}
 
 export default function () {
-    let options = defaultOptions;
 
-    function calculator(data) {
+    let options: MACDOptions = defaultOptions;
+
+    const calculator = (data: any[]) => {
         const { fast, slow, signal, sourcePath } = options;
 
         const fastEMA = ema()
@@ -44,42 +62,36 @@ export default function () {
         const signalEMA = ema()
             .options({ windowSize: signal, sourcePath: undefined });
 
-        const macdCalculator = zipper()
-            .combine((fastEMAValue, slowEMAValue) => {
-                return (isDefined(fastEMAValue) && isDefined(slowEMAValue)) ? fastEMAValue - slowEMAValue : undefined;
-            });
+        const diff = zip(fastEMA(data), slowEMA(data))
+            .map((d) => (d[0] !== undefined && d[1] !== undefined) ? d[0] - d[1] : undefined);
 
-        // @ts-ignore
-        const macdArray = macdCalculator(fastEMA(data), slowEMA(data));
+        const averageDiff = signalEMA(diff);
 
-        const undefinedArray = new Array(slow);
-        // @ts-ignore
-        const signalArray = undefinedArray.concat(signalEMA(macdArray.slice(slow)));
+        return zip(diff, averageDiff)
+            .map((d) =>
+                ({
+                    macd: d[0],
+                    signal: d[1],
+                    divergence: d[0] !== undefined && d[1] !== undefined ? d[0] - d[1] : undefined,
+                }),
+            );
+    };
 
-        const zip = zipper()
-            .combine((macdValue, signalValue) => ({
-                macd: macdValue,
-                signal: signalValue,
-                divergence: (isDefined(macdValue) && isDefined(signalValue)) ? macdValue - signalValue : undefined,
-            }));
-
-        // @ts-ignore
-        const macd = zip(macdArray, signalArray);
-
-        return macd;
-    }
-
-    calculator.undefinedLength = function () {
+    calculator.undefinedLength = () => {
         const { slow, signal } = options;
+
         return slow + signal - 1;
     };
-    calculator.options = function (x) {
-        if (!arguments.length) {
+
+    calculator.options = (newOptions?: MACDOptions) => {
+        if (newOptions === undefined) {
             return options;
         }
-        options = { ...defaultOptions, ...x };
+
+        options = { ...defaultOptions, ...newOptions };
+
         return calculator;
     };
 
-    return calculator;
+    return calculator as MACDCalculator;
 }

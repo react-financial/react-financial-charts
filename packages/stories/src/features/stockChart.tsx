@@ -37,20 +37,18 @@ class StockChart extends React.Component<StockChartProps> {
         } = this.props;
 
         const ema12 = ema()
-            // @ts-ignore
             .id(1)
             .options({ windowSize: 12 })
             .merge((d: any, c: any) => { d.ema12 = c; })
             .accessor((d: any) => d.ema12);
 
         const ema26 = ema()
-            // @ts-ignore
             .id(2)
             .options({ windowSize: 26 })
             .merge((d: any, c: any) => { d.ema26 = c; })
             .accessor((d: any) => d.ema26);
 
-        const elder: any = elderRay();
+        const elder = elderRay();
 
         const calculatedData = elder(ema26(ema12(initialData)));
 

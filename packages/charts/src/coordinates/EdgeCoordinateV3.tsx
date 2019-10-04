@@ -224,6 +224,7 @@ export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
     ctx.setLineDash([]);
     if (isDefined(edge.coordinateBase)) {
         const {
+            arrowWidth,
             rectWidth,
             rectHeight,
             rectRadius,
@@ -241,12 +242,28 @@ export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
             ctx.lineWidth = edge.coordinateBase.strokeWidth;
         }
 
-        const x = edge.coordinateBase.edgeXRect;
+        let x = edge.coordinateBase.edgeXRect;
         const y = edge.coordinateBase.edgeYRect;
+        const halfHeight = rectHeight / 2;
 
         ctx.beginPath();
 
-        if (rectRadius) {
+        if (arrowWidth > 0 && edge.orient === "right") {
+            x -= arrowWidth;
+            ctx.moveTo(x, y + halfHeight);
+            ctx.lineTo(x + arrowWidth, y);
+            ctx.lineTo(x + rectWidth + arrowWidth, y);
+            ctx.lineTo(x + rectWidth + arrowWidth, y + rectHeight);
+            ctx.lineTo(x + arrowWidth, y + rectHeight);
+            ctx.closePath();
+        } else if (arrowWidth > 0 && edge.orient === "left") {
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + rectWidth, y);
+            ctx.lineTo(x + rectWidth + arrowWidth, y + halfHeight);
+            ctx.lineTo(x + rectWidth, y + rectHeight);
+            ctx.lineTo(x, y + rectHeight);
+            ctx.closePath();
+        } else if (rectRadius) {
             roundRect(ctx, x, y, rectWidth, rectHeight, 3);
         } else {
             ctx.rect(x + 0.5, y + 0.5, rectWidth, rectHeight);

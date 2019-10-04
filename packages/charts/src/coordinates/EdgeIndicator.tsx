@@ -8,20 +8,20 @@ import { drawOnCanvas, renderSVG } from "./EdgeCoordinateV3";
 import { first, functor, isDefined, last, noop, strokeDashTypes } from "../utils";
 
 interface EdgeIndicatorProps {
-    readonly yAccessor?: any; // func
-    readonly type?: "horizontal";
+    readonly arrowWidth?: number;
     readonly className?: string;
-    readonly fill?: string | any; // func
-    readonly lineStroke?: string | any; // func
-    readonly textFill?: string | any; // func
-    readonly itemType: "first" | "last";
-    readonly orient?: "left" | "right";
-    readonly edgeAt?: "left" | "right";
     readonly displayFormat?: any; // func
+    readonly edgeAt?: "left" | "right";
+    readonly fill?: string | any; // func
+    readonly itemType: "first" | "last";
+    readonly lineStroke?: string | any; // func
+    readonly lineStrokeDasharray?: strokeDashTypes;
+    readonly orient?: "left" | "right";
     readonly rectHeight?: number;
     readonly rectWidth?: number;
-    readonly arrowWidth?: number;
-    readonly lineStrokeDasharray?: strokeDashTypes;
+    readonly textFill?: string | any; // func
+    readonly type?: "horizontal";
+    readonly yAccessor?: any; // func
 }
 
 export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
@@ -36,7 +36,7 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         yAxisPad: 0,
         rectHeight: 20,
         rectWidth: 50,
-        arrowWidth: 10,
+        arrowWidth: 0,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,
         dx: 0,

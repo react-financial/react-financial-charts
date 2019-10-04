@@ -8,30 +8,31 @@ import { drawOnCanvas, renderSVG } from "./EdgeCoordinateV3";
 import { isNotDefined } from "../utils";
 
 interface MouseCoordinateYProps {
-    readonly displayFormat: any; // func
-    readonly yAxisPad?: number;
-    readonly rectWidth?: number;
-    readonly rectHeight?: number;
-    readonly orient?: "bottom" | "top" | "left" | "right";
+    readonly arrowWidth?: number;
     readonly at?: "bottom" | "top" | "left" | "right";
+    readonly displayFormat: any; // func
     readonly dx?: number;
-    readonly fill?: string;
-    readonly opacity?: number;
     readonly fontFamily?: string;
     readonly fontSize?: number;
+    readonly fill?: string;
+    readonly opacity?: number;
+    readonly orient?: "bottom" | "top" | "left" | "right";
+    readonly rectWidth?: number;
+    readonly rectHeight?: number;
     readonly textFill?: string;
+    readonly yAxisPad?: number;
 }
 
 export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
 
     public static defaultProps = {
+        arrowWidth: 0,
         yAxisPad: 0,
         rectWidth: 50,
         rectHeight: 20,
         orient: "right",
         at: "right",
         dx: 0,
-        arrowWidth: 10,
         fill: "#37474F",
         opacity: 1,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",

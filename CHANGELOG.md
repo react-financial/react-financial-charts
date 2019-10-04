@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/markmcdowell/react-financial-charts/compare/v0.2.3...v0.3.0) (2019-10-04)
+
+
+### Bug Fixes
+
+* **charts:** arrowWidth was being ignored ([dce50aa](https://github.com/markmcdowell/react-financial-charts/commit/dce50aa)), closes [#75](https://github.com/markmcdowell/react-financial-charts/issues/75)
+* **docs:** storybook requires an ordering to properties ([75186ef](https://github.com/markmcdowell/react-financial-charts/commit/75186ef))
+* **github:** setting stale label to be stale ([4c5a0e1](https://github.com/markmcdowell/react-financial-charts/commit/4c5a0e1))
+
+
+### Features
+
+* **types:** adding more types for calculators and indicators ([3d52cf4](https://github.com/markmcdowell/react-financial-charts/commit/3d52cf4))
+
+
+
+
+
 ## [0.2.3](https://github.com/markmcdowell/react-financial-charts/compare/v0.2.2...v0.2.3) (2019-09-26)
 
 

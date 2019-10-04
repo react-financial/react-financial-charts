@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/reactivemarkets/react-financial-charts/compare/v0.2.3...v0.3.0) (2019-10-04)
+
+
+### Bug Fixes
+
+* **charts:** arrowWidth was being ignored ([dce50aa](https://github.com/reactivemarkets/react-financial-charts/commit/dce50aa)), closes [#75](https://github.com/reactivemarkets/react-financial-charts/issues/75)
+
+
+### Features
+
+* **types:** adding more types for calculators and indicators ([3d52cf4](https://github.com/reactivemarkets/react-financial-charts/commit/3d52cf4))
+
+
+
+
+
 ## [0.2.3](https://github.com/reactivemarkets/react-financial-charts/compare/v0.2.2...v0.2.3) (2019-09-26)
 
 

@@ -56,14 +56,18 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
 
     private readonly renderSVG = (moreProps) => {
         const props = this.helper(this.props, moreProps);
-        if (isNotDefined(props)) { return null; }
+        if (isNotDefined(props)) {
+            return null;
+        }
 
         return renderSVG(props);
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const props = this.helper(this.props, moreProps);
-        if (isNotDefined(props)) { return null; }
+        if (isNotDefined(props)) {
+            return null;
+        }
 
         drawOnCanvas(ctx, props);
     }
@@ -72,11 +76,17 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
         const { chartId } = moreProps;
         const { currentCharts, mouseXY } = moreProps;
 
-        if (isNotDefined(mouseXY)) { return null; }
-        if (currentCharts.indexOf(chartId) < 0) { return null; }
+        if (isNotDefined(mouseXY)) {
+            return null;
+        }
+        if (currentCharts.indexOf(chartId) < 0) {
+            return null;
+        }
 
         const { show } = moreProps;
-        if (!show) { return null; }
+        if (!show) {
+            return null;
+        }
 
         const y = mouseXY[1];
         const { chartConfig: { yScale } } = moreProps;
@@ -113,18 +123,14 @@ export function getYCoordinate(y, displayValue, props, moreProps) {
         hideLine,
         fill,
         opacity,
-
         fontFamily,
         fontSize,
         textFill,
-
         stroke,
         strokeOpacity,
         strokeWidth,
-
         rectWidth,
         rectHeight,
-
         arrowWidth,
         dx,
         x1,
@@ -132,5 +138,6 @@ export function getYCoordinate(y, displayValue, props, moreProps) {
         y1: y,
         y2: y,
     };
+
     return coordinateProps;
 }

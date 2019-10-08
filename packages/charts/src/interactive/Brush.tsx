@@ -5,8 +5,10 @@ import { getMouseCanvas } from "../GenericComponent";
 import {
     colorToRGBA,
     getStrokeDasharray,
+    getStrokeDasharrayCanvas,
     isDefined,
     noop,
+    strokeDashTypes,
 } from "../utils";
 
 interface BrushProps {
@@ -19,7 +21,7 @@ interface BrushProps {
     readonly strokeOpacity?: number;
     readonly fillOpacity?: number;
     readonly interactiveState: object;
-    readonly strokeDashArray?: string;
+    readonly strokeDashArray?: strokeDashTypes;
 }
 
 interface BrushState {
@@ -94,9 +96,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
                 strokeDashArray } = this.props;
             const { strokeOpacity, fillOpacity } = this.props;
 
-            const dashArray = getStrokeDasharray(strokeDashArray)
-                .split(",")
-                .map((d) => +d);
+            const dashArray = getStrokeDasharrayCanvas(strokeDashArray);
 
             ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
             ctx.fillStyle = colorToRGBA(fill, fillOpacity);

@@ -6,6 +6,7 @@ import {
     colorToRGBA,
     first,
     getStrokeDasharray,
+    getStrokeDasharrayCanvas,
     isNotDefined,
     last,
     strokeDashTypes,
@@ -153,9 +154,7 @@ class Cursor extends React.Component<CursorProps> {
             ctx.translate(originX, originY);
 
             cursors.forEach((line) => {
-                const dashArray = getStrokeDasharray(line.strokeDasharray)
-                    .split(",")
-                    .map((d) => +d);
+                const dashArray = getStrokeDasharrayCanvas(line.strokeDasharray);
                 const xShapeFill = this.getXCursorShapeFill(moreProps);
 
                 if (useXCursorShape && line.id === "xCursor") {
@@ -174,9 +173,7 @@ class Cursor extends React.Component<CursorProps> {
                             xCursorShapeOpacity,
                         );
                         ctx.setLineDash(
-                            getStrokeDasharray(xCursorShapeStrokeDasharray)
-                                .split(",")
-                                .map((d) => +d),
+                            getStrokeDasharrayCanvas(xCursorShapeStrokeDasharray),
                         );
                     }
 

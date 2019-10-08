@@ -10,23 +10,9 @@ interface CanvasContainerProps {
     readonly zIndex?: number;
 }
 
-class CanvasContainer extends React.Component<CanvasContainerProps> {
+export class CanvasContainer extends React.Component<CanvasContainerProps> {
 
-    private drawCanvas: any;
-
-    public constructor(props: CanvasContainerProps) {
-        super(props);
-        this.setDrawCanvas = this.setDrawCanvas.bind(this);
-        this.drawCanvas = {};
-    }
-
-    public setDrawCanvas(node: HTMLCanvasElement) {
-        if (isDefined(node)) {
-            this.drawCanvas[node.id] = node.getContext("2d");
-        } else {
-            this.drawCanvas = {};
-        }
-    }
+    private drawCanvas: any = {};
 
     public getCanvasContexts() {
         if (isDefined(this.drawCanvas.axes)) {
@@ -63,6 +49,12 @@ class CanvasContainer extends React.Component<CanvasContainerProps> {
             </div>
         );
     }
-}
 
-export default CanvasContainer;
+    private readonly setDrawCanvas = (node: HTMLCanvasElement) => {
+        if (isDefined(node)) {
+            this.drawCanvas[node.id] = node.getContext("2d");
+        } else {
+            this.drawCanvas = {};
+        }
+    }
+}

@@ -6,7 +6,7 @@ import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas } from "../GenericComponent";
 import { AxisZoomCapture } from "./AxisZoomCapture";
 
-import { colorToRGBA, first, getStrokeDasharray, identity, isDefined, isNotDefined, last, strokeDashTypes } from "../utils";
+import { colorToRGBA, first, getStrokeDasharray, getStrokeDasharrayCanvas, identity, isDefined, isNotDefined, last, strokeDashTypes } from "../utils";
 
 interface AxisProps {
     readonly axisZoomCallback?: any; // func
@@ -463,7 +463,7 @@ function drawEachTick(ctx: CanvasRenderingContext2D, tick, result) {
     ctx.lineTo(tick.x2, tick.y2);
     ctx.lineWidth = tickStrokeWidth;
 
-    const lineDash = getStrokeDasharray(tickStrokeDasharray).split(",").map((dash) => Number(dash));
+    const lineDash = getStrokeDasharrayCanvas(tickStrokeDasharray);
 
     ctx.setLineDash(lineDash);
     ctx.stroke();

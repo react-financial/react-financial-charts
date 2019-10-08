@@ -55,10 +55,6 @@ export default function financeDiscontinuousScale(
         const start = Math.max(Math.ceil(domainStart), head(index).index) + Math.abs(head(index).index);
         const end = Math.min(Math.floor(domainEnd), last(index).index) + Math.abs(head(index).index);
 
-        if (Math.floor(domainEnd) > end) {
-            // console.log(end, domainEnd, index);
-        }
-
         const desiredTickCount = Math.ceil((end - start) / (domainEnd - domainStart) * backingTicks.length);
 
         for (let i = MAX_LEVEL; i >= 0; i--) {
@@ -83,8 +79,6 @@ export default function financeDiscontinuousScale(
         }
 
         const ticks = unsortedTicks.sort(ascending);
-
-        // console.log(backingTicks.length, desiredTickCount, ticks, ticksMap);
 
         if (!flexTicks && end - start > ticks.length) {
             const ticksSet = new Set(ticks);

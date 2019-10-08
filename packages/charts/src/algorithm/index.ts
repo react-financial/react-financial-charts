@@ -1,6 +1,14 @@
-// tslint:disable: only-arrow-functions space-before-function-paren
-
 import { identity, merge, slidingWindow } from "../utils";
+
+export interface Algorithm {
+    (data: any[]): any;
+    accumulator(): any;
+    accumulator(accumulator: any): Algorithm;
+    merge(): any;
+    merge(merge: any): Algorithm;
+    windowSize(): number;
+    windowSize(windowSize: number): Algorithm;
+}
 
 export default function () {
 
@@ -8,46 +16,50 @@ export default function () {
     let accumulator = identity;
     let mergeAs = identity;
 
-    function algorithm(data: any) {
+    const algorithm = (data: any[]) => {
 
         const defaultAlgorithm = slidingWindow()
             .windowSize(windowSize)
-            // @ts-ignore
             .accumulator(accumulator);
 
         const calculator = merge()
             .algorithm(defaultAlgorithm)
-            // @ts-ignore
             .merge(mergeAs);
 
         const newData = calculator(data);
 
         return newData;
-    }
+    };
 
-    algorithm.accumulator = function (x: any) {
-        if (!arguments.length) {
+    algorithm.accumulator = (newAccumulator?: any) => {
+        if (newAccumulator === undefined) {
             return accumulator;
         }
-        accumulator = x;
+
+        accumulator = newAccumulator;
+
         return algorithm;
     };
 
-    algorithm.windowSize = function (x: any) {
-        if (!arguments.length) {
-            return windowSize;
-        }
-        windowSize = x;
-        return algorithm;
-    };
-
-    algorithm.merge = function (x: any) {
-        if (!arguments.length) {
+    algorithm.merge = (newMerge?: any) => {
+        if (merge === undefined) {
             return mergeAs;
         }
-        mergeAs = x;
+
+        mergeAs = newMerge;
+
         return algorithm;
     };
 
-    return algorithm;
+    algorithm.windowSize = (newWindowSize?: number) => {
+        if (newWindowSize === undefined) {
+            return windowSize;
+        }
+
+        windowSize = newWindowSize;
+
+        return algorithm;
+    };
+
+    return algorithm as Algorithm;
 }

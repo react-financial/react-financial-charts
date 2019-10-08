@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { colorToRGBA, getStrokeDasharray, isDefined } from "../utils";
+import { colorToRGBA, getStrokeDasharray, getStrokeDasharrayCanvas, isDefined } from "../utils";
 
 export function renderSVG(props) {
     const { className } = props;
@@ -93,7 +93,6 @@ export function renderSVG(props) {
         </g>
     );
 }
-/* eslint-enable react/prop-types */
 
 function helper(props) {
     const {
@@ -104,8 +103,6 @@ function helper(props) {
         edgeAt,
         hideLine,
         lineStrokeDasharray,
-    } = props;
-    const {
         fill,
         opacity,
         fontFamily,
@@ -113,12 +110,23 @@ function helper(props) {
         textFill,
         lineStroke,
         lineOpacity,
+        stroke,
+        strokeOpacity,
+        strokeWidth,
+        arrowWidth,
+        rectWidth,
+        rectHeight,
+        rectRadius,
+        x1,
+        y1,
+        x2,
+        y2,
+        dx,
     } = props;
-    const { stroke, strokeOpacity, strokeWidth } = props;
-    const { arrowWidth, rectWidth, rectHeight, rectRadius } = props;
-    const { x1, y1, x2, y2, dx } = props;
 
-    if (!show) { return null; }
+    if (!show) {
+        return null;
+    }
 
     let coordinateBase;
     let coordinate;
@@ -132,25 +140,16 @@ function helper(props) {
         let edgeYText;
 
         if (type === "horizontal") {
-            edgeXRect =
-                dx + (orient === "right" ? edgeAt + 1 : edgeAt - rectWidth - 1);
+            edgeXRect = dx + (orient === "right" ? edgeAt + 1 : edgeAt - rectWidth - 1);
             edgeYRect = y1 - rectHeight / 2 - strokeWidth;
-            edgeXText =
-                dx +
-                (orient === "right"
-                    ? edgeAt + rectWidth / 2
-                    : edgeAt - rectWidth / 2);
+            edgeXText = dx + (orient === "right" ? edgeAt + rectWidth / 2 : edgeAt - rectWidth / 2);
             edgeYText = y1;
         } else {
             const dy = orient === "bottom" ? strokeWidth - 1 : -strokeWidth + 1;
             edgeXRect = x1 - rectWidth / 2;
-            edgeYRect =
-                (orient === "bottom" ? edgeAt : edgeAt - rectHeight) + dy;
+            edgeYRect = (orient === "bottom" ? edgeAt : edgeAt - rectHeight) + dy;
             edgeXText = x1;
-            edgeYText =
-                (orient === "bottom"
-                    ? edgeAt + rectHeight / 2
-                    : edgeAt - rectHeight / 2) + dy;
+            edgeYText = (orient === "bottom" ? edgeAt + rectHeight / 2 : edgeAt - rectHeight / 2) + dy;
         }
 
         coordinateBase = {
@@ -198,20 +197,20 @@ function helper(props) {
 }
 
 export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
-    const { fontSize, fontFamily } = props;
+    const { coordinate, fontSize, fontFamily } = props;
 
     ctx.font = `${fontSize}px ${fontFamily}`;
     ctx.textBaseline = "middle";
-    const width = Math.round(ctx.measureText(props.coordinate).width + 10);
+
+    const width = Math.round(ctx.measureText(coordinate).width + 10);
 
     const edge = helper({ ...props, rectWidth: width });
-
-    if (edge === null) { return; }
+    if (edge === null) {
+        return;
+    }
 
     if (edge.line !== undefined && isDefined(edge.line)) {
-        const dashArray = getStrokeDasharray(edge.line.strokeDasharray)
-            .split(",")
-            .map((d) => +d);
+        const dashArray = getStrokeDasharrayCanvas(edge.line.strokeDasharray);
         ctx.setLineDash(dashArray);
         ctx.strokeStyle = colorToRGBA(edge.line.stroke, edge.line.opacity);
         ctx.lineWidth = 1;
@@ -264,9 +263,9 @@ export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
             ctx.lineTo(x, y + rectHeight);
             ctx.closePath();
         } else if (rectRadius) {
-            roundRect(ctx, x, y, rectWidth, rectHeight, 3);
+            roundRect(ctx, x - 0.5, y - 0.5, rectWidth, rectHeight, 3);
         } else {
-            ctx.rect(x - 0.5, y - 0.5, rectWidth, rectHeight);
+            ctx.rect(x - 0.5, y, rectWidth, rectHeight);
         }
 
         ctx.fill();
@@ -301,5 +300,3 @@ function roundRect(ctx, x, y, width, height, radius) {
     ctx.quadraticCurveTo(x, y, x + radius, y);
     ctx.closePath();
 }
-
-// export default EdgeCoordinate;

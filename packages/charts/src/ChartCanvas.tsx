@@ -26,7 +26,7 @@ import { getChartConfigWithUpdatedYScales, getCurrentCharts, getCurrentItem, get
 
 import { EventCapture } from "./EventCapture";
 
-import CanvasContainer from "./CanvasContainer";
+import { CanvasContainer } from "./CanvasContainer";
 import evaluator from "./scale/evaluator";
 
 const CANDIDATES_FOR_RESET = [
@@ -529,7 +529,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         if (canvases && canvases.axes) {
             clearCanvas([
                 canvases.axes,
-                // canvases.hover,
                 canvases.mouseCoord,
             ], this.props.ratio);
         }
@@ -540,7 +539,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         if (canvases && canvases.mouseCoord) {
             clearCanvas([
                 canvases.mouseCoord,
-                // canvases.hover,
             ], this.props.ratio);
         }
     }
@@ -550,7 +548,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         if (canvases && canvases.axes) {
             clearCanvas([
                 canvases.axes,
-                // canvases.hover,
                 canvases.mouseCoord,
                 canvases.bg,
             ], this.props.ratio);

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { noop } from "../../utils";
+import { noop, strokeDashTypes } from "../../utils";
 import { isHover, saveNodeType } from "../utils";
 
 import { ClickableShape } from "../components/ClickableShape";
@@ -15,7 +15,7 @@ interface EachInteractiveYCoordinateProps {
     readonly stroke: string;
     readonly strokeWidth: number;
     readonly strokeOpacity: number;
-    readonly strokeDasharray: string;
+    readonly strokeDasharray: strokeDashTypes;
     readonly textFill: string;
     readonly fontWeight: string;
     readonly fontFamily: string;

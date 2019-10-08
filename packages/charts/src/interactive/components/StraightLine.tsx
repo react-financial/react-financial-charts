@@ -6,6 +6,7 @@ import { getMouseCanvas } from "../../GenericComponent";
 import {
     colorToRGBA,
     getStrokeDasharray,
+    getStrokeDasharrayCanvas,
     isDefined,
     noop,
     strokeDashTypes,
@@ -130,7 +131,7 @@ class StraightLine extends React.Component<StraightLineProps> {
         ctx.lineWidth = strokeWidth;
         ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
 
-        const lineDash = getStrokeDasharray(strokeDasharray).split(",").map((dash) => Number(dash));
+        const lineDash = getStrokeDasharrayCanvas(strokeDasharray);
 
         ctx.setLineDash(lineDash);
 

@@ -1,9 +1,10 @@
 import { scaleOrdinal } from "d3-scale";
-import { schemeCategory10 } from "d3-scale-chromatic";
 import { noop } from "../utils";
 
+const defaultColors = ["#F44336", "#2196F3", "#8BC34A", "#FF5722", "#3F51B5", "#03A9F4", "#9C27B0", "#4CAF50"];
+
 let i = 0;
-const overlayColors = scaleOrdinal<number, string>(schemeCategory10);
+const overlayColors = scaleOrdinal<number, string>(defaultColors);
 
 export interface BaseIndicator {
     (): () => void;

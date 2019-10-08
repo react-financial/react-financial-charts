@@ -8,6 +8,7 @@ import {
     colorToRGBA,
     getClosestItemIndexes,
     getStrokeDasharray,
+    getStrokeDasharrayCanvas,
     isDefined,
     strokeDashTypes,
 } from "../utils";
@@ -146,7 +147,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
 
         ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
 
-        const lineDash = getStrokeDasharray(strokeDasharray).split(",").map((dash) => Number(dash));
+        const lineDash = getStrokeDasharrayCanvas(strokeDasharray);
 
         ctx.setLineDash(lineDash);
 

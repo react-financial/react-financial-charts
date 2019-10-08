@@ -2,10 +2,11 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import GenericComponent, { getMouseCanvas } from "../GenericComponent";
 
-import { colorToRGBA, getStrokeDasharray, isDefined, isNotDefined, strokeDashTypes } from "../utils";
+import { colorToRGBA, getStrokeDasharray, getStrokeDasharrayCanvas, isDefined, isNotDefined, strokeDashTypes } from "../utils";
 
 interface CrossHairCursorProps {
     readonly className?: string;
+    readonly customX?: (props: CrossHairCursorProps, moreProps: any) => number;
     readonly opacity?: number;
     readonly snapX?: boolean;
     readonly stroke?: string;
@@ -24,11 +25,12 @@ const defaultCustomX = (props: CrossHairCursorProps, moreProps) => {
 export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
 
     public static defaultProps = {
-        stroke: "#37474F",
-        opacity: 0.8,
-        strokeDasharray: "Dash",
-        snapX: true,
+        className: "react-financial-charts-crosshair",
         customX: defaultCustomX,
+        opacity: 0.8,
+        snapX: true,
+        stroke: "#37474F",
+        strokeDasharray: "Dash",
     };
 
     public static contextTypes = {
@@ -56,7 +58,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
         }
 
         return (
-            <g className={`react-financial-charts-crosshair ${className}`}>
+            <g className={className}>
                 {lines.map(({ strokeDasharray, ...rest }, idx) =>
                     <line
                         key={idx}
@@ -82,9 +84,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
             ctx.translate(originX, originY);
 
             lines.forEach((line) => {
-                const dashArray = getStrokeDasharray(line.strokeDasharray)
-                    .split(",")
-                    .map((d) => +d);
+                const dashArray = getStrokeDasharrayCanvas(line.strokeDasharray);
 
                 ctx.strokeStyle = colorToRGBA(line.stroke, line.opacity);
                 ctx.lineWidth = 1;
@@ -99,12 +99,17 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
         }
     }
 
-    private readonly helper = (props, moreProps) => {
+    private readonly helper = (props: CrossHairCursorProps, moreProps) => {
         const {
             mouseXY, currentItem, show, height, width,
         } = moreProps;
 
-        const { customX, stroke, opacity, strokeDasharray } = props;
+        const {
+            customX = CrossHairCursor.defaultProps.customX,
+            stroke = CrossHairCursor.defaultProps.stroke,
+            opacity,
+            strokeDasharray,
+        } = props;
 
         if (!show || isNotDefined(currentItem)) {
             return undefined;
@@ -115,8 +120,11 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
             x2: width,
             y1: mouseXY[1] + 0.5,
             y2: mouseXY[1] + 0.5,
-            stroke, strokeDasharray, opacity,
+            stroke,
+            strokeDasharray,
+            opacity,
         };
+
         const x = customX(props, moreProps);
 
         const line2 = {
@@ -124,7 +132,9 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
             x2: x,
             y1: 0,
             y2: height,
-            stroke, strokeDasharray, opacity,
+            stroke,
+            strokeDasharray,
+            opacity,
         };
         return [line1, line2];
     }

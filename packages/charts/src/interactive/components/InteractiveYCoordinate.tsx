@@ -4,7 +4,7 @@ import { drawOnCanvas } from "../../coordinates/EdgeCoordinateV3";
 import { getYCoordinate } from "../../coordinates/MouseCoordinateY";
 import GenericChartComponent from "../../GenericChartComponent";
 import { getMouseCanvas } from "../../GenericComponent";
-import { colorToRGBA, getStrokeDasharrayCanvas, isDefined, noop } from "../../utils";
+import { colorToRGBA, getStrokeDasharrayCanvas, isDefined, noop, strokeDashTypes } from "../../utils";
 
 interface InteractiveYCoordinateProps {
     readonly bgFill: string;
@@ -12,7 +12,7 @@ interface InteractiveYCoordinateProps {
     readonly stroke: string;
     readonly strokeWidth: number;
     readonly strokeOpacity: number;
-    readonly strokeDasharray: string;
+    readonly strokeDasharray: strokeDashTypes;
     readonly textFill: string;
     readonly fontFamily: string;
     readonly fontSize: number;

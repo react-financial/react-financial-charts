@@ -70,7 +70,6 @@ function extentsWrapper(useWholeData, clamp, pointsPerPxThreshold, minPointsPerP
         }
 
         const realInputDomain = clampedDomain;
-        // [xAccessor(head(filteredData)), xAccessor(last(filteredData))];
 
         const xScale = initialXScale.copy().domain(realInputDomain);
 
@@ -151,7 +150,6 @@ function getFilteredResponse(data, left, right, xAccessor) {
     const newRightIndex = getClosestItemIndexes(data, right, xAccessor).left;
 
     const filteredData = data.slice(newLeftIndex, newRightIndex + 1);
-    // console.log(right, newRightIndex, dataForInterval.length);
 
     return filteredData;
 }

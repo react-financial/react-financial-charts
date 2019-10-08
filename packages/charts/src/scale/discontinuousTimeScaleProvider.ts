@@ -19,7 +19,6 @@ function evaluateLevel(d, date, i, formatters) {
 
 const discontinuousIndexCalculator = slidingWindow()
     .windowSize(2)
-    // @ts-ignore
     .undefinedValue((d, idx, { initialIndex, formatters }) => {
         const i = initialIndex;
         const row = {
@@ -39,7 +38,9 @@ const discontinuousIndexCalculator = slidingWindow()
             startOfQuarter: false,
             startOfYear: false,
         };
+
         const level = evaluateLevel(row, d, i, formatters);
+
         return { ...row, index: i, ...level };
     });
 

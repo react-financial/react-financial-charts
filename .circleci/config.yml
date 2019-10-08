@@ -126,7 +126,6 @@ jobs:
       - run:
           name: fossa
           command: fossa
-          working_directory: /
 
   deploy:
     docker:

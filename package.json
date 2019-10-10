@@ -27,7 +27,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@babel/core": "^7.6.3",
+    "@babel/core": "^7.6.4",
     "@storybook/addon-docs": "^5.2.3",
     "@storybook/react": "^5.2.3",
     "@storybook/theming": "^5.2.3",

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/markmcdowell/react-financial-charts/compare/v0.3.0...v0.3.1) (2019-10-14)
+
+
+### Bug Fixes
+
+* lineDash was incorrect for canvas when set to None ([5ff3134](https://github.com/markmcdowell/react-financial-charts/commit/5ff3134))
+* **charts:** reversing scroll direction on touch devices and trackpads ([e12ce7c](https://github.com/markmcdowell/react-financial-charts/commit/e12ce7c)), closes [#57](https://github.com/markmcdowell/react-financial-charts/issues/57)
+* **coordinates:** edge coordinates now go right up to the axis ([ba44493](https://github.com/markmcdowell/react-financial-charts/commit/ba44493))
+
+
+
+
+
 # [0.3.0](https://github.com/markmcdowell/react-financial-charts/compare/v0.2.3...v0.3.0) (2019-10-04)
 
 

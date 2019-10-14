@@ -69,56 +69,37 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     private dragHappened?: boolean;
     private focus?: boolean;
     private lastNewPos?;
-    private mouseInside: boolean;
-    private mouseInteraction: boolean;
-    private node;
+    private mouseInside = false;
+    private mouseInteraction = true;
     private panEndTimeout?;
     private panHappened?: boolean;
+    private readonly ref = React.createRef<SVGRectElement>();
 
     constructor(props: EventCaptureProps) {
         super(props);
 
-        this.handleEnter = this.handleEnter.bind(this);
-        this.handleLeave = this.handleLeave.bind(this);
-        this.handleWheel = this.handleWheel.bind(this);
-        this.handleMouseMove = this.handleMouseMove.bind(this);
-        this.handleMouseDown = this.handleMouseDown.bind(this);
-        this.handlePanEnd = this.handlePanEnd.bind(this);
-        this.handlePan = this.handlePan.bind(this);
-        this.handleTouchStart = this.handleTouchStart.bind(this);
-        this.handleTouchMove = this.handleTouchMove.bind(this);
-        this.handlePinchZoom = this.handlePinchZoom.bind(this);
-        this.handlePinchZoomEnd = this.handlePinchZoomEnd.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-        this.handleRightClick = this.handleRightClick.bind(this);
-        this.handleDrag = this.handleDrag.bind(this);
-        this.handleDragEnd = this.handleDragEnd.bind(this);
-        this.shouldPan = this.shouldPan.bind(this);
-        this.canPan = this.canPan.bind(this);
-        this.setCursorClass = this.setCursorClass.bind(this);
-        this.saveNode = this.saveNode.bind(this);
-        this.mouseInside = false;
-        this.mouseInteraction = true;
         this.focus = props.focus;
         this.state = {
             panInProgress: false,
         };
     }
 
-    public saveNode(node) {
-        this.node = node;
-    }
-
     public componentDidMount() {
 
         const { disableInteraction } = this.props;
 
-        if (!disableInteraction && this.node) {
-            select(this.node)
+        const { current } = this.ref;
+        if (current === null) {
+            return;
+        }
+
+        if (!disableInteraction) {
+            select(current)
                 .on(MOUSEENTER, this.handleEnter)
                 .on(MOUSELEAVE, this.handleLeave);
 
-            this.node.addEventListener("wheel", this.handleWheel, { passive: false });
+            // @ts-ignore
+            current.addEventListener("wheel", this.handleWheel, { passive: false });
         }
     }
 
@@ -130,19 +111,25 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
         const { disableInteraction } = this.props;
 
-        if (!disableInteraction && this.node) {
-            select(this.node)
+        const { current } = this.ref;
+        if (current === null) {
+            return;
+        }
+
+        if (!disableInteraction) {
+            select(current)
                 .on(MOUSEENTER, null)
                 .on(MOUSELEAVE, null);
-            const win = d3Window(this.node);
+            const win = d3Window(current);
             select(win)
                 .on(MOUSEMOVE, null);
 
-            this.node.removeEventListener("wheel", this.handleWheel, { passive: false });
+            // @ts-ignore
+            current.removeEventListener("wheel", this.handleWheel, { passive: false });
         }
     }
 
-    public handleEnter() {
+    public readonly handleEnter = () => {
         const { onMouseEnter } = this.props;
         if (onMouseEnter === undefined) {
             return;
@@ -152,14 +139,14 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         this.mouseInside = true;
         if (!this.state.panInProgress
             && !this.state.dragInProgress) {
-            const win = d3Window(this.node);
+            const win = d3Window(this.ref.current);
             select(win)
                 .on(MOUSEMOVE, this.handleMouseMove);
         }
         onMouseEnter(e);
     }
 
-    public handleLeave(e) {
+    public handleLeave = (e) => {
         const { onMouseLeave } = this.props;
         if (onMouseLeave === undefined) {
             return;
@@ -168,14 +155,14 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         this.mouseInside = false;
         if (!this.state.panInProgress
             && !this.state.dragInProgress) {
-            const win = d3Window(this.node);
+            const win = d3Window(this.ref.current);
             select(win)
                 .on(MOUSEMOVE, null);
         }
         onMouseLeave(e);
     }
 
-    public handleWheel(e: React.WheelEvent) {
+    public handleWheel = (e: React.WheelEvent) => {
         const { zoom, onZoom } = this.props;
         const { panInProgress } = this.state;
 
@@ -199,7 +186,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 this.lastNewPos = mouseXY;
                 this.panHappened = true;
 
-                this.dx += e.deltaX;
+                this.dx -= e.deltaX;
                 this.dy += e.deltaY;
                 const dxdy = { dx: this.dx, dy: this.dy };
 
@@ -232,7 +219,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         }, 100);
     }
 
-    public handleMouseMove() {
+    public handleMouseMove = () => {
         const e = d3Event;
 
         const { onMouseMove, mouseMove } = this.props;
@@ -241,7 +228,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
             mouseMove &&
             !this.state.panInProgress) {
 
-            const newPos = mouse(this.node);
+            const newPos = mouse(this.ref.current!);
 
             if (onMouseMove !== undefined) {
                 onMouseMove(newPos, "mouse", e);
@@ -249,7 +236,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         }
     }
 
-    public handleClick(e: React.MouseEvent) {
+    public handleClick = (e: React.MouseEvent) => {
         const mouseXY = mousePosition(e);
         const { onClick, onDoubleClick } = this.props;
 
@@ -269,19 +256,19 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         }
     }
 
-    public handleRightClick(e: React.MouseEvent) {
+    public handleRightClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         e.preventDefault();
         const { onContextMenu, onPanEnd } = this.props;
 
-        const mouseXY = mousePosition(e, this.node.getBoundingClientRect());
+        const mouseXY = mousePosition(e, this.ref.current!.getBoundingClientRect());
 
         if (isDefined(this.state.panStart)) {
             const { panStartXScale, panOrigin, chartsToPan } = this.state.panStart;
             if (this.panHappened) {
                 onPanEnd(mouseXY, panStartXScale, panOrigin, chartsToPan, e);
             }
-            const win = d3Window(this.node);
+            const win = d3Window(this.ref.current);
             select(win)
                 .on(MOUSEMOVE, null)
                 .on(MOUSEUP, null);
@@ -297,11 +284,11 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         }
     }
 
-    public handleDrag() {
+    public handleDrag = () => {
         const e = d3Event;
         if (this.props.onDrag) {
             this.dragHappened = true;
-            const mouseXY = mouse(this.node);
+            const mouseXY = mouse(this.ref.current!);
             this.props.onDrag({
                 startPos: this.state.dragStartPosition,
                 mouseXY,
@@ -310,7 +297,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     }
 
     public cancelDrag() {
-        const win = d3Window(this.node);
+        const win = d3Window(this.ref.current);
         select(win)
             // @ts-ignore
             .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
@@ -322,11 +309,11 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         this.mouseInteraction = true;
     }
 
-    public handleDragEnd() {
+    public handleDragEnd = () => {
         const e = d3Event;
-        const mouseXY = mouse(this.node);
+        const mouseXY = mouse(this.ref.current!);
 
-        const win = d3Window(this.node);
+        const win = d3Window(this.ref.current);
         select(win)
             // @ts-ignore
             .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
@@ -345,7 +332,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         this.mouseInteraction = true;
     }
 
-    public canPan() {
+    public canPan = () => {
         const { getAllPanConditions } = this.props;
         const { pan: initialPanEnabled } = this.props;
 
@@ -369,7 +356,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         };
     }
 
-    public handleMouseDown(e: React.MouseEvent) {
+    public handleMouseDown = (e: React.MouseEvent) => {
         if (e.button !== 0) {
             return;
         }
@@ -400,7 +387,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                     },
                 });
 
-                const win = d3Window(this.node);
+                const win = d3Window(this.ref.current);
                 select(win)
                     .on(MOUSEMOVE, this.handlePan)
                     .on(MOUSEUP, this.handlePanEnd);
@@ -419,7 +406,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                     onDragStart({ startPos: mouseXY }, e);
                 }
 
-                const win = d3Window(this.node);
+                const win = d3Window(this.ref.current);
                 select(win)
                     .on(MOUSEMOVE, this.handleDrag)
                     .on(MOUSEUP, this.handleDragEnd);
@@ -432,14 +419,14 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         e.preventDefault();
     }
 
-    public shouldPan() {
+    public shouldPan = () => {
         const { pan: panEnabled, onPan } = this.props;
         return panEnabled
             && onPan
             && isDefined(this.state.panStart);
     }
 
-    public handlePan() {
+    public handlePan = () => {
         const e = d3Event;
 
         if (this.shouldPan()) {
@@ -447,13 +434,20 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
             const { panStartXScale, panOrigin, chartsToPan } = this.state.panStart;
 
-            const mouseXY = this.mouseInteraction
-                ? mouse(this.node)
-                : touches(this.node)[0];
-
-            this.lastNewPos = mouseXY;
-            const dx = mouseXY[0] - panOrigin[0];
-            const dy = mouseXY[1] - panOrigin[1];
+            let dx;
+            let dy;
+            let mouseXY;
+            if (this.mouseInteraction) {
+                mouseXY = mouse(this.ref.current!);
+                this.lastNewPos = mouseXY;
+                dx = mouseXY[0] - panOrigin[0];
+                dy = mouseXY[1] - panOrigin[1];
+            } else {
+                mouseXY = touches(this.ref.current!)[0];
+                this.lastNewPos = mouseXY;
+                dx = panOrigin[0] - mouseXY[0];
+                dy = panOrigin[1] - mouseXY[1];
+            }
 
             this.dx = dx;
             this.dy = dy;
@@ -464,14 +458,14 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         }
     }
 
-    public handlePanEnd() {
+    public handlePanEnd = () => {
         const e = d3Event;
         const { pan: panEnabled, onPanEnd } = this.props;
 
         if (isDefined(this.state.panStart)) {
             const { panStartXScale, chartsToPan } = this.state.panStart;
 
-            const win = d3Window(this.node);
+            const win = d3Window(this.ref.current);
             select(win)
                 // @ts-ignore
                 .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
@@ -496,7 +490,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         }
     }
 
-    public handleTouchMove(e: React.TouchEvent) {
+    public handleTouchMove = (e: React.TouchEvent) => {
         const { onMouseMove } = this.props;
         if (onMouseMove === undefined) {
             return;
@@ -506,7 +500,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         onMouseMove(touchXY, "touch", e);
     }
 
-    public handleTouchStart(e: React.TouchEvent) {
+    public handleTouchStart = (e: React.TouchEvent) => {
         this.mouseInteraction = false;
 
         const { pan: panEnabled, chartConfig, onMouseMove } = this.props;
@@ -532,7 +526,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                     },
                 });
 
-                const win = d3Window(this.node);
+                const win = d3Window(this.ref.current);
                 select(win)
                     .on(TOUCHMOVE, this.handlePan, false)
                     .on(TOUCHEND, this.handlePanEnd, false);
@@ -546,7 +540,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
             if (panInProgress && panEnabled && onPanEnd) {
                 const { panStartXScale, panOrigin, chartsToPan } = panStart;
 
-                const win = d3Window(this.node);
+                const win = d3Window(this.ref.current);
                 select(win)
                     // @ts-ignore
                     .on(MOUSEMOVE, this.mouseInside ? this.handleMouseMove : null)
@@ -578,9 +572,9 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         }
     }
 
-    public handlePinchZoom() {
+    public handlePinchZoom = () => {
         const e = d3Event;
-        const [touch1Pos, touch2Pos] = touches(this.node);
+        const [touch1Pos, touch2Pos] = touches(this.ref.current!);
         const { xScale, zoom: zoomEnabled, onPinchZoom } = this.props;
 
         const { chartsToPan, ...initialPinch } = this.state.pinchZoomStart;
@@ -594,10 +588,10 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         }
     }
 
-    public handlePinchZoomEnd() {
+    public handlePinchZoomEnd = () => {
         const e = d3Event;
 
-        const win = d3Window(this.node);
+        const win = d3Window(this.ref.current);
         select(win)
             .on(TOUCHMOVE, null)
             .on(TOUCHEND, null);
@@ -615,7 +609,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         });
     }
 
-    public setCursorClass(cursorOverrideClass) {
+    public setCursorClass = (cursorOverrideClass) => {
         if (cursorOverrideClass !== this.state.cursorOverrideClass) {
             this.setState({
                 cursorOverrideClass,
@@ -643,7 +637,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
         return (
             <rect
-                ref={this.saveNode}
+                ref={this.ref}
                 className={className}
                 width={width}
                 height={height}

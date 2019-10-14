@@ -8,7 +8,7 @@
   "scripts": {
     "clean": "rimraf ../docs lib",
     "docs": "build-storybook -c .storybook -o ../../docs",
-    "start": "start-storybook"
+    "start": "start-storybook -p 4444"
   },
   "dependencies": {
     "d3-dsv": "^1.1.1",

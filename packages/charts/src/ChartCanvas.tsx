@@ -725,6 +725,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             });
         }
     }
+
     public handlePinchZoomEnd(initialPinch, e) {
         const { xAccessor } = this.state;
 
@@ -751,6 +752,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             });
         }
     }
+
     public handleZoom(zoomDirection, mouseXY, e) {
         if (this.panInProgress) {
             return;
@@ -813,6 +815,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             }
         });
     }
+
     public xAxisZoom(newDomain) {
         const { xScale, plotData, chartConfig } = this.calculateStateForDomain(newDomain);
         this.clearThreeCanvas();
@@ -832,6 +835,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             if (start < end) { onLoadMore(start, end); }
         });
     }
+
     public yAxisZoom(chartId, newDomain) {
         this.clearThreeCanvas();
         const { chartConfig: initialChartConfig } = this.state;
@@ -873,17 +877,18 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             }
         });
     }
+
     public redraw() {
         this.clearThreeCanvas();
         this.draw({ force: true });
     }
+
     public panHelper(mouseXY, initialXScale, { dx, dy }, chartsToPan) {
         const { xAccessor, displayXAccessor, chartConfig: initialChartConfig } = this.state;
         const { filterData } = this.state;
         const { fullData } = this;
         const { postCalculator } = this.props;
 
-        // console.log(dx, dy);
         if (isNotDefined(initialXScale.invert)) {
             throw new Error("xScale provided does not have an invert() method."
                 + "You are likely using an ordinal scale. This scale does not support zoom, pan");
@@ -904,7 +909,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
         const updatedScale = initialXScale.copy().domain(domain);
         const plotData = postCalculator(beforePlotData);
-        // console.log(last(plotData));
 
         const currentItem = getCurrentItem(updatedScale, xAccessor, mouseXY, plotData);
         const chartConfig = getChartConfigWithUpdatedYScales(
@@ -916,7 +920,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         );
         const currentCharts = getCurrentCharts(chartConfig, mouseXY);
 
-        // console.log(initialXScale.domain(), newDomain, updatedScale.domain());
         return {
             xScale: updatedScale,
             plotData,
@@ -926,6 +929,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             currentItem,
         };
     }
+
     public handlePan(mousePosition, panStartXScale, dxdy, chartsToPan, e) {
         if (!this.waitingForPanAnimationFrame) {
             this.waitingForPanAnimationFrame = true;
@@ -939,7 +943,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             this.hackyWayToStopPanBeyondBounds__domain = state.xScale.domain();
 
             this.panInProgress = true;
-            // console.log(panStartXScale.domain(), state.xScale.domain());
 
             this.triggerEvent("pan", state, e);
 
@@ -955,15 +958,14 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             });
         }
     }
+
     public handlePanEnd(mousePosition, panStartXScale, dxdy, chartsToPan, e) {
         const state = this.panHelper(mousePosition, panStartXScale, dxdy, chartsToPan);
-        // console.log(this.canvasDrawCallbackList.map(d => d.type));
         this.hackyWayToStopPanBeyondBounds__plotData = null;
         this.hackyWayToStopPanBeyondBounds__domain = null;
 
         this.panInProgress = false;
 
-        // console.log("PANEND", panEnd++);
         const {
             xScale,
             plotData,
@@ -979,7 +981,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             const firstItem = head(fullData);
             const start = head(xScale.domain());
             const end = xAccessor(firstItem);
-            // console.log(start, end, start < end ? "Load more" : "I have it");
 
             const { onLoadMore } = this.props;
 
@@ -994,14 +995,17 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             });
         });
     }
+
     public handleMouseDown(mousePosition, currentCharts, e) {
         this.triggerEvent("mousedown", this.mutableState, e);
     }
+
     public handleMouseEnter(e) {
         this.triggerEvent("mouseenter", {
             show: true,
         }, e);
     }
+
     public handleMouseMove(mouseXY, inputType, e) {
         if (!this.waitingForMouseMoveAnimationFrame) {
             this.waitingForMouseMoveAnimationFrame = true;
@@ -1032,14 +1036,17 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             });
         }
     }
+
     public handleMouseLeave(e) {
         this.triggerEvent("mouseleave", { show: false }, e);
         this.clearMouseCanvas();
         this.draw({ trigger: "mouseleave" });
     }
+
     public handleDragStart({ startPos }, e) {
         this.triggerEvent("dragstart", { startPos }, e);
     }
+
     public handleDrag({ startPos, mouseXY }, e) {
         const { chartConfig, plotData, xScale, xAccessor } = this.state;
         const currentCharts = getCurrentCharts(chartConfig, mouseXY);
@@ -1063,6 +1070,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             this.draw({ trigger: "drag" });
         });
     }
+
     public handleDragEnd({ mouseXY }, e) {
         this.triggerEvent("dragend", { mouseXY }, e);
 
@@ -1071,6 +1079,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             this.draw({ trigger: "dragend" });
         });
     }
+
     public handleClick(mousePosition, e) {
         this.triggerEvent("click", this.mutableState, e);
 
@@ -1079,9 +1088,11 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             this.draw({ trigger: "click" });
         });
     }
+
     public handleDoubleClick(mousePosition, e) {
         this.triggerEvent("dblclick", {}, e);
     }
+
     public getChildContext() {
         const dimensions = getDimensions(this.props);
         return {

@@ -15,7 +15,7 @@
     "d3-format": "^1.4.1",
     "d3-time-format": "^2.2.0",
     "react": "^16.10.2",
-    "react-dom": "^16.10.2",
+    "react-dom": "^16.11.0",
     "react-financial-charts": "file:../charts",
     "react-virtualized-auto-sizer": "^1.0.2"
   }

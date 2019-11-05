@@ -55,7 +55,7 @@
     "ts-jest": "^24.1.0",
     "ts-loader": "^6.2.1",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.2"
   },
   "dependencies": {
     "@react-financial-charts/stories": "file:packages/stories",

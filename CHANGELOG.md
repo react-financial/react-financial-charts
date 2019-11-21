@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/markmcdowell/react-financial-charts/compare/v0.3.1...v0.3.2) (2019-11-21)
+
+
+### Bug Fixes
+
+* **docs:** fixing version of find-cache-dir due to breaking change ([ade1051](https://github.com/markmcdowell/react-financial-charts/commit/ade10519c7c10d42e79f3bf744a276ac596c1da8))
+* **docs:** the package-lock.json is incorrect ([3759cc6](https://github.com/markmcdowell/react-financial-charts/commit/3759cc643b0902e20a201091b5b5a8fdd1b456d8)), closes [#131](https://github.com/markmcdowell/react-financial-charts/issues/131)
+
+
+
+
+
 ## [0.3.1](https://github.com/markmcdowell/react-financial-charts/compare/v0.3.0...v0.3.1) (2019-10-14)
 
 

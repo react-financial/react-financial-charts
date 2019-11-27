@@ -1,17 +1,16 @@
 export const defaultFormatters = {
     yearFormat: "%Y",
-    quarterFormat: "%b %Y",
+    quarterFormat: "%b",
     monthFormat: "%b",
-    weekFormat: "%d %b",
-    dayFormat: "%a %d",
-    hourFormat: "%_I %p",
-    minuteFormat: "%I:%M %p",
-    secondFormat: "%I:%M:%S %p",
+    weekFormat: "%e",
+    dayFormat: "%e",
+    hourFormat: "%H:%M",
+    minuteFormat: "%H:%M",
+    secondFormat: "%H:%M:%S",
     milliSecondFormat: "%L",
 };
 
 export const levelDefinition = [
-    /* eslint-disable no-unused-vars */
     /* 19 */(d, date, i) => d.startOfYear && date.getFullYear() % 12 === 0 && "yearFormat",
     /* 18 */(d, date, i) => d.startOfYear && date.getFullYear() % 4 === 0 && "yearFormat",
     /* 17 */(d, date, i) => d.startOfYear && date.getFullYear() % 2 === 0 && "yearFormat",
@@ -32,5 +31,4 @@ export const levelDefinition = [
     /*  2 */(d, date, i) => d.startOfMinute && "minuteFormat",
     /*  1 */(d, date, i) => d.startOf30Seconds && "secondFormat",
     /*  0 */(d, date, i) => "secondFormat",
-    /* eslint-enable no-unused-vars */
 ];

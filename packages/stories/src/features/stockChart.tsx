@@ -5,6 +5,7 @@ import { Chart, ChartCanvas } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts/lib/axes";
 import { CrossHairCursor, EdgeIndicator, MouseCoordinateX, MouseCoordinateY } from "react-financial-charts/lib/coordinates";
 import { elderRay, ema } from "react-financial-charts/lib/indicator";
+import { ZoomButtons } from "react-financial-charts/lib/interactive";
 import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
 import { BarSeries, CandlestickSeries, ElderRaySeries, LineSeries } from "react-financial-charts/lib/series";
 import { MovingAverageTooltip, OHLCTooltip, SingleValueTooltip } from "react-financial-charts/lib/tooltip";
@@ -88,18 +89,6 @@ class StockChart extends React.Component<StockChartProps> {
                 xExtents={xExtents}
                 zoomAnchor={lastVisibleItemBasedZoomAnchor}>
                 <Chart
-                    id={1}
-                    height={chartHeight}
-                    yExtents={this.candleChartExtents}>
-                    <XAxis showTicks={false} />
-                    <YAxis
-                        innerTickSize={-1 * gridWidth}
-                        tickFormat={this.pricesDisplayFormat}
-                        tickStroke="#e0e3eb"
-                        ticks={5} />
-                    <OHLCTooltip origin={[8, 16]} />
-                </Chart>
-                <Chart
                     id={2}
                     height={barChartHeight}
                     origin={barChartOrigin}
@@ -112,6 +101,12 @@ class StockChart extends React.Component<StockChartProps> {
                     id={3}
                     height={chartHeight}
                     yExtents={this.candleChartExtents}>
+                    <XAxis showTicks={false} />
+                    <YAxis
+                        innerTickSize={-1 * gridWidth}
+                        tickFormat={this.pricesDisplayFormat}
+                        tickStroke="#e0e3eb"
+                        ticks={5} />
                     <CandlestickSeries />
                     <LineSeries yAccessor={ema26.accessor()} stroke={ema26.stroke()} />
                     <LineSeries yAccessor={ema12.accessor()} stroke={ema12.stroke()} />
@@ -140,6 +135,9 @@ class StockChart extends React.Component<StockChartProps> {
                             },
                         ]}
                     />
+
+                    <ZoomButtons />
+                    <OHLCTooltip origin={[8, 16]} />
                 </Chart>
                 <Chart
                     id={4}
@@ -163,6 +161,7 @@ class StockChart extends React.Component<StockChartProps> {
                         yLabel="Elder Ray"
                         yDisplayFormat={(d: any) => `${this.pricesDisplayFormat(d.bullPower)}, ${this.pricesDisplayFormat(d.bearPower)}`}
                         origin={[8, 16]} />
+
                 </Chart>
                 <CrossHairCursor />
             </ChartCanvas>

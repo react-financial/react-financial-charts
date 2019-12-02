@@ -1,44 +1,31 @@
 import { interpolateNumber } from "d3-interpolate";
-import { path as d3Path } from "d3-path";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
 import { last, noop } from "../utils";
 
 interface ZoomButtonsProps {
-    readonly zoomMultiplier: number;
-    readonly size: number[];
-    readonly heightFromBase: number;
-    readonly rx: number;
-    readonly ry: number;
-    readonly stroke: string;
-    readonly strokeWidth: number;
-    readonly strokeOpacity: number;
     readonly fill: string;
     readonly fillOpacity: number;
-    readonly fontSize: number;
-    readonly textDy: string;
+    readonly heightFromBase: number;
+    readonly onReset: () => void;
+    readonly r: number;
+    readonly stroke: string;
+    readonly strokeWidth: number;
     readonly textFill: string;
-    readonly textStrokeWidth: number;
-    readonly onReset: any; // func
+    readonly zoomMultiplier: number;
 }
 
 export class ZoomButtons extends React.Component<ZoomButtonsProps> {
 
     public static defaultProps = {
-        size: [30, 24],
-        heightFromBase: 50,
-        rx: 3,
-        ry: 3,
-        stroke: "#000000",
-        strokeOpacity: 0.3,
+        fill: "#ffffff",
+        fillOpacity: 0.75,
+        heightFromBase: 32,
+        r: 16,
+        stroke: "#e0e3eb",
         strokeWidth: 1,
-        fill: "#D6D6D6",
-        fillOpacity: 0.4,
-        fontSize: 16,
-        textDy: ".3em",
         textFill: "#000000",
-        textStrokeWidth: 2,
         zoomMultiplier: 1.5,
         onReset: noop,
     };
@@ -55,130 +42,101 @@ export class ZoomButtons extends React.Component<ZoomButtonsProps> {
 
     public render() {
         const { chartConfig } = this.context;
+
         const { width, height } = chartConfig;
-        const { size, heightFromBase, rx, ry } = this.props;
-        const { stroke, strokeOpacity, fill, strokeWidth, fillOpacity } = this.props;
-        const { textFill, textStrokeWidth } = this.props;
-        const { onReset } = this.props;
+
+        const { heightFromBase, r, fill, fillOpacity, onReset, stroke, strokeWidth, textFill } = this.props;
+
         const centerX = Math.round(width / 2);
         const y = height - heightFromBase;
 
-        const [w, h] = size;
-        const hLength = 5;
-        const wLength = 6;
-
-        const textY = Math.round(y + h / 2);
-
-        const resetX = centerX;
-
-        const zoomOut = d3Path();
-        const zoomOutX = centerX - w - 2 * strokeWidth;
-        zoomOut.moveTo(zoomOutX - wLength, textY);
-        zoomOut.lineTo(zoomOutX + wLength, textY);
-        zoomOut.closePath();
-
-        const zoomIn = d3Path();
-        const zoomInX = centerX + w + 2 * strokeWidth;
-
-        zoomIn.moveTo(zoomInX - wLength, textY);
-        zoomIn.lineTo(zoomInX + wLength, textY);
-
-        zoomIn.moveTo(zoomInX, textY - hLength);
-        zoomIn.lineTo(zoomInX, textY + hLength);
+        const zoomOutX = centerX - 16 - (r * 2);
+        const zoomInX = centerX - 8;
+        const resetX = centerX + 16 + (r * 2);
 
         return (
-            <g className="react-financial-charts-zoom-button">
-                <rect
-                    x={zoomOutX - w / 2}
-                    y={y}
-                    rx={rx}
-                    ry={ry}
-                    height={h}
-                    width={w}
+            <g className="react-financial-charts-zoom-buttons">
+                <circle
+                    className="react-financial-charts-button"
+                    cx={zoomOutX - r / 2}
+                    cy={y + r / 2}
                     fill={fill}
                     fillOpacity={fillOpacity}
                     stroke={stroke}
-                    strokeOpacity={strokeOpacity}
-                    strokeWidth={strokeWidth} />
-                <path
-                    d={zoomOut.toString()}
-                    stroke={textFill}
-                    strokeWidth={textStrokeWidth} />
-                <rect
-                    x={resetX - w / 2}
-                    y={y}
-                    rx={rx}
-                    ry={ry}
-                    height={h}
-                    width={w}
-                    fill={fill}
-                    fillOpacity={fillOpacity}
-                    stroke={stroke}
-                    strokeOpacity={strokeOpacity}
-                    strokeWidth={strokeWidth} />
-                <g transform={`translate (${resetX}, ${y + h / 4}) scale(.14)`}>
+                    strokeWidth={strokeWidth}
+                    r={r} />
+                <g transform={`translate (${zoomOutX - 20}, ${y - 8 + r / 4})`}>
                     <path
-                        d="M31 13C23.4 5.3 12.8.5 1.1.5c-23.3 0-42.3 19-42.3 42.5s18.9 42.5 42.3 42.5c13.8 0 26-6.6 33.7-16.9l-16.5-1.8C13.5 70.4 7.5 72.5 1 72.5c-16.2 0-29.3-13.2-29.3-29.4S-15.2 13.7 1 13.7c8.1 0 15.4 3.3 20.7 8.6l-10.9 11h32.5V.5L31 13z"
+                        d="M19,13H5V11H19V13Z"
+                        fill={textFill} />
+                </g>
+                <circle
+                    className="react-financial-charts-button"
+                    cx={zoomInX - r / 2}
+                    cy={y + r / 2}
+                    fill={fill}
+                    fillOpacity={fillOpacity}
+                    stroke={stroke}
+                    strokeWidth={strokeWidth}
+                    r={r} />
+                <g transform={`translate (${zoomInX - 20}, ${y - 8 + r / 4})`}>
+                    <path
+                        d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"
+                        fill={textFill} />
+                </g>
+                <circle
+                    className="react-financial-charts-button"
+                    cx={resetX - r / 2}
+                    cy={y + r / 2}
+                    fill={fill}
+                    fillOpacity={fillOpacity}
+                    stroke={stroke}
+                    strokeWidth={strokeWidth}
+                    r={r} />
+                <g transform={`translate (${resetX - r}, ${y - 4 + r / 4})`}>
+                    <path
+                        d="M2.35 2.35A7.958 7.958 0 018 0a8 8 0 110 16c-3.73 0-6.84-2.55-7.73-6h2.08c.82 2.33 3.04 4 5.65 4A6 6 0 108 2c-1.66 0-3.14.69-4.22 1.78L7 7H0V0l2.35 2.35z"
                         fill={textFill}
                     />
                 </g>
-                <rect
-                    x={zoomInX - w / 2}
-                    y={y}
-                    rx={rx}
-                    ry={ry}
-                    height={h}
-                    width={w}
-                    fill={fill}
-                    fillOpacity={fillOpacity}
-                    stroke={stroke}
-                    strokeOpacity={strokeOpacity}
-                    strokeWidth={strokeWidth} />
-                <path
-                    d={zoomIn.toString()}
-                    stroke={textFill}
-                    strokeWidth={textStrokeWidth} />
-                <rect
+                <circle
                     className="react-financial-charts-enable-interaction out"
                     onClick={this.handleZoomOut}
-                    x={zoomOutX - w / 2}
-                    y={y}
-                    rx={rx}
-                    ry={ry}
-                    height={h}
-                    width={w}
+                    cx={zoomOutX - r / 2}
+                    cy={y + r / 2}
+                    r={r}
                     fill="none" />
-                <rect
-                    className="react-financial-charts-enable-interaction reset"
-                    onClick={onReset}
-                    x={resetX - w / 2}
-                    y={y}
-                    rx={rx}
-                    ry={ry}
-                    height={h}
-                    width={w}
-                    fill="none" />
-                <rect
+                <circle
                     className="react-financial-charts-enable-interaction in"
                     onClick={this.handleZoomIn}
-                    x={zoomInX - w / 2}
-                    y={y}
-                    rx={rx}
-                    ry={ry}
-                    height={h}
-                    width={w}
+                    cx={zoomInX - r / 2}
+                    cy={y + r / 2}
+                    r={r}
+                    fill="none" />
+                <circle
+                    className="react-financial-charts-enable-interaction reset"
+                    onClick={onReset}
+                    cx={resetX - r / 2}
+                    cy={y + r / 2}
+                    r={r}
                     fill="none" />
             </g>
         );
     }
 
     private readonly handleZoomIn = () => {
-        if (this.interval) { return; }
+        if (this.interval) {
+            return;
+        }
+
         this.zoom(-1);
     }
 
     private readonly handleZoomOut = () => {
-        if (this.interval) { return; }
+        if (this.interval) {
+            return;
+        }
+
         this.zoom(1);
     }
 

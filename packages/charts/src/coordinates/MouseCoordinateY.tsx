@@ -9,16 +9,18 @@ import { isNotDefined } from "../utils";
 
 interface MouseCoordinateYProps {
     readonly arrowWidth?: number;
-    readonly at?: "bottom" | "top" | "left" | "right";
+    readonly at?: "left" | "right";
     readonly displayFormat: any; // func
     readonly dx?: number;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fill?: string;
     readonly opacity?: number;
-    readonly orient?: "bottom" | "top" | "left" | "right";
+    readonly orient?: "left" | "right";
     readonly rectWidth?: number;
     readonly rectHeight?: number;
+    readonly strokeOpacity?: number;
+    readonly strokeWidth?: number;
     readonly textFill?: string;
     readonly yAxisPad?: number;
 }
@@ -27,19 +29,19 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
 
     public static defaultProps = {
         arrowWidth: 0,
-        yAxisPad: 0,
-        rectWidth: 50,
-        rectHeight: 20,
-        orient: "right",
         at: "right",
         dx: 0,
         fill: "#37474F",
-        opacity: 1,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,
-        textFill: "#FFFFFF",
+        opacity: 1,
+        orient: "right",
+        rectWidth: 50,
+        rectHeight: 20,
         strokeOpacity: 1,
         strokeWidth: 1,
+        textFill: "#FFFFFF",
+        yAxisPad: 0,
     };
 
     public render() {
@@ -72,19 +74,18 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
         drawOnCanvas(ctx, props);
     }
 
-    private readonly helper = (props, moreProps) => {
-        const { chartId } = moreProps;
-        const { currentCharts, mouseXY } = moreProps;
+    private readonly helper = (props: MouseCoordinateYProps, moreProps) => {
+        const { chartId, currentCharts, mouseXY, show } = moreProps;
+
+        if (!show) {
+            return null;
+        }
 
         if (isNotDefined(mouseXY)) {
             return null;
         }
-        if (currentCharts.indexOf(chartId) < 0) {
-            return null;
-        }
 
-        const { show } = moreProps;
-        if (!show) {
+        if (currentCharts.indexOf(chartId) < 0) {
             return null;
         }
 
@@ -107,9 +108,7 @@ export function getYCoordinate(y, displayValue, props, moreProps) {
 
     const x1 = 0;
     const x2 = width;
-    const edgeAt = (at === "right")
-        ? width
-        : 0;
+    const edgeAt = (at === "right") ? width : 0;
 
     const type = "horizontal";
     const hideLine = true;

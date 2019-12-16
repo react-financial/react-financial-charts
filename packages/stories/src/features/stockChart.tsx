@@ -113,9 +113,12 @@ class StockChart extends React.Component<StockChartProps> {
                     <CandlestickSeries />
                     <LineSeries yAccessor={ema26.accessor()} stroke={ema26.stroke()} />
                     <LineSeries yAccessor={ema12.accessor()} stroke={ema12.stroke()} />
-                    <MouseCoordinateY displayFormat={this.pricesDisplayFormat} />
+                    <MouseCoordinateY
+                        rectWidth={margin.right}
+                        displayFormat={this.pricesDisplayFormat} />
                     <EdgeIndicator
                         itemType="last"
+                        rectWidth={margin.right}
                         fill={this.openCloseColor}
                         lineStroke={this.openCloseColor}
                         displayFormat={this.pricesDisplayFormat}
@@ -154,7 +157,7 @@ class StockChart extends React.Component<StockChartProps> {
                     <YAxis ticks={4} tickFormat={this.pricesDisplayFormat} />
 
                     <MouseCoordinateX displayFormat={timeDisplayFormat} />
-                    <MouseCoordinateY displayFormat={this.pricesDisplayFormat} />
+                    <MouseCoordinateY rectWidth={margin.right} displayFormat={this.pricesDisplayFormat} />
 
                     <ElderRaySeries yAccessor={elder.accessor()} />
 

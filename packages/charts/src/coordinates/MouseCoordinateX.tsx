@@ -11,6 +11,7 @@ interface MouseCoordinateXProps {
     readonly customX: any; // func
     readonly displayFormat: any; // func
     readonly fill?: string;
+    readonly fitToText?: boolean;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly opacity?: number;
@@ -47,6 +48,7 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
         at: "bottom",
         customX: defaultCustomX,
         fill: "#37474F",
+        fitToText: true,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,
         opacity: 1,
@@ -99,7 +101,7 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
         const { customX, orient, at } = props;
         const { stroke, strokeOpacity, strokeWidth } = props;
         const { rectRadius, rectWidth, rectHeight } = props;
-        const { fill, opacity, fontFamily, fontSize, textFill } = props;
+        const { fill, opacity, fitToText, fontFamily, fontSize, textFill } = props;
 
         const edgeAt = (at === "bottom") ? height : 0;
 
@@ -115,6 +117,7 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
 
         const coordinateProps = {
             coordinate,
+            fitToText,
             show,
             type,
             orient,

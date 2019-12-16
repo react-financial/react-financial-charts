@@ -202,7 +202,10 @@ export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
     ctx.font = `${fontSize}px ${fontFamily}`;
     ctx.textBaseline = "middle";
 
-    const width = Math.round(ctx.measureText(coordinate).width + 10);
+    let width = props.rectWidth;
+    if (props.fitToText) {
+        width = Math.round(ctx.measureText(coordinate).width + 10);
+    }
 
     const edge = helper({ ...props, rectWidth: width });
     if (edge === null) {

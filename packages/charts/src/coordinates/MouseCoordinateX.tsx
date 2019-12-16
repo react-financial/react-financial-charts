@@ -7,18 +7,23 @@ import { drawOnCanvas, renderSVG } from "./EdgeCoordinateV3";
 import { isNotDefined } from "../utils";
 
 interface MouseCoordinateXProps {
+    readonly at?: "bottom" | "top";
+    readonly customX: any; // func
     readonly displayFormat: any; // func
-    readonly yAxisPad?: number;
-    readonly rectWidth?: number;
-    readonly rectHeight?: number;
-    readonly orient?: "bottom" | "top" | "left" | "right";
-    readonly at?: "bottom" | "top" | "left" | "right";
     readonly fill?: string;
-    readonly opacity?: number;
     readonly fontFamily?: string;
     readonly fontSize?: number;
-    readonly textFill?: string;
+    readonly opacity?: number;
+    readonly orient?: "bottom" | "top";
+    readonly rectRadius?: number;
+    readonly rectWidth?: number;
+    readonly rectHeight?: number;
     readonly snapX?: boolean;
+    readonly stroke?: string;
+    readonly strokeOpacity?: number;
+    readonly strokeWidth?: number;
+    readonly textFill?: string;
+    readonly yAxisPad?: number;
 }
 
 const defaultCustomX = (props: MouseCoordinateXProps, moreProps) => {
@@ -39,20 +44,20 @@ const defaultCustomX = (props: MouseCoordinateXProps, moreProps) => {
 export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
 
     public static defaultProps = {
-        yAxisPad: 0,
-        rectWidth: 80,
-        rectHeight: 20,
-        strokeOpacity: 1,
-        strokeWidth: 1,
-        orient: "bottom",
         at: "bottom",
+        customX: defaultCustomX,
         fill: "#37474F",
-        opacity: 1,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,
-        textFill: "#FFFFFF",
+        opacity: 1,
+        orient: "bottom",
+        rectWidth: 80,
+        rectHeight: 20,
         snapX: true,
-        customX: defaultCustomX,
+        strokeOpacity: 1,
+        strokeWidth: 1,
+        textFill: "#FFFFFF",
+        yAxisPad: 0,
     };
 
     public render() {
@@ -69,34 +74,34 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const props = this.helper(this.props, moreProps);
-        if (isNotDefined(props)) { return null; }
+        if (isNotDefined(props)) {
+            return null;
+        }
 
         drawOnCanvas(ctx, props);
     }
 
     private readonly renderSVG = (moreProps) => {
         const props = this.helper(this.props, moreProps);
-        if (isNotDefined(props)) { return null; }
+        if (isNotDefined(props)) {
+            return null;
+        }
 
         return renderSVG(props);
     }
 
-    private readonly helper = (props, moreProps) => {
+    private readonly helper = (props: MouseCoordinateXProps, moreProps) => {
         const { show, currentItem } = moreProps;
         const { chartConfig: { height } } = moreProps;
 
         if (isNotDefined(currentItem)) { return null; }
 
-        const { customX } = props;
-
-        const { orient, at } = props;
+        const { customX, orient, at } = props;
         const { stroke, strokeOpacity, strokeWidth } = props;
         const { rectRadius, rectWidth, rectHeight } = props;
         const { fill, opacity, fontFamily, fontSize, textFill } = props;
 
-        const edgeAt = (at === "bottom")
-            ? height
-            : 0;
+        const edgeAt = (at === "bottom") ? height : 0;
 
         const {
             x,

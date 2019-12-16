@@ -1,8 +1,7 @@
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import GenericComponent, { getMouseCanvas } from "../GenericComponent";
-
-import { colorToRGBA, getStrokeDasharray, getStrokeDasharrayCanvas, isDefined, isNotDefined, strokeDashTypes } from "../utils";
+import { colorToRGBA, getStrokeDasharray, getStrokeDasharrayCanvas, isNotDefined, strokeDashTypes } from "../utils";
 
 interface CrossHairCursorProps {
     readonly className?: string;
@@ -50,20 +49,22 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
     }
 
     private readonly renderSVG = (moreProps) => {
-        const { className } = this.props;
-        const lines = this.helper(this.props, moreProps);
 
+        const lines = this.helper(this.props, moreProps);
         if (lines === undefined) {
             return null;
         }
 
+        const { className } = this.props;
+
         return (
             <g className={className}>
-                {lines.map(({ strokeDasharray, ...rest }, idx) =>
+                {lines.map(({ strokeDasharray, ...rest }, idx) => (
                     <line
                         key={idx}
                         strokeDasharray={getStrokeDasharray(strokeDasharray)}
-                        {...rest} />)}
+                        {...rest} />
+                ))}
             </g>
         );
     }
@@ -71,7 +72,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const lines = this.helper(this.props, moreProps);
 
-        if (lines !== undefined && isDefined(lines)) {
+        if (lines !== undefined) {
 
             const { margin, ratio } = this.context;
             const originX = 0.5 * ratio + margin.left;

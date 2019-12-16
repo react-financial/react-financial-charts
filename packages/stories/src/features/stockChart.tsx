@@ -16,6 +16,7 @@ import { IOHLCData, withOHLCData, withSize } from "../data";
 interface StockChartProps {
     readonly data: IOHLCData[];
     readonly height: number;
+    readonly dateTimeFormat?: string;
     readonly width: number;
     readonly ratio: number;
 }
@@ -24,7 +25,6 @@ class StockChart extends React.Component<StockChartProps> {
 
     private readonly margin = { left: 0, right: 48, top: 0, bottom: 24 };
     private readonly pricesDisplayFormat = format(".2f");
-    private readonly timeDisplayFormat = timeFormat("%d %b");
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
         .inputDateAccessor((d: IOHLCData) => d.date);
 
@@ -32,6 +32,7 @@ class StockChart extends React.Component<StockChartProps> {
 
         const {
             data: initialData,
+            dateTimeFormat = "%d %b",
             height,
             ratio,
             width,
@@ -75,6 +76,8 @@ class StockChart extends React.Component<StockChartProps> {
         const barChartOrigin = (_: number, h: number) => [0, h - barChartHeight - elderRayHeight];
         const chartHeight = gridHeight - elderRayHeight;
 
+        const timeDisplayFormat = timeFormat(dateTimeFormat);
+
         return (
             <ChartCanvas
                 height={height}
@@ -110,8 +113,7 @@ class StockChart extends React.Component<StockChartProps> {
                     <CandlestickSeries />
                     <LineSeries yAccessor={ema26.accessor()} stroke={ema26.stroke()} />
                     <LineSeries yAccessor={ema12.accessor()} stroke={ema12.stroke()} />
-                    <MouseCoordinateY
-                        displayFormat={this.pricesDisplayFormat} />
+                    <MouseCoordinateY displayFormat={this.pricesDisplayFormat} />
                     <EdgeIndicator
                         itemType="last"
                         fill={this.openCloseColor}
@@ -151,7 +153,7 @@ class StockChart extends React.Component<StockChartProps> {
                         ticks={6} />
                     <YAxis ticks={4} tickFormat={this.pricesDisplayFormat} />
 
-                    <MouseCoordinateX displayFormat={this.timeDisplayFormat} />
+                    <MouseCoordinateX displayFormat={timeDisplayFormat} />
                     <MouseCoordinateY displayFormat={this.pricesDisplayFormat} />
 
                     <ElderRaySeries yAccessor={elder.accessor()} />
@@ -190,3 +192,4 @@ class StockChart extends React.Component<StockChartProps> {
 }
 
 export default withOHLCData()(withSize(600)(withDeviceRatio()(StockChart)));
+export const IntradayStockChart = withOHLCData("MSFT_INTRA_DAY")(withSize(600)(withDeviceRatio()(StockChart)));

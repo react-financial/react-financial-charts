@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/markmcdowell/react-financial-charts/compare/v0.3.3...v0.4.0) (2019-12-16)
+
+
+### Bug Fixes
+
+* **charts:** edge coordinates can now use rectWidth ([5b0a20b](https://github.com/markmcdowell/react-financial-charts/commit/5b0a20b6858f2cbbc915c2980275cdb73f568556))
+* **charts:** fixing coordinates component props ([1fca524](https://github.com/markmcdowell/react-financial-charts/commit/1fca5244173bea5438a19eac061df9e0505fe246))
+* **charts:** modifying axis ticks based on height and width ([94efee1](https://github.com/markmcdowell/react-financial-charts/commit/94efee14467d663caf2f04eddeb52e0cae2701d7))
+
+
+### Features
+
+* **charts:** updated zoom buttons styling ([d3c1bbb](https://github.com/markmcdowell/react-financial-charts/commit/d3c1bbb9eea624aead45684ca2cbbfca0cccdb5f))
+
+
+
+
+
 ## [0.3.3](https://github.com/markmcdowell/react-financial-charts/compare/v0.3.2...v0.3.3) (2019-11-27)
 
 

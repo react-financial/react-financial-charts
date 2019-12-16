@@ -13,6 +13,7 @@ interface EdgeIndicatorProps {
     readonly displayFormat?: any; // func
     readonly edgeAt?: "left" | "right";
     readonly fill?: string | any; // func
+    readonly fitToText?: boolean;
     readonly itemType: "first" | "last";
     readonly lineStroke?: string | any; // func
     readonly lineStrokeDasharray?: strokeDashTypes;
@@ -29,6 +30,7 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
     public static defaultProps = {
         className: "react-financial-charts-edgeindicator",
         type: "horizontal",
+        fitToText: false,
         orient: "right",
         edgeAt: "right",
         textFill: "#FFFFFF",

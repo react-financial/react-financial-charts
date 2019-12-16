@@ -15,6 +15,7 @@ interface MouseCoordinateYProps {
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fill?: string;
+    readonly fitToText?: boolean;
     readonly opacity?: number;
     readonly orient?: "left" | "right";
     readonly rectWidth?: number;
@@ -32,6 +33,7 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
         at: "right",
         dx: 0,
         fill: "#37474F",
+        fitToText: false,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,
         opacity: 1,
@@ -103,7 +105,7 @@ export function getYCoordinate(y, displayValue, props, moreProps) {
     const { width } = moreProps;
 
     const { orient, at, rectWidth, rectHeight, dx } = props;
-    const { fill, opacity, fontFamily, fontSize, textFill, arrowWidth } = props;
+    const { fill, opacity, fitToText, fontFamily, fontSize, textFill, arrowWidth } = props;
     const { stroke, strokeOpacity, strokeWidth } = props;
 
     const x1 = 0;
@@ -116,6 +118,7 @@ export function getYCoordinate(y, displayValue, props, moreProps) {
     const coordinateProps = {
         coordinate: displayValue,
         show: true,
+        fitToText,
         type,
         orient,
         edgeAt,

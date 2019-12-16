@@ -7,7 +7,13 @@ const parseDate = timeParse("%Y-%m-%d");
 
 const parseData = () => {
     return (d: any) => {
-        d.date = parseDate(d.date)!;
+
+        let date = parseDate(d.date);
+        if (date === null) {
+            date = new Date(Number(d.date));
+        }
+
+        d.date = new Date(date);
         d.open = +d.open;
         d.high = +d.high;
         d.low = +d.low;

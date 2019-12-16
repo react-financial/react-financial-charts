@@ -108,8 +108,7 @@ class StockChart extends React.Component<StockChartProps> {
                     <YAxis
                         innerTickSize={-1 * gridWidth}
                         tickFormat={this.pricesDisplayFormat}
-                        tickStroke="#e0e3eb"
-                        ticks={5} />
+                        tickStroke="#e0e3eb" />
                     <CandlestickSeries />
                     <LineSeries yAccessor={ema26.accessor()} stroke={ema26.stroke()} />
                     <LineSeries yAccessor={ema12.accessor()} stroke={ema12.stroke()} />
@@ -152,8 +151,7 @@ class StockChart extends React.Component<StockChartProps> {
                     padding={{ top: 8, bottom: 8 }}>
                     <XAxis
                         innerTickSize={-1 * gridHeight}
-                        tickStroke="#e0e3eb"
-                        ticks={6} />
+                        tickStroke="#e0e3eb" />
                     <YAxis ticks={4} tickFormat={this.pricesDisplayFormat} />
 
                     <MouseCoordinateX displayFormat={timeDisplayFormat} />

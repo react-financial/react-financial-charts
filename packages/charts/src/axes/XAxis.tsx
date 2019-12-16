@@ -8,7 +8,6 @@ interface XAxisProps {
     readonly className?: string;
     readonly domainClassName?: string;
     readonly fill?: string;
-    readonly flexTicks?: boolean;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fontWeight?: number;
@@ -60,7 +59,6 @@ export class XAxis extends React.Component<XAxisProps> {
         stroke: "#000000",
         strokeWidth: 1,
         strokeOpacity: 1,
-        ticks: 10,
         tickPadding: 6,
         tickLabelFill: "#000000",
         tickStroke: "#000000",
@@ -113,6 +111,7 @@ export class XAxis extends React.Component<XAxisProps> {
             axisAt,
             xZoomHeight = XAxis.defaultProps.xZoomHeight,
             orient,
+            ticks,
         } = props;
         const { chartConfig: { width, height } } = context;
 
@@ -138,7 +137,17 @@ export class XAxis extends React.Component<XAxisProps> {
             range: [0, width],
             getScale: this.getXScale,
             bg: { x, y, h, w },
+            ticks: ticks ?? this.getXTicks(width),
         };
+    }
+
+    private readonly getXTicks = (width: number) => {
+
+        if (width > 500) {
+            return 6;
+        }
+
+        return 12;
     }
 
     private readonly getXScale = (moreProps) => {

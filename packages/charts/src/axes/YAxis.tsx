@@ -8,7 +8,6 @@ interface YAxisProps {
     readonly className?: string;
     readonly domainClassName?: string;
     readonly fill?: string;
-    readonly flexTicks?: boolean;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fontWeight?: number;
@@ -62,7 +61,6 @@ export class YAxis extends React.Component<YAxisProps> {
         strokeOpacity: 1,
         tickPadding: 6,
         tickLabelFill: "#000000",
-        ticks: 10,
         tickStroke: "#000000",
         tickStrokeOpacity: 1,
         yZoomWidth: 40,
@@ -110,6 +108,7 @@ export class YAxis extends React.Component<YAxisProps> {
     private readonly helper = (props: YAxisProps, context) => {
         const {
             axisAt,
+            ticks,
             yZoomWidth = YAxis.defaultProps.yZoomWidth,
             orient,
         } = props;
@@ -137,8 +136,22 @@ export class YAxis extends React.Component<YAxisProps> {
             range: [0, height],
             getScale: this.getYScale,
             bg: { x, y, h, w },
+            ticks: ticks ?? this.getYTicks(height),
             zoomEnabled: context.chartConfig.yPan,
         };
+    }
+
+    private readonly getYTicks = (height: number) => {
+
+        if (height < 300) {
+            return 2;
+        }
+
+        if (height < 500) {
+            return 6;
+        }
+
+        return 8;
     }
 
     private readonly getYScale = (moreProps) => {

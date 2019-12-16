@@ -46,7 +46,7 @@ export default function financeDiscontinuousScale(
         backingLinearScale.interpolate(x);
         return scale;
     };
-    scale.ticks = function (m, flexTicks) {
+    scale.ticks = function (m) {
         const backingTicks = backingLinearScale.ticks(m);
         const ticksMap = new Map<number, any>();
 
@@ -80,7 +80,7 @@ export default function financeDiscontinuousScale(
 
         const ticks = unsortedTicks.sort(ascending);
 
-        if (!flexTicks && end - start > ticks.length) {
+        if (end - start > ticks.length) {
             const ticksSet = new Set(ticks);
 
             const d = Math.abs(head(index).index);

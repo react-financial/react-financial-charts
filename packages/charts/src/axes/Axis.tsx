@@ -20,7 +20,6 @@ interface AxisProps {
     readonly domainClassName?: string;
     readonly edgeClip: boolean;
     readonly fill?: string;
-    readonly flexTicks?: boolean;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fontWeight?: number;
@@ -158,7 +157,6 @@ function tickHelper(props, scale) {
         fontFamily,
         fontWeight,
         showTicks,
-        flexTicks,
         showTickLabel,
         ticks: tickArguments,
         tickValues: tickValuesProp,
@@ -183,7 +181,7 @@ function tickHelper(props, scale) {
             ? tickIntervalFunction(min, max, tickInterval)
             : baseTickValues;
     } else if (isDefined(scale.ticks)) {
-        tickValues = scale.ticks(tickArguments, flexTicks);
+        tickValues = scale.ticks(tickArguments);
     } else {
         tickValues = scale.domain();
     }
@@ -223,7 +221,7 @@ function tickHelper(props, scale) {
             };
         });
 
-        if (showTicks && flexTicks) {
+        if (showTicks) {
 
             const nodes = ticks.map((d) => ({ id: d.value, value: d.value, fy: d.y2, origX: d.x1 }));
 

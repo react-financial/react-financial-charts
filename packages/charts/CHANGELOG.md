@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/reactivemarkets/react-financial-charts/compare/v0.4.0...v0.4.1) (2019-12-17)
+
+
+### Bug Fixes
+
+* **charts:** getXTicks is incorrectly doing a greater than ([80e5739](https://github.com/reactivemarkets/react-financial-charts/commit/80e5739f3c3c2aff1bfbe310e3f74c71f50a3058))
+* **charts:** including src folder in the package for source maps ([632a699](https://github.com/reactivemarkets/react-financial-charts/commit/632a699e003363df8737a7fa5214707b6a70cc24))
+
+
+
+
+
 # [0.4.0](https://github.com/reactivemarkets/react-financial-charts/compare/v0.3.3...v0.4.0) (2019-12-16)
 
 

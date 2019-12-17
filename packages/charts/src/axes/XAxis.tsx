@@ -143,11 +143,15 @@ export class XAxis extends React.Component<XAxisProps> {
 
     private readonly getXTicks = (width: number) => {
 
-        if (width > 500) {
+        if (width < 400) {
+            return 2;
+        }
+
+        if (width < 500) {
             return 6;
         }
 
-        return 12;
+        return 8;
     }
 
     private readonly getXScale = (moreProps) => {

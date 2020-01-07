@@ -28,14 +28,12 @@ class BasicBaselineSeries extends React.Component<ChartProps> {
             width,
         } = this.props;
 
-        const { margin, xScaleProvider } = this;
-
         const {
             data,
             xScale,
             xAccessor,
             displayXAccessor,
-        } = xScaleProvider(initialData);
+        } = this.xScaleProvider(initialData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -47,7 +45,7 @@ class BasicBaselineSeries extends React.Component<ChartProps> {
                 height={height}
                 ratio={ratio}
                 width={width}
-                margin={margin}
+                margin={this.margin}
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"
@@ -60,8 +58,8 @@ class BasicBaselineSeries extends React.Component<ChartProps> {
                     <AlternatingFillAreaSeries
                         yAccessor={this.yAccessor}
                         baseAt={base} />
-                    <XAxis ticks={6} />
-                    <YAxis ticks={5} />
+                    <XAxis />
+                    <YAxis />
                 </Chart>
             </ChartCanvas>
         );

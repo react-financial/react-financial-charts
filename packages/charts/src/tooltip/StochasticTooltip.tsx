@@ -28,6 +28,7 @@ interface StochasticTooltipProps {
         },
     };
     readonly displayFormat: any; // func
+    readonly displayInit?: string;
     readonly displayValuesFor?: any; // func
     readonly label: string;
 }
@@ -36,6 +37,7 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
 
     public static defaultProps = {
         displayFormat: format(".2f"),
+        displayInit: "n/a",
         displayValuesFor: defaultDisplayValuesFor,
         origin: [0, 0],
         className: "react-financial-charts-tooltip",
@@ -54,16 +56,15 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
 
     private readonly renderSVG = (moreProps) => {
         const { onClick, fontFamily, fontSize, yAccessor, displayFormat, label } = this.props;
-        const { className, options, appearance, labelFill } = this.props;
-        const { displayValuesFor } = this.props;
+        const { className, displayInit, displayValuesFor, options, appearance, labelFill } = this.props;
         const { chartConfig: { width, height } } = moreProps;
 
         const currentItem = displayValuesFor(this.props, moreProps);
         const { stroke } = appearance;
         const stochastic = currentItem && yAccessor(currentItem);
 
-        const K = (stochastic && stochastic.K && displayFormat(stochastic.K)) || "n/a";
-        const D = (stochastic && stochastic.D && displayFormat(stochastic.D)) || "n/a";
+        const K = (stochastic && stochastic.K && displayFormat(stochastic.K)) || displayInit;
+        const D = (stochastic && stochastic.D && displayFormat(stochastic.D)) || displayInit;
 
         const { origin: originProp } = this.props;
         const origin = functor(originProp);

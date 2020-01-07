@@ -57,6 +57,7 @@ typings/
 .env
 
 # build output
+docs/
 dist/
 lib/
 server.js

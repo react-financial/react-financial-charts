@@ -72,4 +72,6 @@ class BasicHeikinAshiSeries extends React.Component<ChartProps> {
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(BasicHeikinAshiSeries)));
+export const Daily = withOHLCData()(withSize()(withDeviceRatio()(BasicHeikinAshiSeries)));
+
+export const Intraday = withOHLCData("MSFT_INTRA_DAY")(withSize()(withDeviceRatio()(BasicHeikinAshiSeries)));

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/reactivemarkets/react-financial-charts/compare/v0.4.1...v0.5.0) (2020-01-07)
+
+
+### Features
+
+* **charts:** adding showGridLines prop to axis ([2c0f7fe](https://github.com/reactivemarkets/react-financial-charts/commit/2c0f7fe14b7afa95bdec4165443c3090db3d0c81))
+* **charts:** default tooltip value can be changed ([f19ec61](https://github.com/reactivemarkets/react-financial-charts/commit/f19ec6144024dd8660212d28758ec751e7f4b0f7))
+* **charts:** tweaking default mouse coordinate fill ([ead5c1a](https://github.com/reactivemarkets/react-financial-charts/commit/ead5c1a7f85a2d11d10d12a5a45ff4b49d0dfb15))
+
+
+
+
+
 ## [0.4.1](https://github.com/reactivemarkets/react-financial-charts/compare/v0.4.0...v0.4.1) (2019-12-17)
 
 

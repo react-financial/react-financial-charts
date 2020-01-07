@@ -44,14 +44,12 @@ class EMAIndicator extends React.Component<ChartProps> {
 
         const calculatedData = ema26(ema12(initialData));
 
-        const { margin, xScaleProvider } = this;
-
         const {
             data,
             xScale,
             xAccessor,
             displayXAccessor,
-        } = xScaleProvider(calculatedData);
+        } = this.xScaleProvider(calculatedData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -62,7 +60,7 @@ class EMAIndicator extends React.Component<ChartProps> {
                 height={height}
                 ratio={ratio}
                 width={width}
-                margin={margin}
+                margin={this.margin}
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"

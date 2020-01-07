@@ -17,9 +17,20 @@ interface ChartProps {
 
 class SARIndicator extends React.Component<ChartProps> {
 
+    private readonly accelerationFactor = 0.02;
+    private readonly maxAccelerationFactor = 0.2;
     private readonly margin = { left: 0, right: 40, top: 8, bottom: 24 };
+
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
         .inputDateAccessor((d: IOHLCData) => d.date);
+
+    private readonly sarCalculator = sar()
+        .options({
+            accelerationFactor: this.accelerationFactor,
+            maxAccelerationFactor: this.maxAccelerationFactor,
+        })
+        .merge((d: any, c: any) => { d.sar = c; })
+        .accessor((d: any) => d.sar);
 
     public render() {
 
@@ -30,38 +41,27 @@ class SARIndicator extends React.Component<ChartProps> {
             width,
         } = this.props;
 
-        const accelerationFactor = .02;
-        const maxAccelerationFactor = .2;
-
-        const calculator = sar()
-            .options({
-                accelerationFactor,
-                maxAccelerationFactor,
-            })
-            .merge((d: any, c: any) => { d.sar = c; })
-            .accessor((d: any) => d.sar);
-
-        const calculatedData = calculator(initialData);
-
-        const { margin, xScaleProvider } = this;
+        const calculatedData = this.sarCalculator(initialData);
 
         const {
             data,
             xScale,
             xAccessor,
             displayXAccessor,
-        } = xScaleProvider(calculatedData);
+        } = this.xScaleProvider(calculatedData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
         const xExtents = [start, end];
+
+        const yAccessor = this.sarCalculator.accessor();
 
         return (
             <ChartCanvas
                 height={height}
                 ratio={ratio}
                 width={width}
-                margin={margin}
+                margin={this.margin}
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"
@@ -70,23 +70,19 @@ class SARIndicator extends React.Component<ChartProps> {
                 xExtents={xExtents}>
                 <Chart
                     id={1}
-                    yExtents={(d) => [d.sar]}>
-                    <XAxis ticks={6} />
-                    <YAxis ticks={5} />
+                    yExtents={yAccessor}>
+                    <XAxis />
+                    <YAxis />
 
-                    <SARSeries yAccessor={this.yAccessor} />
+                    <SARSeries yAccessor={yAccessor} />
 
                     <SingleValueTooltip
-                        yLabel={`SAR (${accelerationFactor}, ${maxAccelerationFactor})`}
-                        yAccessor={this.yAccessor}
+                        yLabel={`SAR (${this.accelerationFactor}, ${this.maxAccelerationFactor})`}
+                        yAccessor={yAccessor}
                         origin={[8, 8]} />
                 </Chart>
             </ChartCanvas>
         );
-    }
-
-    private readonly yAccessor = (data: any) => {
-        return data.sar;
     }
 }
 

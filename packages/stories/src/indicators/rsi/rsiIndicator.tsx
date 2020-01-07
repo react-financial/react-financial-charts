@@ -21,6 +21,11 @@ class RSIIndicator extends React.Component<ChartProps> {
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
         .inputDateAccessor((d: IOHLCData) => d.date);
 
+    private readonly rsiCalculator = rsi()
+        .options({ windowSize: 14 })
+        .merge((d: any, c: any) => { d.rsi = c; })
+        .accessor((d: any) => d.rsi);
+
     public render() {
 
         const {
@@ -30,32 +35,27 @@ class RSIIndicator extends React.Component<ChartProps> {
             width,
         } = this.props;
 
-        const calculator = rsi()
-            .options({ windowSize: 14 })
-            .merge((d: any, c: any) => { d.rsi = c; })
-            .accessor((d: any) => d.rsi);
-
-        const calculatedData = calculator(initialData);
-
-        const { margin, xScaleProvider } = this;
+        const calculatedData = this.rsiCalculator(initialData);
 
         const {
             data,
             xScale,
             xAccessor,
             displayXAccessor,
-        } = xScaleProvider(calculatedData);
+        } = this.xScaleProvider(calculatedData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
         const xExtents = [start, end];
+
+        const yAccessor = this.rsiCalculator.accessor();
 
         return (
             <ChartCanvas
                 height={height}
                 ratio={ratio}
                 width={width}
-                margin={margin}
+                margin={this.margin}
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"
@@ -65,15 +65,15 @@ class RSIIndicator extends React.Component<ChartProps> {
                 <Chart
                     id={1}
                     yExtents={[0, 100]}>
-                    <XAxis ticks={6} />
+                    <XAxis />
                     <YAxis tickValues={[30, 50, 70]} />
 
-                    <RSISeries yAccessor={(d: any) => d.rsi} />
+                    <RSISeries yAccessor={yAccessor} />
 
                     <RSITooltip
                         origin={[8, 16]}
-                        yAccessor={(d: any) => d.rsi}
-                        options={calculator.options()} />
+                        yAccessor={yAccessor}
+                        options={this.rsiCalculator.options()} />
                 </Chart>
             </ChartCanvas>
         );

@@ -48,15 +48,14 @@ class ForceIndicator extends React.Component<ChartProps> {
 
         const calculatedData = fiEMA13(fi(initialData));
 
-        const { margin, xScaleProvider } = this;
-
         const {
             data,
             xScale,
             xAccessor,
             displayXAccessor,
-        } = xScaleProvider(calculatedData);
+        } = this.xScaleProvider(calculatedData);
 
+        const yAccessor = fiEMA13.accessor();
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
         const xExtents = [start, end];
@@ -66,7 +65,7 @@ class ForceIndicator extends React.Component<ChartProps> {
                 height={height}
                 ratio={ratio}
                 width={width}
-                margin={margin}
+                margin={this.margin}
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"
@@ -75,15 +74,15 @@ class ForceIndicator extends React.Component<ChartProps> {
                 xExtents={xExtents}>
                 <Chart
                     id={1}
-                    yExtents={fiEMA13.accessor()}>
-                    <XAxis ticks={6} />
-                    <YAxis ticks={4} tickFormat={format(".2s")} />
+                    yExtents={yAccessor}>
+                    <XAxis />
+                    <YAxis tickFormat={format(".2s")} />
 
-                    <LineSeries yAccessor={fiEMA13.accessor()} />
+                    <LineSeries yAccessor={yAccessor} />
                     <StraightLine yValue={0} strokeDasharray="ShortDash2" />
 
                     <SingleValueTooltip
-                        yAccessor={fiEMA13.accessor()}
+                        yAccessor={yAccessor}
                         yLabel="ForceIndex (13)"
                         yDisplayFormat={format(".4s")}
                         origin={[8, 8]}

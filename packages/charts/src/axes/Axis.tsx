@@ -63,7 +63,7 @@ class Axis extends React.Component<AxisProps> {
         zoomCursorClassName: "",
     };
 
-    private node?: GenericChartComponent;
+    private readonly chartRef = React.createRef<GenericChartComponent>();
 
     public render() {
         const {
@@ -92,7 +92,7 @@ class Axis extends React.Component<AxisProps> {
             <g transform={`translate(${transform[0]}, ${transform[1]})`}>
                 {zoomCapture}
                 <GenericChartComponent
-                    ref={this.saveNode}
+                    ref={this.chartRef}
                     canvasToDraw={getAxisCanvas}
                     clip={false}
                     edgeClip={edgeClip}
@@ -104,25 +104,23 @@ class Axis extends React.Component<AxisProps> {
         );
     }
 
-    private readonly saveNode = (node: GenericChartComponent) => {
-        this.node = node;
-    }
-
     private readonly getMoreProps = () => {
-        return this.node!.getMoreProps();
+        return this.chartRef.current!.getMoreProps();
     }
 
     private readonly renderSVG = (moreProps) => {
-        const { className } = this.props;
-        const { showDomain, showTicks, range, getScale } = this.props;
+        const { className, showDomain, showTicks, range, getScale } = this.props;
 
-        const ticks = showTicks ? axisTicksSVG(this.props, getScale(moreProps)) : null;
+        const scale = getScale(moreProps);
+        const ticks = showTicks ? axisTicksSVG(this.props, scale) : null;
         const domain = showDomain ? axisLineSVG(this.props, range) : null;
 
-        return <g className={className}>
-            {ticks}
-            {domain}
-        </g>;
+        return (
+            <g className={className}>
+                {ticks}
+                {domain}
+            </g>
+        );
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
@@ -131,13 +129,14 @@ class Axis extends React.Component<AxisProps> {
         ctx.save();
         ctx.translate(transform[0], transform[1]);
 
-        if (showDomain) {
-            drawAxisLine(ctx, this.props, range);
+        if (showTicks) {
+            const scale = getScale(moreProps);
+            const tickProps = tickHelper(this.props, scale);
+            drawTicks(ctx, tickProps, moreProps);
         }
 
-        if (showTicks) {
-            const tickProps = tickHelper(this.props, getScale(moreProps));
-            drawTicks(ctx, tickProps);
+        if (showDomain) {
+            drawAxisLine(ctx, this.props, range);
         }
 
         ctx.restore();
@@ -164,6 +163,7 @@ function tickHelper(props, scale) {
         tickStrokeOpacity,
         tickInterval,
         tickIntervalFunction,
+        ...rest
     } = props;
 
     let tickValues;
@@ -268,6 +268,7 @@ function tickHelper(props, scale) {
     }
 
     return {
+        orient,
         ticks,
         scale,
         tickStroke,
@@ -283,6 +284,7 @@ function tickHelper(props, scale) {
         fontWeight,
         format,
         showTickLabel,
+        ...rest,
     };
 }
 
@@ -316,7 +318,7 @@ function drawAxisLine(ctx: CanvasRenderingContext2D, props: AxisProps, range) {
     const { orient, outerTickSize, stroke, strokeWidth, strokeOpacity } = props;
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
-    const xAxis = (orient === "bottom" || orient === "top");
+    const xAxis = orient === "bottom" || orient === "top";
 
     ctx.lineWidth = strokeWidth;
     ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
@@ -339,23 +341,23 @@ function drawAxisLine(ctx: CanvasRenderingContext2D, props: AxisProps, range) {
 }
 
 interface TickProps {
-    children: string;
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-    labelX: number;
-    labelY: number;
-    dy: string;
-    tickStroke?: string;
-    tickLabelFill?: string;
-    tickStrokeWidth?: number;
-    tickStrokeOpacity?: number;
-    tickStrokeDasharray?: strokeDashTypes;
-    textAnchor?: string;
-    fontSize?: number;
-    fontFamily?: string;
-    fontWeight?: number | string;
+    readonly children: string;
+    readonly dy: string;
+    readonly fontSize?: number;
+    readonly fontFamily?: string;
+    readonly fontWeight?: number | string;
+    readonly labelX: number;
+    readonly labelY: number;
+    readonly textAnchor?: string;
+    readonly tickStroke?: string;
+    readonly tickLabelFill?: string;
+    readonly tickStrokeWidth?: number;
+    readonly tickStrokeOpacity?: number;
+    readonly tickStrokeDasharray?: strokeDashTypes;
+    readonly x1: number;
+    readonly y1: number;
+    readonly x2: number;
+    readonly y2: number;
 }
 
 function Tick(props: TickProps) {
@@ -369,9 +371,14 @@ function Tick(props: TickProps) {
         fontSize,
         fontFamily,
         fontWeight,
+        x1,
+        y1,
+        x2,
+        y2,
+        labelX,
+        labelY,
+        dy,
     } = props;
-
-    const { x1, y1, x2, y2, labelX, labelY, dy } = props;
 
     return (
         <g className="tick">
@@ -381,10 +388,14 @@ function Tick(props: TickProps) {
                 stroke={tickStroke}
                 strokeWidth={tickStrokeWidth}
                 strokeDasharray={getStrokeDasharray(tickStrokeDasharray)}
-                x1={x1} y1={y1}
-                x2={x2} y2={y2} />
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2} />
             <text
-                dy={dy} x={labelX} y={labelY}
+                dy={dy}
+                x={labelX}
+                y={labelY}
                 fill={tickLabelFill}
                 fontSize={fontSize}
                 fontWeight={fontWeight}
@@ -400,9 +411,7 @@ function axisTicksSVG(props, scale) {
     const result = tickHelper(props, scale);
 
     const { tickLabelFill, tickStroke, tickStrokeOpacity, tickStrokeWidth, tickStrokeDasharray, textAnchor } = result;
-    const { fontSize, fontFamily, fontWeight, ticks, format } = result;
-
-    const { dy } = result;
+    const { fontSize, fontFamily, fontWeight, ticks, format, dy } = result;
 
     return (
         <g>
@@ -428,9 +437,9 @@ function axisTicksSVG(props, scale) {
     );
 }
 
-function drawTicks(ctx: CanvasRenderingContext2D, result) {
+function drawTicks(ctx: CanvasRenderingContext2D, result, moreProps) {
 
-    const { tickStroke, tickStrokeOpacity, tickLabelFill } = result;
+    const { showGridLines, tickStroke, tickStrokeOpacity, tickLabelFill } = result;
     const { textAnchor, fontSize, fontFamily, fontWeight, ticks, showTickLabel } = result;
 
     ctx.strokeStyle = colorToRGBA(tickStroke, tickStrokeOpacity);
@@ -441,6 +450,12 @@ function drawTicks(ctx: CanvasRenderingContext2D, result) {
         drawEachTick(ctx, tick, result);
     });
 
+    if (showGridLines) {
+        ticks.forEach((tick) => {
+            drawGridLine(ctx, tick, result, moreProps);
+        });
+    }
+
     ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
     ctx.fillStyle = tickLabelFill;
     ctx.textAlign = textAnchor === "middle" ? "center" : textAnchor;
@@ -450,6 +465,35 @@ function drawTicks(ctx: CanvasRenderingContext2D, result) {
             drawEachTickLabel(ctx, tick, result);
         });
     }
+}
+
+function drawGridLine(ctx: CanvasRenderingContext2D, tick, result, moreProps) {
+    const { orient, gridLinesStrokeWidth, gridLinesStroke, gridLinesStrokeDasharray } = result;
+
+    const { chartConfig } = moreProps;
+
+    const { height, width } = chartConfig;
+
+    ctx.strokeStyle = colorToRGBA(gridLinesStroke);
+    ctx.beginPath();
+
+    switch (orient) {
+        case "top":
+        case "bottom":
+            ctx.moveTo(tick.x1, 0);
+            ctx.lineTo(tick.x2, -height);
+            break;
+        default:
+            ctx.moveTo(0, tick.y1);
+            ctx.lineTo(-width, tick.y2);
+            break;
+    }
+    ctx.lineWidth = gridLinesStrokeWidth;
+
+    const lineDash = getStrokeDasharrayCanvas(gridLinesStrokeDasharray);
+
+    ctx.setLineDash(lineDash);
+    ctx.stroke();
 }
 
 function drawEachTick(ctx: CanvasRenderingContext2D, tick, result) {
@@ -470,8 +514,11 @@ function drawEachTick(ctx: CanvasRenderingContext2D, tick, result) {
 function drawEachTickLabel(ctx: CanvasRenderingContext2D, tick, result) {
     const { canvas_dy, format } = result;
 
+    const text = format(tick.value);
+
     ctx.beginPath();
-    ctx.fillText(format(tick.value), tick.labelX, tick.labelY + canvas_dy);
+
+    ctx.fillText(text, tick.labelX, tick.labelY + canvas_dy);
 }
 
 export default Axis;

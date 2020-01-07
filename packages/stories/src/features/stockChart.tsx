@@ -67,7 +67,6 @@ class StockChart extends React.Component<StockChartProps> {
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
         const xExtents = [start, end];
 
-        const gridWidth = width - margin.left - margin.right;
         const gridHeight = height - margin.top - margin.bottom;
 
         const elderRayHeight = 100;
@@ -104,11 +103,14 @@ class StockChart extends React.Component<StockChartProps> {
                     id={3}
                     height={chartHeight}
                     yExtents={this.candleChartExtents}>
-                    <XAxis showTicks={false} />
+                    <XAxis
+                        showGridLines
+                        showTickLabel={false}
+                        gridLinesStroke="#e0e3eb" />
                     <YAxis
-                        innerTickSize={-1 * gridWidth}
-                        tickFormat={this.pricesDisplayFormat}
-                        tickStroke="#e0e3eb" />
+                        showGridLines
+                        gridLinesStroke="#e0e3eb"
+                        tickFormat={this.pricesDisplayFormat} />
                     <CandlestickSeries />
                     <LineSeries yAccessor={ema26.accessor()} stroke={ema26.stroke()} />
                     <LineSeries yAccessor={ema12.accessor()} stroke={ema12.stroke()} />
@@ -150,9 +152,11 @@ class StockChart extends React.Component<StockChartProps> {
                     origin={elderRayOrigin}
                     padding={{ top: 8, bottom: 8 }}>
                     <XAxis
-                        innerTickSize={-1 * gridHeight}
-                        tickStroke="#e0e3eb" />
-                    <YAxis ticks={4} tickFormat={this.pricesDisplayFormat} />
+                        showGridLines
+                        gridLinesStroke="#e0e3eb" />
+                    <YAxis
+                        ticks={4}
+                        tickFormat={this.pricesDisplayFormat} />
 
                     <MouseCoordinateX displayFormat={timeDisplayFormat} />
                     <MouseCoordinateY rectWidth={margin.right} displayFormat={this.pricesDisplayFormat} />

@@ -51,16 +51,15 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
 
     private readonly renderSVG = (moreProps) => {
         const { onClick, displayFormat, yAccessor, options, textFill, labelFill } = this.props;
-        const { displayValuesFor, displayInit } = this.props;
+        const { className, displayValuesFor, displayInit, fontFamily, fontSize } = this.props;
 
         const { chartConfig: { width, height } } = moreProps;
 
         const currentItem = displayValuesFor(this.props, moreProps);
 
-        let top;
-        let middle;
-        let bottom;
-        top = middle = bottom = displayInit;
+        let top = displayInit;
+        let middle = displayInit;
+        let bottom = displayInit;
 
         if (isDefined(currentItem) && isDefined(yAccessor(currentItem))) {
             const item = yAccessor(currentItem);
@@ -78,15 +77,14 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
         const tooltipValue = `${top}, ${middle}, ${bottom}`;
 
         return (
-            <g
-                transform={`translate(${x}, ${y})`}
-                className={this.props.className}
+            <g transform={`translate(${x}, ${y})`}
+                className={className}
                 onClick={onClick}>
                 <ToolTipText
                     x={0}
                     y={0}
-                    fontFamily={this.props.fontFamily}
-                    fontSize={this.props.fontSize}>
+                    fontFamily={fontFamily}
+                    fontSize={fontSize}>
                     <ToolTipTSpanLabel fill={labelFill}>
                         {tooltipLabel}
                     </ToolTipTSpanLabel>

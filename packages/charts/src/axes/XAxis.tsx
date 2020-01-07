@@ -12,12 +12,16 @@ interface XAxisProps {
     readonly fontSize?: number;
     readonly fontWeight?: number;
     readonly getMouseDelta?: (startXY: [number, number], mouseXY: [number, number]) => number;
+    readonly gridLinesStroke?: string;
+    readonly gridLinesStrokeWidth?: number;
+    readonly gridLinesStrokeDasharray?: strokeDashTypes;
     readonly innerTickSize?: number;
     readonly onContextMenu?: any; // func
     readonly onDoubleClick?: any; // func
     readonly orient?: "top" | "bottom";
     readonly outerTickSize?: number;
     readonly showDomain?: boolean;
+    readonly showGridLines?: boolean;
     readonly showTicks?: boolean;
     readonly showTickLabel?: boolean;
     readonly stroke?: string;
@@ -49,13 +53,16 @@ export class XAxis extends React.Component<XAxisProps> {
         fontSize: 12,
         fontWeight: 400,
         getMouseDelta: (startXY: [number, number], mouseXY: [number, number]) => startXY[0] - mouseXY[0],
+        gridLinesStroke: "#000000",
+        gridLinesStrokeWidth: 1,
         opacity: 1,
         orient: "bottom",
         outerTickSize: 0,
         innerTickSize: 5,
+        showDomain: true,
+        showGridLines: false,
         showTicks: true,
         showTickLabel: true,
-        showDomain: true,
         stroke: "#000000",
         strokeWidth: 1,
         strokeOpacity: 1,
@@ -120,14 +127,18 @@ export class XAxis extends React.Component<XAxisProps> {
         const w = width;
         const h = xZoomHeight;
 
-        if (axisAt === "top") {
-            axisLocation = 0;
-        } else if (axisAt === "bottom") {
-            axisLocation = height;
-        } else if (axisAt === "middle") {
-            axisLocation = (height) / 2;
-        } else {
-            axisLocation = axisAt;
+        switch (axisAt) {
+            case "top":
+                axisLocation = 0;
+                break;
+            case "bottom":
+                axisLocation = height;
+                break;
+            case "middle":
+                axisLocation = (height) / 2;
+                break;
+            default:
+                axisLocation = axisAt;
         }
 
         const y = (orient === "top") ? -xZoomHeight : 0;

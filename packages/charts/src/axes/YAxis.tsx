@@ -12,12 +12,16 @@ interface YAxisProps {
     readonly fontSize?: number;
     readonly fontWeight?: number;
     readonly getMouseDelta?: (startXY: number[], mouseXY: number[]) => number;
+    readonly gridLinesStroke?: string;
+    readonly gridLinesStrokeWidth?: number;
+    readonly gridLinesStrokeDasharray?: strokeDashTypes;
     readonly innerTickSize?: number;
     readonly onContextMenu?: any; // func
     readonly onDoubleClick?: any; // func
     readonly orient?: "left" | "right";
     readonly outerTickSize?: number;
     readonly showDomain?: boolean;
+    readonly showGridLines?: boolean;
     readonly showTicks?: boolean;
     readonly showTickLabel?: boolean;
     readonly stroke?: string;
@@ -49,13 +53,16 @@ export class YAxis extends React.Component<YAxisProps> {
         fontSize: 12,
         fontWeight: 400,
         getMouseDelta: (startXY, mouseXY) => startXY[1] - mouseXY[1],
+        gridLinesStroke: "#000000",
+        gridLinesStrokeWidth: 1,
         innerTickSize: 5,
         outerTickSize: 0,
         opacity: 1,
         orient: "right",
+        showDomain: true,
+        showGridLines: false,
         showTicks: true,
         showTickLabel: true,
-        showDomain: true,
         stroke: "#000000",
         strokeWidth: 1,
         strokeOpacity: 1,
@@ -119,14 +126,18 @@ export class YAxis extends React.Component<YAxisProps> {
         const w = yZoomWidth;
         const h = height;
 
-        if (axisAt === "left") {
-            axisLocation = 0;
-        } else if (axisAt === "right") {
-            axisLocation = width;
-        } else if (axisAt === "middle") {
-            axisLocation = (width) / 2;
-        } else {
-            axisLocation = axisAt;
+        switch (axisAt) {
+            case "left":
+                axisLocation = 0;
+                break;
+            case "right":
+                axisLocation = width;
+                break;
+            case "middle":
+                axisLocation = (width) / 2;
+                break;
+            default:
+                axisLocation = axisAt;
         }
 
         const x = (orient === "left") ? -yZoomWidth : 0;

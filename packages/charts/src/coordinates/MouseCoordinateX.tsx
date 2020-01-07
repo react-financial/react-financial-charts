@@ -47,7 +47,7 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
     public static defaultProps = {
         at: "bottom",
         customX: defaultCustomX,
-        fill: "#37474F",
+        fill: "#4C525E",
         fitToText: true,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,

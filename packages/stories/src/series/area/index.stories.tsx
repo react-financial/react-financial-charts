@@ -1,10 +1,12 @@
 import * as React from "react";
 import { AreaSeries } from "react-financial-charts/lib/series";
-import BasicAreaSeries from "./basicAreaSeries";
+import { Daily, Intraday } from "./basicAreaSeries";
 
 export default {
     component: AreaSeries,
     title: "Visualization|Series/Area",
 };
 
-export const basic = () => <BasicAreaSeries />;
+export const daily = () => <Daily />;
+
+export const intraday = () => <Intraday />;

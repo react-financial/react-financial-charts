@@ -67,4 +67,6 @@ class BasicCandlestick extends React.Component<ChartProps> {
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(BasicCandlestick)));
+export const Daily = withOHLCData()(withSize()(withDeviceRatio()(BasicCandlestick)));
+
+export const Intraday = withOHLCData("MSFT_INTRA_DAY")(withSize()(withDeviceRatio()(BasicCandlestick)));

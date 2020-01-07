@@ -1,10 +1,12 @@
 import * as React from "react";
 import { AlternatingFillAreaSeries } from "react-financial-charts/lib/series";
-import BasicBaselineSeries from "./basicBaselineSeries";
+import { Daily, Intraday } from "./basicBaselineSeries";
 
 export default {
     component: AlternatingFillAreaSeries,
     title: "Visualization|Series/Baseline",
 };
 
-export const basic = () => <BasicBaselineSeries />;
+export const daily = () => <Daily />;
+
+export const intraday = () => <Intraday />;

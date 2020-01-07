@@ -71,4 +71,6 @@ class BasicBarSeries extends React.Component<ChartProps> {
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(BasicBarSeries)));
+export const Daily = withOHLCData()(withSize()(withDeviceRatio()(BasicBarSeries)));
+
+export const Intraday = withOHLCData("MSFT_INTRA_DAY")(withSize()(withDeviceRatio()(BasicBarSeries)));

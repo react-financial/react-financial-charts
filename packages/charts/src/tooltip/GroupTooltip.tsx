@@ -7,16 +7,14 @@ import { ToolTipText } from "./ToolTipText";
 
 interface GroupTooltipProps {
     readonly className?: string;
-    readonly layout: layouts;
-    readonly position: "topRight" | "bottomLeft" | "bottomRight";
-    readonly displayFormat: any; // func
-    readonly origin: number[];
-    readonly displayValuesFor: any; // func
-    readonly onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
     readonly fontFamily?: string;
     readonly fontSize?: number;
-    readonly width?: number; // "width" only be used, if layout is "horizontal" or "horizontalRows".
-    readonly verticalSize?: number;  // "verticalSize" only be used, if layout is "vertical", "verticalRows".
+    readonly displayFormat: any; // func
+    readonly displayInit?: string;
+    readonly displayValuesFor: any; // func
+    readonly labelFill?: string;
+    readonly layout: layouts;
+    readonly onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
     readonly options: Array<{
         labelFill?: string;
         yLabel: string | any; // func
@@ -24,10 +22,13 @@ interface GroupTooltipProps {
         valueFill?: string;
         withShape?: boolean;
     }>;
-    readonly yAccessor: any; // func
-    readonly labelFill?: string;
+    readonly origin: number[];
+    readonly position: "topRight" | "bottomLeft" | "bottomRight";
     readonly valueFill?: string;
+    readonly verticalSize?: number;  // "verticalSize" only be used, if layout is "vertical", "verticalRows".
+    readonly width?: number; // "width" only be used, if layout is "horizontal" or "horizontalRows".
     readonly withShape: boolean; // "withShape" is ignored, if layout is "horizontalInline" or "vertical".
+    readonly yAccessor: any; // func
 }
 
 export class GroupTooltip extends React.Component<GroupTooltipProps> {
@@ -36,6 +37,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         className: "react-financial-charts-tooltip react-financial-charts-group-tooltip",
         layout: "horizontal",
         displayFormat: format(".2f"),
+        displayInit: "n/a",
         displayValuesFor: defaultDisplayValuesFor,
         origin: [0, 0],
         width: 60,
@@ -89,7 +91,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         const { displayValuesFor } = this.props;
         const { chartId } = moreProps;
 
-        const { className, onClick, width = 60, verticalSize = 13, fontFamily, fontSize, layout } = this.props;
+        const { className, displayInit, onClick, width = 60, verticalSize = 13, fontFamily, fontSize, layout } = this.props;
         const { origin, displayFormat, options } = this.props;
         const currentItem = displayValuesFor(this.props, moreProps);
         const { xyPos, textAnchor } = this.getPosition(moreProps);
@@ -100,7 +102,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         const singleTooltip = options.map((each, idx) => {
 
             const yValue = currentItem && each.yAccessor(currentItem);
-            const yDisplayValue = yValue ? displayFormat(yValue) : "n/a";
+            const yDisplayValue = yValue ? displayFormat(yValue) : displayInit;
 
             const orig = () => {
                 if (layout === "horizontal" || layout === "horizontalRows") {

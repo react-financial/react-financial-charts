@@ -10,31 +10,38 @@ import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 import { functor } from "../utils";
 
 interface SingleMAToolTipProps {
-    readonly origin: number[];
     readonly color: string;
     readonly displayName: string;
-    readonly value: string;
-    readonly onClick?: ((details: any, event: React.MouseEvent<SVGRectElement, MouseEvent>) => void);
     readonly fontFamily?: string;
-    readonly textFill?: string;
-    readonly labelFill?: string;
     readonly fontSize?: number;
     readonly forChart: number | string;
+    readonly labelFill?: string;
+    readonly onClick?: ((details: any, event: React.MouseEvent<SVGRectElement, MouseEvent>) => void);
     readonly options: any;
+    readonly origin: number[];
+    readonly textFill?: string;
+    readonly value: string;
 }
 
 export class SingleMAToolTip extends React.Component<SingleMAToolTipProps> {
 
     public render() {
-        const { textFill, labelFill } = this.props;
+        const { color, displayName, fontSize, fontFamily, textFill, labelFill, value } = this.props;
         const translate = "translate(" + this.props.origin[0] + ", " + this.props.origin[1] + ")";
         return (
             <g transform={translate}>
-                <line x1={0} y1={2} x2={0} y2={28} stroke={this.props.color} strokeWidth="4px" />
-                <ToolTipText x={5} y={11}
-                    fontFamily={this.props.fontFamily} fontSize={this.props.fontSize}>
-                    <ToolTipTSpanLabel fill={labelFill}>{this.props.displayName}</ToolTipTSpanLabel>
-                    <tspan x="5" dy="15" fill={textFill}>{this.props.value}</tspan>
+                <line x1={0} y1={2} x2={0} y2={28} stroke={color} strokeWidth={4} />
+                <ToolTipText
+                    x={5}
+                    y={11}
+                    fontFamily={fontFamily}
+                    fontSize={fontSize}>
+                    <ToolTipTSpanLabel fill={labelFill}>
+                        {displayName}
+                    </ToolTipTSpanLabel>
+                    <tspan x={5} dy={15} fill={textFill}>
+                        {value}
+                    </tspan>
                 </ToolTipText>
                 <rect
                     x={0}
@@ -58,17 +65,18 @@ export class SingleMAToolTip extends React.Component<SingleMAToolTipProps> {
 }
 
 interface MovingAverageTooltipProps {
-    className?: string;
-    displayFormat: any; // func
-    origin: number[];
-    displayValuesFor?: any; // func
-    onClick?: ((event: React.MouseEvent<SVGRectElement, MouseEvent>) => void);
-    textFill?: string;
-    labelFill?: string;
-    fontFamily?: string;
-    fontSize?: number;
-    width?: number;
-    options: Array<{
+    readonly className?: string;
+    readonly displayFormat: any; // func
+    readonly origin: number[];
+    readonly displayInit?: string;
+    readonly displayValuesFor?: any; // func
+    readonly onClick?: ((event: React.MouseEvent<SVGRectElement, MouseEvent>) => void);
+    readonly textFill?: string;
+    readonly labelFill?: string;
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly width?: number;
+    readonly options: Array<{
         yAccessor: any; // func
         type: string;
         stroke: string;
@@ -83,6 +91,7 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
     public static defaultProps = {
         className: "react-financial-charts-tooltip react-financial-charts-moving-average-tooltip",
         displayFormat: format(".2f"),
+        displayInit: "n/a",
         displayValuesFor: defaultDisplayValuesFor,
         origin: [0, 10],
         width: 65,
@@ -99,14 +108,10 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
     }
 
     private readonly renderSVG = (moreProps) => {
-        const { displayValuesFor } = this.props;
+        const { chartId, chartConfig, chartConfig: { height } } = moreProps;
 
-        const { chartId } = moreProps;
-        const { chartConfig } = moreProps;
-
-        const { className, onClick, width = 65, fontFamily, fontSize, textFill, labelFill } = this.props;
-        const { origin: originProp, displayFormat, options } = this.props;
-        const { chartConfig: { height } } = moreProps;
+        const { className, displayInit, onClick, width = 65, fontFamily, fontSize, textFill, labelFill } = this.props;
+        const { origin: originProp, displayFormat, displayValuesFor, options } = this.props;
 
         const currentItem = displayValuesFor(this.props, moreProps);
         const config = chartConfig;
@@ -122,7 +127,7 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
                         const yValue = currentItem && each.yAccessor(currentItem);
 
                         const tooltipLabel = `${each.type} (${each.windowSize})`;
-                        const yDisplayValue = yValue ? displayFormat(yValue) : "n/a";
+                        const yDisplayValue = yValue ? displayFormat(yValue) : displayInit;
                         return (
                             <SingleMAToolTip
                                 key={idx}

@@ -30,6 +30,7 @@ interface MACDTooltipProps {
         },
     };
     readonly displayFormat: any; // func
+    readonly displayInit?: string;
     readonly displayValuesFor: any; // func
     readonly onClick?: any; // func
 }
@@ -39,6 +40,7 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
     public static defaultProps = {
         className: "react-financial-charts-tooltip",
         displayFormat: format(".2f"),
+        displayInit: "n/a",
         displayValuesFor: defaultDisplayValuesFor,
         origin: [0, 0],
     };
@@ -54,7 +56,7 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
     }
 
     private readonly renderSVG = (moreProps) => {
-        const { onClick, fontFamily, fontSize, displayFormat, className } = this.props;
+        const { onClick, displayInit, fontFamily, fontSize, displayFormat, className } = this.props;
         const { yAccessor, options, appearance, labelFill } = this.props;
         const { displayValuesFor } = this.props;
 
@@ -63,9 +65,9 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
         const currentItem = displayValuesFor(this.props, moreProps);
         const macdValue = currentItem && yAccessor(currentItem);
 
-        const macd = (macdValue && macdValue.macd && displayFormat(macdValue.macd)) || "n/a";
-        const signal = (macdValue && macdValue.signal && displayFormat(macdValue.signal)) || "n/a";
-        const divergence = (macdValue && macdValue.divergence && displayFormat(macdValue.divergence)) || "n/a";
+        const macd = (macdValue && macdValue.macd && displayFormat(macdValue.macd)) || displayInit;
+        const signal = (macdValue && macdValue.signal && displayFormat(macdValue.signal)) || displayInit;
+        const divergence = (macdValue && macdValue.divergence && displayFormat(macdValue.divergence)) || displayInit;
 
         const { origin: originProp } = this.props;
         const origin = functor(originProp);

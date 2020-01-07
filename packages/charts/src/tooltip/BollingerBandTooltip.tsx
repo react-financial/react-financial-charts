@@ -11,6 +11,7 @@ import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 interface BollingerBandTooltipProps {
     readonly className?: string;
     readonly displayFormat: any; // Func
+    readonly displayInit?: string;
     readonly displayValuesFor?: any; // Func
     readonly fontFamily?: string;
     readonly fontSize?: number;
@@ -33,6 +34,7 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
         className: "react-financial-charts-tooltip react-financial-charts-bollingerband-tooltip",
         displayFormat: format(".2f"),
         displayValuesFor: defaultDisplayValuesFor,
+        displayInit: "n/a",
         origin: [8, 8],
         yAccessor: (data: any) => data.bb,
     };
@@ -49,7 +51,7 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
 
     private readonly renderSVG = (moreProps) => {
         const { onClick, displayFormat, yAccessor, options, textFill, labelFill } = this.props;
-        const { displayValuesFor } = this.props;
+        const { displayValuesFor, displayInit } = this.props;
 
         const { chartConfig: { width, height } } = moreProps;
 
@@ -58,10 +60,9 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
         let top;
         let middle;
         let bottom;
-        top = middle = bottom = "n/a";
+        top = middle = bottom = displayInit;
 
-        if (isDefined(currentItem)
-            && isDefined(yAccessor(currentItem))) {
+        if (isDefined(currentItem) && isDefined(yAccessor(currentItem))) {
             const item = yAccessor(currentItem);
             top = displayFormat(item.top);
             middle = displayFormat(item.middle);
@@ -77,12 +78,21 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
         const tooltipValue = `${top}, ${middle}, ${bottom}`;
 
         return (
-            <g transform={`translate(${x}, ${y})`}
-                className={this.props.className} onClick={onClick}>
-                <ToolTipText x={0} y={0}
-                    fontFamily={this.props.fontFamily} fontSize={this.props.fontSize}>
-                    <ToolTipTSpanLabel fill={labelFill}>{tooltipLabel}</ToolTipTSpanLabel>
-                    <tspan fill={textFill}>{tooltipValue}</tspan>
+            <g
+                transform={`translate(${x}, ${y})`}
+                className={this.props.className}
+                onClick={onClick}>
+                <ToolTipText
+                    x={0}
+                    y={0}
+                    fontFamily={this.props.fontFamily}
+                    fontSize={this.props.fontSize}>
+                    <ToolTipTSpanLabel fill={labelFill}>
+                        {tooltipLabel}
+                    </ToolTipTSpanLabel>
+                    <tspan fill={textFill}>
+                        {tooltipValue}
+                    </tspan>
                 </ToolTipText>
             </g>
         );

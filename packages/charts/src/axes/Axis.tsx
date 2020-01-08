@@ -477,15 +477,17 @@ function drawGridLine(ctx: CanvasRenderingContext2D, tick, result, moreProps) {
     ctx.strokeStyle = colorToRGBA(gridLinesStroke);
     ctx.beginPath();
 
+    const sign = orient === "top" || orient === "left" ? 1 : -1;
+
     switch (orient) {
         case "top":
         case "bottom":
             ctx.moveTo(tick.x1, 0);
-            ctx.lineTo(tick.x2, -height);
+            ctx.lineTo(tick.x2, sign * height);
             break;
         default:
             ctx.moveTo(0, tick.y1);
-            ctx.lineTo(-width, tick.y2);
+            ctx.lineTo(sign * width, tick.y2);
             break;
     }
     ctx.lineWidth = gridLinesStrokeWidth;

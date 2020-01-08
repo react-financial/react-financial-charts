@@ -105,11 +105,9 @@ class StockChart extends React.Component<StockChartProps> {
                     yExtents={this.candleChartExtents}>
                     <XAxis
                         showGridLines
-                        showTickLabel={false}
-                        gridLinesStroke="#e0e3eb" />
+                        showTickLabel={false} />
                     <YAxis
                         showGridLines
-                        gridLinesStroke="#e0e3eb"
                         tickFormat={this.pricesDisplayFormat} />
                     <CandlestickSeries />
                     <LineSeries yAccessor={ema26.accessor()} stroke={ema26.stroke()} />

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/markmcdowell/react-financial-charts/compare/v0.5.0...v0.5.1) (2020-01-08)
+
+
+### Bug Fixes
+
+* **charts:** fixing gridlines when the axis is on the left or top ([61d5e7b](https://github.com/markmcdowell/react-financial-charts/commit/61d5e7b0225bb8c317cf04484f9a279341eb1791))
+
+
+
+
+
 # [0.5.0](https://github.com/markmcdowell/react-financial-charts/compare/v0.4.1...v0.5.0) (2020-01-07)
 
 

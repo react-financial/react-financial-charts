@@ -55,7 +55,7 @@
     "source-map-loader": "^0.2.4",
     "ts-jest": "^24.3.0",
     "ts-loader": "^6.2.1",
-    "tslint": "^5.20.1",
+    "tslint": "^6.0.0",
     "typescript": "^3.7.5"
   },
   "dependencies": {

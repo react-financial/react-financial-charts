@@ -76,13 +76,13 @@ interface MovingAverageTooltipProps {
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly width?: number;
-    readonly options: Array<{
+    readonly options: {
         yAccessor: any; // func
         type: string;
         stroke: string;
         windowSize: number;
         echo?: any;
-    }>;
+    }[];
 }
 
 // tslint:disable-next-line: max-classes-per-file

@@ -33,7 +33,7 @@ export interface EMAOptions {
 }
 
 interface EMACalculator {
-    (data: any[]): Array<number | undefined>;
+    (data: any[]): (number | undefined)[];
     undefinedLength(): number;
     options(): EMAOptions;
     options(newOptions: EMAOptions): EMACalculator;

@@ -15,13 +15,13 @@ interface GroupTooltipProps {
     readonly labelFill?: string;
     readonly layout: layouts;
     readonly onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
-    readonly options: Array<{
+    readonly options: {
         labelFill?: string;
         yLabel: string | any; // func
         yAccessor: any;
         valueFill?: string;
         withShape?: boolean;
-    }>;
+    }[];
     readonly origin: number[];
     readonly position: "topRight" | "bottomLeft" | "bottomRight";
     readonly valueFill?: string;
@@ -61,7 +61,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         const dx = 20;
         const dy = 40;
         let textAnchor: string | undefined;
-        let xyPos: Array<number | null> | null = null;
+        let xyPos: (number | null)[] | null = null;
 
         if (position !== undefined) {
             switch (position) {

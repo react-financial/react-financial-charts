@@ -20,11 +20,11 @@ interface EventCaptureProps {
     readonly useCrossHairStyleCursor?: boolean;
     readonly width: number;
     readonly height: number;
-    readonly chartConfig: Array<{ origin: number[], height: number }>;
+    readonly chartConfig: { origin: number[], height: number }[];
     readonly xAccessor: any; // func
     readonly xScale: any; // func
     readonly disableInteraction: boolean;
-    readonly getAllPanConditions: () => Array<{ panEnabled: boolean, draggable: boolean }>;
+    readonly getAllPanConditions: () => { panEnabled: boolean, draggable: boolean }[];
     readonly onMouseMove?: (touchXY: number[], eventType: string, event: React.TouchEvent) => void;
     readonly onMouseEnter?: (event: any) => void;
     readonly onMouseLeave?: (event: React.MouseEvent) => void;

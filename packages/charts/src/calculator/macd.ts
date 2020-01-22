@@ -36,11 +36,11 @@ export interface MACDOptions {
 }
 
 interface MACDCalculator {
-    (data: any[]): Array<{
+    (data: any[]): {
         macd: number | undefined;
         signal: number | undefined;
         divergence: number | undefined;
-    }>;
+    }[];
     undefinedLength(): number;
     options(): MACDOptions;
     options(newOptions: MACDOptions): MACDCalculator;

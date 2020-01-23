@@ -50,7 +50,7 @@
     "debug": "^4.1.1",
     "lodash.flattendeep": "^4.4.0",
     "prop-types": "^15.7.2",
-    "save-svg-as-png": "^1.4.15"
+    "save-svg-as-png": "^1.4.16"
   },
   "peerDependencies": {
     "react": "^16.0.0",

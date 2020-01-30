@@ -53,7 +53,7 @@
     "react-docgen-typescript-loader": "^3.6.0",
     "rimraf": "^3.0.1",
     "source-map-loader": "^0.2.4",
-    "ts-jest": "^25.0.0",
+    "ts-jest": "^25.1.0",
     "ts-loader": "^6.2.1",
     "tslint": "^6.0.0",
     "typescript": "^3.7.5"

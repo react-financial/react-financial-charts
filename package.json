@@ -28,7 +28,7 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.8.4",
-    "@storybook/addon-docs": "^5.3.12",
+    "@storybook/addon-docs": "^5.3.13",
     "@storybook/react": "^5.3.13",
     "@storybook/theming": "^5.3.13",
     "@types/d3-array": "^2.0.0",

@@ -39,7 +39,7 @@
   "dependencies": {
     "d3-array": "^2.4.0",
     "d3-force": "^2.0.1",
-    "d3-format": "^1.4.3",
+    "d3-format": "^1.4.4",
     "d3-interpolate": "^1.4.0",
     "d3-path": "^1.0.9",
     "d3-scale": "^3.2.1",

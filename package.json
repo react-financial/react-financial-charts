@@ -54,7 +54,7 @@
     "rimraf": "^3.0.2",
     "source-map-loader": "^0.2.4",
     "ts-jest": "^25.5.0",
-    "ts-loader": "^7.0.2",
+    "ts-loader": "^7.0.3",
     "tslint": "^6.1.2",
     "typescript": "^3.8.3"
   },

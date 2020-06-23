@@ -1,4 +1,4 @@
-import { colorToRGBA } from "../../src/utils/colors";
+import { colorToRGBA } from "../colors";
 
 describe("colorToRGBA", () => {
     test.each`

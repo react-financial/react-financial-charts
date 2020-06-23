@@ -94,11 +94,12 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
         nest.forEach((fillValues, fillKey) => {
 
             if (fillKey !== "none") {
+                // @ts-ignore
                 ctx.fillStyle = fillKey;
             }
 
             fillValues.forEach((strokeValues) => {
-
+                // @ts-ignore
                 strokeValues.forEach((point) => {
                     const { marker } = point;
                     marker.drawOnCanvas({ ...marker.defaultProps, ...markerProps, fill: fillKey }, point, ctx);

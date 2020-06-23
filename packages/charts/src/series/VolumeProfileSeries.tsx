@@ -215,6 +215,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
 
             // @ts-ignore
             const rects = zip(values, totalVolumes)
+                // @ts-ignore
                 .map(([d, { x, ws }]) => {
                     const w1 = ws[0] || { type: "up", width: 0 };
                     const w2 = ws[1] || { type: "down", width: 0 };

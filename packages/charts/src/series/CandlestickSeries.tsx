@@ -158,13 +158,16 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
 
         candleNest.forEach((strokeValues, strokeKey) => {
             if (strokeKey !== "none") {
+                // @ts-ignore
                 ctx.strokeStyle = strokeKey;
                 ctx.lineWidth = candleStrokeWidth;
             }
             strokeValues.forEach((values, key) => {
                 const fillStyle = head(values).width <= 1
                     ? key
+                    // @ts-ignore
                     : colorToRGBA(key, opacity);
+                // @ts-ignore
                 ctx.fillStyle = fillStyle;
 
                 values.forEach((d) => {

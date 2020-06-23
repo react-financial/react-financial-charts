@@ -26,9 +26,8 @@ interface OverlayBarSeriesProps {
 }
 
 export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
-
     public static defaultProps = {
-        baseAt: (xScale, yScale/* , d*/) => first(yScale.range()),
+        baseAt: (xScale, yScale /* , d*/) => first(yScale.range()),
         direction: "up",
         className: "bar",
         stroke: false,
@@ -53,26 +52,27 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
         );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { yAccessor } = this.props;
 
         const bars = this.getBars(moreProps, yAccessor);
-        return (
-            <g className="react-financial-charts-bar-series">
-                {getBarsSVG2(this.props, bars)}
-            </g>
-        );
-    }
+        return <g className="react-financial-charts-bar-series">{getBarsSVG2(this.props, bars)}</g>;
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { yAccessor } = this.props;
         const bars = this.getBars(moreProps, yAccessor);
 
         drawOnCanvas2(this.props, ctx, bars);
-    }
+    };
 
     private readonly getBars = (moreProps, yAccessor) => {
-        const { xScale, xAccessor, chartConfig: { yScale }, plotData } = moreProps;
+        const {
+            xScale,
+            xAccessor,
+            chartConfig: { yScale },
+            plotData,
+        } = moreProps;
         const { baseAt, className, fill, stroke } = this.props;
 
         const getClassName = functor(className);
@@ -83,11 +83,13 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
         const width = widthFunctor(this.props, moreProps);
         const offset = Math.floor(0.5 * width);
 
-        const bars = plotData
-            .map((d) => {
-                const innerBars = yAccessor.map((eachYAccessor, i) => {
+        const bars = plotData.map(d => {
+            const innerBars = yAccessor
+                .map((eachYAccessor, i) => {
                     const yValue = eachYAccessor(d);
-                    if (isNotDefined(yValue)) { return undefined; }
+                    if (isNotDefined(yValue)) {
+                        return undefined;
+                    }
 
                     const xValue = xAccessor(d);
                     const x = Math.round(xScale(xValue)) - offset;
@@ -101,22 +103,23 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
                         fill: getFill(d, i),
                         i,
                     };
-                }).filter((yValue) => isDefined(yValue));
+                })
+                .filter(yValue => isDefined(yValue));
 
-                let b = getBase(xScale, yScale, d);
-                let h;
-                for (let i = innerBars.length - 1; i >= 0; i--) {
-                    h = b - innerBars[i].y;
-                    if (h < 0) {
-                        innerBars[i].y = b;
-                        h = -1 * h;
-                    }
-                    innerBars[i].height = h;
-                    b = innerBars[i].y;
+            let b = getBase(xScale, yScale, d);
+            let h;
+            for (let i = innerBars.length - 1; i >= 0; i--) {
+                h = b - innerBars[i].y;
+                if (h < 0) {
+                    innerBars[i].y = b;
+                    h = -1 * h;
                 }
-                return innerBars;
-            });
+                innerBars[i].height = h;
+                b = innerBars[i].y;
+            }
+            return innerBars;
+        });
 
         return merge(bars);
-    }
+    };
 }

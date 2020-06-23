@@ -12,8 +12,8 @@ interface LinearRegressionChannelWithAreaProps {
     readonly x1Value: any;
     readonly x2Value: any;
     readonly type:
-    "SD" | // standard deviation channel
-    "Raff"; // Raff Regression Channel
+        | "SD" // standard deviation channel
+        | "Raff"; // Raff Regression Channel
     readonly interactiveCursorClass?: string;
     readonly stroke: string;
     readonly strokeWidth: number;
@@ -31,7 +31,6 @@ interface LinearRegressionChannelWithAreaProps {
 }
 
 export class LinearRegressionChannelWithArea extends React.Component<LinearRegressionChannelWithAreaProps> {
-
     public static defaultProps = {
         onDragStart: noop,
         onDrag: noop,
@@ -46,24 +45,22 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
         const { selected, interactiveCursorClass } = this.props;
         const { onHover, onUnHover } = this.props;
 
-        return <GenericChartComponent
-            isHover={this.isHover}
-
-            svgDraw={this.renderSVG}
-            canvasToDraw={getMouseCanvas}
-            canvasDraw={this.drawOnCanvas}
-
-            interactiveCursorClass={interactiveCursorClass}
-            selected={selected}
-
-            onHover={onHover}
-            onUnHover={onUnHover}
-
-            drawOn={["mousemove", "mouseleave", "pan", "drag"]}
-        />;
+        return (
+            <GenericChartComponent
+                isHover={this.isHover}
+                svgDraw={this.renderSVG}
+                canvasToDraw={getMouseCanvas}
+                canvasDraw={this.drawOnCanvas}
+                interactiveCursorClass={interactiveCursorClass}
+                selected={selected}
+                onHover={onHover}
+                onUnHover={onUnHover}
+                drawOn={["mousemove", "mouseleave", "pan", "drag"]}
+            />
+        );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;
         const { x1, y1, x2, y2, dy } = helper(this.props, moreProps);
         const line = {
@@ -79,35 +76,13 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
         ctx.closePath();
         return (
             <g>
-                <line
-                    {...line}
-                    x1={x1}
-                    y1={y1 - dy}
-                    x2={x2}
-                    y2={y2 - dy}
-                />
-                <line
-                    {...line}
-                    x1={x1}
-                    y1={y1 + dy}
-                    x2={x2}
-                    y2={y2 + dy}
-                />
-                <path
-                    d={ctx.toString()}
-                    fill={fill}
-                    fillOpacity={fillOpacity}
-                />
-                <line
-                    {...line}
-                    x1={x1}
-                    y1={y1}
-                    x2={x2}
-                    y2={y2}
-                />
+                <line {...line} x1={x1} y1={y1 - dy} x2={x2} y2={y2 - dy} />
+                <line {...line} x1={x1} y1={y1 + dy} x2={x2} y2={y2 + dy} />
+                <path d={ctx.toString()} fill={fill} fillOpacity={fillOpacity} />
+                <line {...line} x1={x1} y1={y1} x2={x2} y2={y2} />
             </g>
         );
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;
@@ -139,9 +114,9 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
         ctx.moveTo(x2, y2);
         ctx.lineTo(x1, y1);
         ctx.stroke();
-    }
+    };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = moreProps => {
         const { tolerance, onHover } = this.props;
 
         if (isDefined(onHover)) {
@@ -150,24 +125,25 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
             const { x1, y1, x2, y2, dy } = helper(this.props, moreProps);
             const yDiffs = [-dy, 0, dy];
 
-            const hovering = yDiffs.reduce((result, diff) => result || isHovering2(
-                [x1, y1 + diff], [x2, y2 + diff], mouseXY, tolerance,
-            ), false);
+            const hovering = yDiffs.reduce(
+                (result, diff) => result || isHovering2([x1, y1 + diff], [x2, y2 + diff], mouseXY, tolerance),
+                false,
+            );
             return hovering;
         }
         return false;
-    }
+    };
 }
 
 export function edge1Provider(props) {
-    return function (moreProps) {
+    return function(moreProps) {
         const { x1, y1 } = helper(props, moreProps);
         return [x1, y1];
     };
 }
 
 export function edge2Provider(props) {
-    return function (moreProps) {
+    return function(moreProps) {
         const { x2, y2 } = helper(props, moreProps);
         return [x2, y2];
     };
@@ -176,7 +152,11 @@ export function edge2Provider(props) {
 function helper(props, moreProps) {
     const { x1Value, x2Value, type } = props;
 
-    const { xScale, chartConfig: { yScale }, fullData } = moreProps;
+    const {
+        xScale,
+        chartConfig: { yScale },
+        fullData,
+    } = moreProps;
     const { xAccessor } = moreProps;
 
     const { left } = getClosestItemIndexes(fullData, x1Value, xAccessor);
@@ -187,15 +167,14 @@ function helper(props, moreProps) {
 
     const array = fullData.slice(startIndex, endIndex);
 
-    const xs = array.map((d) => xAccessor(d).valueOf());
-    const ys = array.map((d) => d.close);
+    const xs = array.map(d => xAccessor(d).valueOf());
+    const ys = array.map(d => d.close);
     const n = array.length;
 
-    const xys = zip<number>(xs, ys)
-        .map((d) => {
-            return d[0] * d[1];
-        });
-    const xSquareds = xs.map((x) => Math.pow(x, 2));
+    const xys = zip<number>(xs, ys).map(d => {
+        return d[0] * d[1];
+    });
+    const xSquareds = xs.map(x => Math.pow(x, 2));
 
     const b = (n * sum(xys) - sum(xs) * sum(ys)) / (n * sum(xSquareds) - Math.pow(sum(xs), 2));
     const a = (sum(ys) - b * sum(xs)) / n;
@@ -208,13 +187,15 @@ function helper(props, moreProps) {
     const x2 = xScale(x2Value);
     const y2 = yScale(newy2);
 
-    const stdDev = type === "SD"
-        ? deviation<any>(array, (d) => d.close)
-        : 0;
+    const stdDev = type === "SD" ? deviation<any>(array, d => d.close) : 0;
 
     const dy = yScale(newy1 - stdDev!) - y1;
 
     return {
-        x1, y1, x2, y2, dy,
+        x1,
+        y1,
+        x2,
+        y2,
+        dy,
     };
 }

@@ -16,21 +16,12 @@ interface ClickCallbackProps {
 }
 
 export class ClickCallback extends React.Component<ClickCallbackProps> {
-
     public static defaultProps = {
         disablePan: false,
     };
 
     public render() {
-        const {
-            onMouseDown,
-            onClick,
-            onDoubleClick,
-            onContextMenu,
-            onMouseMove,
-            onPan,
-            onPanEnd,
-        } = this.props;
+        const { onMouseDown, onClick, onDoubleClick, onContextMenu, onMouseMove, onPan, onPanEnd } = this.props;
 
         return (
             <GenericChartComponent

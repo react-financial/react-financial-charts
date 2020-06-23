@@ -38,7 +38,6 @@ interface InteractiveYCoordinateProps {
 }
 
 export class InteractiveYCoordinate extends React.Component<InteractiveYCoordinateProps> {
-
     public static defaultProps = {
         onDragStart: noop,
         onDrag: noop,
@@ -78,7 +77,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
 
     private readonly renderSVG = () => {
         throw new Error("svg not implemented");
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {
@@ -103,7 +102,9 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         const { selected, hovering } = this.props;
 
         const values = helper(this.props, moreProps);
-        if (values == null) { return; }
+        if (values == null) {
+            return;
+        }
 
         const { x1, x2, y, rect } = values;
 
@@ -119,12 +120,13 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         ctx.textAlign = "start";
         ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
 
-        this.width = textBox.padding.left
-            + ctx.measureText(text).width
-            + textBox.padding.right
-            + textBox.closeIcon.padding.left
-            + textBox.closeIcon.width
-            + textBox.closeIcon.padding.right;
+        this.width =
+            textBox.padding.left +
+            ctx.measureText(text).width +
+            textBox.padding.right +
+            textBox.closeIcon.padding.left +
+            textBox.closeIcon.width +
+            textBox.closeIcon.padding.right;
 
         ctx.setLineDash(getStrokeDasharrayCanvas(strokeDasharray));
         ctx.moveTo(x1, y);
@@ -157,42 +159,44 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         const yValue = edge.displayFormat(this.props.yValue);
         const yCoord = getYCoordinate(y, yValue, newEdge, moreProps);
         drawOnCanvas(ctx, yCoord);
-    }
+    };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = moreProps => {
         const { onHover } = this.props;
 
         if (isDefined(onHover)) {
             const values = helper(this.props, moreProps);
-            if (values == null) { return false; }
+            if (values == null) {
+                return false;
+            }
 
             const { x1, x2, y, rect } = values;
-            const { mouseXY: [mouseX, mouseY] } = moreProps;
+            const {
+                mouseXY: [mouseX, mouseY],
+            } = moreProps;
 
             if (
-                mouseX >= rect.x
-                && mouseX <= rect.x + this.width
-                && mouseY >= rect.y
-                && mouseY <= rect.y + rect.height
+                mouseX >= rect.x &&
+                mouseX <= rect.x + this.width &&
+                mouseY >= rect.y &&
+                mouseY <= rect.y + rect.height
             ) {
                 return true;
             }
-            if (
-                x1 <= mouseX
-                && x2 >= mouseX
-                && Math.abs(mouseY - y) < 4
-            ) {
+            if (x1 <= mouseX && x2 >= mouseX && Math.abs(mouseY - y) < 4) {
                 return true;
             }
         }
         return false;
-    }
+    };
 }
 
 function helper(props, moreProps) {
     const { yValue, textBox } = props;
 
-    const { chartConfig: { width, yScale, height } } = moreProps;
+    const {
+        chartConfig: { width, yScale, height },
+    } = moreProps;
 
     const y = Math.round(yScale(yValue));
 

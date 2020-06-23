@@ -2,18 +2,13 @@ import * as React from "react";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
-export type layouts =
-    "horizontal" |
-    "horizontalRows" |
-    "horizontalInline" |
-    "vertical" |
-    "verticalRows";
+export type layouts = "horizontal" | "horizontalRows" | "horizontalInline" | "vertical" | "verticalRows";
 
 interface SingleTooltipProps {
     readonly origin: number[];
     readonly yLabel: string;
     readonly yValue: string;
-    readonly onClick?: ((details: any, event: React.MouseEvent) => void);
+    readonly onClick?: (details: any, event: React.MouseEvent) => void;
     readonly fontFamily?: string;
     readonly labelFill: string;
     readonly valueFill: string;
@@ -25,7 +20,6 @@ interface SingleTooltipProps {
 }
 
 export class SingleTooltip extends React.Component<SingleTooltipProps> {
-
     public static defaultProps = {
         labelFill: "#4682B4",
         valueFill: "#000000",
@@ -33,8 +27,8 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
     };
 
     /*
-	 * Renders the value next to the label.
-	 */
+     * Renders the value next to the label.
+     */
     public renderValueNextToLabel() {
         const { origin, yLabel, yValue, labelFill, valueFill, withShape, fontSize, fontFamily } = this.props;
 
@@ -50,8 +44,8 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
     }
 
     /*
-	 * Renders the value beneath the label.
-	 */
+     * Renders the value beneath the label.
+     */
     public renderValueBeneathToLabel() {
         const { origin, yLabel, yValue, labelFill, valueFill, withShape, fontSize, fontFamily } = this.props;
 
@@ -60,16 +54,18 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
                 {withShape ? <line x1={0} y1={2} x2={0} y2={28} stroke={valueFill} strokeWidth="4px" /> : null}
                 <ToolTipText x={5} y={11} fontFamily={fontFamily} fontSize={fontSize}>
                     <ToolTipTSpanLabel fill={labelFill}>{yLabel}</ToolTipTSpanLabel>
-                    <tspan x="5" dy="15" fill={valueFill}>{yValue}</tspan>
+                    <tspan x="5" dy="15" fill={valueFill}>
+                        {yValue}
+                    </tspan>
                 </ToolTipText>
             </g>
         );
     }
 
     /*
-	 * Renders the value next to the label.
-	 * The parent component must have a "text"-element.
-	 */
+     * Renders the value next to the label.
+     * The parent component must have a "text"-element.
+     */
     public renderInline() {
         const { yLabel, yValue, labelFill, valueFill, fontSize, fontFamily } = this.props;
 
@@ -82,7 +78,6 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
     }
 
     public render() {
-
         const { layout } = this.props;
         let comp: JSX.Element | null = null;
 
@@ -115,5 +110,5 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
         if (onClick !== undefined) {
             onClick({ chartId: forChart, ...options }, e);
         }
-    }
+    };
 }

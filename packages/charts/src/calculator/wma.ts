@@ -8,14 +8,13 @@ export interface WMAOptions {
     windowSize: number;
 }
 
-export default function () {
-
+export default function() {
     let options = defaultOptions;
 
     const calculator = (data: any[]) => {
         const { windowSize, sourcePath } = options;
 
-        const weight = windowSize * (windowSize + 1) / 2;
+        const weight = (windowSize * (windowSize + 1)) / 2;
 
         const waverage = slidingWindow()
             .windowSize(windowSize)

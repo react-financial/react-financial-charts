@@ -16,40 +16,33 @@ interface ChartProps {
 }
 
 class EMAIndicator extends React.Component<ChartProps> {
-
     private readonly margin = { left: 0, right: 40, top: 8, bottom: 24 };
-    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
-        .inputDateAccessor((d: IOHLCData) => d.date);
+    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
+        (d: IOHLCData) => d.date,
+    );
 
     public render() {
-
-        const {
-            data: initialData,
-            height,
-            ratio,
-            width,
-        } = this.props;
+        const { data: initialData, height, ratio, width } = this.props;
 
         const ema12 = ema()
             .id(1)
             .options({ windowSize: 12 })
-            .merge((d: any, c: any) => { d.ema12 = c; })
+            .merge((d: any, c: any) => {
+                d.ema12 = c;
+            })
             .accessor((d: any) => d.ema12);
 
         const ema26 = ema()
             .id(2)
             .options({ windowSize: 26 })
-            .merge((d: any, c: any) => { d.ema26 = c; })
+            .merge((d: any, c: any) => {
+                d.ema26 = c;
+            })
             .accessor((d: any) => d.ema26);
 
         const calculatedData = ema26(ema12(initialData));
 
-        const {
-            data,
-            xScale,
-            xAccessor,
-            displayXAccessor,
-        } = this.xScaleProvider(calculatedData);
+        const { data, xScale, xAccessor, displayXAccessor } = this.xScaleProvider(calculatedData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -66,10 +59,9 @@ class EMAIndicator extends React.Component<ChartProps> {
                 seriesName="Data"
                 xScale={xScale}
                 xAccessor={xAccessor}
-                xExtents={xExtents}>
-                <Chart
-                    id={1}
-                    yExtents={[0, 100]}>
+                xExtents={xExtents}
+            >
+                <Chart id={1} yExtents={[0, 100]}>
                     <XAxis ticks={6} />
                     <YAxis ticks={5} />
 

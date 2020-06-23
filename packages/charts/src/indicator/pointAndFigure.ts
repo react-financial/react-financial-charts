@@ -5,10 +5,8 @@ import baseIndicator from "./baseIndicator";
 
 const ALGORITHM_TYPE = "PointAndFigure";
 
-export default function () {
-
-    const base = baseIndicator()
-        .type(ALGORITHM_TYPE);
+export default function() {
+    const base = baseIndicator().type(ALGORITHM_TYPE);
 
     const underlyingAlgorithm = pointAndFigure();
 

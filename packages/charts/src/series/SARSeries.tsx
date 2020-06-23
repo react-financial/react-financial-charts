@@ -20,7 +20,6 @@ interface SARSeriesProps {
 }
 
 export class SARSeries extends React.Component<SARSeriesProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-sar",
         fill: {
@@ -36,14 +35,14 @@ export class SARSeries extends React.Component<SARSeriesProps> {
 
         const hoverProps = highlightOnHover
             ? {
-                isHover: this.isHover,
-                drawOn: ["mousemove", "pan"],
-                canvasToDraw: getMouseCanvas,
-            }
+                  isHover: this.isHover,
+                  drawOn: ["mousemove", "pan"],
+                  canvasToDraw: getMouseCanvas,
+              }
             : {
-                drawOn: ["pan"],
-                canvasToDraw: getAxisCanvas,
-            };
+                  drawOn: ["pan"],
+                  canvasToDraw: getAxisCanvas,
+              };
 
         return (
             <GenericChartComponent
@@ -57,54 +56,55 @@ export class SARSeries extends React.Component<SARSeriesProps> {
         );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
+        const { className, yAccessor, fill = SARSeries.defaultProps.fill } = this.props;
         const {
-            className,
-            yAccessor,
-            fill = SARSeries.defaultProps.fill,
-        } = this.props;
-        const { xAccessor, plotData, xScale, chartConfig: { yScale } } = moreProps;
+            xAccessor,
+            plotData,
+            xScale,
+            chartConfig: { yScale },
+        } = moreProps;
 
-        return <g className={className}>
-            {plotData
-                .filter((each) => isDefined(yAccessor(each)))
-                .map((each, idx) => {
+        return (
+            <g className={className}>
+                {plotData
+                    .filter(each => isDefined(yAccessor(each)))
+                    .map((each, idx) => {
+                        const color = yAccessor(each) > each.close ? fill.falling : fill.rising;
 
-                    const color = yAccessor(each) > each.close
-                        ? fill.falling
-                        : fill.rising;
-
-                    return (
-                        <circle
-                            key={idx}
-                            cx={xScale(xAccessor(each))}
-                            cy={yScale(yAccessor(each))}
-                            r={3}
-                            fill={color} />
-                    );
-                })}
-        </g>;
-    }
+                        return (
+                            <circle
+                                key={idx}
+                                cx={xScale(xAccessor(each))}
+                                cy={yScale(yAccessor(each))}
+                                r={3}
+                                fill={color}
+                            />
+                        );
+                    })}
+            </g>
+        );
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+        const { yAccessor, fill = SARSeries.defaultProps.fill, opacity } = this.props;
         const {
-            yAccessor,
-            fill = SARSeries.defaultProps.fill,
-            opacity,
-        } = this.props;
-        const { xAccessor, plotData, xScale, chartConfig: { yScale }, hovering } = moreProps;
+            xAccessor,
+            plotData,
+            xScale,
+            chartConfig: { yScale },
+            hovering,
+        } = moreProps;
 
         const width = xScale(xAccessor(last(plotData))) - xScale(xAccessor(first(plotData)));
 
-        const d = (width / plotData.length) * 0.5 / 2;
+        const d = ((width / plotData.length) * 0.5) / 2;
         const radius = Math.min(2, Math.max(0.5, d)) + (hovering ? 2 : 0);
 
-        plotData.forEach((each) => {
+        plotData.forEach(each => {
             const centerX = xScale(xAccessor(each));
             const centerY = yScale(yAccessor(each));
-            const color = yAccessor(each) > each.close
-                ? fill.falling
-                : fill.rising;
+            const color = yAccessor(each) > each.close ? fill.falling : fill.rising;
 
             ctx.fillStyle = colorToRGBA(color, opacity);
             ctx.strokeStyle = color;
@@ -115,13 +115,17 @@ export class SARSeries extends React.Component<SARSeriesProps> {
             ctx.fill();
             ctx.stroke();
         });
-    }
+    };
 
-    private readonly isHover = (moreProps) => {
-        const { mouseXY, currentItem, chartConfig: { yScale } } = moreProps;
+    private readonly isHover = moreProps => {
+        const {
+            mouseXY,
+            currentItem,
+            chartConfig: { yScale },
+        } = moreProps;
         const { yAccessor } = this.props;
         const y = mouseXY[1];
         const currentY = yScale(yAccessor(currentItem));
         return y < currentY + 5 && y > currentY - 5;
-    }
+    };
 }

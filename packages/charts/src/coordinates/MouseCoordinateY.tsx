@@ -1,4 +1,3 @@
-
 import * as React from "react";
 
 import GenericChartComponent from "../GenericChartComponent";
@@ -27,7 +26,6 @@ interface MouseCoordinateYProps {
 }
 
 export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
-
     public static defaultProps = {
         arrowWidth: 0,
         at: "right",
@@ -58,14 +56,14 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
         );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const props = this.helper(this.props, moreProps);
         if (isNotDefined(props)) {
             return null;
         }
 
         return renderSVG(props);
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const props = this.helper(this.props, moreProps);
@@ -74,7 +72,7 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
         }
 
         drawOnCanvas(ctx, props);
-    }
+    };
 
     private readonly helper = (props: MouseCoordinateYProps, moreProps) => {
         const { chartId, currentCharts, mouseXY, show } = moreProps;
@@ -92,13 +90,15 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
         }
 
         const y = mouseXY[1];
-        const { chartConfig: { yScale } } = moreProps;
+        const {
+            chartConfig: { yScale },
+        } = moreProps;
         const { displayFormat } = props;
 
         const coordinate = displayFormat(yScale.invert(y));
 
         return getYCoordinate(y, coordinate, props, moreProps);
-    }
+    };
 }
 
 export function getYCoordinate(y, displayValue, props, moreProps) {
@@ -110,7 +110,7 @@ export function getYCoordinate(y, displayValue, props, moreProps) {
 
     const x1 = 0;
     const x2 = width;
-    const edgeAt = (at === "right") ? width : 0;
+    const edgeAt = at === "right" ? width : 0;
 
     const type = "horizontal";
     const hideLine = true;

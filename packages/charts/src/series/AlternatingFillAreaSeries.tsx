@@ -12,8 +12,8 @@ interface AlternatingFillAreaSeriesProps {
         bottom: string;
     };
     readonly fillOpacity?: {
-        top: number,
-        bottom: number,
+        top: number;
+        bottom: number;
     };
     readonly interpolation?: any; // func
     readonly stroke?: {
@@ -36,7 +36,6 @@ interface AlternatingFillAreaSeriesProps {
 }
 
 export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAreaSeriesProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-alternating-area",
         fill: {
@@ -86,9 +85,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
 
         return (
             <g className={className}>
-                <SVGComponent>
-                    {this.renderClip}
-                </SVGComponent>
+                <SVGComponent>{this.renderClip}</SVGComponent>
                 <AreaSeries
                     style={style1}
                     canvasClip={this.topClip}
@@ -119,11 +116,11 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         );
     }
 
-    private readonly baseAt = (yScale) => {
+    private readonly baseAt = yScale => {
         return yScale(this.props.baseAt);
-    }
+    };
 
-    private readonly renderClip = (moreProps) => {
+    private readonly renderClip = moreProps => {
         const { chartConfig } = moreProps;
         const { baseAt } = this.props;
         const { yScale, width, height } = chartConfig;
@@ -131,24 +128,14 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         return (
             <defs>
                 <clipPath id={this.clipPathId1}>
-                    <rect
-                        x={0}
-                        y={0}
-                        width={width}
-                        height={yScale(baseAt)}
-                    />
+                    <rect x={0} y={0} width={width} height={yScale(baseAt)} />
                 </clipPath>
                 <clipPath id={this.clipPathId2}>
-                    <rect
-                        x={0}
-                        y={yScale(baseAt)}
-                        width={width}
-                        height={height - yScale(baseAt)}
-                    />
+                    <rect x={0} y={yScale(baseAt)} width={width} height={height - yScale(baseAt)} />
                 </clipPath>
             </defs>
         );
-    }
+    };
 
     private readonly bottomClip = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { chartConfig } = moreProps;
@@ -156,14 +143,9 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         const { yScale, width, height } = chartConfig;
 
         ctx.beginPath();
-        ctx.rect(
-            0,
-            yScale(baseAt),
-            width,
-            height - yScale(baseAt),
-        );
+        ctx.rect(0, yScale(baseAt), width, height - yScale(baseAt));
         ctx.clip();
-    }
+    };
 
     private readonly topClip = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { chartConfig } = moreProps;
@@ -171,12 +153,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         const { yScale, width } = chartConfig;
 
         ctx.beginPath();
-        ctx.rect(
-            0,
-            0,
-            width,
-            yScale(baseAt),
-        );
+        ctx.rect(0, 0, width, yScale(baseAt));
         ctx.clip();
-    }
+    };
 }

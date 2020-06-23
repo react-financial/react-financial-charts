@@ -3,11 +3,7 @@ import * as React from "react";
 import { isDefined, isNotDefined, noop } from "../utils";
 import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
 import { MouseLocationIndicator } from "./components/MouseLocationIndicator";
-import {
-    isHoverForInteractiveType,
-    saveNodeType,
-    terminate,
-} from "./utils";
+import { isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
 import { EachFibRetracement } from "./wrapper/EachFibRetracement";
 
 interface FibonacciRetracementProps {
@@ -17,9 +13,9 @@ interface FibonacciRetracementProps {
     readonly onComplete?: any; // func
     readonly onSelect?: any; // func
     readonly type:
-    "EXTEND" | // extends from -Infinity to +Infinity
-    "RAY" | // extends to +/-Infinity in one direction
-    "BOUND"; // extends between the set bounds
+        | "EXTEND" // extends from -Infinity to +Infinity
+        | "RAY" // extends to +/-Infinity in one direction
+        | "BOUND"; // extends between the set bounds
     readonly hoverText: object;
     readonly currentPositionStroke?: string;
     readonly currentPositionStrokeWidth?: number;
@@ -47,7 +43,6 @@ interface FibonacciRetracementState {
 }
 
 export class FibonacciRetracement extends React.Component<FibonacciRetracementProps, FibonacciRetracementState> {
-
     public static defaultProps = {
         enabled: true,
         type: "RAY",
@@ -97,8 +92,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         this.handleEdge2Drag = this.handleEdge2Drag.bind(this);
 
         this.terminate = terminate.bind(this);
-        this.getSelectionState = isHoverForInteractiveType("retracements")
-            .bind(this);
+        this.getSelectionState = isHoverForInteractiveType("retracements").bind(this);
 
         this.saveNodeType = saveNodeType.bind(this);
         this.state = {};
@@ -124,15 +118,16 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
             ...hoverText,
         };
 
-        const currentRetracement = isDefined(current) && isDefined(current.x2)
-            ? <EachFibRetracement
-                interactive={false}
-                type={type}
-                appearance={appearance}
-                hoverText={hoverTextWidthDefault}
-                {...current}
-            />
-            : null;
+        const currentRetracement =
+            isDefined(current) && isDefined(current.x2) ? (
+                <EachFibRetracement
+                    interactive={false}
+                    type={type}
+                    appearance={appearance}
+                    hoverText={hoverTextWidthDefault}
+                    {...current}
+                />
+            ) : null;
         return (
             <g>
                 {retracements.map((each, idx) => {
@@ -175,7 +170,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         );
     }
 
-    private readonly handleDrawRetracement = (xyValue) => {
+    private readonly handleDrawRetracement = xyValue => {
         const { current } = this.state;
         if (isDefined(current) && isDefined(current.x1)) {
             this.mouseMoved = true;
@@ -187,7 +182,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
                 },
             });
         }
-    }
+    };
 
     private readonly handleEdge1Drag = (echo, newXYValue, origXYValue) => {
         const { retracements } = this.props;
@@ -204,7 +199,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
                 y2: retracements[index].y2,
             },
         });
-    }
+    };
 
     private readonly handleDrag = (index, xy) => {
         this.setState({
@@ -213,7 +208,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
                 ...xy,
             },
         });
-    }
+    };
 
     private readonly handleEdge2Drag = (echo, newXYValue, origXYValue) => {
         const { retracements } = this.props;
@@ -230,19 +225,16 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
                 y2: retracements[index].y2,
             },
         });
-    }
+    };
 
-    private readonly handleDragComplete = (moreProps) => {
+    private readonly handleDragComplete = moreProps => {
         const { retracements } = this.props;
         const { override } = this.state;
         if (isDefined(override)) {
             const { index, ...rest } = override;
 
-            const newRetracements = retracements.map(
-                (each, idx) =>
-                    (idx === index
-                        ? { ...each, ...rest, selected: true }
-                        : each),
+            const newRetracements = retracements.map((each, idx) =>
+                idx === index ? { ...each, ...rest, selected: true } : each,
             );
             this.setState(
                 {
@@ -253,7 +245,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
                 },
             );
         }
-    }
+    };
 
     private readonly handleStart = (xyValue, moreProps) => {
         const { current } = this.state;
@@ -273,7 +265,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
                 },
             );
         }
-    }
+    };
 
     private readonly handleEnd = (xyValue, moreProps, e) => {
         const { retracements, appearance, type } = this.props;
@@ -298,5 +290,5 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
                 },
             );
         }
-    }
+    };
 }

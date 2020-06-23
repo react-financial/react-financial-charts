@@ -30,20 +30,15 @@ interface MouseCoordinateXProps {
 const defaultCustomX = (props: MouseCoordinateXProps, moreProps) => {
     const { xScale, xAccessor, currentItem, mouseXY } = moreProps;
     const { snapX } = props;
-    const x = snapX
-        ? xScale(xAccessor(currentItem))
-        : mouseXY[0];
+    const x = snapX ? xScale(xAccessor(currentItem)) : mouseXY[0];
 
     const { displayXAccessor } = moreProps;
     const { displayFormat } = props;
-    const coordinate = snapX
-        ? displayFormat(displayXAccessor(currentItem))
-        : displayFormat(xScale.invert(x));
+    const coordinate = snapX ? displayFormat(displayXAccessor(currentItem)) : displayFormat(xScale.invert(x));
     return { x, coordinate };
 };
 
 export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
-
     public static defaultProps = {
         at: "bottom",
         customX: defaultCustomX,
@@ -81,34 +76,35 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
         }
 
         drawOnCanvas(ctx, props);
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const props = this.helper(this.props, moreProps);
         if (isNotDefined(props)) {
             return null;
         }
 
         return renderSVG(props);
-    }
+    };
 
     private readonly helper = (props: MouseCoordinateXProps, moreProps) => {
         const { show, currentItem } = moreProps;
-        const { chartConfig: { height } } = moreProps;
+        const {
+            chartConfig: { height },
+        } = moreProps;
 
-        if (isNotDefined(currentItem)) { return null; }
+        if (isNotDefined(currentItem)) {
+            return null;
+        }
 
         const { customX, orient, at } = props;
         const { stroke, strokeOpacity, strokeWidth } = props;
         const { rectRadius, rectWidth, rectHeight } = props;
         const { fill, opacity, fitToText, fontFamily, fontSize, textFill } = props;
 
-        const edgeAt = (at === "bottom") ? height : 0;
+        const edgeAt = at === "bottom" ? height : 0;
 
-        const {
-            x,
-            coordinate,
-        } = customX(props, moreProps);
+        const { x, coordinate } = customX(props, moreProps);
 
         const type = "vertical";
         const y1 = 0;
@@ -123,8 +119,14 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
             orient,
             edgeAt,
             hideLine,
-            fill, opacity, fontFamily, fontSize, textFill,
-            stroke, strokeOpacity, strokeWidth,
+            fill,
+            opacity,
+            fontFamily,
+            fontSize,
+            textFill,
+            stroke,
+            strokeOpacity,
+            strokeWidth,
             rectWidth,
             rectHeight,
             rectRadius,
@@ -135,5 +137,5 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
             y2,
         };
         return coordinateProps;
-    }
+    };
 }

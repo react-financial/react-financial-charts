@@ -26,7 +26,6 @@ interface EdgeIndicatorProps {
 }
 
 export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-edgeindicator",
         type: "horizontal",
@@ -73,31 +72,27 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
             ...edge,
         };
         drawOnCanvas(ctx, props);
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const edge = this.helper(this.props, moreProps);
         const props = {
             ...this.props,
             ...edge,
         };
         return renderSVG(props);
-    }
+    };
 
     private readonly helper = (props, moreProps) => {
         const { itemType, yAccessor } = props;
         const { plotData } = moreProps;
 
-        const item = itemType === "first"
-            ? first(plotData, yAccessor)
-            : last(plotData, yAccessor);
+        const item = itemType === "first" ? first(plotData, yAccessor) : last(plotData, yAccessor);
 
-        const edge = isDefined(item)
-            ? this.getEdge(props, moreProps, item)
-            : null;
+        const edge = isDefined(item) ? this.getEdge(props, moreProps, item) : null;
 
         return edge;
-    }
+    };
 
     private readonly getEdge = (props, moreProps, item) => {
         const { type: edgeType, displayFormat, edgeAt, yAxisPad, orient, lineStroke } = props;
@@ -106,7 +101,12 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         const { fontFamily, fontSize } = props;
         const { stroke } = props;
 
-        const { xScale, chartConfig: { yScale }, xAccessor, width } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+            xAccessor,
+            width,
+        } = moreProps;
 
         const yValue = yAccessor(item);
         const xValue = xAccessor(item);
@@ -115,9 +115,7 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         const y1 = Math.round(yScale(yValue));
 
         const [left, right] = [0, width];
-        const edgeX = edgeAt === "left"
-            ? left - yAxisPad
-            : right + yAxisPad;
+        const edgeX = edgeAt === "left" ? left - yAxisPad : right + yAxisPad;
 
         return {
             coordinate: displayFormat(yValue),
@@ -128,13 +126,16 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
             fill: functor(fill)(item),
             lineStroke: functor(lineStroke)(item),
             stroke: functor(stroke)(item),
-            fontFamily, fontSize,
+            fontFamily,
+            fontSize,
             textFill: functor(textFill)(item),
-            rectHeight, rectWidth, arrowWidth,
+            rectHeight,
+            rectWidth,
+            arrowWidth,
             x1,
             y1,
             x2: right,
             y2: y1,
         };
-    }
+    };
 }

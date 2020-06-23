@@ -17,7 +17,6 @@ interface GroupedBarSeriesProps {
 }
 
 export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {
-
     public static defaultProps = {
         ...StackedBarSeries.defaultProps,
         widthRatio: 0.8,
@@ -39,9 +38,9 @@ export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {
         const { xAccessor } = moreProps;
 
         drawOnCanvasHelper(ctx, this.props, moreProps, xAccessor, identityStack, this.postProcessor);
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { xAccessor } = moreProps;
 
         return (
@@ -49,15 +48,15 @@ export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {
                 {svgHelper(this.props, moreProps, xAccessor, identityStack, this.postProcessor)}
             </g>
         );
-    }
+    };
 
-    private readonly postProcessor = (array) => {
-        return array.map((each) => {
+    private readonly postProcessor = array => {
+        return array.map(each => {
             return {
                 ...each,
                 x: each.x + each.offset - each.groupOffset,
                 width: each.groupWidth,
             };
         });
-    }
+    };
 }

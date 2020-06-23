@@ -19,7 +19,6 @@ interface LabelAnnotationProps {
 }
 
 export class LabelAnnotation extends React.Component<LabelAnnotationProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-labelannotation",
         textAnchor: "middle",
@@ -37,26 +36,34 @@ export class LabelAnnotation extends React.Component<LabelAnnotationProps> {
 
         const { xPos, yPos, fill, text, tooltip } = helper(this.props, xAccessor, xScale, yScale);
 
-        return (<g className={className}>
-            <title>{tooltip}</title>
-            <text x={xPos} y={yPos}
-                fontFamily={fontFamily} fontSize={fontSize}
-                fill={fill}
-                opacity={opacity}
-                transform={`rotate(${rotate}, ${xPos}, ${yPos})`}
-                onClick={this.handleClick}
-                textAnchor={textAnchor}>{text}</text>
-        </g>);
+        return (
+            <g className={className}>
+                <title>{tooltip}</title>
+                <text
+                    x={xPos}
+                    y={yPos}
+                    fontFamily={fontFamily}
+                    fontSize={fontSize}
+                    fill={fill}
+                    opacity={opacity}
+                    transform={`rotate(${rotate}, ${xPos}, ${yPos})`}
+                    onClick={this.handleClick}
+                    textAnchor={textAnchor}
+                >
+                    {text}
+                </text>
+            </g>
+        );
     }
 
-    private readonly handleClick = (e) => {
+    private readonly handleClick = e => {
         const { onClick } = this.props;
 
         if (onClick) {
             const { xScale, yScale, datum } = this.props;
             onClick({ xScale, yScale, datum }, e);
         }
-    }
+    };
 }
 
 export const helper = (props, xAccessor, xScale, yScale) => {

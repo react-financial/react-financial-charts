@@ -6,7 +6,17 @@ import GenericChartComponent from "../GenericChartComponent";
 import { getAxisCanvas } from "../GenericComponent";
 import { AxisZoomCapture } from "./AxisZoomCapture";
 
-import { colorToRGBA, first, getStrokeDasharray, getStrokeDasharrayCanvas, identity, isDefined, isNotDefined, last, strokeDashTypes } from "../utils";
+import {
+    colorToRGBA,
+    first,
+    getStrokeDasharray,
+    getStrokeDasharrayCanvas,
+    identity,
+    isDefined,
+    isNotDefined,
+    last,
+    strokeDashTypes,
+} from "../utils";
 
 interface AxisProps {
     readonly axisZoomCallback?: any; // func
@@ -56,7 +66,6 @@ interface AxisProps {
 }
 
 class Axis extends React.Component<AxisProps> {
-
     public static defaultProps = {
         edgeClip: false,
         zoomEnabled: false,
@@ -67,14 +76,22 @@ class Axis extends React.Component<AxisProps> {
 
     public render() {
         const {
-            bg, axisZoomCallback, className,
-            zoomCursorClassName, zoomEnabled, getScale,
-            inverted, transform, getMouseDelta,
-            edgeClip, onContextMenu, onDoubleClick,
+            bg,
+            axisZoomCallback,
+            className,
+            zoomCursorClassName,
+            zoomEnabled,
+            getScale,
+            inverted,
+            transform,
+            getMouseDelta,
+            edgeClip,
+            onContextMenu,
+            onDoubleClick,
         } = this.props;
 
-        const zoomCapture = zoomEnabled
-            ? <AxisZoomCapture
+        const zoomCapture = zoomEnabled ? (
+            <AxisZoomCapture
                 bg={bg}
                 getScale={getScale}
                 getMoreProps={this.getMoreProps}
@@ -86,7 +103,7 @@ class Axis extends React.Component<AxisProps> {
                 onContextMenu={onContextMenu}
                 onDoubleClick={onDoubleClick}
             />
-            : null;
+        ) : null;
 
         return (
             <g transform={`translate(${transform[0]}, ${transform[1]})`}>
@@ -106,9 +123,9 @@ class Axis extends React.Component<AxisProps> {
 
     private readonly getMoreProps = () => {
         return this.chartRef.current!.getMoreProps();
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { className, showDomain, showTicks, range, getScale } = this.props;
 
         const scale = getScale(moreProps);
@@ -121,7 +138,7 @@ class Axis extends React.Component<AxisProps> {
                 {domain}
             </g>
         );
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { showDomain, showTicks, transform, range, getScale } = this.props;
@@ -140,7 +157,7 @@ class Axis extends React.Component<AxisProps> {
         }
 
         ctx.restore();
-    }
+    };
 }
 
 function tickHelper(props, scale) {
@@ -177,22 +194,16 @@ function tickHelper(props, scale) {
         const [min, max] = scale.domain();
         const baseTickValues = d3Range(min, max, (max - min) / tickInterval);
 
-        tickValues = tickIntervalFunction
-            ? tickIntervalFunction(min, max, tickInterval)
-            : baseTickValues;
+        tickValues = tickIntervalFunction ? tickIntervalFunction(min, max, tickInterval) : baseTickValues;
     } else if (isDefined(scale.ticks)) {
         tickValues = scale.ticks(tickArguments);
     } else {
         tickValues = scale.domain();
     }
 
-    const baseFormat = scale.tickFormat
-        ? scale.tickFormat(tickArguments)
-        : identity;
+    const baseFormat = scale.tickFormat ? scale.tickFormat(tickArguments) : identity;
 
-    const format = isNotDefined(tickFormat)
-        ? baseFormat
-        : (d: any) => tickFormat(d) || "";
+    const format = isNotDefined(tickFormat) ? baseFormat : (d: any) => tickFormat(d) || "";
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
     const tickSpacing = Math.max(innerTickSize, 0) + tickPadding;
@@ -205,10 +216,10 @@ function tickHelper(props, scale) {
 
     if (orient === "bottom" || orient === "top") {
         dy = sign < 0 ? "0em" : ".71em";
-        canvas_dy = sign < 0 ? 0 : (fontSize * .71);
+        canvas_dy = sign < 0 ? 0 : fontSize * 0.71;
         textAnchor = "middle";
 
-        ticks = tickValues.map((d) => {
+        ticks = tickValues.map(d => {
             const x = Math.round(scale(d));
             return {
                 value: d,
@@ -222,34 +233,33 @@ function tickHelper(props, scale) {
         });
 
         if (showTicks) {
-
-            const nodes = ticks.map((d) => ({ id: d.value, value: d.value, fy: d.y2, origX: d.x1 }));
+            const nodes = ticks.map(d => ({ id: d.value, value: d.value, fy: d.y2, origX: d.x1 }));
 
             const simulation = forceSimulation(nodes)
-                .force("x", forceX<any>((d) => d.origX).strength(1))
+                .force("x", forceX<any>(d => d.origX).strength(1))
                 .force("collide", forceCollide(22))
                 .stop();
 
-            for (let i = 0; i < 100; ++i) { simulation.tick(); }
+            for (let i = 0; i < 100; ++i) {
+                simulation.tick();
+            }
 
-            ticks = zip(ticks, nodes)
-                .map((d) => {
-                    const a: any = d[0];
-                    const b: any = d[1];
+            ticks = zip(ticks, nodes).map(d => {
+                const a: any = d[0];
+                const b: any = d[1];
 
-                    if (Math.abs(b.x - b.origX) > 0.01) {
-                        return {
-                            ...a,
-                            x2: b.x,
-                            labelX: b.x,
-                        };
-                    }
-                    return a;
-                });
+                if (Math.abs(b.x - b.origX) > 0.01) {
+                    return {
+                        ...a,
+                        x2: b.x,
+                        labelX: b.x,
+                    };
+                }
+                return a;
+            });
         }
-
     } else {
-        ticks = tickValues.map((d) => {
+        ticks = tickValues.map(d => {
             const y = Math.round(scale(d));
             return {
                 value: d,
@@ -263,7 +273,7 @@ function tickHelper(props, scale) {
         });
 
         dy = ".32em";
-        canvas_dy = (fontSize * .32);
+        canvas_dy = fontSize * 0.32;
         textAnchor = sign < 0 ? "end" : "start";
     }
 
@@ -272,7 +282,7 @@ function tickHelper(props, scale) {
         ticks,
         scale,
         tickStroke,
-        tickLabelFill: (tickLabelFill || tickStroke),
+        tickLabelFill: tickLabelFill || tickStroke,
         tickStrokeOpacity,
         tickStrokeWidth,
         tickStrokeDasharray,
@@ -308,13 +318,12 @@ function axisLineSVG(props: AxisProps, range) {
             fill={fill}
             opacity={strokeOpacity}
             stroke={stroke}
-            strokeWidth={strokeWidth} >
-        </path>
+            strokeWidth={strokeWidth}
+        ></path>
     );
 }
 
 function drawAxisLine(ctx: CanvasRenderingContext2D, props: AxisProps, range) {
-
     const { orient, outerTickSize, stroke, strokeWidth, strokeOpacity } = props;
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
@@ -391,7 +400,8 @@ function Tick(props: TickProps) {
                 x1={x1}
                 y1={y1}
                 x2={x2}
-                y2={y2} />
+                y2={y2}
+            />
             <text
                 dy={dy}
                 x={labelX}
@@ -400,7 +410,8 @@ function Tick(props: TickProps) {
                 fontSize={fontSize}
                 fontWeight={fontWeight}
                 fontFamily={fontFamily}
-                textAnchor={textAnchor}>
+                textAnchor={textAnchor}
+            >
                 {props.children}
             </text>
         </g>
@@ -417,20 +428,27 @@ function axisTicksSVG(props, scale) {
         <g>
             {ticks.map((tick, idx) => {
                 return (
-                    <Tick key={idx}
+                    <Tick
+                        key={idx}
                         tickStroke={tickStroke}
                         tickLabelFill={tickLabelFill}
                         tickStrokeWidth={tickStrokeWidth}
                         tickStrokeOpacity={tickStrokeOpacity}
                         tickStrokeDasharray={tickStrokeDasharray}
                         dy={dy}
-                        x1={tick.x1} y1={tick.y1}
-                        x2={tick.x2} y2={tick.y2}
-                        labelX={tick.labelX} labelY={tick.labelY}
+                        x1={tick.x1}
+                        y1={tick.y1}
+                        x2={tick.x2}
+                        y2={tick.y2}
+                        labelX={tick.labelX}
+                        labelY={tick.labelY}
                         textAnchor={textAnchor}
                         fontSize={fontSize}
                         fontWeight={fontWeight}
-                        fontFamily={fontFamily}>{format(tick.value)}</Tick>
+                        fontFamily={fontFamily}
+                    >
+                        {format(tick.value)}
+                    </Tick>
                 );
             })}
         </g>
@@ -438,7 +456,6 @@ function axisTicksSVG(props, scale) {
 }
 
 function drawTicks(ctx: CanvasRenderingContext2D, result, moreProps) {
-
     const { showGridLines, tickStroke, tickStrokeOpacity, tickLabelFill } = result;
     const { textAnchor, fontSize, fontFamily, fontWeight, ticks, showTickLabel } = result;
 
@@ -446,12 +463,12 @@ function drawTicks(ctx: CanvasRenderingContext2D, result, moreProps) {
 
     ctx.fillStyle = tickStroke;
 
-    ticks.forEach((tick) => {
+    ticks.forEach(tick => {
         drawEachTick(ctx, tick, result);
     });
 
     if (showGridLines) {
-        ticks.forEach((tick) => {
+        ticks.forEach(tick => {
             drawGridLine(ctx, tick, result, moreProps);
         });
     }
@@ -461,7 +478,7 @@ function drawTicks(ctx: CanvasRenderingContext2D, result, moreProps) {
     ctx.textAlign = textAnchor === "middle" ? "center" : textAnchor;
 
     if (showTickLabel) {
-        ticks.forEach((tick) => {
+        ticks.forEach(tick => {
             drawEachTickLabel(ctx, tick, result);
         });
     }

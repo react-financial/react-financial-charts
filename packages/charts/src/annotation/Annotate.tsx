@@ -10,21 +10,22 @@ interface AnnotateProps {
 }
 
 export class Annotate extends React.Component<AnnotateProps> {
-
     public static defaultProps = {
-        className: "react-financial-charts-enable-interaction react-financial-charts-annotate react-financial-charts-default-cursor",
+        className:
+            "react-financial-charts-enable-interaction react-financial-charts-annotate react-financial-charts-default-cursor",
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                svgDraw={this.renderSVG}
-                drawOn={["pan"]} />
-        );
+        return <GenericChartComponent svgDraw={this.renderSVG} drawOn={["pan"]} />;
     }
 
     private readonly renderSVG = (moreProps: any) => {
-        const { xAccessor, xScale, chartConfig: { yScale }, plotData } = moreProps;
+        const {
+            xAccessor,
+            xScale,
+            chartConfig: { yScale },
+            plotData,
+        } = moreProps;
 
         const { className, usingProps, with: Annotation, when } = this.props;
 
@@ -41,14 +42,15 @@ export class Annotate extends React.Component<AnnotateProps> {
                             yScale={yScale}
                             xAccessor={xAccessor}
                             plotData={plotData}
-                            datum={d} />
+                            datum={d}
+                        />
                     );
                 })}
             </g>
         );
-    }
+    };
 
     private readonly plotfilter = (when: any, plotData: any[]) => {
         return plotData.filter(when);
-    }
+    };
 }

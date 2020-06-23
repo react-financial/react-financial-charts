@@ -42,21 +42,20 @@ interface Merge {
 
 // applies an algorithm to an array, merging the result back into
 // the source array using the given merge function.
-export default function () {
-
+export default function() {
     let algorithm = identity;
     let skipUndefined = true;
     let merge = noop;
 
     const mergeCompute = (data: any[]) => {
-        const zip = zipper()
-            .combine((datum, indicator) => {
-                const result = (skipUndefined && isNotDefined(indicator))
+        const zip = zipper().combine((datum, indicator) => {
+            const result =
+                skipUndefined && isNotDefined(indicator)
                     ? datum
-                    // @ts-ignore
-                    : merge(datum, indicator);
-                return isNotDefined(result) ? datum : result;
-            });
+                    : // @ts-ignore
+                      merge(datum, indicator);
+            return isNotDefined(result) ? datum : result;
+        });
 
         // @ts-ignore
         return zip(data, algorithm(data));

@@ -9,7 +9,7 @@ import { MACD as appearanceOptions } from "./defaultOptionsForAppearance";
 const ALGORITHM_TYPE = "MACD";
 
 interface MACDIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): MACDIndicator;
     accessor(): any;
@@ -28,19 +28,20 @@ interface MACDIndicator {
     options(newOptions: MACDOptions): MACDIndicator;
 }
 
-export default function () {
-
+export default function() {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
         .fill(appearanceOptions.fill)
         .stroke(appearanceOptions.stroke)
-        .accessor((d) => d.macd);
+        .accessor(d => d.macd);
 
     const underlyingAlgorithm = macd();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.macd = i; });
+        .merge((datum, i) => {
+            datum.macd = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

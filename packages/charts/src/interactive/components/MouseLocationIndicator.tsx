@@ -22,7 +22,6 @@ interface MouseLocationIndicatorProps {
 }
 
 export class MouseLocationIndicator extends React.Component<MouseLocationIndicatorProps> {
-
     public static defaultProps = {
         onMouseMove: noop,
         onMouseDown: noop,
@@ -69,23 +68,30 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
 
     private readonly xy = (moreProps, e) => {
         const { xAccessor, plotData } = moreProps;
-        const { mouseXY, currentItem, xScale, chartConfig: { yScale } } = moreProps;
+        const {
+            mouseXY,
+            currentItem,
+            xScale,
+            chartConfig: { yScale },
+        } = moreProps;
         const { enabled, snap, shouldDisableSnap, snapTo } = this.props;
 
         if (enabled && isDefined(currentItem) && isDefined(e)) {
-            const xValue = snap && !shouldDisableSnap(e)
-                ? xAccessor(currentItem)
-                : getXValue(xScale, xAccessor, mouseXY, plotData);
-            const yValue = snap && !shouldDisableSnap(e)
-                ? getClosestValue(snapTo(currentItem), yScale.invert(mouseXY[1]))
-                : yScale.invert(mouseXY[1]);
+            const xValue =
+                snap && !shouldDisableSnap(e)
+                    ? xAccessor(currentItem)
+                    : getXValue(xScale, xAccessor, mouseXY, plotData);
+            const yValue =
+                snap && !shouldDisableSnap(e)
+                    ? getClosestValue(snapTo(currentItem), yScale.invert(mouseXY[1]))
+                    : yScale.invert(mouseXY[1]);
 
             const x = xScale(xValue);
             const y = yScale(yValue);
 
             return { xValue, yValue, x, y };
         }
-    }
+    };
 
     private readonly handleClick = (moreProps, e) => {
         const pos = this.xy(moreProps, e);
@@ -94,7 +100,7 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
             this.mutableState = { x, y };
             this.props.onClick([xValue, yValue], moreProps, e);
         }
-    }
+    };
 
     private readonly handleMouseDown = (moreProps, e) => {
         const pos = this.xy(moreProps, e);
@@ -103,7 +109,7 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
             this.mutableState = { x, y };
             this.props.onMouseDown([xValue, yValue], moreProps, e);
         }
-    }
+    };
 
     private readonly handleMousePosChange = (moreProps, e) => {
         if (!shallowEqual(moreProps.mousXY, moreProps.prevMouseXY)) {
@@ -114,7 +120,7 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
                 this.props.onMouseMove([xValue, yValue], e);
             }
         }
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { enabled, r, stroke, strokeWidth } = this.props;
@@ -128,22 +134,15 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
             ctx.arc(x, y, r, 0, 2 * Math.PI, false);
             ctx.stroke();
         }
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { enabled, r, stroke, strokeWidth, opacity } = this.props;
         const { x, y } = this.mutableState;
         const { show } = moreProps;
 
-        return enabled && show && isDefined(x)
-            ? <circle
-                cx={x}
-                cy={y}
-                r={r}
-                stroke={stroke}
-                opacity={opacity}
-                fill="none"
-                strokeWidth={strokeWidth} />
-            : null;
-    }
+        return enabled && show && isDefined(x) ? (
+            <circle cx={x} cy={y} r={r} stroke={stroke} opacity={opacity} fill="none" strokeWidth={strokeWidth} />
+        ) : null;
+    };
 }

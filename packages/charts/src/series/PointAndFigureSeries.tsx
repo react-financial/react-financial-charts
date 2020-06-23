@@ -8,18 +8,17 @@ interface PointAndFigureSeriesProps {
     readonly className?: string;
     readonly clip?: boolean;
     readonly fill?: {
-        up: string,
-        down: string,
+        up: string;
+        down: string;
     };
     readonly stroke?: {
-        up: string,
-        down: string,
+        up: string;
+        down: string;
     };
     readonly strokeWidth?: number;
 }
 
 export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-point-and-figure",
         strokeWidth: 1,
@@ -48,9 +47,13 @@ export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesPr
         );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { xAccessor } = moreProps;
-        const { xScale, chartConfig: { yScale }, plotData } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+            plotData,
+        } = moreProps;
 
         const {
             stroke = PointAndFigureSeries.defaultProps.stroke,
@@ -69,33 +72,60 @@ export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesPr
                             if (col.direction > 0) {
                                 return (
                                     <g key={`${idx}-${i}`}>
-                                        <line className="up" strokeWidth={strokeWidth} stroke={stroke.up} fill={fill.up}
-                                            x1={0} y1={box.open} x2={box.columnWidth} y2={box.close} />
-                                        <line className="up" strokeWidth={strokeWidth} stroke={stroke.up} fill={fill.up}
-                                            x1={0} y1={box.close} x2={box.columnWidth} y2={box.open} />
+                                        <line
+                                            className="up"
+                                            strokeWidth={strokeWidth}
+                                            stroke={stroke.up}
+                                            fill={fill.up}
+                                            x1={0}
+                                            y1={box.open}
+                                            x2={box.columnWidth}
+                                            y2={box.close}
+                                        />
+                                        <line
+                                            className="up"
+                                            strokeWidth={strokeWidth}
+                                            stroke={stroke.up}
+                                            fill={fill.up}
+                                            x1={0}
+                                            y1={box.close}
+                                            x2={box.columnWidth}
+                                            y2={box.open}
+                                        />
                                     </g>
                                 );
                             }
                             return (
-                                <ellipse key={`${idx}-${i}`}
-                                    className="down" strokeWidth={strokeWidth} stroke={stroke.down} fill={fill.down}
-                                    cx={box.columnWidth / 2} cy={(box.open + box.close) / 2}
-                                    rx={box.columnWidth / 2} ry={box.boxHeight / 2} />
+                                <ellipse
+                                    key={`${idx}-${i}`}
+                                    className="down"
+                                    strokeWidth={strokeWidth}
+                                    stroke={stroke.down}
+                                    fill={fill.down}
+                                    cx={box.columnWidth / 2}
+                                    cy={(box.open + box.close) / 2}
+                                    rx={box.columnWidth / 2}
+                                    ry={box.boxHeight / 2}
+                                />
                             );
                         })}
                     </g>
                 ))}
             </g>
         );
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor } = moreProps;
-        const { xScale, chartConfig: { yScale }, plotData } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+            plotData,
+        } = moreProps;
         const columns = getColumns(xScale, xAccessor, yScale, plotData);
 
         drawOnCanvas(ctx, this.props, columns);
-    }
+    };
 }
 
 function drawOnCanvas(ctx: CanvasRenderingContext2D, props, columns) {
@@ -103,9 +133,9 @@ function drawOnCanvas(ctx: CanvasRenderingContext2D, props, columns) {
 
     ctx.lineWidth = strokeWidth;
 
-    columns.forEach((col) => {
+    columns.forEach(col => {
         const [offsetX, offsetY] = col.offset;
-        col.boxes.forEach((box) => {
+        col.boxes.forEach(box => {
             if (col.direction > 0) {
                 ctx.fillStyle = fill.up;
                 ctx.strokeStyle = stroke.up;
@@ -137,11 +167,9 @@ function drawOnCanvas(ctx: CanvasRenderingContext2D, props, columns) {
 }
 
 function getColumns(xScale, xAccessor, yScale, plotData) {
+    const width = xScale(xAccessor(plotData[plotData.length - 1])) - xScale(xAccessor(plotData[0]));
 
-    const width = xScale(xAccessor(plotData[plotData.length - 1]))
-        - xScale(xAccessor(plotData[0]));
-
-    const columnWidth = (width / (plotData.length - 1));
+    const columnWidth = width / (plotData.length - 1);
 
     let anyBox;
     let j = 0;
@@ -157,16 +185,16 @@ function getColumns(xScale, xAccessor, yScale, plotData) {
     const boxHeight = Math.abs(yScale(anyBox.open) - yScale(anyBox.close));
 
     const columns = plotData
-        .filter((d) => isDefined(d.close))
-        .map((d) => {
-            const boxes = d.boxes.map((box) => ({
+        .filter(d => isDefined(d.close))
+        .map(d => {
+            const boxes = d.boxes.map(box => ({
                 columnWidth,
                 boxHeight,
                 open: yScale(box.open),
                 close: yScale(box.close),
             }));
 
-            const xOffset = (xScale(xAccessor(d)) - (columnWidth / 2));
+            const xOffset = xScale(xAccessor(d)) - columnWidth / 2;
             return {
                 boxes,
                 direction: d.direction,

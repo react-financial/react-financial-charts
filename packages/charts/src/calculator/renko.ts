@@ -1,22 +1,23 @@
-
 import { functor, isNotDefined, merge } from "../utils";
 
 import atr from "./atr";
 
 import { Renko as defaultOptions } from "./defaultOptionsForComputation";
 
-export default function () {
+export default function() {
     let options = defaultOptions;
 
-    let dateAccessor = (d) => d.date;
-    let dateMutator = (d, date) => { d.date = date; };
+    let dateAccessor = d => d.date;
+    let dateMutator = (d, date) => {
+        d.date = date;
+    };
 
     const calculator = (rawData: any[]) => {
         const { reversalType, fixedBrickSize, sourcePath, windowSize } = options;
 
-        const source = sourcePath === "high/low"
-            ? (d) => ({ high: d.high, low: d.low })
-            : (d) => ({ high: d.close, low: d.close });
+        const source =
+            // eslint-disable-next-line prettier/prettier
+            sourcePath === "high/low" ? (d => ({ high: d.high, low: d.low })) : (d => ({ high: d.close, low: d.close }));
 
         const pricingMethod = source;
         let brickSize;
@@ -26,10 +27,12 @@ export default function () {
 
             const atrCalculator = merge()
                 .algorithm(atrAlgorithm)
-                .merge((d, c) => { d["atr" + windowSize] = c; });
+                .merge((d, c) => {
+                    d["atr" + windowSize] = c;
+                });
 
             atrCalculator(rawData);
-            brickSize = (d) => d["atr" + windowSize];
+            brickSize = d => d["atr" + windowSize];
         } else {
             brickSize = functor(fixedBrickSize);
         }
@@ -65,7 +68,7 @@ export default function () {
         } = {};
         let direction = 0;
 
-        rawData.forEach(function (d, idx) {
+        rawData.forEach(function(d, idx) {
             if (isNotDefined(brick.from)) {
                 brick.high = d.high;
                 brick.low = d.low;
@@ -80,15 +83,16 @@ export default function () {
             }
             brick.volume = (brick.volume || 0) + d.volume;
 
-            const prevCloseToHigh = (prevBrickClose - pricingMethod(d).high);
-            const prevCloseToLow = (prevBrickClose - pricingMethod(d).low);
-            const prevOpenToHigh = (prevBrickOpen - pricingMethod(d).high);
-            const prevOpenToLow = (prevBrickOpen - pricingMethod(d).low);
+            const prevCloseToHigh = prevBrickClose - pricingMethod(d).high;
+            const prevCloseToLow = prevBrickClose - pricingMethod(d).low;
+            const prevOpenToHigh = prevBrickOpen - pricingMethod(d).high;
+            const prevOpenToLow = prevBrickOpen - pricingMethod(d).low;
             const priceMovement = Math.min(
                 Math.abs(prevCloseToHigh),
                 Math.abs(prevCloseToLow),
                 Math.abs(prevOpenToHigh),
-                Math.abs(prevOpenToLow));
+                Math.abs(prevOpenToLow),
+            );
 
             // @ts-ignore
             brick.high = Math.max(brick.high, d.high);
@@ -125,20 +129,22 @@ export default function () {
             if (brickSize(d)) {
                 const noOfBricks = Math.floor(priceMovement / brickSize(d));
 
-                brick.open = (Math.abs(prevCloseToHigh) < Math.abs(prevOpenToHigh)
-                    || Math.abs(prevCloseToLow) < Math.abs(prevOpenToLow))
-                    ? prevBrickClose
-                    : prevBrickOpen;
+                brick.open =
+                    Math.abs(prevCloseToHigh) < Math.abs(prevOpenToHigh) ||
+                    Math.abs(prevCloseToLow) < Math.abs(prevOpenToLow)
+                        ? prevBrickClose
+                        : prevBrickOpen;
 
                 if (noOfBricks >= 1) {
                     let j = 0;
                     for (j = 0; j < noOfBricks; j++) {
-                        // @ts-ignore
-                        brick.close = (brick.open < pricingMethod(d).high)
-                            // if brick open is less than current price it means it is green/hollow brick
-                            ? brick.open + brickSize(d)
+                        brick.close =
                             // @ts-ignore
-                            : brick.open - brickSize(d);
+                            brick.open < pricingMethod(d).high
+                                ? // if brick open is less than current price it means it is green/hollow brick
+                                  brick.open + brickSize(d)
+                                : // @ts-ignore
+                                  brick.open - brickSize(d);
                         // @ts-ignore
                         direction = brick.close > brick.open ? 1 : -1;
                         brick.direction = direction;
@@ -181,10 +187,8 @@ export default function () {
                     }
                 }
             }
-
         });
         return renkoData;
-
     };
 
     calculator.options = (newOptions?: any) => {

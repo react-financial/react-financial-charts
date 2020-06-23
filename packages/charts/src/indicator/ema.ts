@@ -7,7 +7,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "EMA";
 
 interface EMAIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): EMAIndicator;
     accessor(): any;
@@ -26,17 +26,18 @@ interface EMAIndicator {
     options(newOptions: EMAOptions): EMAIndicator;
 }
 
-export default function () {
-
+export default function() {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.ema);
+        .accessor(d => d.ema);
 
     const underlyingAlgorithm = ema();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.ema = i; });
+        .merge((datum, i) => {
+            datum.ema = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

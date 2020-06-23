@@ -19,13 +19,12 @@ interface ChartProps {
 }
 
 class Interaction extends React.Component<ChartProps> {
-
     private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };
-    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
-        .inputDateAccessor((d: IOHLCData) => d.date);
+    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
+        (d: IOHLCData) => d.date,
+    );
 
     public render() {
-
         const {
             clamp,
             data: initialData,
@@ -40,12 +39,7 @@ class Interaction extends React.Component<ChartProps> {
 
         const { margin, xScaleProvider } = this;
 
-        const {
-            data,
-            xScale,
-            xAccessor,
-            displayXAccessor,
-        } = xScaleProvider(initialData);
+        const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(initialData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -67,10 +61,9 @@ class Interaction extends React.Component<ChartProps> {
                 xAccessor={xAccessor}
                 xExtents={xExtents}
                 zoomEvent={!disableZoom}
-                zoomAnchor={zoomAnchor}>
-                <Chart
-                    id={1}
-                    yExtents={this.yExtents}>
+                zoomAnchor={zoomAnchor}
+            >
+                <Chart id={1} yExtents={this.yExtents}>
                     <CandlestickSeries />
                     <XAxis ticks={6} />
                     <YAxis ticks={5} />
@@ -81,7 +74,7 @@ class Interaction extends React.Component<ChartProps> {
 
     private readonly yExtents = (data: IOHLCData) => {
         return [data.high, data.low];
-    }
+    };
 }
 
 export default withOHLCData()(withSize()(withDeviceRatio()(Interaction)));

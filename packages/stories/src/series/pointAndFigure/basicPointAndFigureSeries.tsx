@@ -15,30 +15,19 @@ interface ChartProps {
 }
 
 class BasicPointAndFigureSeries extends React.Component<ChartProps> {
-
     private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };
-    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
-        .inputDateAccessor((d: IOHLCData) => d.date);
+    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
+        (d: IOHLCData) => d.date,
+    );
 
     public render() {
-
-        const {
-            data: initialData,
-            height,
-            ratio,
-            width,
-        } = this.props;
+        const { data: initialData, height, ratio, width } = this.props;
 
         const calculator = pointAndFigure();
 
         const calculatedData = calculator(initialData);
 
-        const {
-            data,
-            xScale,
-            xAccessor,
-            displayXAccessor,
-        } = this.xScaleProvider(calculatedData);
+        const { data, xScale, xAccessor, displayXAccessor } = this.xScaleProvider(calculatedData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -55,10 +44,9 @@ class BasicPointAndFigureSeries extends React.Component<ChartProps> {
                 seriesName="Data"
                 xScale={xScale}
                 xAccessor={xAccessor}
-                xExtents={xExtents}>
-                <Chart
-                    id={1}
-                    yExtents={this.yExtents}>
+                xExtents={xExtents}
+            >
+                <Chart id={1} yExtents={this.yExtents}>
                     <PointAndFigureSeries />
                     <XAxis />
                     <YAxis />
@@ -69,7 +57,7 @@ class BasicPointAndFigureSeries extends React.Component<ChartProps> {
 
     private readonly yExtents = (data: IOHLCData) => {
         return [data.high, data.low];
-    }
+    };
 }
 
 export const Daily = withOHLCData()(withSize()(withDeviceRatio()(BasicPointAndFigureSeries)));

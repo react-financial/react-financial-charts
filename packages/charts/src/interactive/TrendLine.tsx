@@ -2,12 +2,7 @@ import * as React from "react";
 
 import { isDefined, isNotDefined, noop, strokeDashTypes } from "../utils";
 
-import {
-    getValueFromOverride,
-    isHoverForInteractiveType,
-    saveNodeType,
-    terminate,
-} from "./utils";
+import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
 
 import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
 import { MouseLocationIndicator } from "./components/MouseLocationIndicator";
@@ -27,9 +22,10 @@ interface TrendLineProps {
     readonly currentPositionstrokeOpacity?: number;
     readonly currentPositionRadius?: number;
     readonly type:
-    "XLINE" | // extends from -Infinity to +Infinity
-    "RAY" | // extends to +/-Infinity in one direction
-    "LINE"; // extends between the set bounds
+        | "XLINE" // extends from -Infinity to +Infinity
+        | "RAY" // extends to +/-Infinity in one direction
+        | "LINE"; // extends between the set bounds
+    // eslint-disable-next-line @typescript-eslint/ban-types
     readonly hoverText: object;
     readonly trends: any[];
     readonly appearance: {
@@ -50,7 +46,6 @@ interface TrendLineState {
 }
 
 export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
-
     public static defaultProps = {
         type: "XLINE",
         onStart: noop,
@@ -60,7 +55,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
         currentPositionstrokeOpacity: 1,
         currentPositionStrokeWidth: 3,
         currentPositionRadius: 0,
-        shouldDisableSnap: (e) => (e.button === 2 || e.shiftKey),
+        shouldDisableSnap: e => e.button === 2 || e.shiftKey,
         hoverText: {
             ...HoverTextNearMouse.defaultProps,
             enable: true,
@@ -95,11 +90,9 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
         this.terminate = terminate.bind(this);
         this.saveNodeType = saveNodeType.bind(this);
 
-        this.getSelectionState = isHoverForInteractiveType("trends")
-            .bind(this);
+        this.getSelectionState = isHoverForInteractiveType("trends").bind(this);
 
-        this.state = {
-        };
+        this.state = {};
     }
 
     public render() {
@@ -120,80 +113,84 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
 
         const { current, override } = this.state;
 
-        const tempLine = isDefined(current) && isDefined(current.end)
-            ? <StraightLine
-                type={type}
-                x1Value={current.start[0]}
-                y1Value={current.start[1]}
-                x2Value={current.end[0]}
-                y2Value={current.end[1]}
-                stroke={appearance.stroke}
-                strokeWidth={appearance.strokeWidth}
-                strokeOpacity={appearance.strokeOpacity} />
-            : null;
+        const tempLine =
+            isDefined(current) && isDefined(current.end) ? (
+                <StraightLine
+                    type={type}
+                    x1Value={current.start[0]}
+                    y1Value={current.start[1]}
+                    x2Value={current.end[0]}
+                    y2Value={current.end[1]}
+                    stroke={appearance.stroke}
+                    strokeWidth={appearance.strokeWidth}
+                    strokeOpacity={appearance.strokeOpacity}
+                />
+            ) : null;
 
-        return <g>
-            {trends.map((each, idx) => {
-                const eachAppearance = isDefined(each.appearance)
-                    ? { ...appearance, ...each.appearance }
-                    : appearance;
+        return (
+            <g>
+                {trends.map((each, idx) => {
+                    const eachAppearance = isDefined(each.appearance)
+                        ? { ...appearance, ...each.appearance }
+                        : appearance;
 
-                const hoverTextWithDefault = {
-                    ...TrendLine.defaultProps.hoverText,
-                    ...hoverText,
-                };
+                    const hoverTextWithDefault = {
+                        ...TrendLine.defaultProps.hoverText,
+                        ...hoverText,
+                    };
 
-                return <EachTrendLine key={idx}
-                    ref={this.saveNodeType(idx)}
-                    index={idx}
-                    type={each.type}
-                    selected={each.selected}
-                    x1Value={getValueFromOverride(override, idx, "x1Value", each.start[0])}
-                    y1Value={getValueFromOverride(override, idx, "y1Value", each.start[1])}
-                    x2Value={getValueFromOverride(override, idx, "x2Value", each.end[0])}
-                    y2Value={getValueFromOverride(override, idx, "y2Value", each.end[1])}
-                    stroke={eachAppearance.stroke}
-                    strokeWidth={eachAppearance.strokeWidth}
-                    strokeOpacity={eachAppearance.strokeOpacity}
-                    strokeDasharray={eachAppearance.strokeDasharray}
-                    edgeStroke={eachAppearance.edgeStroke}
-                    edgeFill={eachAppearance.edgeFill}
-                    edgeStrokeWidth={eachAppearance.edgeStrokeWidth}
-                    r={eachAppearance.r}
-                    hoverText={hoverTextWithDefault}
-                    onDrag={this.handleDragLine}
-                    onDragComplete={this.handleDragLineComplete}
-                    edgeInteractiveCursor="react-financial-charts-move-cursor"
-                    lineInteractiveCursor="react-financial-charts-move-cursor"
-                />;
-            })}
-            {tempLine}
-            <MouseLocationIndicator
-                enabled={enabled}
-                snap={snap}
-                shouldDisableSnap={shouldDisableSnap}
-                snapTo={snapTo}
-                r={currentPositionRadius}
-                stroke={currentPositionStroke}
-                opacity={currentPositionstrokeOpacity}
-                strokeWidth={currentPositionStrokeWidth}
-                onMouseDown={this.handleStart}
-                onClick={this.handleEnd}
-                onMouseMove={this.handleDrawLine}
-            />
-        </g>;
+                    return (
+                        <EachTrendLine
+                            key={idx}
+                            ref={this.saveNodeType(idx)}
+                            index={idx}
+                            type={each.type}
+                            selected={each.selected}
+                            x1Value={getValueFromOverride(override, idx, "x1Value", each.start[0])}
+                            y1Value={getValueFromOverride(override, idx, "y1Value", each.start[1])}
+                            x2Value={getValueFromOverride(override, idx, "x2Value", each.end[0])}
+                            y2Value={getValueFromOverride(override, idx, "y2Value", each.end[1])}
+                            stroke={eachAppearance.stroke}
+                            strokeWidth={eachAppearance.strokeWidth}
+                            strokeOpacity={eachAppearance.strokeOpacity}
+                            strokeDasharray={eachAppearance.strokeDasharray}
+                            edgeStroke={eachAppearance.edgeStroke}
+                            edgeFill={eachAppearance.edgeFill}
+                            edgeStrokeWidth={eachAppearance.edgeStrokeWidth}
+                            r={eachAppearance.r}
+                            hoverText={hoverTextWithDefault}
+                            onDrag={this.handleDragLine}
+                            onDragComplete={this.handleDragLineComplete}
+                            edgeInteractiveCursor="react-financial-charts-move-cursor"
+                            lineInteractiveCursor="react-financial-charts-move-cursor"
+                        />
+                    );
+                })}
+                {tempLine}
+                <MouseLocationIndicator
+                    enabled={enabled}
+                    snap={snap}
+                    shouldDisableSnap={shouldDisableSnap}
+                    snapTo={snapTo}
+                    r={currentPositionRadius}
+                    stroke={currentPositionStroke}
+                    opacity={currentPositionstrokeOpacity}
+                    strokeWidth={currentPositionStrokeWidth}
+                    onMouseDown={this.handleStart}
+                    onClick={this.handleEnd}
+                    onMouseMove={this.handleDrawLine}
+                />
+            </g>
+        );
     }
 
     private readonly handleEnd = (xyValue, moreProps, e) => {
         const { current } = this.state;
         const { trends, appearance, type } = this.props;
 
-        if (this.mouseMoved
-            && isDefined(current)
-            && isDefined(current.start)
-        ) {
+        if (this.mouseMoved && isDefined(current) && isDefined(current.start)) {
             const newTrends = [
-                ...trends.map((d) => ({ ...d, selected: false })),
+                ...trends.map(d => ({ ...d, selected: false })),
                 {
                     start: current.start,
                     end: xyValue,
@@ -202,14 +199,17 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                     type,
                 },
             ];
-            this.setState({
-                current: null,
-                trends: newTrends,
-            }, () => {
-                this.props.onComplete(newTrends, moreProps, e);
-            });
+            this.setState(
+                {
+                    current: null,
+                    trends: newTrends,
+                },
+                () => {
+                    this.props.onComplete(newTrends, moreProps, e);
+                },
+            );
         }
-    }
+    };
 
     private readonly handleStart = (xyValue, moreProps, e) => {
         const { current } = this.state;
@@ -217,18 +217,21 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
         if (isNotDefined(current) || isNotDefined(current.start)) {
             this.mouseMoved = false;
 
-            this.setState({
-                current: {
-                    start: xyValue,
-                    end: null,
+            this.setState(
+                {
+                    current: {
+                        start: xyValue,
+                        end: null,
+                    },
                 },
-            }, () => {
-                this.props.onStart(moreProps, e);
-            });
+                () => {
+                    this.props.onStart(moreProps, e);
+                },
+            );
         }
-    }
+    };
 
-    private readonly handleDrawLine = (xyValue) => {
+    private readonly handleDrawLine = xyValue => {
         const { current } = this.state;
         if (isDefined(current) && isDefined(current.start)) {
             this.mouseMoved = true;
@@ -239,32 +242,36 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                 },
             });
         }
-    }
+    };
 
-    private readonly handleDragLineComplete = (moreProps) => {
+    private readonly handleDragLineComplete = moreProps => {
         const { override } = this.state;
         if (isDefined(override)) {
             const { trends } = this.props;
-            const newTrends = trends
-                .map((each, idx) => idx === override.index
+            const newTrends = trends.map((each, idx) =>
+                idx === override.index
                     ? {
-                        ...each,
-                        start: [override.x1Value, override.y1Value],
-                        end: [override.x2Value, override.y2Value],
-                        selected: true,
-                    }
+                          ...each,
+                          start: [override.x1Value, override.y1Value],
+                          end: [override.x2Value, override.y2Value],
+                          selected: true,
+                      }
                     : {
-                        ...each,
-                        selected: false,
-                    });
+                          ...each,
+                          selected: false,
+                      },
+            );
 
-            this.setState({
-                override: null,
-            }, () => {
-                this.props.onComplete(newTrends, moreProps);
-            });
+            this.setState(
+                {
+                    override: null,
+                },
+                () => {
+                    this.props.onComplete(newTrends, moreProps);
+                },
+            );
         }
-    }
+    };
 
     private readonly handleDragLine = (index, newXYValue) => {
         this.setState({
@@ -273,5 +280,5 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                 ...newXYValue,
             },
         });
-    }
+    };
 }

@@ -1,4 +1,3 @@
-
 import * as React from "react";
 
 import GenericChartComponent from "../GenericChartComponent";
@@ -11,29 +10,28 @@ interface MouseCoordinateXV2Props {
     readonly at?: "bottom" | "top";
     readonly orient?: "bottom" | "top";
     readonly text?: {
-        fontStyle: string,
-        fontWeight: string,
-        fontFamily: string,
-        fontSize: number,
-        fill: string | any, // func
+        fontStyle: string;
+        fontWeight: string;
+        fontFamily: string;
+        fontSize: number;
+        fill: string | any; // func
     };
     readonly bg: {
-        fill: string | any, // func
-        stroke: string,
-        strokeWidth: number,
+        fill: string | any; // func
+        stroke: string;
+        strokeWidth: number;
         padding: {
-            left: number,
-            right: number,
-            top: number,
-            bottom: number,
-        },
+            left: number;
+            right: number;
+            top: number;
+            bottom: number;
+        };
     };
     readonly dx?: number;
     readonly dy?: number;
 }
 
 export class MouseCoordinateXV2 extends React.Component<MouseCoordinateXV2Props> {
-
     public static defaultProps = {
         xPosition: defaultXPosition,
         drawCoordinate: defaultDrawCoordinate,
@@ -80,7 +78,7 @@ export class MouseCoordinateXV2 extends React.Component<MouseCoordinateXV2Props>
             const shape = getXCoordinateInfo(ctx, this.props, moreProps);
             drawCoordinate(ctx, shape, this.props, moreProps);
         }
-    }
+    };
 }
 
 function defaultXPosition(props, moreProps) {
@@ -93,7 +91,10 @@ function getXCoordinateInfo(ctx: CanvasRenderingContext2D, props, moreProps) {
     const xValue = xPosition(props, moreProps);
     const { at, displayFormat } = props;
     const { text } = props;
-    const { xScale, chartConfig: { height } } = moreProps;
+    const {
+        xScale,
+        chartConfig: { height },
+    } = moreProps;
     ctx.font = `${text.fontStyle} ${text.fontWeight} ${text.fontSize}px ${text.fontFamily}`;
 
     const t = displayFormat(xValue);
@@ -110,12 +111,7 @@ function getXCoordinateInfo(ctx: CanvasRenderingContext2D, props, moreProps) {
     };
 }
 
-function defaultDrawCoordinate(
-    ctx: CanvasRenderingContext2D,
-    shape,
-    props,
-    moreProps,
-) {
+function defaultDrawCoordinate(ctx: CanvasRenderingContext2D, shape, props, moreProps) {
     const { x, y, textWidth, text } = shape;
     const { orient, dx, dy } = props;
 

@@ -15,11 +15,10 @@ interface ElderRaySeriesProps {
     readonly straightLineOpacity?: number;
     readonly straightLineStrokeDasharray?: strokeDashTypes;
     readonly widthRatio?: number;
-    readonly yAccessor: (data: any) => { bearPower: number, bullPower: number };
+    readonly yAccessor: (data: any) => { bearPower: number; bullPower: number };
 }
 
 export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
-
     public static defaultProps = {
         bearPowerFill: "#ef5350",
         bullPowerFill: "#26a69a",
@@ -56,13 +55,20 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
                     opacity={strokeOpacity}
                     widthRatio={widthRatio}
                     clip={clip}
-                    yAccessor={[this.yAccessorBullTop, this.yAccessorBearTop, this.yAccessorBullBottom, this.yAccessorBearBottom]} />
+                    yAccessor={[
+                        this.yAccessorBullTop,
+                        this.yAccessorBearTop,
+                        this.yAccessorBullBottom,
+                        this.yAccessorBearBottom,
+                    ]}
+                />
                 <StraightLine
                     className="react-financial-charts-elderray-straight-line"
                     yValue={0}
                     stroke={straightLineStroke}
                     strokeDasharray={straightLineStrokeDasharray}
-                    opacity={straightLineOpacity} />
+                    opacity={straightLineOpacity}
+                />
             </g>
         );
     }
@@ -70,33 +76,36 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
     private readonly yAccessorBullTop = (d: any) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && (yAccessor(d).bullPower > 0 ? yAccessor(d).bullPower : undefined);
-    }
+    };
 
     private readonly yAccessorBearTop = (d: any) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && (yAccessor(d).bearPower > 0 ? yAccessor(d).bearPower : undefined);
-    }
+    };
 
     private readonly yAccessorBullBottom = (d: any) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && (yAccessor(d).bullPower < 0 ? 0 : undefined);
-    }
+    };
 
     private readonly yAccessorBearBottom = (d: any) => {
         const { yAccessor } = this.props;
-        return yAccessor(d) && (yAccessor(d).bullPower < 0
-            || yAccessor(d).bullPower * yAccessor(d).bearPower < 0 // bullPower is +ve and bearPower is -ve
-            ? Math.min(0, yAccessor(d).bullPower) : undefined);
-    }
+        return (
+            yAccessor(d) &&
+            (yAccessor(d).bullPower < 0 || yAccessor(d).bullPower * yAccessor(d).bearPower < 0 // bullPower is +ve and bearPower is -ve
+                ? Math.min(0, yAccessor(d).bullPower)
+                : undefined)
+        );
+    };
 
     private readonly yAccessorForBarBase = (xScale, yScale, d) => {
         const { yAccessor } = this.props;
         const y = yAccessor(d) && Math.min(yAccessor(d).bearPower, 0);
         return yScale(y);
-    }
+    };
 
     private readonly fillForEachBar = (d, yAccessorNumber) => {
         const { bullPowerFill, bearPowerFill } = this.props;
         return yAccessorNumber % 2 === 0 ? bullPowerFill : bearPowerFill;
-    }
+    };
 }

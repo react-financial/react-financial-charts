@@ -16,7 +16,6 @@ interface ChartProps {
 }
 
 class MACDIndicator extends React.Component<ChartProps> {
-
     private readonly macdAppearance = {
         fill: {
             divergence: "#4682B4",
@@ -27,8 +26,9 @@ class MACDIndicator extends React.Component<ChartProps> {
         },
     };
     private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };
-    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
-        .inputDateAccessor((d: IOHLCData) => d.date);
+    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
+        (d: IOHLCData) => d.date,
+    );
 
     private readonly macdCalculator = macd()
         .options({
@@ -36,26 +36,17 @@ class MACDIndicator extends React.Component<ChartProps> {
             signal: 9,
             slow: 26,
         })
-        .merge((d: any, c: any) => { d.macd = c; })
+        .merge((d: any, c: any) => {
+            d.macd = c;
+        })
         .accessor((d: any) => d.macd);
 
     public render() {
-
-        const {
-            data: initialData,
-            height,
-            ratio,
-            width,
-        } = this.props;
+        const { data: initialData, height, ratio, width } = this.props;
 
         const calculatedData = this.macdCalculator(initialData);
 
-        const {
-            data,
-            xScale,
-            xAccessor,
-            displayXAccessor,
-        } = this.xScaleProvider(calculatedData);
+        const { data, xScale, xAccessor, displayXAccessor } = this.xScaleProvider(calculatedData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -75,22 +66,20 @@ class MACDIndicator extends React.Component<ChartProps> {
                 seriesName="Data"
                 xScale={xScale}
                 xAccessor={xAccessor}
-                xExtents={xExtents}>
-                <Chart
-                    id={1}
-                    yExtents={yAccessor}>
+                xExtents={xExtents}
+            >
+                <Chart id={1} yExtents={yAccessor}>
                     <XAxis />
                     <YAxis />
 
-                    <MACDSeries
-                        yAccessor={yAccessor}
-                        {...this.macdAppearance} />
+                    <MACDSeries yAccessor={yAccessor} {...this.macdAppearance} />
 
                     <MACDTooltip
                         origin={[8, 16]}
                         appearance={this.macdAppearance}
                         options={options}
-                        yAccessor={yAccessor} />
+                        yAccessor={yAccessor}
+                    />
                 </Chart>
             </ChartCanvas>
         );

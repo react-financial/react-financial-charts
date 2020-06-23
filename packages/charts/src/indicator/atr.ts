@@ -7,7 +7,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "ATR";
 
 interface ATRIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): ATRIndicator;
     accessor(): any;
@@ -26,16 +26,16 @@ interface ATRIndicator {
     options(newOptions: ATROptions): ATRIndicator;
 }
 
-export default function () {
-
-    const base = baseIndicator()
-        .type(ALGORITHM_TYPE);
+export default function() {
+    const base = baseIndicator().type(ALGORITHM_TYPE);
 
     const underlyingAlgorithm = atr();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.atr = i; });
+        .merge((datum, i) => {
+            datum.atr = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

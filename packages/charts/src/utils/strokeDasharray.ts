@@ -1,27 +1,25 @@
 export type strokeDashTypes =
-    "Solid" |
-    "ShortDash" |
-    "ShortDash2" |
-    "ShortDot" |
-    "ShortDashDot" |
-    "ShortDashDotDot" |
-    "Dot" |
-    "Dash" |
-    "LongDash" |
-    "DashDot" |
-    "LongDashDot" |
-    "LongDashDotDot";
+    | "Solid"
+    | "ShortDash"
+    | "ShortDash2"
+    | "ShortDot"
+    | "ShortDashDot"
+    | "ShortDashDotDot"
+    | "Dot"
+    | "Dash"
+    | "LongDash"
+    | "DashDot"
+    | "LongDashDot"
+    | "LongDashDotDot";
 
 export const getStrokeDasharrayCanvas = (type?: strokeDashTypes) => {
-
     const a = getStrokeDasharray(type).split(",");
 
     if (a.length === 1) {
         return [];
     }
 
-    return a.map((d) => Number(d));
-
+    return a.map(d => Number(d));
 };
 export const getStrokeDasharray = (type?: strokeDashTypes) => {
     switch (type) {

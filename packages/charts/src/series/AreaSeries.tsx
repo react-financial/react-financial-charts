@@ -27,7 +27,6 @@ interface AreaSeriesProps {
  * `AreaSeries` component
  */
 export class AreaSeries extends Component<AreaSeriesProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-area",
         fill: "#2196f3",

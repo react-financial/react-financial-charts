@@ -16,20 +16,26 @@ function createBox(d, dateAccessor, dateMutator) {
 }
 
 function updateColumns(columnData, dateAccessor, dateMutator) {
-    columnData.forEach(function (d) {
+    columnData.forEach(function(d) {
         d.startOfYear = false;
         d.startOfQuarter = false;
         d.startOfMonth = false;
         d.startOfWeek = false;
 
-        d.boxes.forEach(function (eachBox) {
-            if (isNotDefined(d.open)) { d.open = eachBox.open; }
+        d.boxes.forEach(function(eachBox) {
+            if (isNotDefined(d.open)) {
+                d.open = eachBox.open;
+            }
             d.close = eachBox.close;
             d.high = Math.max(d.open, d.close);
             d.low = Math.min(d.open, d.close);
 
-            if (isNotDefined(d.fromDate)) { d.fromDate = eachBox.fromDate; }
-            if (isNotDefined(d.date)) { d.date = eachBox.date; }
+            if (isNotDefined(d.fromDate)) {
+                d.fromDate = eachBox.fromDate;
+            }
+            if (isNotDefined(d.date)) {
+                d.date = eachBox.date;
+            }
             d.toDate = eachBox.toDate;
 
             if (eachBox.startOfYear) {
@@ -56,23 +62,24 @@ function updateColumns(columnData, dateAccessor, dateMutator) {
                 dateMutator(d, dateAccessor(eachBox));
             }
         });
-
     });
 
     return columnData;
 }
 
-export default function () {
+export default function() {
     let options = defaultOptions;
-    let dateAccessor = (d) => d.date;
-    let dateMutator = (d, date) => { d.date = date; };
+    let dateAccessor = d => d.date;
+    let dateMutator = (d, date) => {
+        d.date = date;
+    };
 
     const calculator = (rawData: any[]) => {
         const { reversal, boxSize, sourcePath } = options;
 
-        const source = sourcePath === "high/low"
-            ? (d) => ({ high: d.high, low: d.low })
-            : (d) => ({ high: d.close, low: d.close });
+        const source =
+            // eslint-disable-next-line prettier/prettier
+            sourcePath === "high/low" ? ((d) => ({ high: d.high, low: d.low })) : ((d) => ({ high: d.close, low: d.close }));
 
         const pricingMethod = source;
         const columnData: any[] = [];
@@ -91,7 +98,7 @@ export default function () {
 
         columnData.push(column);
 
-        rawData.forEach(function (d) {
+        rawData.forEach(function(d) {
             // @ts-ignore
             column.volume = (column.volume || 0) + d.volume;
 
@@ -123,17 +130,17 @@ export default function () {
             }
 
             if (columnData.length === 1 && column.boxes.length === 0) {
-                const upwardMovement = (Math.max((pricingMethod(d).high - column.open), 0)); // upward movement
-                const downwardMovement = Math.abs(Math.min((column.open - pricingMethod(d).low), 0)); // downward movement
+                const upwardMovement = Math.max(pricingMethod(d).high - column.open, 0); // upward movement
+                const downwardMovement = Math.abs(Math.min(column.open - pricingMethod(d).low, 0)); // downward movement
                 column.direction = upwardMovement > downwardMovement ? 1 : -1;
-                if (boxSize * reversal < upwardMovement
-                    || boxSize * reversal < downwardMovement) {
+                if (boxSize * reversal < upwardMovement || boxSize * reversal < downwardMovement) {
                     // enough movement to trigger a reversal
                     box.toDate = dateAccessor(d);
                     box.open = column.open;
-                    const noOfBoxes = column.direction > 0
-                        ? Math.floor(upwardMovement / boxSize)
-                        : Math.floor(downwardMovement / boxSize);
+                    const noOfBoxes =
+                        column.direction > 0
+                            ? Math.floor(upwardMovement / boxSize)
+                            : Math.floor(downwardMovement / boxSize);
                     for (let i = 0; i < noOfBoxes; i++) {
                         // @ts-ignore
                         box.close = box.open + column.direction * boxSize;
@@ -150,11 +157,13 @@ export default function () {
                 }
             } else {
                 // one or more boxes already formed in the current column
-                const upwardMovement = (Math.max((pricingMethod(d).high - box.open), 0)); // upward movement
-                const downwardMovement = Math.abs(Math.min((pricingMethod(d).low - box.open), 0)); // downward movement
+                const upwardMovement = Math.max(pricingMethod(d).high - box.open, 0); // upward movement
+                const downwardMovement = Math.abs(Math.min(pricingMethod(d).low - box.open, 0)); // downward movement
 
-                if ((column.direction > 0 && upwardMovement > boxSize) /* rising column AND box can be formed */
-                    || (column.direction < 0 && downwardMovement > boxSize) /* falling column AND box can be formed */) {
+                if (
+                    (column.direction > 0 && upwardMovement > boxSize) /* rising column AND box can be formed */ ||
+                    (column.direction < 0 && downwardMovement > boxSize) /* falling column AND box can be formed */
+                ) {
                     // form another box
                     // @ts-ignore
                     box.close = box.open + column.direction * boxSize;
@@ -169,9 +178,10 @@ export default function () {
                     dateMutator(box, dateAccessor(d));
                 } else if (
                     /* rising column and there is downward movement to trigger a reversal */
-                    (column.direction > 0 && downwardMovement > boxSize * reversal)
+                    (column.direction > 0 && downwardMovement > boxSize * reversal) ||
                     /* falling column and there is downward movement to trigger a reversal */
-                    || (column.direction < 0 && upwardMovement > boxSize * reversal)) {
+                    (column.direction < 0 && upwardMovement > boxSize * reversal)
+                ) {
                     // reversal
 
                     box.open = box.open + -1 * column.direction * boxSize;
@@ -190,9 +200,10 @@ export default function () {
                         volume: 0,
                         direction: -1 * column.direction,
                     };
-                    const noOfBoxes = column.direction > 0
-                        ? Math.floor(upwardMovement / boxSize)
-                        : Math.floor(downwardMovement / boxSize);
+                    const noOfBoxes =
+                        column.direction > 0
+                            ? Math.floor(upwardMovement / boxSize)
+                            : Math.floor(downwardMovement / boxSize);
                     for (let i = 0; i < noOfBoxes; i++) {
                         // @ts-ignore
                         box.close = box.open + column.direction * boxSize;

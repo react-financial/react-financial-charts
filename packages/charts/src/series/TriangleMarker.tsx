@@ -7,9 +7,9 @@ interface TriangleProps {
     fill?: string | ((datum) => string);
     opacity?: number;
     point: {
-        x: number,
-        y: number,
-        datum: any,
+        x: number;
+        y: number;
+        datum: any;
     };
     className?: string;
     strokeWidth?: number;
@@ -17,7 +17,6 @@ interface TriangleProps {
 }
 
 export class Triangle extends React.Component<TriangleProps> {
-
     public static defaultProps = {
         direction: "top",
         stroke: "#4682B4",
@@ -28,10 +27,7 @@ export class Triangle extends React.Component<TriangleProps> {
     };
 
     public static drawOnCanvas = (props: TriangleProps, point, ctx: CanvasRenderingContext2D) => {
-        const {
-            opacity,
-            strokeWidth = Triangle.defaultProps.strokeWidth,
-        } = props;
+        const { opacity, strokeWidth = Triangle.defaultProps.strokeWidth } = props;
 
         ctx.strokeStyle = getStrokeColor(props);
         ctx.lineWidth = strokeWidth;
@@ -41,10 +37,9 @@ export class Triangle extends React.Component<TriangleProps> {
             ctx.fillStyle = colorToRGBA(fill, opacity);
         }
         Triangle.drawOnCanvasWithNoStateChange(props, point, ctx);
-    }
+    };
 
     public static drawOnCanvasWithNoStateChange = (props: TriangleProps, point, ctx: CanvasRenderingContext2D) => {
-
         const { width } = props;
         const w = functor(width)(point.datum);
         const { x, y } = point;
@@ -53,8 +48,8 @@ export class Triangle extends React.Component<TriangleProps> {
 
         ctx.beginPath();
         ctx.moveTo(x, y - innerHypotenuse);
-        ctx.lineTo(x + (w / 2), y + innerOpposite);
-        ctx.lineTo(x - (w / 2), y + innerOpposite);
+        ctx.lineTo(x + w / 2, y + innerOpposite);
+        ctx.lineTo(x - w / 2, y + innerOpposite);
         ctx.stroke();
 
         // TODO: rotation does not work
@@ -62,19 +57,15 @@ export class Triangle extends React.Component<TriangleProps> {
         if (rotationDeg !== null && rotationDeg !== 0) {
             ctx.save();
             ctx.translate(x, y);
-            ctx.rotate(rotationDeg * Math.PI / 180); // 45 degrees
+            ctx.rotate((rotationDeg * Math.PI) / 180); // 45 degrees
             ctx.fill();
             ctx.restore();
         }
         ctx.fill();
-    }
+    };
 
     public render() {
-
-        const {
-            className, strokeWidth,
-            opacity, point, width,
-        } = this.props;
+        const { className, strokeWidth, opacity, point, width } = this.props;
 
         const rotation = getRotationInDegrees(this.props, point);
         if (rotation == null) {
@@ -89,8 +80,8 @@ export class Triangle extends React.Component<TriangleProps> {
         const { innerOpposite, innerHypotenuse } = getTrianglePoints(w);
         const points = `
 		${x} ${y - innerHypotenuse},
-		${x + (w / 2)} ${y + innerOpposite},
-		${x - (w / 2)} ${y + innerOpposite}
+		${x + w / 2} ${y + innerOpposite},
+		${x - w / 2} ${y + innerOpposite}
 	    `;
 
         return (
@@ -108,8 +99,8 @@ export class Triangle extends React.Component<TriangleProps> {
 }
 
 function getTrianglePoints(width: number) {
-    const innerHypotenuse = (width / 2) * (1 / Math.cos(30 * Math.PI / 180));
-    const innerOpposite = (width / 2) * (1 / Math.tan(60 * Math.PI / 180));
+    const innerHypotenuse = (width / 2) * (1 / Math.cos((30 * Math.PI) / 180));
+    const innerOpposite = (width / 2) * (1 / Math.tan((60 * Math.PI) / 180));
     return {
         innerOpposite,
         innerHypotenuse,
@@ -117,27 +108,19 @@ function getTrianglePoints(width: number) {
 }
 
 function getFillColor(props: TriangleProps) {
-    const {
-        fill = Triangle.defaultProps.fill,
-        point,
-    } = props;
+    const { fill = Triangle.defaultProps.fill, point } = props;
 
     return fill instanceof Function ? fill(point.datum) : fill;
 }
 
 function getStrokeColor(props: TriangleProps) {
-    const {
-        stroke = Triangle.defaultProps.stroke,
-        point,
-    } = props;
+    const { stroke = Triangle.defaultProps.stroke, point } = props;
 
     return stroke instanceof Function ? stroke(point.datum) : stroke;
 }
 
 function getRotationInDegrees(props: TriangleProps, point) {
-    const {
-        direction = Triangle.defaultProps.direction,
-    } = props;
+    const { direction = Triangle.defaultProps.direction } = props;
 
     const directionVal = direction instanceof Function ? direction(point.datum) : direction;
     if (directionVal === "hide") {

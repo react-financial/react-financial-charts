@@ -22,8 +22,7 @@ export interface BaseIndicator {
     type(x: string): BaseIndicator;
 }
 
-export default function () {
-
+export default function() {
     let id = i++;
     let accessor: any;
     let stroke: string | any;
@@ -55,7 +54,7 @@ export default function () {
 
     baseIndicator.stroke = (newStroke?: string | any) => {
         if (newStroke === undefined) {
-            return !stroke ? stroke = overlayColors(id) : stroke;
+            return !stroke ? (stroke = overlayColors(id)) : stroke;
         }
 
         stroke = newStroke;
@@ -65,7 +64,7 @@ export default function () {
 
     baseIndicator.fill = (newFill?: string | any) => {
         if (newFill === undefined) {
-            return !fill ? fill = overlayColors(id) : fill;
+            return !fill ? (fill = overlayColors(id)) : fill;
         }
 
         fill = newFill;

@@ -10,14 +10,12 @@ export interface Algorithm {
     windowSize(windowSize: number): Algorithm;
 }
 
-export default function () {
-
+export default function() {
     let windowSize = 1;
     let accumulator = identity;
     let mergeAs = identity;
 
     const algorithm = (data: any[]) => {
-
         const defaultAlgorithm = slidingWindow()
             .windowSize(windowSize)
             .accumulator(accumulator);

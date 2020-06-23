@@ -19,7 +19,6 @@ interface KagiSeriesProps {
 }
 
 export class KagiSeries extends React.Component<KagiSeriesProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-kagi",
         strokeWidth: 2,
@@ -45,8 +44,13 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
         );
     }
 
-    private readonly renderSVG = (moreProps) => {
-        const { xAccessor, xScale, chartConfig: { yScale }, plotData } = moreProps;
+    private readonly renderSVG = moreProps => {
+        const {
+            xAccessor,
+            xScale,
+            chartConfig: { yScale },
+            plotData,
+        } = moreProps;
 
         const {
             className,
@@ -55,57 +59,57 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
             strokeWidth,
         } = this.props;
 
-        const paths = helper(plotData, xAccessor)
-            .map((each, i) => {
-                const dataSeries = line()
-                    .x((item) => xScale(item[0]))
-                    .y((item) => yScale(item[1]))
-                    .curve(curveStepBefore);
+        const paths = helper(plotData, xAccessor).map((each, i) => {
+            const dataSeries = line()
+                .x(item => xScale(item[0]))
+                .y(item => yScale(item[1]))
+                .curve(curveStepBefore);
 
-                const data = dataSeries(each.plot);
-                if (data === null) {
-                    return null;
-                }
+            const data = dataSeries(each.plot);
+            if (data === null) {
+                return null;
+            }
 
-                return (
-                    <path
-                        key={i}
-                        d={data}
-                        className={each.type}
-                        stroke={stroke[each.type]}
-                        fill={fill[each.type]}
-                        strokeWidth={strokeWidth} />
-                );
-            });
-        return (
-            <g className={className}>
-                {paths}
-            </g>
-        );
-    }
+            return (
+                <path
+                    key={i}
+                    d={data}
+                    className={each.type}
+                    stroke={stroke[each.type]}
+                    fill={fill[each.type]}
+                    strokeWidth={strokeWidth}
+                />
+            );
+        });
+        return <g className={className}>{paths}</g>;
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor } = moreProps;
 
         drawOnCanvas(ctx, this.props, moreProps, xAccessor);
-    }
+    };
 }
 
 function drawOnCanvas(ctx: CanvasRenderingContext2D, props, moreProps, xAccessor) {
     const { stroke, strokeWidth, currentValueStroke } = props;
-    const { xScale, chartConfig: { yScale }, plotData } = moreProps;
+    const {
+        xScale,
+        chartConfig: { yScale },
+        plotData,
+    } = moreProps;
 
     const paths = helper(plotData, xAccessor);
 
     let begin = true;
 
-    paths.forEach((each) => {
+    paths.forEach(each => {
         ctx.strokeStyle = stroke[each.type];
         ctx.lineWidth = strokeWidth;
 
         ctx.beginPath();
         let prevX;
-        each.plot.forEach((d) => {
+        each.plot.forEach(d => {
             const [x1, y] = [xScale(d[0]), yScale(d[1])];
             if (begin) {
                 ctx.moveTo(x1, y);
@@ -151,9 +155,15 @@ function helper(plotData, xAccessor) {
     for (let i = 0; i < plotData.length; i++) {
         d = plotData[i];
 
-        if (isNotDefined(d.close)) { continue; }
-        if (isNotDefined(kagi.type)) { kagi.type = d.startAs; }
-        if (isNotDefined(kagi.plot)) { kagi.plot = []; }
+        if (isNotDefined(d.close)) {
+            continue;
+        }
+        if (isNotDefined(kagi.type)) {
+            kagi.type = d.startAs;
+        }
+        if (isNotDefined(kagi.plot)) {
+            kagi.plot = [];
+        }
 
         idx = xAccessor(d);
         kagi.plot.push([idx, d.open]);

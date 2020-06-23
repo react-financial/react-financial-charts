@@ -29,14 +29,16 @@ function isDate(date) {
 }
 
 function isEqual(val1, val2) {
-    return (isDate(val1) && isDate(val2))
-        ? val1.getTime() === val2.getTime()
-        : val1 === val2;
+    return isDate(val1) && isDate(val2) ? val1.getTime() === val2.getTime() : val1 === val2;
 }
 
 export default function shallowEqual(a, b) {
-    if (!a && !b) { return true; }
-    if (!a && b || a && !b) { return false; }
+    if (!a && !b) {
+        return true;
+    }
+    if ((!a && b) || (a && !b)) {
+        return false;
+    }
 
     let numKeysA = 0;
     let numKeysB = 0;
@@ -45,6 +47,7 @@ export default function shallowEqual(a, b) {
     // tslint:disable: forin
     for (key in b) {
         numKeysB++;
+        // eslint-disable-next-line no-prototype-builtins
         if ((b.hasOwnProperty(key) && !a.hasOwnProperty(key)) || !isEqual(a[key], b[key])) {
             return false;
         }

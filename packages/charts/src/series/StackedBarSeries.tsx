@@ -19,9 +19,8 @@ interface StackedBarSeriesProps {
 }
 
 export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
-
     public static defaultProps = {
-        baseAt: (xScale, yScale/* , d*/) => head(yScale.range()),
+        baseAt: (xScale, yScale /* , d*/) => head(yScale.range()),
         direction: "up",
         className: "bar",
         stroke: false,
@@ -51,20 +50,20 @@ export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
         const { xAccessor } = moreProps;
 
         drawOnCanvasHelper(ctx, this.props, moreProps, xAccessor, d3Stack);
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { xAccessor } = moreProps;
 
         return <g>{svgHelper(this.props, moreProps, xAccessor, d3Stack)}</g>;
-    }
+    };
 }
 
 export function identityStack() {
     let keys = [];
     function stack(data) {
         const response = keys.map((key, i) => {
-            const arrays = data.map((d) => {
+            const arrays = data.map(d => {
                 const array = [0, d[key]];
 
                 // @ts-ignore
@@ -77,7 +76,7 @@ export function identityStack() {
         });
         return response;
     }
-    stack.keys = function (x) {
+    stack.keys = function(x) {
         if (!arguments.length) {
             return keys;
         }
@@ -87,8 +86,20 @@ export function identityStack() {
     return stack;
 }
 
-export function drawOnCanvasHelper(ctx, props, moreProps, xAccessor, stackFn, defaultPostAction = identity, postRotateAction = rotateXY) {
-    const { xScale, chartConfig: { yScale }, plotData } = moreProps;
+export function drawOnCanvasHelper(
+    ctx,
+    props,
+    moreProps,
+    xAccessor,
+    stackFn,
+    defaultPostAction = identity,
+    postRotateAction = rotateXY,
+) {
+    const {
+        xScale,
+        chartConfig: { yScale },
+        plotData,
+    } = moreProps;
 
     const bars = doStuff(props, xAccessor, plotData, xScale, yScale, stackFn, postRotateAction, defaultPostAction);
 
@@ -99,8 +110,19 @@ function convertToArray(item) {
     return Array.isArray(item) ? item : [item];
 }
 
-export function svgHelper(props, moreProps, xAccessor, stackFn, defaultPostAction = identity, postRotateAction = rotateXY) {
-    const { xScale, chartConfig: { yScale }, plotData } = moreProps;
+export function svgHelper(
+    props,
+    moreProps,
+    xAccessor,
+    stackFn,
+    defaultPostAction = identity,
+    postRotateAction = rotateXY,
+) {
+    const {
+        xScale,
+        chartConfig: { yScale },
+        plotData,
+    } = moreProps;
     const bars = doStuff(props, xAccessor, plotData, xScale, yScale, stackFn, postRotateAction, defaultPostAction);
     return getBarsSVG2(props, bars);
 }
@@ -116,39 +138,61 @@ function doStuff(props, xAccessor, plotData, xScale, yScale, stackFn, postRotate
 
     const postProcessor = swapScales ? postRotateAction : defaultPostAction;
 
-    const bars = getBars(props, modifiedXAccessor, modifiedYAccessor, modifiedXScale, modifiedYScale, plotData, stackFn, postProcessor);
+    const bars = getBars(
+        props,
+        modifiedXAccessor,
+        modifiedYAccessor,
+        modifiedXScale,
+        modifiedYScale,
+        plotData,
+        stackFn,
+        postProcessor,
+    );
 
     return bars;
 }
 
-export const rotateXY = (array) => array.map((each) => {
-    return {
-        ...each,
-        x: each.y,
-        y: each.x,
-        height: each.width,
-        width: each.height,
-    };
-});
+export const rotateXY = array =>
+    array.map(each => {
+        return {
+            ...each,
+            x: each.y,
+            y: each.x,
+            height: each.width,
+            width: each.height,
+        };
+    });
 
 export function getBarsSVG2(props, bars) {
     const { opacity } = props;
 
     return bars.map((d, idx) => {
         if (d.width <= 1) {
-            return <line key={idx} className={d.className}
-                stroke={d.fill}
-                x1={d.x} y1={d.y}
-                x2={d.x} y2={d.y + d.height} />;
+            return (
+                <line
+                    key={idx}
+                    className={d.className}
+                    stroke={d.fill}
+                    x1={d.x}
+                    y1={d.y}
+                    x2={d.x}
+                    y2={d.y + d.height}
+                />
+            );
         }
-        return <rect key={idx} className={d.className}
-            stroke={d.stroke}
-            fill={d.fill}
-            x={d.x}
-            y={d.y}
-            width={d.width}
-            fillOpacity={opacity}
-            height={d.height} />;
+        return (
+            <rect
+                key={idx}
+                className={d.className}
+                stroke={d.stroke}
+                fill={d.fill}
+                x={d.x}
+                y={d.y}
+                width={d.width}
+                fillOpacity={opacity}
+                height={d.height}
+            />
+        );
     });
 }
 
@@ -158,16 +202,13 @@ export function drawOnCanvas2(props, ctx: CanvasRenderingContext2D, bars) {
     const nest = group(bars, (d: any) => d.fill);
 
     nest.forEach((values, key) => {
-
         if (head(values).width > 1) {
             ctx.strokeStyle = key;
         }
-        const fillStyle = head(values).width <= 1
-            ? key
-            : colorToRGBA(key, props.opacity);
+        const fillStyle = head(values).width <= 1 ? key : colorToRGBA(key, props.opacity);
         ctx.fillStyle = fillStyle;
 
-        values.forEach((d) => {
+        values.forEach(d => {
             if (d.width <= 1) {
                 ctx.fillRect(d.x - 0.5, d.y, 1, d.height);
             } else {
@@ -180,7 +221,16 @@ export function drawOnCanvas2(props, ctx: CanvasRenderingContext2D, bars) {
     });
 }
 
-export function getBars(props, xAccessor, yAccessor, xScale, yScale, plotData, stack = identityStack, after = identity) {
+export function getBars(
+    props,
+    xAccessor,
+    yAccessor,
+    xScale,
+    yScale,
+    plotData,
+    stack = identityStack,
+    after = identity,
+) {
     const { baseAt, className, fill, stroke, spaceBetweenBar = 0 } = props;
 
     const getClassName = functor(className);
@@ -198,27 +248,25 @@ export function getBars(props, xAccessor, yAccessor, xScale, yScale, plotData, s
 
     const eachBarWidth = (barWidth - spaceBetweenBar * (yAccessor.length - 1)) / yAccessor.length;
 
-    const offset = (barWidth === 1 ? 0 : 0.5 * width);
+    const offset = barWidth === 1 ? 0 : 0.5 * width;
 
-    const ds = plotData
-        .map((each) => {
-            const d = {
-                appearance: {
-                },
-                x: xAccessor(each),
+    const ds = plotData.map(each => {
+        const d = {
+            appearance: {},
+            x: xAccessor(each),
+        };
+        yAccessor.forEach((eachYAccessor, i) => {
+            const key = `y${i}`;
+            d[key] = eachYAccessor(each);
+            const appearance = {
+                className: getClassName(each, i),
+                stroke: stroke ? getFill(each, i) : "none",
+                fill: getFill(each, i),
             };
-            yAccessor.forEach((eachYAccessor, i) => {
-                const key = `y${i}`;
-                d[key] = eachYAccessor(each);
-                const appearance = {
-                    className: getClassName(each, i),
-                    stroke: stroke ? getFill(each, i) : "none",
-                    fill: getFill(each, i),
-                };
-                d.appearance[key] = appearance;
-            });
-            return d;
+            d.appearance[key] = appearance;
         });
+        return d;
+    });
 
     const keys = yAccessor.map((_, i) => `y${i}`);
 
@@ -227,7 +275,7 @@ export function getBars(props, xAccessor, yAccessor, xScale, yScale, plotData, s
 
     const newData = data.map((each, i) => {
         const key = each.key;
-        return each.map((d) => {
+        return each.map(d => {
             const array = [d[0], d[1]];
 
             // @ts-ignore
@@ -241,7 +289,7 @@ export function getBars(props, xAccessor, yAccessor, xScale, yScale, plotData, s
     });
 
     const bars = merge<any>(newData)
-        .map((d) => {
+        .map(d => {
             let y = yScale(d[1]);
             let h = getBase(xScale, yScale, d.data) - yScale(d[1] - d[0]);
             if (h < 0) {
@@ -260,7 +308,7 @@ export function getBars(props, xAccessor, yAccessor, xScale, yScale, plotData, s
                 width: barWidth,
             };
         })
-        .filter((bar) => !isNaN(bar.y));
+        .filter(bar => !isNaN(bar.y));
 
     return after(bars);
 }

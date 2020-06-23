@@ -43,7 +43,6 @@ interface YAxisProps {
 }
 
 export class YAxis extends React.Component<YAxisProps> {
-
     public static defaultProps = {
         axisAt: "right",
         className: "react-financial-charts-y-axis",
@@ -82,7 +81,6 @@ export class YAxis extends React.Component<YAxisProps> {
     };
 
     public render() {
-
         const {
             getMouseDelta = YAxis.defaultProps.getMouseDelta,
             outerTickSize = YAxis.defaultProps.outerTickSize,
@@ -103,23 +101,21 @@ export class YAxis extends React.Component<YAxisProps> {
                 stroke={stroke}
                 strokeWidth={strokeWidth}
                 zoomEnabled={this.props.zoomEnabled && zoomEnabled}
-                axisZoomCallback={this.axisZoomCallback} />
+                axisZoomCallback={this.axisZoomCallback}
+            />
         );
     }
 
-    private readonly axisZoomCallback = (newYDomain) => {
+    private readonly axisZoomCallback = newYDomain => {
         const { chartId, yAxisZoom } = this.context;
         yAxisZoom(chartId, newYDomain);
-    }
+    };
 
     private readonly helper = (props: YAxisProps, context) => {
+        const { axisAt, ticks, yZoomWidth = YAxis.defaultProps.yZoomWidth, orient } = props;
         const {
-            axisAt,
-            ticks,
-            yZoomWidth = YAxis.defaultProps.yZoomWidth,
-            orient,
-        } = props;
-        const { chartConfig: { width, height } } = context;
+            chartConfig: { width, height },
+        } = context;
 
         let axisLocation;
         const y = 0;
@@ -134,13 +130,13 @@ export class YAxis extends React.Component<YAxisProps> {
                 axisLocation = width;
                 break;
             case "middle":
-                axisLocation = (width) / 2;
+                axisLocation = width / 2;
                 break;
             default:
                 axisLocation = axisAt;
         }
 
-        const x = (orient === "left") ? -yZoomWidth : 0;
+        const x = orient === "left" ? -yZoomWidth : 0;
 
         return {
             transform: [axisLocation, 0],
@@ -150,10 +146,9 @@ export class YAxis extends React.Component<YAxisProps> {
             ticks: ticks ?? this.getYTicks(height),
             zoomEnabled: context.chartConfig.yPan,
         };
-    }
+    };
 
     private readonly getYTicks = (height: number) => {
-
         if (height < 300) {
             return 2;
         }
@@ -163,9 +158,9 @@ export class YAxis extends React.Component<YAxisProps> {
         }
 
         return 8;
-    }
+    };
 
-    private readonly getYScale = (moreProps) => {
+    private readonly getYScale = moreProps => {
         const { yScale: scale, flipYScale, height } = moreProps.chartConfig;
         if (scale.invert) {
             const trueRange = flipYScale ? [0, height] : [height, 0];
@@ -176,5 +171,5 @@ export class YAxis extends React.Component<YAxisProps> {
                 .range(trueRange);
         }
         return scale;
-    }
+    };
 }

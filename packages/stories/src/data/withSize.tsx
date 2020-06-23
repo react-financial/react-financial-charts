@@ -13,12 +13,7 @@ export function withSize(minHeight = 300) {
                 return (
                     <AutoSizer style={{ minHeight }}>
                         {({ height, width }) => {
-                            return (
-                                <OriginalComponent
-                                    {...this.props as TProps}
-                                    height={height}
-                                    width={width} />
-                            );
+                            return <OriginalComponent {...(this.props as TProps)} height={height} width={width} />;
                         }}
                     </AutoSizer>
                 );

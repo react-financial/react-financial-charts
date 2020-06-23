@@ -15,19 +15,12 @@ interface ChartProps {
 }
 
 class AxisExample extends React.Component<ChartProps> {
-
-    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
-        .inputDateAccessor((d: IOHLCData) => d.date);
+    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
+        (d: IOHLCData) => d.date,
+    );
 
     public render() {
-
-        const {
-            axisAt = "right",
-            data: initialData,
-            height,
-            ratio,
-            width,
-        } = this.props;
+        const { axisAt = "right", data: initialData, height, ratio, width } = this.props;
 
         const margin = {
             bottom: 24,
@@ -36,12 +29,7 @@ class AxisExample extends React.Component<ChartProps> {
             top: 0,
         };
 
-        const {
-            data,
-            xScale,
-            xAccessor,
-            displayXAccessor,
-        } = this.xScaleProvider(initialData);
+        const { data, xScale, xAccessor, displayXAccessor } = this.xScaleProvider(initialData);
 
         const start = xAccessor(data[data.length - 1]);
         const end = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -58,10 +46,9 @@ class AxisExample extends React.Component<ChartProps> {
                 seriesName="Data"
                 xScale={xScale}
                 xAccessor={xAccessor}
-                xExtents={xExtents}>
-                <Chart
-                    id={1}
-                    yExtents={this.yExtents}>
+                xExtents={xExtents}
+            >
+                <Chart id={1} yExtents={this.yExtents}>
                     <CandlestickSeries />
                     <XAxis />
                     <YAxis axisAt={axisAt} orient={axisAt} />
@@ -72,7 +59,7 @@ class AxisExample extends React.Component<ChartProps> {
 
     private readonly yExtents = (data: IOHLCData) => {
         return [data.high, data.low];
-    }
+    };
 }
 
 export default withOHLCData()(withSize()(withDeviceRatio()(AxisExample)));

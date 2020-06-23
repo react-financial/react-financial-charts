@@ -21,12 +21,11 @@ interface AreaOnlySeriesProps {
 }
 
 export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
-
     public static defaultProps = {
         className: "line",
         fill: "none",
         opacity: 1,
-        defined: (d) => !isNaN(d),
+        defined: d => !isNaN(d),
         base: (yScale /* , d, moreProps */) => first(yScale.range()),
     };
 
@@ -41,21 +40,29 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { yAccessor, defined, base, style } = this.props;
         const {
             stroke,
             fill = AreaOnlySeries.defaultProps.fill,
-            className = "line", opacity, interpolation } = this.props;
+            className = "line",
+            opacity,
+            interpolation,
+        } = this.props;
 
-        const { xScale, chartConfig: { yScale }, plotData, xAccessor } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+            plotData,
+            xAccessor,
+        } = moreProps;
 
         const newBase = functor(base);
         const areaSeries = d3Area()
-            .defined((d) => defined(yAccessor(d)))
-            .x((d) => Math.round(xScale(xAccessor(d))))
-            .y0((d) => newBase(yScale, d, moreProps))
-            .y1((d) => Math.round(yScale(yAccessor(d))));
+            .defined(d => defined(yAccessor(d)))
+            .x(d => Math.round(xScale(xAccessor(d))))
+            .y0(d => newBase(yScale, d, moreProps))
+            .y1(d => Math.round(yScale(yAccessor(d))));
 
         if (isDefined(interpolation)) {
             areaSeries.curve(interpolation);
@@ -69,24 +76,20 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         const newClassName = className.concat(isDefined(stroke) ? "" : " line-stroke");
 
         return (
-            <path
-                style={style}
-                d={data}
-                stroke={stroke}
-                fill={colorToRGBA(fill, opacity)}
-                className={newClassName}
-            />
+            <path style={style} d={data} stroke={stroke} fill={colorToRGBA(fill, opacity)} className={newClassName} />
         );
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { yAccessor, defined, base, canvasGradient } = this.props;
-        const {
-            fill = AreaOnlySeries.defaultProps.fill,
-            stroke,
-            opacity, interpolation, canvasClip } = this.props;
+        const { fill = AreaOnlySeries.defaultProps.fill, stroke, opacity, interpolation, canvasClip } = this.props;
 
-        const { xScale, chartConfig: { yScale }, plotData, xAccessor } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+            plotData,
+            xAccessor,
+        } = moreProps;
 
         if (canvasClip) {
             ctx.save();
@@ -106,10 +109,10 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         ctx.beginPath();
         const newBase = functor(base);
         const areaSeries = d3Area()
-            .defined((d) => defined(yAccessor(d)))
-            .x((d) => Math.round(xScale(xAccessor(d))))
-            .y0((d) => newBase(yScale, d, moreProps))
-            .y1((d) => Math.round(yScale(yAccessor(d))))
+            .defined(d => defined(yAccessor(d)))
+            .x(d => Math.round(xScale(xAccessor(d))))
+            .y0(d => newBase(yScale, d, moreProps))
+            .y1(d => Math.round(yScale(yAccessor(d))))
             .context(ctx);
 
         if (isDefined(interpolation)) {
@@ -121,5 +124,5 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         if (canvasClip) {
             ctx.restore();
         }
-    }
+    };
 }

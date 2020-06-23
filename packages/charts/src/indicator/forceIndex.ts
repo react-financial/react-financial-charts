@@ -8,7 +8,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "ForceIndex";
 
 interface ForceIndexIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): ForceIndexIndicator;
     accessor(): any;
@@ -27,17 +27,18 @@ interface ForceIndexIndicator {
     options(newOptions: ForceIndexOptions): ForceIndexIndicator;
 }
 
-export default function () {
-
+export default function() {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.forceIndex);
+        .accessor(d => d.forceIndex);
 
     const underlyingAlgorithm = forceIndex();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.forceIndex = i; });
+        .merge((datum, i) => {
+            datum.forceIndex = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

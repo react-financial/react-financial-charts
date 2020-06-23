@@ -13,7 +13,6 @@ interface TextProps {
 }
 
 export class Text extends React.Component<TextProps> {
-
     public static defaultProps = {
         selected: false,
     };
@@ -35,16 +34,10 @@ export class Text extends React.Component<TextProps> {
 
     private readonly isHover = () => {
         return false;
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const {
-            xyProvider,
-            fontFamily,
-            fontSize,
-            fill,
-            children,
-        } = this.props;
+        const { xyProvider, fontFamily, fontSize, fill, children } = this.props;
         const [x, y] = xyProvider(moreProps);
 
         ctx.font = `${fontSize}px ${fontFamily}`;
@@ -52,28 +45,17 @@ export class Text extends React.Component<TextProps> {
 
         ctx.beginPath();
         ctx.fillText(children, x, y);
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
-        const {
-            xyProvider,
-            fontFamily,
-            fontSize,
-            fill,
-            children,
-        } = this.props;
+    private readonly renderSVG = moreProps => {
+        const { xyProvider, fontFamily, fontSize, fill, children } = this.props;
 
         const [x, y] = xyProvider(moreProps);
 
         return (
-            <text
-                x={x}
-                y={y}
-                fontFamily={fontFamily}
-                fontSize={fontSize}
-                fill={fill}>
+            <text x={x} y={y} fontFamily={fontFamily} fontSize={fontSize} fill={fill}>
                 {children}
             </text>
         );
-    }
+    };
 }

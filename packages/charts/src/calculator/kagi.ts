@@ -3,11 +3,12 @@ import atr from "./atr";
 
 import { Kagi as defaultOptions } from "./defaultOptionsForComputation";
 
-export default function () {
-
+export default function() {
     let options = defaultOptions;
-    let dateAccessor = (d) => d.date;
-    let dateMutator = (d, date) => { d.date = date; };
+    let dateAccessor = d => d.date;
+    let dateMutator = (d, date) => {
+        d.date = date;
+    };
 
     const calculator = (data: any[]) => {
         const { reversalType, windowSize, reversal, sourcePath } = options;
@@ -21,10 +22,12 @@ export default function () {
 
             const atrCalculator = merge()
                 .algorithm(atrAlgorithm)
-                .merge((d, c) => { d["atr" + windowSize] = c; });
+                .merge((d, c) => {
+                    d["atr" + windowSize] = c;
+                });
 
             atrCalculator(data);
-            reversalThreshold = (d) => d["atr" + windowSize];
+            reversalThreshold = d => d["atr" + windowSize];
         } else {
             reversalThreshold = functor(reversal);
         }
@@ -56,15 +59,19 @@ export default function () {
             startOfWeek?: any;
         } = {};
 
-        data.forEach(function (d) {
+        data.forEach(function(d) {
             if (isNotDefined(line.from)) {
                 dateMutator(line, dateAccessor(d));
                 line.from = dateAccessor(d);
 
-                if (!line.open) { line.open = d.open; }
+                if (!line.open) {
+                    line.open = d.open;
+                }
                 line.high = d.high;
                 line.low = d.low;
-                if (!line.close) { line.close = source(d); }
+                if (!line.close) {
+                    line.close = source(d);
+                }
                 line.startOfYear = d.startOfYear;
                 line.startOfQuarter = d.startOfQuarter;
                 line.startOfMonth = d.startOfMonth;
@@ -105,12 +112,14 @@ export default function () {
             line.to = dateAccessor(d);
 
             // @ts-ignore
-            const priceMovement = (source(d) - line.close);
+            const priceMovement = source(d) - line.close;
 
-            // @ts-ignore
-            if ((line.close >= line.open /* going up */ && priceMovement > 0 /* and moving in same direction */)
+            if (
                 // @ts-ignore
-                || (line.close < line.open /* going down */ && priceMovement < 0 /* and moving in same direction */)) {
+                (line.close >= line.open /* going up */ && priceMovement > 0) /* and moving in same direction */ ||
+                // @ts-ignore
+                (line.close < line.open /* going down */ && priceMovement < 0) /* and moving in same direction */
+            ) {
                 line.close = source(d);
                 // @ts-ignore
                 if (prevTrough && line.close < prevTrough) {
@@ -133,15 +142,17 @@ export default function () {
                         // line.startAs = "yin";
                     }
                 }
+            } else if (
                 // @ts-ignore
-            } else if ((line.close >= line.open /* going up */
-                && priceMovement < 0 /* and moving in other direction */
-                && Math.abs(priceMovement) > reversalThreshold(d) /* and the movement is big enough for reversal */)
+                (line.close >= line.open /* going up */ &&
+                priceMovement < 0 /* and moving in other direction */ &&
+                    Math.abs(priceMovement) > reversalThreshold(d)) /* and the movement is big enough for reversal */ ||
                 // @ts-ignore
-                || (line.close < line.open /* going down */
-                    && priceMovement > 0 /* and moving in other direction */
+                (line.close < line.open /* going down */ &&
+                priceMovement > 0 /* and moving in other direction */ &&
                     /* and the movement is big enough for reversal */
-                    && Math.abs(priceMovement) > reversalThreshold(d))) {
+                    Math.abs(priceMovement) > reversalThreshold(d))
+            ) {
                 // reverse direction
                 const nextLineOpen = line.close;
 
@@ -152,14 +163,18 @@ export default function () {
                 let nextChangeTo;
                 if (direction < 0 /* if direction so far has been -ve*/) {
                     // compare with line.close becomes prevTrough
-                    if (isNotDefined(prevPeak)) { prevPeak = line.open; }
+                    if (isNotDefined(prevPeak)) {
+                        prevPeak = line.open;
+                    }
                     prevTrough = line.close;
                     if (source(d) > prevPeak) {
                         nextChangePoint = prevPeak;
                         nextChangeTo = "yang";
                     }
                 } else {
-                    if (isNotDefined(prevTrough)) { prevTrough = line.open; }
+                    if (isNotDefined(prevTrough)) {
+                        prevTrough = line.open;
+                    }
                     prevPeak = line.close;
                     if (source(d) < prevTrough) {
                         nextChangePoint = prevTrough;
@@ -194,7 +209,9 @@ export default function () {
             // @ts-ignore
             line.reverseAt = dir > 0 ? line.close - reversalThreshold(d) : line.open - reversalThreshold(d);
         });
-        if (!line.added) { kagiData.push(line); }
+        if (!line.added) {
+            kagiData.push(line);
+        }
 
         return kagiData;
     };

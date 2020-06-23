@@ -11,7 +11,6 @@ interface CanvasContainerProps {
 }
 
 export class CanvasContainer extends React.Component<CanvasContainerProps> {
-
     private drawCanvas: any = {};
 
     public getCanvasContexts() {
@@ -33,19 +32,22 @@ export class CanvasContainer extends React.Component<CanvasContainerProps> {
                     ref={this.setDrawCanvas}
                     width={width * ratio}
                     height={height * ratio}
-                    style={{ position: "absolute", width, height }} />
+                    style={{ position: "absolute", width, height }}
+                />
                 <canvas
                     id="axes"
                     ref={this.setDrawCanvas}
                     width={width * ratio}
                     height={height * ratio}
-                    style={{ position: "absolute", width, height }} />
+                    style={{ position: "absolute", width, height }}
+                />
                 <canvas
                     id="mouseCoord"
                     ref={this.setDrawCanvas}
                     width={width * ratio}
                     height={height * ratio}
-                    style={{ position: "absolute", width, height }} />
+                    style={{ position: "absolute", width, height }}
+                />
             </div>
         );
     }
@@ -56,5 +58,5 @@ export class CanvasContainer extends React.Component<CanvasContainerProps> {
         } else {
             this.drawCanvas = {};
         }
-    }
+    };
 }

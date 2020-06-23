@@ -7,7 +7,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "Change";
 
 interface ChangeIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): ChangeIndicator;
     accessor(): any;
@@ -26,10 +26,8 @@ interface ChangeIndicator {
     options(newOptions: ChangeOptions): ChangeIndicator;
 }
 
-export default function () {
-
-    const base = baseIndicator()
-        .type(ALGORITHM_TYPE);
+export default function() {
+    const base = baseIndicator().type(ALGORITHM_TYPE);
 
     const underlyingAlgorithm = change();
 

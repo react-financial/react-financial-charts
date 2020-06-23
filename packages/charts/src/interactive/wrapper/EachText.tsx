@@ -42,7 +42,6 @@ interface EachTextState {
 }
 
 export class EachText extends React.Component<EachTextProps, EachTextState> {
-
     public static defaultProps = {
         onDrag: noop,
         onDragComplete: noop,
@@ -142,15 +141,15 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
         );
     }
 
-    private readonly handleHover = (moreProps) => {
+    private readonly handleHover = moreProps => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
             });
         }
-    }
+    };
 
-    private readonly handleDrag = (moreProps) => {
+    private readonly handleDrag = moreProps => {
         const { index, onDrag } = this.props;
         const {
             mouseXY: [, mouseY],
@@ -162,24 +161,20 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
         } = moreProps;
 
         const { dx, dy } = this.dragStartPosition;
-        const xValue = xScale.invert(
-            xScale(getXValue(xScale, xAccessor, mouseXY, plotData)) - dx,
-        );
+        const xValue = xScale.invert(xScale(getXValue(xScale, xAccessor, mouseXY, plotData)) - dx);
         // xScale.invert(xScale(xAccessor(currentItem)) - dx);
-        const xyValue = [
-            xValue,
-            yScale.invert(mouseY - dy),
-        ];
+        const xyValue = [xValue, yScale.invert(mouseY - dy)];
 
         onDrag(index, xyValue);
-    }
+    };
 
-    private readonly handleDragStart = (moreProps) => {
-        const {
-            position,
-        } = this.props;
+    private readonly handleDragStart = moreProps => {
+        const { position } = this.props;
         const { mouseXY } = moreProps;
-        const { chartConfig: { yScale }, xScale } = moreProps;
+        const {
+            chartConfig: { yScale },
+            xScale,
+        } = moreProps;
         const [mouseX, mouseY] = mouseXY;
 
         const [textCX, textCY] = position;
@@ -187,7 +182,9 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
         const dy = mouseY - yScale(textCY);
 
         this.dragStartPosition = {
-            position, dx, dy,
+            position,
+            dx,
+            dy,
         };
-    }
+    };
 }

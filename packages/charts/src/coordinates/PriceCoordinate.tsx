@@ -29,7 +29,6 @@ interface PriceCoordinateProps {
 }
 
 export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
-
     public static defaultProps = {
         yAxisPad: 0,
         rectWidth: 50,
@@ -66,16 +65,18 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const props = this.helper(this.props, moreProps);
         drawOnCanvas(ctx, props);
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const props = this.helper(this.props, moreProps);
         return renderSVG(props);
-    }
+    };
 
     private readonly helper = (props, moreProps) => {
         const { width } = moreProps;
-        const { chartConfig: { yScale } } = moreProps;
+        const {
+            chartConfig: { yScale },
+        } = moreProps;
         const [lowerYValue, upperYValue] = yScale.domain();
 
         const { price, stroke, strokeDasharray, strokeOpacity, strokeWidth } = props;
@@ -84,14 +85,12 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
 
         const x1 = 0;
         const x2 = width;
-        const edgeAt = (at === "right")
-            ? width
-            : 0;
+        const edgeAt = at === "right" ? width : 0;
 
         const type = "horizontal";
 
         const y = yScale(price);
-        const show = (price <= upperYValue && price >= lowerYValue);
+        const show = price <= upperYValue && price >= lowerYValue;
 
         const coordinate = displayFormat(yScale.invert(y));
         const hideLine = false;
@@ -111,7 +110,9 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
             strokeWidth,
             fill: functor(fill)(price),
             textFill: functor(textFill)(price),
-            opacity, fontFamily, fontSize,
+            opacity,
+            fontFamily,
+            fontSize,
             rectWidth,
             rectHeight,
             arrowWidth,
@@ -122,5 +123,5 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
             y2: y,
         };
         return coordinateProps;
-    }
+    };
 }

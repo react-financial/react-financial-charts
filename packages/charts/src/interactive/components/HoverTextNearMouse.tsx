@@ -24,7 +24,6 @@ interface HoverTextNearMouseState {
 }
 
 export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps, HoverTextNearMouseState> {
-
     public static defaultProps = {
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
@@ -55,42 +54,29 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
     public render() {
         const { text } = this.props;
         if (text) {
-            return (
-                <GenericChartComponent
-                    svgDraw={this.renderSVG}
-                    drawOn={["mousemove"]}
-                />
-            );
+            return <GenericChartComponent svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
         } else {
             return null;
         }
     }
 
-    private readonly renderSVG = (moreProps) => {
-        const {
-            fontFamily,
-            fontSize,
-            fill,
-            bgFill,
-            bgOpacity,
-        } = this.props;
+    private readonly renderSVG = moreProps => {
+        const { fontFamily, fontSize, fill, bgFill, bgOpacity } = this.props;
 
-        const textMetaData = helper({
-            ...this.props,
-            bgWidth: this.getBgWidth(),
-            bgHeight: this.getBgHeight(),
-        }, moreProps);
+        const textMetaData = helper(
+            {
+                ...this.props,
+                bgWidth: this.getBgWidth(),
+                bgHeight: this.getBgHeight(),
+            },
+            moreProps,
+        );
 
         if (textMetaData !== undefined && isDefined(textMetaData)) {
             const { rect, text } = textMetaData;
             return (
                 <g>
-                    <rect
-                        fill={bgFill}
-                        fillOpacity={bgOpacity}
-                        stroke={bgFill}
-                        {...rect}
-                    />
+                    <rect fill={bgFill} fillOpacity={bgOpacity} stroke={bgFill} {...rect} />
                     <text
                         ref={this.saveNode}
                         fontSize={fontSize}
@@ -99,11 +85,14 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
                         alignmentBaseline={"central"}
                         fill={fill}
                         x={text.x}
-                        y={text.y}>{text.text}</text>
+                        y={text.y}
+                    >
+                        {text.text}
+                    </text>
                 </g>
             );
         }
-    }
+    };
 
     private readonly getBgHeight = () => {
         const { bgHeight } = this.props;
@@ -116,7 +105,7 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
         } else {
             return MIN_WIDTH;
         }
-    }
+    };
 
     private readonly getBgWidth = () => {
         const { bgWidth } = this.props;
@@ -129,7 +118,7 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
         } else {
             return MIN_WIDTH;
         }
-    }
+    };
 
     private readonly updateTextSize = () => {
         const { bgWidth, bgHeight } = this.props;
@@ -145,19 +134,15 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
                 }
             }
         }
-    }
+    };
 
-    private readonly saveNode = (node) => {
+    private readonly saveNode = node => {
         this.textNode = node;
-    }
+    };
 }
 
 function helper(props, moreProps) {
-    const {
-        show,
-        bgWidth,
-        bgHeight,
-    } = props;
+    const { show, bgWidth, bgHeight } = props;
 
     const {
         mouseXY,
@@ -168,13 +153,9 @@ function helper(props, moreProps) {
     if (show && mouseInsideCanvas) {
         const [x, y] = mouseXY;
 
-        const cx = x < width / 2
-            ? x + PADDING
-            : x - bgWidth - PADDING;
+        const cx = x < width / 2 ? x + PADDING : x - bgWidth - PADDING;
 
-        const cy = y < height / 2
-            ? y + PADDING
-            : y - bgHeight - PADDING;
+        const cy = y < height / 2 ? y + PADDING : y - bgHeight - PADDING;
 
         const rect = {
             x: cx,

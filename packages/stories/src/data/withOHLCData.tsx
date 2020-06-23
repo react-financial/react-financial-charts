@@ -7,7 +7,6 @@ const parseDate = timeParse("%Y-%m-%d");
 
 const parseData = () => {
     return (d: any) => {
-
         let date = parseDate(d.date);
         if (date === null) {
             date = new Date(Number(d.date));
@@ -36,7 +35,6 @@ interface WithOHLCState {
 export function withOHLCData(dataSet = "MSFT") {
     return <TProps extends WithOHLCDataProps>(OriginalComponent: React.ComponentClass<TProps>) => {
         return class WithOHLCData extends React.Component<Omit<TProps, "data">, WithOHLCState> {
-
             public constructor(props: Omit<TProps, "data">) {
                 super(props);
 
@@ -46,10 +44,12 @@ export function withOHLCData(dataSet = "MSFT") {
             }
 
             public componentDidMount() {
-                fetch(`https://raw.githubusercontent.com/reactivemarkets/react-financial-charts/master/packages/stories/src/data/${dataSet}.tsv`)
-                    .then((response) => response.text())
-                    .then((data) => tsvParse(data, parseData()))
-                    .then((data) => {
+                fetch(
+                    `https://raw.githubusercontent.com/reactivemarkets/react-financial-charts/master/packages/stories/src/data/${dataSet}.tsv`,
+                )
+                    .then(response => response.text())
+                    .then(data => tsvParse(data, parseData()))
+                    .then(data => {
                         this.setState({
                             data,
                         });
@@ -62,21 +62,12 @@ export function withOHLCData(dataSet = "MSFT") {
             }
 
             public render() {
-
                 const { data, message } = this.state;
                 if (data === undefined) {
-                    return (
-                        <div className="center">
-                            {message}
-                        </div>
-                    );
+                    return <div className="center">{message}</div>;
                 }
 
-                return (
-                    <OriginalComponent
-                        {...this.props as TProps}
-                        data={data} />
-                );
+                return <OriginalComponent {...(this.props as TProps)} data={data} />;
             }
         };
     };

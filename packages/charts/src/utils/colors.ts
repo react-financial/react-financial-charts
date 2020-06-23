@@ -1,7 +1,6 @@
 import { colorPresets } from "./colorPresets";
 
-export const colorToRGBA = (inputColor: string, opacity: number = 1) => {
-
+export const colorToRGBA = (inputColor: string, opacity = 1) => {
     const cleanedColor = inputColor.trim();
 
     if (cleanedColor.startsWith("#")) {
@@ -25,6 +24,7 @@ export const colorToRGBA = (inputColor: string, opacity: number = 1) => {
 
 const presetToRGB = (inputPreset: string, opacity: number) => {
     const lowercasePreset = inputPreset.toLowerCase();
+    // eslint-disable-next-line no-prototype-builtins
     if (!colorPresets.hasOwnProperty(lowercasePreset)) {
         throw new Error(`preset color does not exist: ${inputPreset}`);
     }
@@ -47,10 +47,9 @@ const rgbToRGBA = (inputRGB: string, opacity: number) => {
 };
 
 const hexToRGBA = (inputHex: string, opacity: number) => {
-
     const hex = inputHex.replace("#", "");
 
-    const multiplier = (hex.length === 3) ? 1 : 2;
+    const multiplier = hex.length === 3 ? 1 : 2;
 
     const r = parseInt(hex.substring(0, 1 * multiplier), 16);
     const g = parseInt(hex.substring(1 * multiplier, 2 * multiplier), 16);

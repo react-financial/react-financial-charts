@@ -16,7 +16,6 @@ interface StraightLineProps {
 }
 
 export class StraightLine extends React.Component<StraightLineProps> {
-
     public static defaultProps = {
         className: "line",
         type: "horizontal",
@@ -37,9 +36,12 @@ export class StraightLine extends React.Component<StraightLineProps> {
         );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { width, height } = moreProps;
-        const { xScale, chartConfig: { yScale } } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+        } = moreProps;
 
         const { className } = this.props;
         const { type, stroke, strokeWidth, opacity, strokeDasharray } = this.props;
@@ -57,17 +59,21 @@ export class StraightLine extends React.Component<StraightLineProps> {
                 {...lineCoordinates}
             />
         );
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {
             type,
             stroke = StraightLine.defaultProps.stroke,
             strokeWidth = StraightLine.defaultProps.strokeWidth,
-            opacity, strokeDasharray } = this.props;
+            opacity,
+            strokeDasharray,
+        } = this.props;
         const { yValue, xValue } = this.props;
         const { xScale } = moreProps;
-        const { chartConfig: { yScale, width, height } } = moreProps;
+        const {
+            chartConfig: { yScale, width, height },
+        } = moreProps;
 
         ctx.beginPath();
 
@@ -82,11 +88,11 @@ export class StraightLine extends React.Component<StraightLineProps> {
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
-    }
+    };
 
     private readonly getLineCoordinates = (type, xScale, yScale, xValue, yValue, width, height) => {
         return type === "horizontal"
             ? { x1: 0, y1: Math.round(yScale(yValue)), x2: width, y2: Math.round(yScale(yValue)) }
             : { x1: Math.round(xScale(xValue)), y1: 0, x2: Math.round(xScale(xValue)), y2: height };
-    }
+    };
 }

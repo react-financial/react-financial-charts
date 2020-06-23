@@ -32,7 +32,6 @@ interface BarAnnotationProps {
 }
 
 export class BarAnnotation extends React.Component<BarAnnotationProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-bar-annotation",
         opacity: 1,
@@ -62,12 +61,7 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
             textRotate,
         } = this.props;
 
-        const { x, y, fill, tooltip } = helper(
-            this.props,
-            xAccessor,
-            xScale,
-            yScale,
-        );
+        const { x, y, fill, tooltip } = helper(this.props, xAccessor, xScale, yScale);
 
         const {
             textIcon,
@@ -92,11 +86,7 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
                         fontSize={fontSize}
                         fill={textFill}
                         opacity={textOpacity}
-                        transform={
-                            textRotate != null
-                                ? `rotate(${textRotate}, ${x}, ${y})`
-                                : undefined
-                        }
+                        transform={textRotate != null ? `rotate(${textRotate}, ${x}, ${y})` : undefined}
                         textAnchor={textAnchor}
                     >
                         {text}
@@ -111,23 +101,13 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
                         fontSize={textIconFontSize}
                         fill={textIconFill}
                         opacity={textIconOpacity}
-                        transform={
-                            textIconRotate != null
-                                ? `rotate(${textIconRotate}, ${x}, ${y})`
-                                : undefined
-                        }
-                        textAnchor={textAnchor}>
+                        transform={textIconRotate != null ? `rotate(${textIconRotate}, ${x}, ${y})` : undefined}
+                        textAnchor={textAnchor}
+                    >
                         {textIcon}
                     </text>
                 ) : null}
-                {path != null ? (
-                    <path
-                        d={path({ x, y })}
-                        stroke={stroke}
-                        fill={fill}
-                        opacity={opacity}
-                    />
-                ) : null}
+                {path != null ? <path d={path({ x, y })} stroke={stroke} fill={fill} opacity={opacity} /> : null}
             </g>
         );
     }
@@ -139,7 +119,7 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
             const { xScale, yScale, datum } = this.props;
             onClick({ xScale, yScale, datum }, e);
         }
-    }
+    };
 }
 
 function helper(props, xAccessor, xScale, yScale) {
@@ -148,10 +128,7 @@ function helper(props, xAccessor, xScale, yScale) {
     const xFunc = functor(x);
     const yFunc = functor(y);
 
-    const [xPos, yPos] = [
-        xFunc({ xScale, xAccessor, datum, plotData }),
-        yFunc({ yScale, datum, plotData }),
-    ];
+    const [xPos, yPos] = [xFunc({ xScale, xAccessor, datum, plotData }), yFunc({ yScale, datum, plotData })];
 
     return {
         x: xPos,

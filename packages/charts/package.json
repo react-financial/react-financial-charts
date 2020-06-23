@@ -32,7 +32,6 @@
     "build": "npm run clean && npm run compile",
     "clean": "rimraf lib",
     "compile": "tsc -p tsconfig.json",
-    "lint": "tslint -p tsconfig.json -c tslint.yaml",
     "test": "jest",
     "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
   },

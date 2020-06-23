@@ -29,7 +29,6 @@ interface InteractiveTextProps {
 }
 
 export class InteractiveText extends React.Component<InteractiveTextProps> {
-
     public static defaultProps = {
         onDragStart: noop,
         onDrag: noop,
@@ -44,13 +43,12 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
     private textWidth;
 
     public UNSAFE_componentWillReceiveProps(nextProps) {
-        this.calculateTextWidth = (
-            nextProps.text !== this.props.text
-            || nextProps.fontStyle !== this.props.fontStyle
-            || nextProps.fontWeight !== this.props.fontWeight
-            || nextProps.fontSize !== this.props.fontSize
-            || nextProps.fontFamily !== this.props.fontFamily
-        );
+        this.calculateTextWidth =
+            nextProps.text !== this.props.text ||
+            nextProps.fontStyle !== this.props.fontStyle ||
+            nextProps.fontWeight !== this.props.fontWeight ||
+            nextProps.fontSize !== this.props.fontSize ||
+            nextProps.fontFamily !== this.props.fontFamily;
     }
 
     public render() {
@@ -76,28 +74,21 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
         );
     }
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = moreProps => {
         const { onHover } = this.props;
 
-        if (
-            isDefined(onHover)
-            && isDefined(this.textWidth)
-            && !this.calculateTextWidth
-        ) {
+        if (isDefined(onHover) && isDefined(this.textWidth) && !this.calculateTextWidth) {
             const { rect } = this.helper(this.props, moreProps, this.textWidth);
-            const { mouseXY: [x, y] } = moreProps;
+            const {
+                mouseXY: [x, y],
+            } = moreProps;
 
-            if (
-                x >= rect.x
-                && y >= rect.y
-                && x <= rect.x + rect.width
-                && y <= rect.y + rect.height
-            ) {
+            if (x >= rect.x && y >= rect.y && x <= rect.x + rect.width && y <= rect.y + rect.height) {
                 return true;
             }
         }
         return false;
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {
@@ -142,16 +133,19 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
 
         ctx.beginPath();
         ctx.fillText(text, x, y);
-    }
+    };
 
     private readonly renderSVG = () => {
         throw new Error("svg not implemented");
-    }
+    };
 
     private readonly helper = (props, moreProps, textWidth) => {
         const { position, fontSize } = props;
 
-        const { xScale, chartConfig: { yScale } } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+        } = moreProps;
 
         const [xValue, yValue] = position;
         const x = xScale(xValue);
@@ -165,7 +159,9 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
         };
 
         return {
-            x, y, rect,
+            x,
+            y,
+            rect,
         };
-    }
+    };
 }

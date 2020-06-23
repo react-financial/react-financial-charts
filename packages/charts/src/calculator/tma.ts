@@ -41,31 +41,26 @@ export interface TMAOptions {
     readonly windowSize: number;
 }
 
-export default function () {
+export default function() {
     let options = defaultOptions;
 
     const calculator = (data: any[]) => {
         const { windowSize, sourcePath } = options;
 
         const n = Math.floor(windowSize / 2);
-        const weight = (windowSize % 2) === 0
-            ? n * (n + 1)
-            : (n + 1) * (n + 1);
+        const weight = windowSize % 2 === 0 ? n * (n + 1) : (n + 1) * (n + 1);
 
         const triaverage = slidingWindow()
             .windowSize(windowSize)
             .sourcePath(sourcePath)
             .accumulator((values: number[]) => {
                 const total = sum(values, (v, i) => {
-                    return i < n
-                        ? (i + 1) * v
-                        : (windowSize - i) * v;
+                    return i < n ? (i + 1) * v : (windowSize - i) * v;
                 });
                 return total / weight;
             });
 
         return triaverage(data);
-
     };
 
     calculator.undefinedLength = () => {

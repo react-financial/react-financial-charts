@@ -20,7 +20,6 @@ interface StochasticSeriesProps {
 }
 
 export class StochasticSeries extends React.Component<StochasticSeriesProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-stochastic-series",
         stroke: {
@@ -40,43 +39,32 @@ export class StochasticSeries extends React.Component<StochasticSeriesProps> {
         const {
             className,
             stroke = StochasticSeries.defaultProps.stroke,
-            refLineOpacity, overSold, middle, overBought } = this.props;
+            refLineOpacity,
+            overSold,
+            middle,
+            overBought,
+        } = this.props;
 
         return (
             <g className={className}>
-                <LineSeries
-                    yAccessor={this.yAccessorForD}
-                    stroke={stroke.dLine}
-                    fill="none" />
-                <LineSeries
-                    yAccessor={this.yAccessorForK}
-                    stroke={stroke.kLine}
-                    fill="none" />
-                <StraightLine
-                    stroke={stroke.top}
-                    opacity={refLineOpacity}
-                    yValue={overSold} />
-                <StraightLine
-                    stroke={stroke.middle}
-                    opacity={refLineOpacity}
-                    yValue={middle} />
-                <StraightLine
-                    stroke={stroke.bottom}
-                    opacity={refLineOpacity}
-                    yValue={overBought} />
+                <LineSeries yAccessor={this.yAccessorForD} stroke={stroke.dLine} fill="none" />
+                <LineSeries yAccessor={this.yAccessorForK} stroke={stroke.kLine} fill="none" />
+                <StraightLine stroke={stroke.top} opacity={refLineOpacity} yValue={overSold} />
+                <StraightLine stroke={stroke.middle} opacity={refLineOpacity} yValue={middle} />
+                <StraightLine stroke={stroke.bottom} opacity={refLineOpacity} yValue={overBought} />
             </g>
         );
     }
 
-    private readonly yAccessorForK = (d) => {
+    private readonly yAccessorForK = d => {
         const { yAccessor } = this.props;
 
         return yAccessor(d) && yAccessor(d).K;
-    }
+    };
 
-    private readonly yAccessorForD = (d) => {
+    private readonly yAccessorForD = d => {
         const { yAccessor } = this.props;
 
         return yAccessor(d) && yAccessor(d).D;
-    }
+    };
 }

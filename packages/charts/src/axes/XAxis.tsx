@@ -43,7 +43,6 @@ interface XAxisProps {
 }
 
 export class XAxis extends React.Component<XAxisProps> {
-
     public static defaultProps = {
         axisAt: "bottom",
         className: "react-financial-charts-x-axis",
@@ -103,24 +102,22 @@ export class XAxis extends React.Component<XAxisProps> {
                 stroke={stroke}
                 strokeWidth={strokeWidth}
                 zoomEnabled={zoomEnabled && showTicks}
-                axisZoomCallback={this.axisZoomCallback} />
+                axisZoomCallback={this.axisZoomCallback}
+            />
         );
     }
 
-    private readonly axisZoomCallback = (newXDomain) => {
+    private readonly axisZoomCallback = newXDomain => {
         const { xAxisZoom } = this.context;
 
         xAxisZoom(newXDomain);
-    }
+    };
 
     private readonly helper = (props: XAxisProps, context) => {
+        const { axisAt, xZoomHeight = XAxis.defaultProps.xZoomHeight, orient, ticks } = props;
         const {
-            axisAt,
-            xZoomHeight = XAxis.defaultProps.xZoomHeight,
-            orient,
-            ticks,
-        } = props;
-        const { chartConfig: { width, height } } = context;
+            chartConfig: { width, height },
+        } = context;
 
         let axisLocation;
         const x = 0;
@@ -135,13 +132,13 @@ export class XAxis extends React.Component<XAxisProps> {
                 axisLocation = height;
                 break;
             case "middle":
-                axisLocation = (height) / 2;
+                axisLocation = height / 2;
                 break;
             default:
                 axisLocation = axisAt;
         }
 
-        const y = (orient === "top") ? -xZoomHeight : 0;
+        const y = orient === "top" ? -xZoomHeight : 0;
 
         return {
             transform: [0, axisLocation],
@@ -150,10 +147,9 @@ export class XAxis extends React.Component<XAxisProps> {
             bg: { x, y, h, w },
             ticks: ticks ?? this.getXTicks(width),
         };
-    }
+    };
 
     private readonly getXTicks = (width: number) => {
-
         if (width < 400) {
             return 2;
         }
@@ -163,9 +159,9 @@ export class XAxis extends React.Component<XAxisProps> {
         }
 
         return 8;
-    }
+    };
 
-    private readonly getXScale = (moreProps) => {
+    private readonly getXScale = moreProps => {
         const { xScale: scale, width } = moreProps;
 
         if (scale.invert) {
@@ -178,5 +174,5 @@ export class XAxis extends React.Component<XAxisProps> {
         }
 
         return scale;
-    }
+    };
 }

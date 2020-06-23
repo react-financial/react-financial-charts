@@ -7,9 +7,9 @@ interface CircleProps {
     readonly fill?: string;
     readonly opacity?: number;
     readonly point: {
-        x: number,
-        y: number,
-        datum: any,
+        x: number;
+        y: number;
+        datum: any;
     };
     readonly r: number | ((datum: any) => number);
     readonly stroke?: string;
@@ -17,7 +17,6 @@ interface CircleProps {
 }
 
 export class Circle extends React.Component<CircleProps> {
-
     public static defaultProps = {
         stroke: "#4682B4",
         strokeWidth: 1,
@@ -27,7 +26,6 @@ export class Circle extends React.Component<CircleProps> {
     };
 
     public static drawOnCanvas = (props: CircleProps, point, ctx: CanvasRenderingContext2D) => {
-
         const {
             stroke = Circle.defaultProps.stroke,
             fill = Circle.defaultProps.fill,
@@ -43,10 +41,9 @@ export class Circle extends React.Component<CircleProps> {
         }
 
         Circle.drawOnCanvasWithNoStateChange(props, point, ctx);
-    }
+    };
 
     public static drawOnCanvasWithNoStateChange = (props: CircleProps, point, ctx: CanvasRenderingContext2D) => {
-
         const { r } = props;
         const radius = functor(r)(point.datum);
 
@@ -55,7 +52,7 @@ export class Circle extends React.Component<CircleProps> {
         ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI, false);
         ctx.stroke();
         ctx.fill();
-    }
+    };
 
     public render() {
         const { className, stroke, strokeWidth, opacity, fill, point, r } = this.props;
@@ -70,7 +67,8 @@ export class Circle extends React.Component<CircleProps> {
                 strokeWidth={strokeWidth}
                 fillOpacity={opacity}
                 fill={fill}
-                r={radius} />
+                r={radius}
+            />
         );
     }
 }

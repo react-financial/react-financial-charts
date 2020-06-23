@@ -54,9 +54,8 @@ interface EachFibRetracementState {
 }
 
 export class EachFibRetracement extends React.Component<EachFibRetracementProps, EachFibRetracementState> {
-
     public static defaultProps = {
-        yDisplayFormat: (d) => d.toFixed(2),
+        yDisplayFormat: d => d.toFixed(2),
         interactive: true,
         appearance: {
             stroke: "#000000",
@@ -136,7 +135,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
                         return [x, y];
                     };
 
-                    const firstOrLast = (j === 0) || (j === lines.length - 1);
+                    const firstOrLast = j === 0 || j === lines.length - 1;
 
                     const interactiveCursorClass = firstOrLast
                         ? "react-financial-charts-ns-resize-cursor"
@@ -146,76 +145,83 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
                         ? "react-financial-charts-ns-resize-cursor"
                         : "react-financial-charts-ew-resize-cursor";
 
-                    const dragHandler = j === 0
-                        ? this.handleLineNSResizeTop
-                        : j === lines.length - 1
+                    const dragHandler =
+                        j === 0
+                            ? this.handleLineNSResizeTop
+                            : j === lines.length - 1
                             ? this.handleLineNSResizeBottom
                             : this.handleLineMove;
 
-                    const edge1DragHandler = j === 0
-                        ? this.handleLineNSResizeTop
-                        : j === lines.length - 1
+                    const edge1DragHandler =
+                        j === 0
+                            ? this.handleLineNSResizeTop
+                            : j === lines.length - 1
                             ? this.handleLineNSResizeBottom
                             : this.handleEdge1Drag;
-                    const edge2DragHandler = j === 0
-                        ? this.handleLineNSResizeTop
-                        : j === lines.length - 1
+                    const edge2DragHandler =
+                        j === 0
+                            ? this.handleLineNSResizeTop
+                            : j === lines.length - 1
                             ? this.handleLineNSResizeBottom
                             : this.handleEdge2Drag;
 
-                    const hoverHandler = interactive
-                        ? { onHover: this.handleHover, onUnHover: this.handleHover }
-                        : {};
-                    return <g key={j}>
-                        <StraightLine
-                            ref={this.saveNodeType(`line_${j}`)}
-                            selected={selected || hover}
-                            {...hoverHandler}
-                            type={lineType}
-                            x1Value={line.x1}
-                            y1Value={line.y}
-                            x2Value={line.x2}
-                            y2Value={line.y}
-                            stroke={stroke}
-                            strokeWidth={(hover || selected) ? strokeWidth + 1 : strokeWidth}
-                            strokeOpacity={strokeOpacity}
-                            interactiveCursorClass={interactiveCursorClass}
-
-                            onDragStart={this.handleLineDragStart}
-                            onDrag={dragHandler}
-                            onDragComplete={onDragComplete}
-                        />
-                        <Text
-                            selected={selected}
-                            xyProvider={xyProvider}
-                            fontFamily={fontFamily}
-                            fontSize={fontSize}
-                            fill={fontFill}>{text}</Text>
-                        <ClickableCircle
-                            ref={this.saveNodeType("edge1")}
-                            show={selected || hover}
-                            cx={line.x1}
-                            cy={line.y}
-                            r={r}
-                            fill={firstOrLast ? nsEdgeFill : edgeFill}
-                            stroke={edgeStroke}
-                            strokeWidth={edgeStrokeWidth}
-                            interactiveCursorClass={interactiveEdgeCursorClass}
-                            onDrag={edge1DragHandler}
-                            onDragComplete={onDragComplete} />
-                        <ClickableCircle
-                            ref={this.saveNodeType("edge2")}
-                            show={selected || hover}
-                            cx={line.x2}
-                            cy={line.y}
-                            r={r}
-                            fill={firstOrLast ? nsEdgeFill : edgeFill}
-                            stroke={edgeStroke}
-                            strokeWidth={edgeStrokeWidth}
-                            interactiveCursorClass={interactiveEdgeCursorClass}
-                            onDrag={edge2DragHandler}
-                            onDragComplete={onDragComplete} />
-                    </g>;
+                    const hoverHandler = interactive ? { onHover: this.handleHover, onUnHover: this.handleHover } : {};
+                    return (
+                        <g key={j}>
+                            <StraightLine
+                                ref={this.saveNodeType(`line_${j}`)}
+                                selected={selected || hover}
+                                {...hoverHandler}
+                                type={lineType}
+                                x1Value={line.x1}
+                                y1Value={line.y}
+                                x2Value={line.x2}
+                                y2Value={line.y}
+                                stroke={stroke}
+                                strokeWidth={hover || selected ? strokeWidth + 1 : strokeWidth}
+                                strokeOpacity={strokeOpacity}
+                                interactiveCursorClass={interactiveCursorClass}
+                                onDragStart={this.handleLineDragStart}
+                                onDrag={dragHandler}
+                                onDragComplete={onDragComplete}
+                            />
+                            <Text
+                                selected={selected}
+                                xyProvider={xyProvider}
+                                fontFamily={fontFamily}
+                                fontSize={fontSize}
+                                fill={fontFill}
+                            >
+                                {text}
+                            </Text>
+                            <ClickableCircle
+                                ref={this.saveNodeType("edge1")}
+                                show={selected || hover}
+                                cx={line.x1}
+                                cy={line.y}
+                                r={r}
+                                fill={firstOrLast ? nsEdgeFill : edgeFill}
+                                stroke={edgeStroke}
+                                strokeWidth={edgeStrokeWidth}
+                                interactiveCursorClass={interactiveEdgeCursorClass}
+                                onDrag={edge1DragHandler}
+                                onDragComplete={onDragComplete}
+                            />
+                            <ClickableCircle
+                                ref={this.saveNodeType("edge2")}
+                                show={selected || hover}
+                                cx={line.x2}
+                                cy={line.y}
+                                r={r}
+                                fill={firstOrLast ? nsEdgeFill : edgeFill}
+                                stroke={edgeStroke}
+                                strokeWidth={edgeStrokeWidth}
+                                interactiveCursorClass={interactiveEdgeCursorClass}
+                                onDrag={edge2DragHandler}
+                                onDragComplete={onDragComplete}
+                            />
+                        </g>
+                    );
                 })}
                 <HoverTextNearMouse
                     show={hoverTextEnabled && hover}
@@ -226,11 +232,9 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
         );
     }
 
-    private readonly handleEdge2Drag = (moreProps) => {
+    private readonly handleEdge2Drag = moreProps => {
         const { index, onDrag } = this.props;
-        const {
-            x1, y1, y2,
-        } = this.props;
+        const { x1, y1, y2 } = this.props;
 
         const [x2] = getNewXY(moreProps);
 
@@ -240,13 +244,11 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
             x2,
             y2,
         });
-    }
+    };
 
-    private readonly handleEdge1Drag = (moreProps) => {
+    private readonly handleEdge1Drag = moreProps => {
         const { index, onDrag } = this.props;
-        const {
-            y1, x2, y2,
-        } = this.props;
+        const { y1, x2, y2 } = this.props;
 
         const [x1] = getNewXY(moreProps);
 
@@ -256,13 +258,11 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
             x2,
             y2,
         });
-    }
+    };
 
-    private readonly handleLineNSResizeBottom = (moreProps) => {
+    private readonly handleLineNSResizeBottom = moreProps => {
         const { index, onDrag } = this.props;
-        const {
-            x1, y1, x2,
-        } = this.props;
+        const { x1, y1, x2 } = this.props;
 
         const [, y2] = getNewXY(moreProps);
 
@@ -272,13 +272,11 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
             x2,
             y2,
         });
-    }
+    };
 
-    private readonly handleLineNSResizeTop = (moreProps) => {
+    private readonly handleLineNSResizeTop = moreProps => {
         const { index, onDrag } = this.props;
-        const {
-            x1, x2, y2,
-        } = this.props;
+        const { x1, x2, y2 } = this.props;
 
         const [, y1] = getNewXY(moreProps);
 
@@ -288,16 +286,19 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
             x2,
             y2,
         });
-    }
+    };
 
-    private readonly handleLineMove = (moreProps) => {
+    private readonly handleLineMove = moreProps => {
         const { index, onDrag } = this.props;
 
-        const {
-            x1: x1Value, y1: y1Value, x2: x2Value, y2: y2Value,
-        } = this.dragStart;
+        const { x1: x1Value, y1: y1Value, x2: x2Value, y2: y2Value } = this.dragStart;
 
-        const { xScale, chartConfig: { yScale }, xAccessor, fullData } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+            xAccessor,
+            fullData,
+        } = moreProps;
         const { startPos, mouseXY } = moreProps;
 
         const x1 = xScale(x1Value);
@@ -319,36 +320,36 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
             x2: newX2Value,
             y2: newY2Value,
         });
-    }
+    };
 
     private readonly handleLineDragStart = () => {
-        const {
-            x1, y1, x2, y2,
-        } = this.props;
+        const { x1, y1, x2, y2 } = this.props;
 
         this.dragStart = {
-            x1, y1, x2, y2,
+            x1,
+            y1,
+            x2,
+            y2,
         };
-    }
+    };
 
-    private readonly handleHover = (moreProps) => {
+    private readonly handleHover = moreProps => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
             });
         }
-    }
+    };
 }
 
 function helper({ x1, y1, x2, y2 }) {
     const dy = y2 - y1;
-    const retracements = [100, 61.8, 50, 38.2, 23.6, 0]
-        .map((each) => ({
-            percent: each,
-            x1,
-            x2,
-            y: (y2 - (each / 100) * dy),
-        }));
+    const retracements = [100, 61.8, 50, 38.2, 23.6, 0].map(each => ({
+        percent: each,
+        x1,
+        x2,
+        y: y2 - (each / 100) * dy,
+    }));
 
     return retracements;
 }

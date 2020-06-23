@@ -39,8 +39,10 @@ interface EachInteractiveYCoordinateState {
     hover: boolean;
 }
 
-export class EachInteractiveYCoordinate extends React.Component<EachInteractiveYCoordinateProps, EachInteractiveYCoordinateState> {
-
+export class EachInteractiveYCoordinate extends React.Component<
+    EachInteractiveYCoordinateProps,
+    EachInteractiveYCoordinateState
+> {
     public static defaultProps = {
         onDrag: noop,
         onDragComplete: noop,
@@ -100,10 +102,10 @@ export class EachInteractiveYCoordinate extends React.Component<EachInteractiveY
 
         const dragProps = draggable
             ? {
-                onDragStart: this.handleDragStart,
-                onDrag: this.handleDrag,
-                onDragComplete,
-            }
+                  onDragStart: this.handleDragStart,
+                  onDrag: this.handleDrag,
+                  onDragComplete,
+              }
             : {};
         return (
             <g>
@@ -150,29 +152,29 @@ export class EachInteractiveYCoordinate extends React.Component<EachInteractiveY
         );
     }
 
-    private readonly handleCloseIconHover = (moreProps) => {
+    private readonly handleCloseIconHover = moreProps => {
         if (this.state.closeIconHover !== moreProps.hovering) {
             this.setState({
                 closeIconHover: moreProps.hovering,
             });
         }
-    }
+    };
 
-    private readonly handleHover = (moreProps) => {
+    private readonly handleHover = moreProps => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
                 closeIconHover: moreProps.hovering ? this.state.closeIconHover : false,
             });
         }
-    }
+    };
 
-    private readonly handleDelete = (moreProps) => {
+    private readonly handleDelete = moreProps => {
         const { index, onDelete } = this.props;
         onDelete(index, moreProps);
-    }
+    };
 
-    private readonly handleDrag = (moreProps) => {
+    private readonly handleDrag = moreProps => {
         const { index, onDrag } = this.props;
         const {
             mouseXY: [, mouseY],
@@ -184,20 +186,21 @@ export class EachInteractiveYCoordinate extends React.Component<EachInteractiveY
         const newYValue = yScale.invert(mouseY - dy);
 
         onDrag(index, newYValue);
-    }
+    };
 
-    private readonly handleDragStart = (moreProps) => {
-        const {
-            yValue,
-        } = this.props;
+    private readonly handleDragStart = moreProps => {
+        const { yValue } = this.props;
         const { mouseXY } = moreProps;
-        const { chartConfig: { yScale } } = moreProps;
+        const {
+            chartConfig: { yScale },
+        } = moreProps;
         const [, mouseY] = mouseXY;
 
         const dy = mouseY - yScale(yValue);
 
         this.dragStartPosition = {
-            yValue, dy,
+            yValue,
+            dy,
         };
-    }
+    };
 }

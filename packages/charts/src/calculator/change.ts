@@ -15,7 +15,7 @@ interface ChangeCalculator {
     options(newOptions: ChangeOptions): ChangeCalculator;
 }
 
-export default function () {
+export default function() {
     let options: ChangeOptions = defaultOptions;
 
     const calculator = (data: any[]) => {
@@ -26,7 +26,7 @@ export default function () {
             .sourcePath(sourcePath)
             .accumulator(([prev, curr]) => {
                 const absoluteChange = curr - prev;
-                const percentChange = absoluteChange * 100 / prev;
+                const percentChange = (absoluteChange * 100) / prev;
                 return { absoluteChange, percentChange };
             });
 

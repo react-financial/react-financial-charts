@@ -50,7 +50,6 @@ interface AxisZoomCaptureState {
 }
 
 export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZoomCaptureState> {
-
     public static defaultProps = {
         onDoubleClick: noop,
         onContextMenu: noop,
@@ -80,7 +79,11 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
             <rect
                 className={`react-financial-charts-enable-interaction ${cursor} ${className}`}
                 ref={this.saveNode}
-                x={bg.x} y={bg.y} opacity={0} height={bg.h} width={bg.w}
+                x={bg.x}
+                y={bg.y}
+                opacity={0}
+                height={bg.h}
+                width={bg.w}
                 onContextMenu={this.handleRightClick}
                 onMouseDown={this.handleDragStartMouse}
                 onTouchStart={this.handleDragStartTouch}
@@ -89,13 +92,10 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
     }
 
     private readonly handleDragEnd = () => {
-
         if (!this.dragHappened) {
             if (this.clicked) {
                 const e = d3Event;
-                const mouseXY = this.mouseInteraction
-                    ? mouse(this.node)
-                    : touches(this.node)[0];
+                const mouseXY = this.mouseInteraction ? mouse(this.node) : touches(this.node)[0];
                 const { onDoubleClick } = this.props;
 
                 onDoubleClick(mouseXY, e);
@@ -116,7 +116,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         this.setState({
             startPosition: null,
         });
-    }
+    };
 
     private readonly handleDrag = () => {
         const { startPosition } = this.state;
@@ -127,9 +127,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
             const { startScale } = startPosition;
             const { startXY } = startPosition;
 
-            const mouseXY = this.mouseInteraction
-                ? mouse(this.node)
-                : touches(this.node)[0];
+            const mouseXY = this.mouseInteraction ? mouse(this.node) : touches(this.node)[0];
 
             const diff = getMouseDelta(startXY, mouseXY);
 
@@ -140,19 +138,20 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
 
             const tempRange = startScale
                 .range()
-                .map((d) => inverted ? d - sign(d - center) * diff : d + sign(d - center) * diff);
+                .map(d => (inverted ? d - sign(d - center) * diff : d + sign(d - center) * diff));
 
             const newDomain = tempRange.map(startScale.invert);
 
-            if (sign(last(startScale.range()) - first(startScale.range())) === sign(last(tempRange) - first(tempRange))) {
-
+            if (
+                sign(last(startScale.range()) - first(startScale.range())) === sign(last(tempRange) - first(tempRange))
+            ) {
                 const { axisZoomCallback } = this.props;
                 axisZoomCallback(newDomain);
             }
         }
-    }
+    };
 
-    private readonly handleDragStartTouch = (e) => {
+    private readonly handleDragStartTouch = e => {
         this.mouseInteraction = false;
 
         const { getScale, getMoreProps } = this.props;
@@ -173,9 +172,9 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
                 },
             });
         }
-    }
+    };
 
-    private readonly handleDragStartMouse = (e) => {
+    private readonly handleDragStartMouse = e => {
         this.mouseInteraction = true;
 
         const { getScale, getMoreProps } = this.props;
@@ -197,9 +196,9 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
             });
         }
         e.preventDefault();
-    }
+    };
 
-    private readonly handleRightClick = (e) => {
+    private readonly handleRightClick = e => {
         e.stopPropagation();
         e.preventDefault();
 
@@ -215,9 +214,9 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         });
 
         onContextMenu(mouseXY, e);
-    }
+    };
 
-    private readonly saveNode = (node) => {
+    private readonly saveNode = node => {
         this.node = node;
-    }
+    };
 }

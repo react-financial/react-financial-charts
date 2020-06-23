@@ -24,7 +24,6 @@ interface MACDSeriesProps {
 }
 
 export class MACDSeries extends React.Component<MACDSeriesProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-macd-series",
         clip: true,
@@ -68,37 +67,31 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
                     fill={fill.divergence}
                     opacity={opacity}
                     clip={clip}
-                    yAccessor={this.yAccessorForDivergence} />
-                <LineSeries
-                    yAccessor={this.yAccessorForMACD}
-                    stroke={stroke.macd} />
-                <LineSeries
-                    yAccessor={this.yAccessorForSignal}
-                    stroke={stroke.signal} />
-                <StraightLine
-                    stroke={zeroLineStroke}
-                    opacity={zeroLineOpacity}
-                    yValue={0} />
+                    yAccessor={this.yAccessorForDivergence}
+                />
+                <LineSeries yAccessor={this.yAccessorForMACD} stroke={stroke.macd} />
+                <LineSeries yAccessor={this.yAccessorForSignal} stroke={stroke.signal} />
+                <StraightLine stroke={zeroLineStroke} opacity={zeroLineOpacity} yValue={0} />
             </g>
         );
     }
 
     private readonly yAccessorForDivergenceBase = (xScale, yScale) => {
         return yScale(0);
-    }
+    };
 
-    private readonly yAccessorForDivergence = (d) => {
+    private readonly yAccessorForDivergence = d => {
         const { yAccessor } = this.props;
         return yAccessor(d) && yAccessor(d).divergence;
-    }
+    };
 
-    private readonly yAccessorForSignal = (d) => {
+    private readonly yAccessorForSignal = d => {
         const { yAccessor } = this.props;
         return yAccessor(d) && yAccessor(d).signal;
-    }
+    };
 
-    private readonly yAccessorForMACD = (d) => {
+    private readonly yAccessorForMACD = d => {
         const { yAccessor } = this.props;
         return yAccessor(d) && yAccessor(d).macd;
-    }
+    };
 }

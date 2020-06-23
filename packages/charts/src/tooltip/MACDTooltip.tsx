@@ -22,12 +22,12 @@ interface MACDTooltipProps {
     };
     readonly appearance: {
         stroke: {
-            macd: string,
-            signal: string,
-        },
+            macd: string;
+            signal: string;
+        };
         fill: {
-            divergence: string,
-        },
+            divergence: string;
+        };
     };
     readonly displayFormat: any; // func
     readonly displayInit?: string;
@@ -36,7 +36,6 @@ interface MACDTooltipProps {
 }
 
 export class MACDTooltip extends React.Component<MACDTooltipProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-tooltip",
         displayFormat: format(".2f"),
@@ -46,21 +45,17 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                clip={false}
-                svgDraw={this.renderSVG}
-                drawOn={["mousemove"]}
-            />
-        );
+        return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { onClick, displayInit, fontFamily, fontSize, displayFormat, className } = this.props;
         const { yAccessor, options, appearance, labelFill } = this.props;
         const { displayValuesFor } = this.props;
 
-        const { chartConfig: { width, height } } = moreProps;
+        const {
+            chartConfig: { width, height },
+        } = moreProps;
 
         const currentItem = displayValuesFor(this.props, moreProps);
         const macdValue = currentItem && yAccessor(currentItem);
@@ -75,8 +70,7 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
 
         return (
             <g className={className} transform={`translate(${x}, ${y})`} onClick={onClick}>
-                <ToolTipText x={0} y={0}
-                    fontFamily={fontFamily} fontSize={fontSize}>
+                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
                     <ToolTipTSpanLabel fill={labelFill}>MACD (</ToolTipTSpanLabel>
                     <tspan fill={appearance.stroke.macd}>{options.slow}</tspan>
                     <ToolTipTSpanLabel fill={labelFill}>, </ToolTipTSpanLabel>
@@ -92,5 +86,5 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
                 </ToolTipText>
             </g>
         );
-    }
+    };
 }

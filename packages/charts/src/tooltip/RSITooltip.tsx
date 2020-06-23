@@ -15,7 +15,7 @@ interface RSITooltipProps {
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly labelFill?: string;
-    readonly onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
+    readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
     readonly origin: number[] | any; // func
     readonly options: {
         windowSize: number;
@@ -25,7 +25,6 @@ interface RSITooltipProps {
 }
 
 export class RSITooltip extends React.Component<RSITooltipProps> {
-
     public static defaultProps = {
         displayFormat: format(".2f"),
         displayInit: "n/a",
@@ -35,20 +34,16 @@ export class RSITooltip extends React.Component<RSITooltipProps> {
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                clip={false}
-                svgDraw={this.renderSVG}
-                drawOn={["mousemove"]}
-            />
-        );
+        return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { onClick, displayInit, fontFamily, fontSize, yAccessor, displayFormat, className } = this.props;
         const { options, labelFill, textFill, displayValuesFor } = this.props;
 
-        const { chartConfig: { width, height } } = moreProps;
+        const {
+            chartConfig: { width, height },
+        } = moreProps;
 
         const currentItem = displayValuesFor(this.props, moreProps);
         const rsi = isDefined(currentItem) && yAccessor(currentItem);
@@ -61,15 +56,11 @@ export class RSITooltip extends React.Component<RSITooltipProps> {
         const tooltipLabel = `RSI (${options.windowSize}): `;
         return (
             <g className={className} transform={`translate(${x}, ${y})`} onClick={onClick}>
-                <ToolTipText
-                    x={0}
-                    y={0}
-                    fontFamily={fontFamily}
-                    fontSize={fontSize}>
+                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
                     <ToolTipTSpanLabel fill={labelFill}>{tooltipLabel}</ToolTipTSpanLabel>
                     <tspan fill={textFill}>{value}</tspan>
                 </ToolTipText>
             </g>
         );
-    }
+    };
 }

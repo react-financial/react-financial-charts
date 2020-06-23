@@ -34,7 +34,6 @@ const defaultCustomSnapX = (props: CursorProps, moreProps) => {
 };
 
 class Cursor extends React.Component<CursorProps> {
-
     public static defaultProps = {
         stroke: "#000000",
         opacity: 0.3,
@@ -69,29 +68,22 @@ class Cursor extends React.Component<CursorProps> {
     private getXCursorShapeStroke(moreProps) {
         const { xCursorShapeStroke } = this.props;
         const { currentItem } = moreProps;
-        return xCursorShapeStroke instanceof Function
-            ? xCursorShapeStroke(currentItem)
-            : xCursorShapeStroke;
+        return xCursorShapeStroke instanceof Function ? xCursorShapeStroke(currentItem) : xCursorShapeStroke;
     }
 
     private getXCursorShapeFill(moreProps) {
         const { xCursorShapeFill } = this.props;
         const { currentItem } = moreProps;
-        return xCursorShapeFill instanceof Function
-            ? xCursorShapeFill(currentItem)
-            : xCursorShapeFill;
+        return xCursorShapeFill instanceof Function ? xCursorShapeFill(currentItem) : xCursorShapeFill;
     }
 
-    private getXCursorShape(moreProps/* , ctx */) {
+    private getXCursorShape(moreProps /* , ctx */) {
         const { height, xScale, currentItem, plotData } = moreProps;
         const { xAccessor } = moreProps;
         const xValue = xAccessor(currentItem);
         const centerX = xScale(xValue);
         const shapeWidth =
-            Math.abs(
-                xScale(xAccessor(last(plotData))) -
-                xScale(xAccessor(first(plotData))),
-            ) / (plotData.length - 1);
+            Math.abs(xScale(xAccessor(last(plotData))) - xScale(xAccessor(first(plotData)))) / (plotData.length - 1);
         const xPos = centerX - shapeWidth / 2;
 
         return { height, xPos, shapeWidth };
@@ -99,13 +91,7 @@ class Cursor extends React.Component<CursorProps> {
 
     private getXYCursor(props, moreProps) {
         const { mouseXY, currentItem, show, height, width } = moreProps;
-        const {
-            customSnapX,
-            stroke,
-            opacity,
-            strokeDasharray,
-            disableYCursor,
-        } = props;
+        const { customSnapX, stroke, opacity, strokeDasharray, disableYCursor } = props;
 
         if (!show || isNotDefined(currentItem)) {
             return undefined;
@@ -153,50 +139,28 @@ class Cursor extends React.Component<CursorProps> {
 
             ctx.translate(originX, originY);
 
-            cursors.forEach((line) => {
+            cursors.forEach(line => {
                 const dashArray = getStrokeDasharrayCanvas(line.strokeDasharray);
                 const xShapeFill = this.getXCursorShapeFill(moreProps);
 
                 if (useXCursorShape && line.id === "xCursor") {
-                    const {
-                        xCursorShapeOpacity,
-                        xCursorShapeStrokeDasharray,
-                    } = this.props;
+                    const { xCursorShapeOpacity, xCursorShapeStrokeDasharray } = this.props;
                     const xShape = this.getXCursorShape(moreProps);
 
                     if (xCursorShapeStrokeDasharray != null) {
-                        const xShapeStroke = this.getXCursorShapeStroke(
-                            moreProps,
-                        );
-                        ctx.strokeStyle = colorToRGBA(
-                            xShapeStroke,
-                            xCursorShapeOpacity,
-                        );
-                        ctx.setLineDash(
-                            getStrokeDasharrayCanvas(xCursorShapeStrokeDasharray),
-                        );
+                        const xShapeStroke = this.getXCursorShapeStroke(moreProps);
+                        ctx.strokeStyle = colorToRGBA(xShapeStroke, xCursorShapeOpacity);
+                        ctx.setLineDash(getStrokeDasharrayCanvas(xCursorShapeStrokeDasharray));
                     }
 
                     ctx.beginPath();
                     ctx.fillStyle =
-                        xShapeFill != null
-                            ? colorToRGBA(xShapeFill, xCursorShapeOpacity)
-                            : "rgba(0, 0, 0, 0)"; // ="transparent"
+                        xShapeFill != null ? colorToRGBA(xShapeFill, xCursorShapeOpacity) : "rgba(0, 0, 0, 0)"; // ="transparent"
 
                     ctx.beginPath();
                     xCursorShapeStrokeDasharray == null
-                        ? ctx.fillRect(
-                            xShape.xPos,
-                            0,
-                            xShape.shapeWidth,
-                            xShape.height,
-                        )
-                        : ctx.rect(
-                            xShape.xPos,
-                            0,
-                            xShape.shapeWidth,
-                            xShape.height,
-                        );
+                        ? ctx.fillRect(xShape.xPos, 0, xShape.shapeWidth, xShape.height)
+                        : ctx.rect(xShape.xPos, 0, xShape.shapeWidth, xShape.height);
                     ctx.fill();
                 } else {
                     ctx.strokeStyle = colorToRGBA(line.stroke, line.opacity);
@@ -211,9 +175,9 @@ class Cursor extends React.Component<CursorProps> {
 
             ctx.restore();
         }
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const cursors = this.getXYCursor(this.props, moreProps);
         if (cursors === undefined) {
             return null;
@@ -225,15 +189,10 @@ class Cursor extends React.Component<CursorProps> {
             <g className={`react-financial-charts-crosshair ${className}`}>
                 {cursors.map(({ strokeDasharray, id, ...rest }, idx) => {
                     if (useXCursorShape && id === "xCursor") {
-                        const {
-                            xCursorShapeOpacity,
-                            xCursorShapeStrokeDasharray,
-                        } = this.props;
+                        const { xCursorShapeOpacity, xCursorShapeStrokeDasharray } = this.props;
                         const xShape = this.getXCursorShape(moreProps);
                         const xShapeFill = this.getXCursorShapeFill(moreProps);
-                        const xShapeStroke = this.getXCursorShapeStroke(
-                            moreProps,
-                        );
+                        const xShapeStroke = this.getXCursorShapeStroke(moreProps);
                         return (
                             <rect
                                 key={idx}
@@ -241,41 +200,23 @@ class Cursor extends React.Component<CursorProps> {
                                 y={0}
                                 width={xShape.shapeWidth}
                                 height={xShape.height}
-                                fill={
-                                    xShapeFill != null
-                                        ? xShapeFill
-                                        : "none"
-                                }
-                                stroke={
-                                    xCursorShapeStrokeDasharray == null
-                                        ? null
-                                        : xShapeStroke
-                                }
+                                fill={xShapeFill != null ? xShapeFill : "none"}
+                                stroke={xCursorShapeStrokeDasharray == null ? null : xShapeStroke}
                                 strokeDasharray={
                                     xCursorShapeStrokeDasharray == null
                                         ? undefined
-                                        : getStrokeDasharray(
-                                            xCursorShapeStrokeDasharray,
-                                        )
+                                        : getStrokeDasharray(xCursorShapeStrokeDasharray)
                                 }
                                 opacity={xCursorShapeOpacity}
                             />
                         );
                     }
 
-                    return (
-                        <line
-                            key={idx}
-                            strokeDasharray={getStrokeDasharray(
-                                strokeDasharray,
-                            )}
-                            {...rest}
-                        />
-                    );
+                    return <line key={idx} strokeDasharray={getStrokeDasharray(strokeDasharray)} {...rest} />;
                 })}
             </g>
         );
-    }
+    };
 }
 
 export default Cursor;

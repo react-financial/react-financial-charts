@@ -14,7 +14,7 @@ interface GroupTooltipProps {
     readonly displayValuesFor: any; // func
     readonly labelFill?: string;
     readonly layout: layouts;
-    readonly onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
+    readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
     readonly options: {
         labelFill?: string;
         yLabel: string | any; // func
@@ -25,14 +25,13 @@ interface GroupTooltipProps {
     readonly origin: number[];
     readonly position: "topRight" | "bottomLeft" | "bottomRight";
     readonly valueFill?: string;
-    readonly verticalSize?: number;  // "verticalSize" only be used, if layout is "vertical", "verticalRows".
+    readonly verticalSize?: number; // "verticalSize" only be used, if layout is "vertical", "verticalRows".
     readonly width?: number; // "width" only be used, if layout is "horizontal" or "horizontalRows".
     readonly withShape: boolean; // "withShape" is ignored, if layout is "horizontalInline" or "vertical".
     readonly yAccessor: any; // func
 }
 
 export class GroupTooltip extends React.Component<GroupTooltipProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-tooltip react-financial-charts-group-tooltip",
         layout: "horizontal",
@@ -45,16 +44,10 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                clip={false}
-                svgDraw={this.renderSVG}
-                drawOn={["mousemove"]}
-            />
-        );
+        return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly getPosition = (moreProps) => {
+    private readonly getPosition = moreProps => {
         const { position } = this.props;
         const { height, width } = moreProps.chartConfig;
 
@@ -84,14 +77,22 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         }
 
         return { xyPos, textAnchor };
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
-
+    private readonly renderSVG = moreProps => {
         const { displayValuesFor } = this.props;
         const { chartId } = moreProps;
 
-        const { className, displayInit, onClick, width = 60, verticalSize = 13, fontFamily, fontSize, layout } = this.props;
+        const {
+            className,
+            displayInit,
+            onClick,
+            width = 60,
+            verticalSize = 13,
+            fontFamily,
+            fontSize,
+            layout,
+        } = this.props;
         const { origin, displayFormat, options } = this.props;
         const currentItem = displayValuesFor(this.props, moreProps);
         const { xyPos, textAnchor } = this.getPosition(moreProps);
@@ -100,7 +101,6 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         const yPos = xyPos != null && xyPos[1] != null ? xyPos[1] : origin[1];
 
         const singleTooltip = options.map((each, idx) => {
-
             const yValue = currentItem && each.yAccessor(currentItem);
             const yDisplayValue = yValue ? displayFormat(yValue) : displayInit;
 
@@ -138,11 +138,14 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
 
         return (
             <g transform={`translate(${xPos}, ${yPos})`} className={className} textAnchor={textAnchor}>
-                {layout === "horizontalInline"
-                    ? <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>{singleTooltip}</ToolTipText>
-                    : singleTooltip
-                }
+                {layout === "horizontalInline" ? (
+                    <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
+                        {singleTooltip}
+                    </ToolTipText>
+                ) : (
+                    singleTooltip
+                )}
             </g>
         );
-    }
+    };
 }

@@ -24,11 +24,13 @@ export function withDeviceRatio() {
 
                     const { devicePixelRatio } = window;
 
-                    const backingStoreRatio = context.webkitBackingStorePixelRatio ||
+                    const backingStoreRatio =
+                        context.webkitBackingStorePixelRatio ||
                         context.mozBackingStorePixelRatio ||
                         context.msBackingStorePixelRatio ||
                         context.oBackingStorePixelRatio ||
-                        context.backingStorePixelRatio || 1;
+                        context.backingStorePixelRatio ||
+                        1;
 
                     this.setState({
                         ratio: devicePixelRatio / backingStoreRatio,
@@ -37,19 +39,12 @@ export function withDeviceRatio() {
             }
 
             public render() {
-
                 const state = this.state;
                 if (state !== null) {
-                    return (
-                        <OriginalComponent
-                            {...this.props as TProps}
-                            ratio={state.ratio} />
-                    );
+                    return <OriginalComponent {...(this.props as TProps)} ratio={state.ratio} />;
                 }
 
-                return (
-                    <canvas ref={this.canvasRef} />
-                );
+                return <canvas ref={this.canvasRef} />;
             }
         };
     };

@@ -21,7 +21,4 @@ export { default as compare } from "./compare";
 import * as defaultOptionsForComputation from "../calculator/defaultOptionsForComputation";
 import * as defaultOptionsForAppearance from "./defaultOptionsForAppearance";
 
-export {
-    defaultOptionsForComputation,
-    defaultOptionsForAppearance,
-};
+export { defaultOptionsForComputation, defaultOptionsForAppearance };

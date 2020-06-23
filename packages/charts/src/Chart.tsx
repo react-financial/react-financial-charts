@@ -2,10 +2,7 @@ import { scaleLinear } from "d3-scale";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
-import {
-    find,
-    noop,
-} from "./utils";
+import { find, noop } from "./utils";
 import { PureComponent } from "./utils/PureComponent";
 
 interface ChartProps {
@@ -17,11 +14,10 @@ interface ChartProps {
     readonly onContextMenu?: (props: any, event: React.MouseEvent) => void;
     readonly yScale?: any; // func
     readonly flipYScale?: boolean;
-    readonly padding?: number | { top: number; bottom: number; };
+    readonly padding?: number | { top: number; bottom: number };
 }
 
 export class Chart extends PureComponent<ChartProps> {
-
     public static defaultProps = {
         id: 0,
         origin: [0, 0],
@@ -81,14 +77,14 @@ export class Chart extends PureComponent<ChartProps> {
     }
 
     public yScale() {
-        const chartConfig = find(this.context.chartConfig, (each) => each.id === this.props.id);
+        const chartConfig = find(this.context.chartConfig, each => each.id === this.props.id);
         return chartConfig.yScale.copy();
     }
 
     public getChildContext() {
         const { id: chartId } = this.props;
 
-        const chartConfig = find(this.context.chartConfig, (each) => each.id === chartId);
+        const chartConfig = find(this.context.chartConfig, each => each.id === chartId);
 
         return {
             chartId,
@@ -97,13 +93,9 @@ export class Chart extends PureComponent<ChartProps> {
     }
 
     public render() {
-        const { origin } = find(this.context.chartConfig, (each) => each.id === this.props.id);
+        const { origin } = find(this.context.chartConfig, each => each.id === this.props.id);
         const [x, y] = origin;
 
-        return (
-            <g transform={`translate(${x}, ${y})`}>
-                {this.props.children}
-            </g>
-        );
+        return <g transform={`translate(${x}, ${y})`}>{this.props.children}</g>;
     }
 }

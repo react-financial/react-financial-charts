@@ -4,13 +4,8 @@ import { Chart, ChartCanvas } from "react-financial-charts";
 import { XAxis, YAxis } from "react-financial-charts/lib/axes";
 import { ema, forceIndex } from "react-financial-charts/lib/indicator";
 import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
-import {
-    LineSeries,
-    StraightLine,
-} from "react-financial-charts/lib/series";
-import {
-    SingleValueTooltip,
-} from "react-financial-charts/lib/tooltip";
+import { LineSeries, StraightLine } from "react-financial-charts/lib/series";
+import { SingleValueTooltip } from "react-financial-charts/lib/tooltip";
 import { withDeviceRatio } from "react-financial-charts/lib/utils";
 import { IOHLCData, withOHLCData, withSize } from "../../data";
 
@@ -22,38 +17,31 @@ interface ChartProps {
 }
 
 class ForceIndicator extends React.Component<ChartProps> {
-
     private readonly margin = { left: 0, right: 48, top: 8, bottom: 24 };
-    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder()
-        .inputDateAccessor((d: IOHLCData) => d.date);
+    private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
+        (d: IOHLCData) => d.date,
+    );
 
     public render() {
-
-        const {
-            data: initialData,
-            height,
-            ratio,
-            width,
-        } = this.props;
+        const { data: initialData, height, ratio, width } = this.props;
 
         const fi = forceIndex()
-            .merge((d: any, c: any) => { d.fi = c; })
+            .merge((d: any, c: any) => {
+                d.fi = c;
+            })
             .accessor((d: any) => d.fi);
 
         const fiEMA13 = ema()
             .id(1)
             .options({ windowSize: 13, sourcePath: "fi" })
-            .merge((d: any, c: any) => { d.fiEMA13 = c; })
+            .merge((d: any, c: any) => {
+                d.fiEMA13 = c;
+            })
             .accessor((d: any) => d.fiEMA13);
 
         const calculatedData = fiEMA13(fi(initialData));
 
-        const {
-            data,
-            xScale,
-            xAccessor,
-            displayXAccessor,
-        } = this.xScaleProvider(calculatedData);
+        const { data, xScale, xAccessor, displayXAccessor } = this.xScaleProvider(calculatedData);
 
         const yAccessor = fiEMA13.accessor();
         const start = xAccessor(data[data.length - 1]);
@@ -71,10 +59,9 @@ class ForceIndicator extends React.Component<ChartProps> {
                 seriesName="Data"
                 xScale={xScale}
                 xAccessor={xAccessor}
-                xExtents={xExtents}>
-                <Chart
-                    id={1}
-                    yExtents={yAccessor}>
+                xExtents={xExtents}
+            >
+                <Chart id={1} yExtents={yAccessor}>
                     <XAxis />
                     <YAxis tickFormat={format(".2s")} />
 

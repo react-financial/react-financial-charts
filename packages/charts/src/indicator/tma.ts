@@ -8,7 +8,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "TMA";
 
 interface TMAIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): TMAIndicator;
     accessor(): any;
@@ -27,17 +27,18 @@ interface TMAIndicator {
     options(newOptions: TMAOptions): TMAIndicator;
 }
 
-export default function () {
-
+export default function() {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.tma);
+        .accessor(d => d.tma);
 
     const underlyingAlgorithm = tma();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.tma = i; });
+        .merge((datum, i) => {
+            datum.tma = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

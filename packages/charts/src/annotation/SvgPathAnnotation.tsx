@@ -15,7 +15,6 @@ interface SvgPathAnnotationProps {
 }
 
 export class SvgPathAnnotation extends React.Component<SvgPathAnnotationProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-svgpathannotation",
         opacity: 1,
@@ -29,10 +28,12 @@ export class SvgPathAnnotation extends React.Component<SvgPathAnnotationProps> {
 
         const { x, y, fill, tooltip } = helper(this.props, xAccessor, xScale, yScale);
 
-        return (<g className={className} onClick={this.handleClick}>
-            <title>{tooltip}</title>
-            <path d={path({ x, y })} stroke={stroke} fill={fill} opacity={opacity} />
-        </g>);
+        return (
+            <g className={className} onClick={this.handleClick}>
+                <title>{tooltip}</title>
+                <path d={path({ x, y })} stroke={stroke} fill={fill} opacity={opacity} />
+            </g>
+        );
     }
 
     private readonly handleClick = (e: React.MouseEvent) => {
@@ -42,7 +43,7 @@ export class SvgPathAnnotation extends React.Component<SvgPathAnnotationProps> {
             const { xScale, yScale, datum } = this.props;
             onClick({ xScale, yScale, datum }, e);
         }
-    }
+    };
 }
 
 function helper(props, xAccessor, xScale, yScale) {

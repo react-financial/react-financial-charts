@@ -23,7 +23,6 @@ interface ClickableCircleProps {
 }
 
 export class ClickableCircle extends React.Component<ClickableCircleProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-interactive-line-edge",
         onDragStart: noop,
@@ -60,7 +59,7 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
         );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { stroke, strokeWidth, fill } = this.props;
         const { fillOpacity, strokeOpacity } = this.props;
         const { r } = this.props;
@@ -69,7 +68,9 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
 
         return (
             <circle
-                cx={x} cy={y} r={r}
+                cx={x}
+                cy={y}
+                r={r}
                 strokeWidth={strokeWidth}
                 stroke={stroke}
                 strokeOpacity={strokeOpacity}
@@ -77,7 +78,7 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
                 fillOpacity={fillOpacity}
             />
         );
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, fill } = this.props;
@@ -94,19 +95,18 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
         ctx.arc(x, y, r, 0, 2 * Math.PI, false);
         ctx.fill();
         ctx.stroke();
-    }
+    };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = moreProps => {
         const { mouseXY } = moreProps;
         const r = this.props.r + 7;
         const [x, y] = this.helper(this.props, moreProps);
 
         const [mx, my] = mouseXY;
-        const hover = (x - r) < mx && mx < (x + r)
-            && (y - r) < my && my < (y + r);
+        const hover = x - r < mx && mx < x + r && y - r < my && my < y + r;
 
         return hover;
-    }
+    };
 
     private readonly helper = (props, moreProps) => {
         const { xyProvider, cx, cy } = props;
@@ -115,10 +115,13 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
             return xyProvider(moreProps);
         }
 
-        const { xScale, chartConfig: { yScale } } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+        } = moreProps;
 
         const x = xScale(cx);
         const y = yScale(cy);
         return [x, y];
-    }
+    };
 }

@@ -2,14 +2,7 @@ import * as React from "react";
 
 import GenericChartComponent from "../GenericChartComponent";
 import { getMouseCanvas } from "../GenericComponent";
-import {
-    colorToRGBA,
-    getStrokeDasharray,
-    getStrokeDasharrayCanvas,
-    isDefined,
-    noop,
-    strokeDashTypes,
-} from "../utils";
+import { colorToRGBA, getStrokeDasharray, getStrokeDasharrayCanvas, isDefined, noop, strokeDashTypes } from "../utils";
 
 interface BrushProps {
     readonly enabled: boolean;
@@ -33,7 +26,6 @@ interface BrushState {
 }
 
 export class Brush extends React.Component<BrushProps, BrushState> {
-
     public static defaultProps = {
         type: "2D",
         stroke: "#000000",
@@ -86,14 +78,11 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx) => {
+    private readonly drawOnCanvas = ctx => {
         const { rect } = this.state;
         if (isDefined(rect)) {
             const { x, y, height, width } = rect;
-            const {
-                stroke = Brush.defaultProps.stroke,
-                fill = Brush.defaultProps.fill,
-                strokeDashArray } = this.props;
+            const { stroke = Brush.defaultProps.stroke, fill = Brush.defaultProps.fill, strokeDashArray } = this.props;
             const { strokeOpacity, fillOpacity } = this.props;
 
             const dashArray = getStrokeDasharrayCanvas(strokeDashArray);
@@ -105,9 +94,9 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             ctx.fillRect(x, y, width, height);
             ctx.strokeRect(x, y, width, height);
         }
-    }
+    };
 
-    private readonly handleZoomStart = (moreProps) => {
+    private readonly handleZoomStart = moreProps => {
         this.zoomHappening = false;
         const {
             mouseXY: [, mouseY],
@@ -117,10 +106,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             xScale,
         } = moreProps;
 
-        const x1y1 = [
-            xScale(xAccessor(currentItem)),
-            mouseY,
-        ];
+        const x1y1 = [xScale(xAccessor(currentItem)), mouseY];
 
         this.setState({
             selected: true,
@@ -131,10 +117,12 @@ export class Brush extends React.Component<BrushProps, BrushState> {
                 yValue: yScale.invert(mouseY),
             },
         });
-    }
+    };
 
-    private readonly handleDrawSquare = (moreProps) => {
-        if (this.state.x1y1 == null) { return; }
+    private readonly handleDrawSquare = moreProps => {
+        if (this.state.x1y1 == null) {
+            return;
+        }
 
         this.zoomHappening = true;
 
@@ -146,12 +134,11 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             xScale,
         } = moreProps;
 
-        const [x2, y2] = [
-            xScale(xAccessor(currentItem)),
-            mouseY,
-        ];
+        const [x2, y2] = [xScale(xAccessor(currentItem)), mouseY];
 
-        const { x1y1: [x1, y1] } = this.state;
+        const {
+            x1y1: [x1, y1],
+        } = this.state;
 
         const x = Math.min(x1, x2);
         const y = Math.min(y1, y2);
@@ -166,12 +153,15 @@ export class Brush extends React.Component<BrushProps, BrushState> {
                 yValue: yScale.invert(mouseY),
             },
             rect: {
-                x, y, height, width,
+                x,
+                y,
+                height,
+                width,
             },
         });
-    }
+    };
 
-    private readonly handleZoomComplete = (moreProps) => {
+    private readonly handleZoomComplete = moreProps => {
         if (this.zoomHappening) {
             const { onBrush } = this.props;
             const { start, end } = this.state;
@@ -181,7 +171,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             selected: false,
             rect: null,
         });
-    }
+    };
 
     private readonly renderSVG = () => {
         const { rect } = this.state;
@@ -206,5 +196,5 @@ export class Brush extends React.Component<BrushProps, BrushState> {
                 />
             );
         }
-    }
+    };
 }

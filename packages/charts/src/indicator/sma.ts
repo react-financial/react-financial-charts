@@ -7,7 +7,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "SMA";
 
 interface SMAIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): SMAIndicator;
     accessor(): any;
@@ -26,17 +26,18 @@ interface SMAIndicator {
     options(newOptions: SMAOptions): SMAIndicator;
 }
 
-export default function () {
-
+export default function() {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.sma);
+        .accessor(d => d.sma);
 
     const underlyingAlgorithm = sma();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.sma = i; });
+        .merge((datum, i) => {
+            datum.sma = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

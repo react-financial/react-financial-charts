@@ -4,11 +4,7 @@ import { isDefined, isNotDefined, noop } from "../utils";
 import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
 import { MouseLocationIndicator } from "./components/MouseLocationIndicator";
 import { getSlope, getYIntercept } from "./components/StraightLine";
-import {
-    isHoverForInteractiveType,
-    saveNodeType,
-    terminate,
-} from "./utils";
+import { isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
 import { EachEquidistantChannel } from "./wrapper/EachEquidistantChannel";
 
 interface EquidistantChannelProps {
@@ -20,6 +16,7 @@ interface EquidistantChannelProps {
     readonly currentPositionStrokeWidth?: number;
     readonly currentPositionOpacity?: number;
     readonly currentPositionRadius?: number;
+    // eslint-disable-next-line @typescript-eslint/ban-types
     readonly hoverText: object;
     readonly channels: any[];
     readonly appearance: {
@@ -42,7 +39,6 @@ interface EquidistantChannelState {
 }
 
 export class EquidistantChannel extends React.Component<EquidistantChannelProps, EquidistantChannelState> {
-
     public static defaultProps = {
         onStart: noop,
         onComplete: noop,
@@ -86,11 +82,9 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
         this.terminate = terminate.bind(this);
         this.saveNodeType = saveNodeType.bind(this);
 
-        this.getSelectionState = isHoverForInteractiveType("channels")
-            .bind(this);
+        this.getSelectionState = isHoverForInteractiveType("channels").bind(this);
 
-        this.state = {
-        };
+        this.state = {};
     }
 
     public render() {
@@ -109,44 +103,51 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
 
         const overrideIndex = isDefined(override) ? override.index : null;
 
-        const tempChannel = isDefined(current) && isDefined(current.endXY)
-            ? <EachEquidistantChannel
-                interactive={false}
-                {...current}
-                appearance={appearance}
-                hoverText={hoverText} />
-            : null;
-
-        return <g>
-            {channels.map((each, idx) => {
-                const eachAppearance = isDefined(each.appearance)
-                    ? { ...appearance, ...each.appearance }
-                    : appearance;
-
-                return <EachEquidistantChannel
-                    key={idx}
-                    ref={this.saveNodeType(idx)}
-                    index={idx}
-                    selected={each.selected}
+        const tempChannel =
+            isDefined(current) && isDefined(current.endXY) ? (
+                <EachEquidistantChannel
+                    interactive={false}
+                    {...current}
+                    appearance={appearance}
                     hoverText={hoverText}
-                    {...(idx === overrideIndex ? override : each)}
-                    appearance={eachAppearance}
-                    onDrag={this.handleDragChannel}
-                    onDragComplete={this.handleDragChannelComplete}
-                />;
-            })}
-            {tempChannel}
-            <MouseLocationIndicator
-                enabled={enabled}
-                snap={false}
-                r={currentPositionRadius}
-                stroke={currentPositionStroke}
-                opacity={currentPositionOpacity}
-                strokeWidth={currentPositionStrokeWidth}
-                onMouseDown={this.handleStart}
-                onClick={this.handleEnd}
-                onMouseMove={this.handleDrawChannel} />
-        </g>;
+                />
+            ) : null;
+
+        return (
+            <g>
+                {channels.map((each, idx) => {
+                    const eachAppearance = isDefined(each.appearance)
+                        ? { ...appearance, ...each.appearance }
+                        : appearance;
+
+                    return (
+                        <EachEquidistantChannel
+                            key={idx}
+                            ref={this.saveNodeType(idx)}
+                            index={idx}
+                            selected={each.selected}
+                            hoverText={hoverText}
+                            {...(idx === overrideIndex ? override : each)}
+                            appearance={eachAppearance}
+                            onDrag={this.handleDragChannel}
+                            onDragComplete={this.handleDragChannelComplete}
+                        />
+                    );
+                })}
+                {tempChannel}
+                <MouseLocationIndicator
+                    enabled={enabled}
+                    snap={false}
+                    r={currentPositionRadius}
+                    stroke={currentPositionStroke}
+                    opacity={currentPositionOpacity}
+                    strokeWidth={currentPositionStrokeWidth}
+                    onMouseDown={this.handleStart}
+                    onClick={this.handleEnd}
+                    onMouseMove={this.handleDrawChannel}
+                />
+            </g>
+        );
     }
 
     private readonly handleDragChannel = (index, newXYValue) => {
@@ -156,52 +157,53 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
                 ...newXYValue,
             },
         });
-    }
+    };
 
-    private readonly handleDragChannelComplete = (moreProps) => {
+    private readonly handleDragChannelComplete = moreProps => {
         const { override } = this.state;
         const { channels } = this.props;
 
         if (isDefined(override)) {
             const { index, ...rest } = override;
-            const newChannels = channels
-                .map((each, idx) => idx === index
-                    ? { ...each, ...rest, selected: true }
-                    : each);
+            const newChannels = channels.map((each, idx) =>
+                idx === index ? { ...each, ...rest, selected: true } : each,
+            );
 
-            this.setState({
-                override: null,
-            }, () => {
-                this.props.onComplete(newChannels, moreProps);
-            });
+            this.setState(
+                {
+                    override: null,
+                },
+                () => {
+                    this.props.onComplete(newChannels, moreProps);
+                },
+            );
         }
-    }
+    };
 
-    private readonly handleStart = (xyValue) => {
+    private readonly handleStart = xyValue => {
         const { current } = this.state;
 
         if (isNotDefined(current) || isNotDefined(current.startXY)) {
             this.mouseMoved = false;
-            this.setState({
-                current: {
-                    startXY: xyValue,
-                    endXY: null,
+            this.setState(
+                {
+                    current: {
+                        startXY: xyValue,
+                        endXY: null,
+                    },
                 },
-            }, () => {
-                this.props.onStart();
-            });
+                () => {
+                    this.props.onStart();
+                },
+            );
         }
-    }
+    };
 
     private readonly handleEnd = (xyValue, moreProps, e) => {
         const { current } = this.state;
         const { channels, appearance } = this.props;
 
-        if (this.mouseMoved
-            && isDefined(current)
-            && isDefined(current.startXY)
-        ) {
-
+        if (this.mouseMoved && isDefined(current) && isDefined(current.startXY)) {
             if (isNotDefined(current.dy)) {
                 this.setState({
                     current: {
@@ -211,28 +213,30 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
                 });
             } else {
                 const newChannels = [
-                    ...channels.map((d) => ({ ...d, selected: false })),
+                    ...channels.map(d => ({ ...d, selected: false })),
                     {
-                        ...current, selected: true,
+                        ...current,
+                        selected: true,
                         appearance,
                     },
                 ];
 
-                this.setState({
-                    current: null,
-                }, () => {
-
-                    this.props.onComplete(newChannels, moreProps, e);
-                });
+                this.setState(
+                    {
+                        current: null,
+                    },
+                    () => {
+                        this.props.onComplete(newChannels, moreProps, e);
+                    },
+                );
             }
         }
-    }
+    };
 
-    private readonly handleDrawChannel = (xyValue) => {
+    private readonly handleDrawChannel = xyValue => {
         const { current } = this.state;
 
-        if (isDefined(current)
-            && isDefined(current.startXY)) {
+        if (isDefined(current) && isDefined(current.startXY)) {
             this.mouseMoved = true;
             if (isNotDefined(current.dy)) {
                 this.setState({
@@ -257,5 +261,5 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
                 });
             }
         }
-    }
+    };
 }

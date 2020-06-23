@@ -45,7 +45,7 @@ interface BollingerBandCalculator {
     options(newOptions: BollingerBandOptions): BollingerBandCalculator;
 }
 
-export default function () {
+export default function() {
     let options: BollingerBandOptions = defaultOptions;
 
     const calculator = (data: any[]) => {
@@ -54,18 +54,19 @@ export default function () {
         // @ts-ignore
         const source = path(sourcePath);
 
-        const meanAlgorithm = movingAverageType === "ema"
-            ? ema().options({ windowSize, sourcePath })
-            : slidingWindow()
-                .windowSize(windowSize)
-                .accumulator((values) => mean(values))
-                .sourcePath(sourcePath);
+        const meanAlgorithm =
+            movingAverageType === "ema"
+                ? ema().options({ windowSize, sourcePath })
+                : slidingWindow()
+                      .windowSize(windowSize)
+                      .accumulator(values => mean(values))
+                      .sourcePath(sourcePath);
 
         const bollingerBandAlgorithm = slidingWindow()
             .windowSize(windowSize)
-            .accumulator((values) => {
+            .accumulator(values => {
                 const avg = last(values).mean;
-                const stdDev = deviation<any>(values, (each) => source(each.datum));
+                const stdDev = deviation<any>(values, each => source(each.datum));
                 if (stdDev === undefined) {
                     return undefined;
                 }
@@ -77,8 +78,7 @@ export default function () {
                 };
             });
 
-        const zip = zipper()
-            .combine((datum, meanValue) => ({ datum, mean: meanValue }));
+        const zip = zipper().combine((datum, meanValue) => ({ datum, mean: meanValue }));
 
         // @ts-ignore
         const tuples = zip(data, meanAlgorithm(data));

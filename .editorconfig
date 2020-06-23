@@ -30,5 +30,6 @@ insert_final_newline = true
 
 # Matches the exact files either package.json or .travis.yml
 [{package.json,.travis.yml}]
+[{.json,.yml,.yaml}]
 indent_style = space
 indent_size = 2

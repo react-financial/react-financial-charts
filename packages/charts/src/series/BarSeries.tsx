@@ -27,7 +27,6 @@ interface BarSeriesProps {
 }
 
 export class BarSeries extends React.Component<BarSeriesProps> {
-
     public static defaultProps = StackedBarSeries.defaultProps;
 
     public render() {
@@ -52,10 +51,9 @@ export class BarSeries extends React.Component<BarSeriesProps> {
             const bars = getBars(this.props, moreProps);
             drawOnCanvas2(this.props, ctx, bars);
         }
+    };
 
-    }
-
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         if (this.props.swapScales) {
             const { xAccessor } = moreProps;
             return <g>{svgHelper(this.props, moreProps, xAccessor, identityStack)}</g>;
@@ -63,7 +61,7 @@ export class BarSeries extends React.Component<BarSeriesProps> {
             const bars = getBars(this.props, moreProps);
             return <g>{getBarsSVG2(this.props, bars)}</g>;
         }
-    }
+    };
 }
 
 /*
@@ -78,7 +76,12 @@ export class BarSeries extends React.Component<BarSeriesProps> {
 */
 function getBars(props, moreProps) {
     const { baseAt, fill, stroke, yAccessor } = props;
-    const { xScale, xAccessor, plotData, chartConfig: { yScale } } = moreProps;
+    const {
+        xScale,
+        xAccessor,
+        plotData,
+        chartConfig: { yScale },
+    } = moreProps;
 
     const getFill = functor(fill);
     const getBase = functor(baseAt);
@@ -94,8 +97,8 @@ function getBars(props, moreProps) {
     const offset = Math.floor(0.5 * width);
 
     const bars = plotData
-        .filter((d) => isDefined(yAccessor(d)))
-        .map((d) => {
+        .filter(d => isDefined(yAccessor(d)))
+        .map(d => {
             const yValue = yAccessor(d);
             let y = yScale(yValue);
 

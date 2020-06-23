@@ -1,18 +1,11 @@
 import * as PropTypes from "prop-types";
 
 import GenericComponent from "./GenericComponent";
-import {
-    find,
-    isDefined,
-} from "./utils";
+import { find, isDefined } from "./utils";
 
-const ALWAYS_TRUE_TYPES = [
-    "drag",
-    "dragend",
-];
+const ALWAYS_TRUE_TYPES = ["drag", "dragend"];
 
 class GenericChartComponent extends GenericComponent {
-
     public static defaultProps = GenericComponent.defaultProps;
 
     public static contextTypes = {
@@ -27,10 +20,7 @@ class GenericChartComponent extends GenericComponent {
         displayXAccessor: PropTypes.func.isRequired,
         plotData: PropTypes.array.isRequired,
         fullData: PropTypes.array.isRequired,
-        chartConfig: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.object,
-        ]).isRequired,
+        chartConfig: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
         morePropsDecorator: PropTypes.func,
         generateSubscriptionId: PropTypes.func,
         getMutableState: PropTypes.func.isRequired,
@@ -53,17 +43,18 @@ class GenericChartComponent extends GenericComponent {
     }
 
     public preCanvasDraw(ctx: CanvasRenderingContext2D, moreProps) {
-
         super.preCanvasDraw(ctx, moreProps);
 
         ctx.save();
         const { margin, ratio } = this.context;
         const { chartConfig } = moreProps;
 
-        const canvasOriginX = (0.5 * ratio) + chartConfig.origin[0] + margin.left;
-        const canvasOriginY = (0.5 * ratio) + chartConfig.origin[1] + margin.top;
+        const canvasOriginX = 0.5 * ratio + chartConfig.origin[0] + margin.left;
+        const canvasOriginY = 0.5 * ratio + chartConfig.origin[1] + margin.top;
 
-        const { chartConfig: { width, height } } = moreProps;
+        const {
+            chartConfig: { width, height },
+        } = moreProps;
         const { clip, edgeClip } = this.props;
 
         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -94,24 +85,24 @@ class GenericChartComponent extends GenericComponent {
 
         if (chartConfigList && Array.isArray(chartConfigList)) {
             const { chartId } = this.context;
-            const chartConfig = find(chartConfigList, (each) => each.id === chartId);
+            const chartConfig = find(chartConfigList, each => each.id === chartId);
             this.moreProps.chartConfig = chartConfig;
         }
         if (isDefined(this.moreProps.chartConfig)) {
-            const { origin: [ox, oy] } = this.moreProps.chartConfig;
+            const {
+                origin: [ox, oy],
+            } = this.moreProps.chartConfig;
             if (isDefined(moreProps.mouseXY)) {
-                const { mouseXY: [x, y] } = moreProps;
-                this.moreProps.mouseXY = [
-                    x - ox,
-                    y - oy,
-                ];
+                const {
+                    mouseXY: [x, y],
+                } = moreProps;
+                this.moreProps.mouseXY = [x - ox, y - oy];
             }
             if (isDefined(moreProps.startPos)) {
-                const { startPos: [x, y] } = moreProps;
-                this.moreProps.startPos = [
-                    x - ox,
-                    y - oy,
-                ];
+                const {
+                    startPos: [x, y],
+                } = moreProps;
+                this.moreProps.startPos = [x - ox, y - oy];
             }
         }
     }
@@ -121,17 +112,11 @@ class GenericChartComponent extends GenericComponent {
     }
 
     public shouldTypeProceed(type, moreProps) {
-        if (
-            (type === "mousemove" || type === "click")
-            && this.props.disablePan) {
+        if ((type === "mousemove" || type === "click") && this.props.disablePan) {
             return true;
         }
-        if (
-            ALWAYS_TRUE_TYPES.indexOf(type) === -1
-            && isDefined(moreProps)
-            && isDefined(moreProps.currentCharts)
-        ) {
-            return (moreProps.currentCharts.indexOf(this.context.chartId) > -1);
+        if (ALWAYS_TRUE_TYPES.indexOf(type) === -1 && isDefined(moreProps) && isDefined(moreProps.currentCharts)) {
+            return moreProps.currentCharts.indexOf(this.context.chartId) > -1;
         }
         return true;
     }

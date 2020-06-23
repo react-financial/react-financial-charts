@@ -8,7 +8,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "SMA";
 
 interface SARIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): SARIndicator;
     accessor(): any;
@@ -27,21 +27,24 @@ interface SARIndicator {
     options(newOptions: SAROptions): SARIndicator;
 }
 
-export default function () {
-
+export default function() {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.sar);
+        .accessor(d => d.sar);
 
     const underlyingAlgorithm = sar();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.sar = i; });
+        .merge((datum, i) => {
+            datum.sar = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {
-            if (!base.accessor()) { throw new Error(`Set an accessor to ${ALGORITHM_TYPE} before calculating`); }
+            if (!base.accessor()) {
+                throw new Error(`Set an accessor to ${ALGORITHM_TYPE} before calculating`);
+            }
             return mergedAlgorithm(data);
         }
         return underlyingAlgorithm(data);

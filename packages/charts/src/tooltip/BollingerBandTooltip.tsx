@@ -29,7 +29,6 @@ interface BollingerBandTooltipProps {
 }
 
 export class BollingerBandTooltip extends React.Component<BollingerBandTooltipProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-tooltip react-financial-charts-bollingerband-tooltip",
         displayFormat: format(".2f"),
@@ -40,20 +39,16 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                clip={false}
-                svgDraw={this.renderSVG}
-                drawOn={["mousemove"]}
-            />
-        );
+        return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { onClick, displayFormat, yAccessor, options, textFill, labelFill } = this.props;
         const { className, displayValuesFor, displayInit, fontFamily, fontSize } = this.props;
 
-        const { chartConfig: { width, height } } = moreProps;
+        const {
+            chartConfig: { width, height },
+        } = moreProps;
 
         const currentItem = displayValuesFor(this.props, moreProps);
 
@@ -77,22 +72,12 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
         const tooltipValue = `${top}, ${middle}, ${bottom}`;
 
         return (
-            <g transform={`translate(${x}, ${y})`}
-                className={className}
-                onClick={onClick}>
-                <ToolTipText
-                    x={0}
-                    y={0}
-                    fontFamily={fontFamily}
-                    fontSize={fontSize}>
-                    <ToolTipTSpanLabel fill={labelFill}>
-                        {tooltipLabel}
-                    </ToolTipTSpanLabel>
-                    <tspan fill={textFill}>
-                        {tooltipValue}
-                    </tspan>
+            <g transform={`translate(${x}, ${y})`} className={className} onClick={onClick}>
+                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
+                    <ToolTipTSpanLabel fill={labelFill}>{tooltipLabel}</ToolTipTSpanLabel>
+                    <tspan fill={textFill}>{tooltipValue}</tspan>
                 </ToolTipText>
             </g>
         );
-    }
+    };
 }

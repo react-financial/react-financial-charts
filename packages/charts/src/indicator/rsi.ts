@@ -8,7 +8,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "RSI";
 
 interface RSIIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): RSIIndicator;
     accessor(): any;
@@ -27,16 +27,18 @@ interface RSIIndicator {
     options(newOptions: RSIOptions): RSIIndicator;
 }
 
-export default function () {
+export default function() {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.rsi);
+        .accessor(d => d.rsi);
 
     const underlyingAlgorithm = rsi();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.rsi = i; });
+        .merge((datum, i) => {
+            datum.rsi = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

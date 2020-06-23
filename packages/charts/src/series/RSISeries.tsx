@@ -1,7 +1,5 @@
 import * as React from "react";
-import {
-    strokeDashTypes,
-} from "../utils";
+import { strokeDashTypes } from "../utils";
 import { LineSeries } from "./LineSeries";
 import { StraightLine } from "./StraightLine";
 import { SVGComponent } from "./SVGComponent";
@@ -41,7 +39,6 @@ interface RSISeriesProps {
 }
 
 export class RSISeries extends React.Component<RSISeriesProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-rsi-series",
         stroke: {
@@ -94,9 +91,7 @@ export class RSISeries extends React.Component<RSISeriesProps> {
 
         return (
             <g className={className}>
-                <SVGComponent>
-                    {this.renderClip}
-                </SVGComponent>
+                <SVGComponent>{this.renderClip}</SVGComponent>
                 <StraightLine
                     stroke={stroke.top}
                     opacity={opacity.top}
@@ -140,7 +135,7 @@ export class RSISeries extends React.Component<RSISeriesProps> {
         );
     }
 
-    private readonly renderClip = (moreProps) => {
+    private readonly renderClip = moreProps => {
         const { chartConfig } = moreProps;
         const { overSold, overBought } = this.props;
         const { yScale, width, height } = chartConfig;
@@ -148,30 +143,15 @@ export class RSISeries extends React.Component<RSISeriesProps> {
         return (
             <defs>
                 <clipPath id={this.clipPathId1}>
-                    <rect
-                        x={0}
-                        y={yScale(overSold)}
-                        width={width}
-                        height={yScale(overBought) - yScale(overSold)}
-                    />
+                    <rect x={0} y={yScale(overSold)} width={width} height={yScale(overBought) - yScale(overSold)} />
                 </clipPath>
                 <clipPath id={this.clipPathId2}>
-                    <rect
-                        x={0}
-                        y={0}
-                        width={width}
-                        height={yScale(overSold)}
-                    />
-                    <rect
-                        x={0}
-                        y={yScale(overBought)}
-                        width={width}
-                        height={height - yScale(overBought)}
-                    />
+                    <rect x={0} y={0} width={width} height={yScale(overSold)} />
+                    <rect x={0} y={yScale(overBought)} width={width} height={height - yScale(overBought)} />
                 </clipPath>
             </defs>
         );
-    }
+    };
 
     private readonly mainClip = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { chartConfig } = moreProps;
@@ -179,20 +159,10 @@ export class RSISeries extends React.Component<RSISeriesProps> {
         const { yScale, width, height } = chartConfig;
 
         ctx.beginPath();
-        ctx.rect(
-            0,
-            0,
-            width,
-            yScale(overSold),
-        );
-        ctx.rect(
-            0,
-            yScale(overBought),
-            width,
-            height - yScale(overBought),
-        );
+        ctx.rect(0, 0, width, yScale(overSold));
+        ctx.rect(0, yScale(overBought), width, height - yScale(overBought));
         ctx.clip();
-    }
+    };
 
     private readonly topAndBottomClip = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { chartConfig } = moreProps;
@@ -200,12 +170,7 @@ export class RSISeries extends React.Component<RSISeriesProps> {
         const { yScale, width } = chartConfig;
 
         ctx.beginPath();
-        ctx.rect(
-            0,
-            yScale(overSold),
-            width,
-            yScale(overBought) - yScale(overSold),
-        );
+        ctx.rect(0, yScale(overSold), width, yScale(overBought) - yScale(overSold));
         ctx.clip();
-    }
+    };
 }

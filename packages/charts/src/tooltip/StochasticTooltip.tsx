@@ -25,7 +25,7 @@ interface StochasticTooltipProps {
         stroke: {
             dLine: string;
             kLine: string;
-        },
+        };
     };
     readonly displayFormat: any; // func
     readonly displayInit?: string;
@@ -34,7 +34,6 @@ interface StochasticTooltipProps {
 }
 
 export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
-
     public static defaultProps = {
         displayFormat: format(".2f"),
         displayInit: "n/a",
@@ -45,19 +44,15 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                clip={false}
-                svgDraw={this.renderSVG}
-                drawOn={["mousemove"]}
-            />
-        );
+        return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { onClick, fontFamily, fontSize, yAccessor, displayFormat, label } = this.props;
         const { className, displayInit, displayValuesFor, options, appearance, labelFill } = this.props;
-        const { chartConfig: { width, height } } = moreProps;
+        const {
+            chartConfig: { width, height },
+        } = moreProps;
 
         const currentItem = displayValuesFor(this.props, moreProps);
         const { stroke } = appearance;
@@ -84,5 +79,5 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
                 </ToolTipText>
             </g>
         );
-    }
+    };
 }

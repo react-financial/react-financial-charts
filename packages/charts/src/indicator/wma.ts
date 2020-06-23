@@ -8,7 +8,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "WMA";
 
 interface WMAIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): WMAIndicator;
     accessor(): any;
@@ -27,17 +27,18 @@ interface WMAIndicator {
     options(newOptions: WMAOptions): WMAIndicator;
 }
 
-export default function () {
-
+export default function() {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.wma);
+        .accessor(d => d.wma);
 
     const underlyingAlgorithm = wma();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.wma = i; });
+        .merge((datum, i) => {
+            datum.wma = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

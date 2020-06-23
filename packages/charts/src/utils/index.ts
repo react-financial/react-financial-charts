@@ -20,6 +20,7 @@ export * from "./withDeviceRatio";
 export function getLogger(prefix) {
     let logger = noop;
     if (process.env.NODE_ENV !== "production") {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         logger = require("debug")("react-financial-charts:" + prefix);
     }
     return logger;
@@ -36,14 +37,16 @@ export function path(loc = []) {
     const key = Array.isArray(loc) ? loc : [loc];
     const length = key.length;
 
-    return function (obj, defaultValue?) {
-        if (length === 0) { return isDefined(obj) ? obj : defaultValue; }
+    return function(obj, defaultValue?) {
+        if (length === 0) {
+            return isDefined(obj) ? obj : defaultValue;
+        }
 
         let index = 0;
         while (obj != null && index < length) {
             obj = obj[key[index++]];
         }
-        return (index === length) ? obj : defaultValue;
+        return index === length ? obj : defaultValue;
     };
 }
 
@@ -52,11 +55,13 @@ export function functor(v) {
 }
 
 export function createVerticalLinearGradient(stops) {
-    return function (moreProps, ctx) {
-        const { chartConfig: { height } } = moreProps;
+    return function(moreProps, ctx) {
+        const {
+            chartConfig: { height },
+        } = moreProps;
 
         const grd = ctx.createLinearGradient(0, height, 0, 0);
-        stops.forEach((each) => {
+        stops.forEach(each => {
             grd.addColorStop(each.stop, each.color);
         });
 
@@ -70,7 +75,9 @@ export function getClosestItemIndexes2(array, value, accessor) {
     let right = Math.min(left + 1, array.length - 1);
 
     const item = accessor(array[left]);
-    if (item >= value && item <= value) { right = left; }
+    if (item >= value && item <= value) {
+        right = left;
+    }
 
     return { left, right };
 }
@@ -79,8 +86,8 @@ export function getClosestValue(inputValue, currentValue) {
     const values = isArray(inputValue) ? inputValue : [inputValue];
 
     const diff = values
-        .map((each) => each - currentValue)
-        .reduce((diff1, diff2) => Math.abs(diff1) < Math.abs(diff2) ? diff1 : diff2);
+        .map(each => each - currentValue)
+        .reduce((diff1, diff2) => (Math.abs(diff1) < Math.abs(diff2) ? diff1 : diff2));
     return currentValue + diff;
 }
 
@@ -95,10 +102,8 @@ export function find(list, predicate, context = this) {
 }
 
 export function d3Window(node) {
-    const d3win = node
-        && (node.ownerDocument && node.ownerDocument.defaultView
-            || node.document && node
-            || node.defaultView);
+    const d3win =
+        node && ((node.ownerDocument && node.ownerDocument.defaultView) || (node.document && node) || node.defaultView);
     return d3win;
 }
 
@@ -110,7 +115,9 @@ export const TOUCHMOVE = "touchmove.pan";
 export const TOUCHEND = "touchend.pan touchcancel.pan";
 
 export function getTouchProps(touch) {
-    if (!touch) { return {}; }
+    if (!touch) {
+        return {};
+    }
     return {
         pageX: touch.pageX,
         pageY: touch.pageY,
@@ -132,11 +139,19 @@ export function getClosestItemIndexes(array, value, accessor) {
     }
     // for Date object === does not work, so using the <= in combination with >=
     // the same code works for both dates and numbers
-    if (accessor(array[lo]).valueOf() === value.valueOf()) { hi = lo; }
-    if (accessor(array[hi]).valueOf() === value.valueOf()) { lo = hi; }
+    if (accessor(array[lo]).valueOf() === value.valueOf()) {
+        hi = lo;
+    }
+    if (accessor(array[hi]).valueOf() === value.valueOf()) {
+        lo = hi;
+    }
 
-    if (accessor(array[lo]) < value && accessor(array[hi]) < value) { lo = hi; }
-    if (accessor(array[lo]) > value && accessor(array[hi]) > value) { hi = lo; }
+    if (accessor(array[lo]) < value && accessor(array[hi]) < value) {
+        lo = hi;
+    }
+    if (accessor(array[lo]) > value && accessor(array[hi]) > value) {
+        hi = lo;
+    }
 
     return { left: lo, right: hi };
 }
@@ -148,9 +163,8 @@ export function getClosestItem(array, value, accessor) {
         return array[left];
     }
 
-    const closest = (Math.abs(accessor(array[left]) - value) < Math.abs(accessor(array[right]) - value))
-        ? array[left]
-        : array[right];
+    const closest =
+        Math.abs(accessor(array[left]) - value) < Math.abs(accessor(array[right]) - value) ? array[left] : array[right];
 
     return closest;
 }
@@ -184,7 +198,9 @@ export function last(array, accessor?) {
         let value;
         for (let i = array.length - 1; i >= 0; i--) {
             value = array[i];
-            if (isDefined(accessor(value))) { return value; }
+            if (isDefined(accessor(value))) {
+                return value;
+            }
         }
         return undefined;
     }
@@ -225,7 +241,7 @@ export function mousePosition(e: React.MouseEvent, defaultRect?) {
 }
 
 export function clearCanvas(canvasList, ratio) {
-    canvasList.forEach((each) => {
+    canvasList.forEach(each => {
         each.setTransform(1, 0, 0, 1, 0, 0);
         each.clearRect(-1, -1, each.canvas.width + 2, each.canvas.height + 2);
         each.scale(ratio, ratio);
@@ -251,7 +267,7 @@ export function mapValue(object, iteratee) {
     object = Object(object);
     const result = {};
 
-    Object.keys(object).forEach((key) => {
+    Object.keys(object).forEach(key => {
         const mappedValue = iteratee(object[key], key, object);
 
         if (isDefined(mappedValue)) {
@@ -275,7 +291,8 @@ export function mapObject(object = {}, iteratee = identity) {
 
 export function replaceAtIndex(array, index, value) {
     if (isDefined(array) && array.length > index) {
-        return array.slice(0, index)
+        return array
+            .slice(0, index)
             .concat(value)
             .concat(array.slice(index + 1));
     }
@@ -285,6 +302,5 @@ export function replaceAtIndex(array, index, value) {
 // copied from https://github.com/lodash/lodash/blob/master/forOwn.js
 export function forOwn(obj, iteratee) {
     const object = Object(obj);
-    Object.keys(object)
-        .forEach((key) => iteratee(object[key], key, object));
+    Object.keys(object).forEach(key => iteratee(object[key], key, object));
 }

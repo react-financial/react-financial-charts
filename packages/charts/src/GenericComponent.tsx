@@ -1,13 +1,7 @@
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
-import {
-    functor,
-    identity,
-    isDefined,
-    isNotDefined,
-    noop,
-} from "./utils";
+import { functor, identity, isDefined, isNotDefined, noop } from "./utils";
 
 const aliases = {
     mouseleave: "mousemove", // to draw interactive after mouse exit
@@ -58,11 +52,10 @@ interface GenericComponentState {
 }
 
 class GenericComponent extends React.Component<GenericComponentProps, GenericComponentState> {
-
     public static defaultProps = {
         svgDraw: functor(null),
         draw: [],
-        canvasToDraw: (contexts) => contexts.mouseCoord,
+        canvasToDraw: contexts => contexts.mouseCoord,
         clip: true,
         edgeClip: false,
         selected: false,
@@ -88,10 +81,7 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
         displayXAccessor: PropTypes.func.isRequired,
         plotData: PropTypes.array.isRequired,
         fullData: PropTypes.array.isRequired,
-        chartConfig: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.object,
-        ]).isRequired,
+        chartConfig: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
         morePropsDecorator: PropTypes.func,
         generateSubscriptionId: PropTypes.func,
         getMutableState: PropTypes.func.isRequired,
@@ -134,7 +124,7 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
     }
 
     public updateMoreProps(moreProps) {
-        Object.keys(moreProps).forEach((key) => {
+        Object.keys(moreProps).forEach(key => {
             this.moreProps[key] = moreProps[key];
         });
     }
@@ -189,10 +179,7 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
                 if (this.props.onContextMenu) {
                     this.props.onContextMenu(this.getMoreProps(), e);
                 }
-                if (
-                    this.moreProps.hovering
-                    && this.props.onContextMenuWhenHover
-                ) {
+                if (this.moreProps.hovering && this.props.onContextMenuWhenHover) {
                     this.props.onContextMenuWhenHover(this.getMoreProps(), e);
                 }
                 break;
@@ -216,27 +203,24 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
                 break;
             }
             case "mousemove": {
-
                 const prevHover = this.moreProps.hovering;
                 this.moreProps.hovering = this.isHover(e);
 
                 const { amIOnTop, setCursorClass } = this.context;
 
-                if (this.moreProps.hovering
-                    && !this.props.selected
+                if (
+                    this.moreProps.hovering &&
+                    !this.props.selected &&
                     /* && !prevHover */
-                    && amIOnTop(this.suscriberId)
-                    && isDefined(this.props.onHover)) {
+                    amIOnTop(this.suscriberId) &&
+                    isDefined(this.props.onHover)
+                ) {
                     setCursorClass("react-financial-charts-pointer-cursor");
                     this.iSetTheCursorClass = true;
-                } else if (this.moreProps.hovering
-                    && this.props.selected
-                    && amIOnTop(this.suscriberId)) {
+                } else if (this.moreProps.hovering && this.props.selected && amIOnTop(this.suscriberId)) {
                     setCursorClass(this.props.interactiveCursorClass);
                     this.iSetTheCursorClass = true;
-                } else if (prevHover
-                    && !this.moreProps.hovering
-                    && this.iSetTheCursorClass) {
+                } else if (prevHover && !this.moreProps.hovering && this.iSetTheCursorClass) {
                     this.iSetTheCursorClass = false;
                     setCursorClass(null);
                 }
@@ -264,10 +248,7 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
                 if (this.props.onDoubleClick) {
                     this.props.onDoubleClick(moreProps, e);
                 }
-                if (
-                    this.moreProps.hovering
-                    && this.props.onDoubleClickWhenHover
-                ) {
+                if (this.moreProps.hovering && this.props.onDoubleClickWhenHover) {
                     this.props.onDoubleClickWhenHover(moreProps, e);
                 }
                 break;
@@ -319,16 +300,13 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
     }
 
     public isHover(e) {
-        return isDefined(this.props.isHover)
-            ? this.props.isHover(this.getMoreProps(), e)
-            : false;
+        return isDefined(this.props.isHover) ? this.props.isHover(this.getMoreProps(), e) : false;
     }
 
     public getPanConditions() {
-        const draggable = (
-            !!(this.props.selected && this.moreProps.hovering)
-            || (this.props.enableDragOnHover && this.moreProps.hovering)
-        );
+        const draggable =
+            !!(this.props.selected && this.moreProps.hovering) ||
+            (this.props.enableDragOnHover && this.moreProps.hovering);
 
         return {
             draggable,
@@ -341,10 +319,7 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
         const type = aliases[trigger] || trigger;
         const proceed = this.props.drawOn.indexOf(type) > -1;
 
-        if (proceed
-            || this.props.selected /* this is to draw as soon as you select */
-            || force
-        ) {
+        if (proceed || this.props.selected /* this is to draw as soon as you select */ || force) {
             const { chartCanvasType } = this.context;
             const { canvasDraw } = this.props;
 
@@ -363,14 +338,14 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
         const { subscribe, chartId } = this.context;
         const { clip, edgeClip } = this.props;
 
-        subscribe(this.suscriberId,
-            {
-                chartId, clip, edgeClip,
-                listener: this.listener,
-                draw: this.draw,
-                getPanConditions: this.getPanConditions,
-            },
-        );
+        subscribe(this.suscriberId, {
+            chartId,
+            clip,
+            edgeClip,
+            listener: this.listener,
+            draw: this.draw,
+            getPanConditions: this.getPanConditions,
+        });
         this.UNSAFE_componentWillReceiveProps(this.props, this.context);
     }
 
@@ -401,10 +376,7 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
                 setCursorClass(null);
             }
         }
-        if (isDefined(canvasDraw)
-            && !this.evaluationInProgress
-            && chartCanvasType !== "svg") {
-
+        if (isDefined(canvasDraw) && !this.evaluationInProgress && chartCanvasType !== "svg") {
             this.updateMoreProps(this.moreProps);
             this.drawOnCanvas();
         }
@@ -423,7 +395,9 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
 			newly created components like MouseHoverText which
 			is created right after a new interactive object is drawn
 			*/
-            xScale, plotData, chartConfig,
+            xScale,
+            plotData,
+            chartConfig,
         };
     }
 
@@ -442,9 +416,13 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
         const { chartId, fullData } = this.context;
 
         const moreProps = {
-            xScale, plotData, chartConfig,
-            xAccessor, displayXAccessor,
-            width, height,
+            xScale,
+            plotData,
+            chartConfig,
+            xAccessor,
+            displayXAccessor,
+            width,
+            height,
             chartId,
             fullData,
             ...this.moreProps,
@@ -486,11 +464,7 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
 
         const style = clip ? { clipPath: `url(#chart-area-clip${suffix})` } : undefined;
 
-        return (
-            <g style={style}>
-                {svgDraw(this.getMoreProps())}
-            </g>
-        );
+        return <g style={style}>{svgDraw(this.getMoreProps())}</g>;
     }
 }
 

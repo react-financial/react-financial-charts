@@ -47,9 +47,8 @@ interface EachEquidistantChannelState {
 }
 
 export class EachEquidistantChannel extends React.Component<EachEquidistantChannelProps, EachEquidistantChannelState> {
-
     public static defaultProps = {
-        yDisplayFormat: (d) => d.toFixed(2),
+        yDisplayFormat: d => d.toFixed(2),
         interactive: true,
         selected: false,
         onDrag: noop,
@@ -78,81 +77,77 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
     public render() {
         const { startXY, endXY, dy } = this.props;
         const { interactive, hoverText, appearance } = this.props;
-        const {
-            edgeFill, edgeFill2,
-            stroke, strokeWidth, strokeOpacity,
-            fill, fillOpacity,
-        } = appearance;
+        const { edgeFill, edgeFill2, stroke, strokeWidth, strokeOpacity, fill, fillOpacity } = appearance;
         const { selected } = this.props;
         const { onDragComplete } = this.props;
         const { hover } = this.state;
         const { enable: hoverTextEnabled, ...restHoverTextProps } = hoverText;
 
-        const hoverHandler = interactive
-            ? { onHover: this.handleHover, onUnHover: this.handleHover }
-            : {};
+        const hoverHandler = interactive ? { onHover: this.handleHover, onUnHover: this.handleHover } : {};
 
-        const line1Edge = isDefined(startXY) && isDefined(endXY)
-            ? <g>
-                {this.getEdgeCircle({
-                    xy: startXY,
-                    dragHandler: this.handleLine1Edge1Drag,
-                    cursor: "react-financial-charts-move-cursor",
-                    fill: edgeFill,
-                    edge: "line1edge1",
-                })}
-                {this.getEdgeCircle({
-                    xy: endXY,
-                    dragHandler: this.handleLine1Edge2Drag,
-                    cursor: "react-financial-charts-move-cursor",
-                    fill: edgeFill,
-                    edge: "line1edge2",
-                })}
-            </g>
-            : null;
-        const line2Edge = dy !== undefined && isDefined(dy)
-            ? <g>
-                {this.getEdgeCircle({
-                    xy: [startXY[0], startXY[1] + dy],
-                    dragHandler: this.handleChannelHeightChange,
-                    cursor: "react-financial-charts-ns-resize-cursor",
-                    fill: edgeFill2,
-                    edge: "line2edge1",
-                })}
-                {this.getEdgeCircle({
-                    xy: [endXY[0], endXY[1] + dy],
-                    dragHandler: this.handleChannelHeightChange,
-                    cursor: "react-financial-charts-ns-resize-cursor",
-                    fill: edgeFill2,
-                    edge: "line2edge2",
-                })}
-            </g>
-            : null;
+        const line1Edge =
+            isDefined(startXY) && isDefined(endXY) ? (
+                <g>
+                    {this.getEdgeCircle({
+                        xy: startXY,
+                        dragHandler: this.handleLine1Edge1Drag,
+                        cursor: "react-financial-charts-move-cursor",
+                        fill: edgeFill,
+                        edge: "line1edge1",
+                    })}
+                    {this.getEdgeCircle({
+                        xy: endXY,
+                        dragHandler: this.handleLine1Edge2Drag,
+                        cursor: "react-financial-charts-move-cursor",
+                        fill: edgeFill,
+                        edge: "line1edge2",
+                    })}
+                </g>
+            ) : null;
+        const line2Edge =
+            dy !== undefined && isDefined(dy) ? (
+                <g>
+                    {this.getEdgeCircle({
+                        xy: [startXY[0], startXY[1] + dy],
+                        dragHandler: this.handleChannelHeightChange,
+                        cursor: "react-financial-charts-ns-resize-cursor",
+                        fill: edgeFill2,
+                        edge: "line2edge1",
+                    })}
+                    {this.getEdgeCircle({
+                        xy: [endXY[0], endXY[1] + dy],
+                        dragHandler: this.handleChannelHeightChange,
+                        cursor: "react-financial-charts-ns-resize-cursor",
+                        fill: edgeFill2,
+                        edge: "line2edge2",
+                    })}
+                </g>
+            ) : null;
 
-        return <g>
-            <ChannelWithArea
-                ref={this.saveNodeType("channel")}
-                selected={selected || hover}
-                {...hoverHandler}
-                startXY={startXY}
-                endXY={endXY}
-                dy={dy}
-                stroke={stroke}
-                strokeWidth={(hover || selected) ? strokeWidth + 1 : strokeWidth}
-                strokeOpacity={strokeOpacity}
-                fill={fill}
-                fillOpacity={fillOpacity}
-                interactiveCursorClass="react-financial-charts-move-cursor"
-                onDragStart={this.handleDragStart}
-                onDrag={this.handleChannelDrag}
-                onDragComplete={onDragComplete}
-            />
-            {line1Edge}
-            {line2Edge}
-            <HoverTextNearMouse
-                show={hoverTextEnabled && hover && !selected}
-                {...restHoverTextProps} />
-        </g>;
+        return (
+            <g>
+                <ChannelWithArea
+                    ref={this.saveNodeType("channel")}
+                    selected={selected || hover}
+                    {...hoverHandler}
+                    startXY={startXY}
+                    endXY={endXY}
+                    dy={dy}
+                    stroke={stroke}
+                    strokeWidth={hover || selected ? strokeWidth + 1 : strokeWidth}
+                    strokeOpacity={strokeOpacity}
+                    fill={fill}
+                    fillOpacity={fillOpacity}
+                    interactiveCursorClass="react-financial-charts-move-cursor"
+                    onDragStart={this.handleDragStart}
+                    onDrag={this.handleChannelDrag}
+                    onDragComplete={onDragComplete}
+                />
+                {line1Edge}
+                {line2Edge}
+                <HoverTextNearMouse show={hoverTextEnabled && hover && !selected} {...restHoverTextProps} />
+            </g>
+        );
     }
 
     private readonly getEdgeCircle = ({ xy, dragHandler, cursor, fill, edge }) => {
@@ -162,29 +157,32 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         const { selected } = this.props;
         const { onDragComplete } = this.props;
 
-        return <ClickableCircle
-            ref={this.saveNodeType(edge)}
-            show={selected || hover}
-            cx={xy[0]}
-            cy={xy[1]}
-            r={r}
-            fill={fill}
-            stroke={edgeStroke}
-            strokeWidth={edgeStrokeWidth}
-            interactiveCursorClass={cursor}
-            onDragStart={this.handleDragStart}
-            onDrag={dragHandler}
-            onDragComplete={onDragComplete} />;
-    }
+        return (
+            <ClickableCircle
+                ref={this.saveNodeType(edge)}
+                show={selected || hover}
+                cx={xy[0]}
+                cy={xy[1]}
+                r={r}
+                fill={fill}
+                stroke={edgeStroke}
+                strokeWidth={edgeStrokeWidth}
+                interactiveCursorClass={cursor}
+                onDragStart={this.handleDragStart}
+                onDrag={dragHandler}
+                onDragComplete={onDragComplete}
+            />
+        );
+    };
 
-    private readonly handleChannelHeightChange = (moreProps) => {
+    private readonly handleChannelHeightChange = moreProps => {
         const { index, onDrag } = this.props;
 
-        const {
-            startXY, endXY,
-        } = this.dragStart;
+        const { startXY, endXY } = this.dragStart;
 
-        const { chartConfig: { yScale } } = moreProps;
+        const {
+            chartConfig: { yScale },
+        } = moreProps;
         const { startPos, mouseXY } = moreProps;
 
         const y2 = yScale(endXY[1]);
@@ -200,17 +198,18 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
             endXY,
             dy: newDy,
         });
-    }
+    };
 
-    private readonly handleLine1Edge2Drag = (moreProps) => {
+    private readonly handleLine1Edge2Drag = moreProps => {
         const { index, onDrag } = this.props;
-        const {
-            endXY,
-        } = this.dragStart;
+        const { endXY } = this.dragStart;
 
         const {
-            startPos, mouseXY, xAccessor,
-            xScale, fullData,
+            startPos,
+            mouseXY,
+            xAccessor,
+            xScale,
+            fullData,
             chartConfig: { yScale },
         } = moreProps;
 
@@ -228,17 +227,18 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
             endXY: [newX1Value, newY1Value],
             dy: this.dragStart.dy,
         });
-    }
+    };
 
-    private readonly handleLine1Edge1Drag = (moreProps) => {
+    private readonly handleLine1Edge1Drag = moreProps => {
         const { index, onDrag } = this.props;
-        const {
-            startXY,
-        } = this.dragStart;
+        const { startXY } = this.dragStart;
 
         const {
-            startPos, mouseXY, xAccessor,
-            xScale, fullData,
+            startPos,
+            mouseXY,
+            xAccessor,
+            xScale,
+            fullData,
             chartConfig: { yScale },
         } = moreProps;
 
@@ -256,16 +256,19 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
             endXY: this.dragStart.endXY,
             dy: this.dragStart.dy,
         });
-    }
+    };
 
-    private readonly handleChannelDrag = (moreProps) => {
+    private readonly handleChannelDrag = moreProps => {
         const { index, onDrag } = this.props;
 
-        const {
-            startXY, endXY,
-        } = this.dragStart;
+        const { startXY, endXY } = this.dragStart;
 
-        const { xScale, chartConfig: { yScale }, xAccessor, fullData } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+            xAccessor,
+            fullData,
+        } = moreProps;
         const { startPos, mouseXY } = moreProps;
 
         const x1 = xScale(startXY[0]);
@@ -288,23 +291,23 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
             endXY: [newX2Value, newY2Value],
             dy: this.dragStart.dy,
         });
-    }
+    };
 
     private readonly handleDragStart = () => {
-        const {
-            startXY, endXY, dy,
-        } = this.props;
+        const { startXY, endXY, dy } = this.props;
 
         this.dragStart = {
-            startXY, endXY, dy,
+            startXY,
+            endXY,
+            dy,
         };
-    }
+    };
 
-    private readonly handleHover = (moreProps) => {
+    private readonly handleHover = moreProps => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
             });
         }
-    }
+    };
 }

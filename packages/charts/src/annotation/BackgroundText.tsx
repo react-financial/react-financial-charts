@@ -18,7 +18,6 @@ interface BackgroundTextProps {
 }
 
 class BackgroundText extends PureComponent<BackgroundTextProps> {
-
     public static defaultProps = {
         opacity: 0.3,
         fill: "#9E7523",
@@ -59,11 +58,7 @@ class BackgroundText extends PureComponent<BackgroundTextProps> {
 
         const props = { x, y, fill, opacity, stroke, strokeOpacity, fontFamily, fontSize, textAnchor };
 
-        return (
-            <text {...props}>
-                {this.props.children(interval)}
-            </text>
-        );
+        return <text {...props}>{this.props.children(interval)}</text>;
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, props, { interval }, getText) => {
@@ -90,7 +85,7 @@ class BackgroundText extends PureComponent<BackgroundTextProps> {
         ctx.fillText(text, x, y);
 
         ctx.restore();
-    }
+    };
 }
 
 export default BackgroundText;

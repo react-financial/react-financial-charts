@@ -5,8 +5,7 @@ import { ElderImpulse as appearanceOptions } from "./defaultOptionsForAppearance
 
 const ALGORITHM_TYPE = "ElderImpulse";
 
-export default function () {
-
+export default function() {
     let macdSource;
     let emaSource;
 
@@ -33,33 +32,39 @@ export default function () {
                 const prevEMA = emaSource(prev);
                 const currEMA = emaSource(curr);
 
-                if (currMACDDivergence >= prevMACDDivergence
-                    && currEMA >= prevEMA) { return "up"; }
+                if (currMACDDivergence >= prevMACDDivergence && currEMA >= prevEMA) {
+                    return "up";
+                }
 
-                if (currMACDDivergence <= prevMACDDivergence
-                    && currEMA <= prevEMA) { return "down"; }
+                if (currMACDDivergence <= prevMACDDivergence && currEMA <= prevEMA) {
+                    return "down";
+                }
             }
             return "neutral";
         });
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.elderImpulse = i; });
+        .merge((datum, i) => {
+            datum.elderImpulse = i;
+        });
 
-    const indicator = function (data, options = { merge: true }) {
-        const newData = options.merge
-            ? mergedAlgorithm(data)
-            : underlyingAlgorithm(data);
+    const indicator = function(data, options = { merge: true }) {
+        const newData = options.merge ? mergedAlgorithm(data) : underlyingAlgorithm(data);
 
         return newData;
     };
-    indicator.macdSource = function (x) {
-        if (!arguments.length) { return macdSource; }
+    indicator.macdSource = function(x) {
+        if (!arguments.length) {
+            return macdSource;
+        }
         macdSource = x;
         return indicator;
     };
-    indicator.emaSource = function (x) {
-        if (!arguments.length) { return emaSource; }
+    indicator.emaSource = function(x) {
+        if (!arguments.length) {
+            return emaSource;
+        }
         emaSource = x;
         return indicator;
     };

@@ -6,12 +6,7 @@ import { isDefined, noop } from "../utils";
 import GenericChartComponent from "../GenericChartComponent";
 import { getMouseCanvas } from "../GenericComponent";
 import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
-import {
-    getValueFromOverride,
-    isHoverForInteractiveType,
-    saveNodeType,
-    terminate,
-} from "./utils";
+import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
 import { EachText } from "./wrapper/EachText";
 
 interface InteractiveTextProps {
@@ -41,7 +36,6 @@ interface InteractiveTextState {
 }
 
 export class InteractiveText extends React.Component<InteractiveTextProps, InteractiveTextState> {
-
     public static defaultProps = {
         onChoosePosition: noop,
         onDragComplete: noop,
@@ -88,8 +82,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
         this.terminate = terminate.bind(this);
 
         this.saveNodeType = saveNodeType.bind(this);
-        this.getSelectionState = isHoverForInteractiveType("textList")
-            .bind(this);
+        this.getSelectionState = isHoverForInteractiveType("textList").bind(this);
 
         this.state = {};
     }
@@ -97,40 +90,43 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
     public render() {
         const { textList, defaultText, hoverText } = this.props;
         const { override } = this.state;
-        return <g>
-            {textList.map((each, idx) => {
-                const defaultHoverText = InteractiveText.defaultProps.hoverText;
-                const props = {
-                    ...defaultText,
-                    ...each,
-                    hoverText: {
-                        ...defaultHoverText,
-                        ...hoverText,
-                        ...(each.hoverText || {}),
-                    },
-                };
-                return <EachText key={idx}
-                    ref={this.saveNodeType(idx)}
-                    index={idx}
-                    {...props}
-                    selected={each.selected}
-                    position={getValueFromOverride(override, idx, "position", each.position)}
-                    onDrag={this.handleDrag}
-                    onDragComplete={this.handleDragComplete}
-                    edgeInteractiveCursor="react-financial-charts-move-cursor"
-                />;
-            })}
-            <GenericChartComponent
-
-                onClick={this.handleDraw}
-
-                svgDraw={noop}
-                canvasDraw={noop}
-                canvasToDraw={getMouseCanvas}
-
-                drawOn={["mousemove", "pan"]}
-            />;
-        </g>;
+        return (
+            <g>
+                {textList.map((each, idx) => {
+                    const defaultHoverText = InteractiveText.defaultProps.hoverText;
+                    const props = {
+                        ...defaultText,
+                        ...each,
+                        hoverText: {
+                            ...defaultHoverText,
+                            ...hoverText,
+                            ...(each.hoverText || {}),
+                        },
+                    };
+                    return (
+                        <EachText
+                            key={idx}
+                            ref={this.saveNodeType(idx)}
+                            index={idx}
+                            {...props}
+                            selected={each.selected}
+                            position={getValueFromOverride(override, idx, "position", each.position)}
+                            onDrag={this.handleDrag}
+                            onDragComplete={this.handleDragComplete}
+                            edgeInteractiveCursor="react-financial-charts-move-cursor"
+                        />
+                    );
+                })}
+                <GenericChartComponent
+                    onClick={this.handleDraw}
+                    svgDraw={noop}
+                    canvasDraw={noop}
+                    canvasToDraw={getMouseCanvas}
+                    drawOn={["mousemove", "pan"]}
+                />
+                ;
+            </g>
+        );
     }
 
     private readonly handleDraw = (moreProps, e) => {
@@ -153,33 +149,35 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
             };
             onChoosePosition(newText, moreProps, e);
         }
-    }
+    };
 
-    private readonly handleDragComplete = (moreProps) => {
+    private readonly handleDragComplete = moreProps => {
         const { override } = this.state;
         if (isDefined(override)) {
             const { textList } = this.props;
-            const newTextList = textList
-                .map((each, idx) => {
-                    const selected = (idx === override.index);
-                    return selected
-                        ? {
-                            ...each,
-                            position: override.position,
-                            selected,
-                        }
-                        : {
-                            ...each,
-                            selected,
-                        };
-                });
-            this.setState({
-                override: null,
-            }, () => {
-                this.props.onDragComplete(newTextList, moreProps);
+            const newTextList = textList.map((each, idx) => {
+                const selected = idx === override.index;
+                return selected
+                    ? {
+                          ...each,
+                          position: override.position,
+                          selected,
+                      }
+                    : {
+                          ...each,
+                          selected,
+                      };
             });
+            this.setState(
+                {
+                    override: null,
+                },
+                () => {
+                    this.props.onDragComplete(newTextList, moreProps);
+                },
+            );
         }
-    }
+    };
 
     private readonly handleDrag = (index, position) => {
         this.setState({
@@ -188,5 +186,5 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
                 position,
             },
         });
-    }
+    };
 }

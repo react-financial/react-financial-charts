@@ -13,7 +13,6 @@ interface DrawingObjectSelectorProps {
 }
 
 export class DrawingObjectSelector extends React.Component<DrawingObjectSelectorProps> {
-
     public static defaultProps = {
         enabled: true,
         onDoubleClick: noop,
@@ -32,23 +31,17 @@ export class DrawingObjectSelector extends React.Component<DrawingObjectSelector
         );
     }
 
-    private readonly getInteraction = (moreProps) => {
+    private readonly getInteraction = moreProps => {
         const { getInteractiveNodes, drawingObjectMap } = this.props;
         const interactiveNodes = getInteractiveNodes();
-        const interactives = mapObject(interactiveNodes, (each) => {
+        const interactives = mapObject(interactiveNodes, each => {
             const key = drawingObjectMap[each.type];
 
-            const valueArray = isDefined(key)
-                ? each.node.props[key]
-                : undefined;
+            const valueArray = isDefined(key) ? each.node.props[key] : undefined;
 
-            const valuePresent = isDefined(valueArray)
-                && Array.isArray(valueArray)
-                && valueArray.length > 0;
+            const valuePresent = isDefined(valueArray) && Array.isArray(valueArray) && valueArray.length > 0;
             if (valuePresent) {
-                const morePropsForChart = getMorePropsForChart(
-                    moreProps, each.chartId,
-                );
+                const morePropsForChart = getMorePropsForChart(moreProps, each.chartId);
 
                 const objects = each.node.getSelectionState(morePropsForChart);
 
@@ -66,24 +59,28 @@ export class DrawingObjectSelector extends React.Component<DrawingObjectSelector
         });
 
         return interactives;
-    }
+    };
 
     private readonly handleClick = (moreProps, e) => {
         e.preventDefault();
         const { onSelect } = this.props;
         const { enabled } = this.props;
-        if (!enabled) { return; }
+        if (!enabled) {
+            return;
+        }
 
         const interactives = this.getInteraction(moreProps);
 
         onSelect(interactives, moreProps);
-    }
+    };
 
     private readonly handleDoubleClick = (moreProps, e) => {
         e.preventDefault();
         const { onDoubleClick } = this.props;
         const { enabled } = this.props;
-        if (!enabled) { return; }
+        if (!enabled) {
+            return;
+        }
 
         const interactives = this.getInteraction(moreProps);
         const allSelected = getSelected(interactives);
@@ -95,10 +92,8 @@ export class DrawingObjectSelector extends React.Component<DrawingObjectSelector
                 chartId: selected.chartId,
                 object: head(selected.objects),
             };
-            const morePropsForChart = getMorePropsForChart(
-                moreProps, selected.chartId,
-            );
+            const morePropsForChart = getMorePropsForChart(moreProps, selected.chartId);
             onDoubleClick(item, morePropsForChart);
         }
-    }
+    };
 }

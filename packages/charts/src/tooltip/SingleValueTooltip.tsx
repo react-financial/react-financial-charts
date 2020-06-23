@@ -1,4 +1,3 @@
-
 import { format } from "d3-format";
 import * as React from "react";
 import GenericChartComponent from "../GenericChartComponent";
@@ -21,14 +20,13 @@ interface SingleValueTooltipProps {
     readonly className?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
-    readonly onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
+    readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
     readonly displayValuesFor?: any; // func
     readonly xAccessor?: (d: any) => any;
     readonly yAccessor?: (d: any) => any;
 }
 
 export class SingleValueTooltip extends React.Component<SingleValueTooltipProps> {
-
     public static defaultProps = {
         origin: [0, 0],
         labelFill: "#4682B4",
@@ -43,28 +41,36 @@ export class SingleValueTooltip extends React.Component<SingleValueTooltipProps>
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                clip={false}
-                svgDraw={this.renderSVG}
-                drawOn={["mousemove"]}
-            />
-        );
+        return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
-
+    private readonly renderSVG = moreProps => {
         const { onClick, fontFamily, fontSize, labelFill, valueFill, className } = this.props;
-        const { xDisplayFormat, yDisplayFormat, xLabel, yLabel, xAccessor, yAccessor, xInitDisplay, yInitDisplay } = this.props;
+        const {
+            xDisplayFormat,
+            yDisplayFormat,
+            xLabel,
+            yLabel,
+            xAccessor,
+            yAccessor,
+            xInitDisplay,
+            yInitDisplay,
+        } = this.props;
         const { displayValuesFor } = this.props;
 
-        const { chartConfig: { width, height } } = moreProps;
+        const {
+            chartConfig: { width, height },
+        } = moreProps;
         const currentItem = displayValuesFor(this.props, moreProps);
 
-        const xDisplayValue = isDefined(currentItem) && isDefined(xAccessor!(currentItem)) ?
-            xDisplayFormat(xAccessor!(currentItem)) : xInitDisplay;
-        const yDisplayValue = isDefined(currentItem) && isDefined(yAccessor!(currentItem)) ?
-            yDisplayFormat(yAccessor!(currentItem)) : yInitDisplay;
+        const xDisplayValue =
+            isDefined(currentItem) && isDefined(xAccessor!(currentItem))
+                ? xDisplayFormat(xAccessor!(currentItem))
+                : xInitDisplay;
+        const yDisplayValue =
+            isDefined(currentItem) && isDefined(yAccessor!(currentItem))
+                ? yDisplayFormat(yAccessor!(currentItem))
+                : yInitDisplay;
 
         const { origin: originProp } = this.props;
         const origin = functor(originProp);
@@ -72,21 +78,15 @@ export class SingleValueTooltip extends React.Component<SingleValueTooltipProps>
 
         return (
             <g className={className} transform={`translate(${x}, ${y})`} onClick={onClick}>
-                <ToolTipText
-                    x={0}
-                    y={0}
-                    fontFamily={fontFamily}
-                    fontSize={fontSize}>
-                    {xLabel ? <ToolTipTSpanLabel x={0} dy="5" fill={labelFill}>{`${xLabel}: `}</ToolTipTSpanLabel> : null}
+                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
+                    {xLabel ? (
+                        <ToolTipTSpanLabel x={0} dy="5" fill={labelFill}>{`${xLabel}: `}</ToolTipTSpanLabel>
+                    ) : null}
                     {xLabel ? <tspan fill={valueFill}>{`${xDisplayValue} `}</tspan> : null}
-                    <ToolTipTSpanLabel fill={labelFill}>
-                        {`${yLabel}: `}
-                    </ToolTipTSpanLabel>
-                    <tspan fill={valueFill} >
-                        {yDisplayValue}
-                    </tspan>
+                    <ToolTipTSpanLabel fill={labelFill}>{`${yLabel}: `}</ToolTipTSpanLabel>
+                    <tspan fill={valueFill}>{yDisplayValue}</tspan>
                 </ToolTipText>
             </g>
         );
-    }
+    };
 }

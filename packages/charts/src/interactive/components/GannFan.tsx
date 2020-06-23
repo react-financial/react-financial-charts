@@ -6,10 +6,7 @@ import GenericChartComponent from "../../GenericChartComponent";
 import { getMouseCanvas } from "../../GenericComponent";
 import { generateLine, isHovering2 } from "./StraightLine";
 
-import {
-    colorToRGBA, isDefined,
-    isNotDefined, noop,
-} from "../../utils";
+import { colorToRGBA, isDefined, isNotDefined, noop } from "../../utils";
 
 interface GannFanProps {
     readonly startXY: number[];
@@ -34,7 +31,6 @@ interface GannFanProps {
 }
 
 export class GannFan extends React.Component<GannFanProps> {
-
     public static defaultProps = {
         onDragStart: noop,
         onDrag: noop,
@@ -66,7 +62,7 @@ export class GannFan extends React.Component<GannFanProps> {
         );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { stroke, strokeWidth, fillOpacity, fill, strokeOpacity } = this.props;
 
         const lines = this.helper(this.props, moreProps);
@@ -77,7 +73,8 @@ export class GannFan extends React.Component<GannFanProps> {
                 {lines.map((each, idx) => {
                     const { x1, y1, x2, y2 } = each;
                     return (
-                        <line key={idx}
+                        <line
+                            key={idx}
                             strokeWidth={strokeWidth}
                             stroke={stroke}
                             strokeOpacity={strokeOpacity}
@@ -95,24 +92,15 @@ export class GannFan extends React.Component<GannFanProps> {
                     ctx.lineTo(line2.x2, line2.y2);
                     ctx.closePath();
                     return (
-                        <path key={idx}
-                            stroke="none"
-                            fill={fill[idx]}
-                            fillOpacity={fillOpacity}
-                            d={ctx.toString()}
-                        />
+                        <path key={idx} stroke="none" fill={fill[idx]} fillOpacity={fillOpacity} d={ctx.toString()} />
                     );
                 })}
             </g>
         );
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const {
-            stroke, strokeWidth, strokeOpacity,
-            fill, fillOpacity,
-            fontFamily, fontSize, fontFill,
-        } = this.props;
+        const { stroke, strokeWidth, strokeOpacity, fill, fillOpacity, fontFamily, fontSize, fontFill } = this.props;
 
         const lines = this.helper(this.props, moreProps);
 
@@ -122,10 +110,8 @@ export class GannFan extends React.Component<GannFanProps> {
         ctx.font = `${fontSize}px ${fontFamily}`;
         ctx.fillStyle = fontFill;
 
-        lines.forEach((line) => {
-            const {
-                x1, y1, x2, y2, label,
-            } = line;
+        lines.forEach(line => {
+            const { x1, y1, x2, y2, label } = line;
 
             ctx.beginPath();
             ctx.moveTo(x1, y1);
@@ -146,16 +132,15 @@ export class GannFan extends React.Component<GannFanProps> {
             ctx.closePath();
             ctx.fill();
         });
-    }
+    };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = moreProps => {
         const { tolerance, onHover } = this.props;
         const { mouseXY } = moreProps;
         const [mouseX, mouseY] = mouseXY;
 
         let hovering = false;
         if (isDefined(onHover)) {
-
             const lines = this.helper(this.props, moreProps);
 
             // tslint:disable-next-line: prefer-for-of
@@ -167,31 +152,27 @@ export class GannFan extends React.Component<GannFanProps> {
                 const top = Math.min(line1.y1, line1.y2);
                 const bottom = Math.max(line1.y1, line1.y2);
 
-                const isWithinLineBounds = mouseX >= left && mouseX <= right
-                    && mouseY >= top && mouseY <= bottom;
+                const isWithinLineBounds = mouseX >= left && mouseX <= right && mouseY >= top && mouseY <= bottom;
 
-                hovering = isWithinLineBounds
-                    && isHovering2(
-                        [line1.x1, line1.y1],
-                        [line1.x2, line1.y2],
-                        mouseXY,
-                        tolerance);
+                hovering =
+                    isWithinLineBounds && isHovering2([line1.x1, line1.y1], [line1.x2, line1.y2], mouseXY, tolerance);
 
-                if (hovering) { break; }
+                if (hovering) {
+                    break;
+                }
             }
         }
         return hovering;
-    }
+    };
 
     private readonly getLineCoordinates = (start, endX, endY, text) => {
-        const end = [
-            endX,
-            endY,
-        ];
+        const end = [endX, endY];
         return {
-            start, end, text,
+            start,
+            end,
+            text,
         };
-    }
+    };
 
     private readonly helper = (props: GannFanProps, moreProps) => {
         const { startXY, endXY } = props;
@@ -210,54 +191,14 @@ export class GannFan extends React.Component<GannFanProps> {
         const dy = y2 - y1;
 
         if (dx !== 0 && dy !== 0) {
-            const halfY = this.getLineCoordinates(
-                startXY,
-                x2,
-                y1 + dy / 2,
-                "2/1",
-            );
-            const oneThirdY = this.getLineCoordinates(
-                startXY,
-                x2,
-                y1 + dy / 3,
-                "3/1",
-            );
-            const oneFourthY = this.getLineCoordinates(
-                startXY,
-                x2,
-                y1 + dy / 4,
-                "4/1",
-            );
-            const oneEighthY = this.getLineCoordinates(
-                startXY,
-                x2,
-                y1 + dy / 8,
-                "8/1",
-            );
-            const halfX = this.getLineCoordinates(
-                startXY,
-                x1 + dx / 2,
-                y2,
-                "1/2",
-            );
-            const oneThirdX = this.getLineCoordinates(
-                startXY,
-                x1 + dx / 3,
-                y2,
-                "1/3",
-            );
-            const oneFourthX = this.getLineCoordinates(
-                startXY,
-                x1 + dx / 4,
-                y2,
-                "1/4",
-            );
-            const oneEighthX = this.getLineCoordinates(
-                startXY,
-                x1 + dx / 8,
-                y2,
-                "1/8",
-            );
+            const halfY = this.getLineCoordinates(startXY, x2, y1 + dy / 2, "2/1");
+            const oneThirdY = this.getLineCoordinates(startXY, x2, y1 + dy / 3, "3/1");
+            const oneFourthY = this.getLineCoordinates(startXY, x2, y1 + dy / 4, "4/1");
+            const oneEighthY = this.getLineCoordinates(startXY, x2, y1 + dy / 8, "8/1");
+            const halfX = this.getLineCoordinates(startXY, x1 + dx / 2, y2, "1/2");
+            const oneThirdX = this.getLineCoordinates(startXY, x1 + dx / 3, y2, "1/3");
+            const oneFourthX = this.getLineCoordinates(startXY, x1 + dx / 4, y2, "1/4");
+            const oneEighthX = this.getLineCoordinates(startXY, x1 + dx / 8, y2, "1/8");
             const lines = [
                 oneEighthX,
                 oneFourthX,
@@ -269,7 +210,7 @@ export class GannFan extends React.Component<GannFanProps> {
                 oneFourthY,
                 oneEighthY,
             ];
-            const lineCoods = lines.map((line) => {
+            const lineCoods = lines.map(line => {
                 // tslint:disable-next-line: no-shadowed-variable
                 const { x1, y1, x2, y2 } = generateLine({
                     type: "RAY",
@@ -293,5 +234,5 @@ export class GannFan extends React.Component<GannFanProps> {
             return lineCoods;
         }
         return [];
-    }
+    };
 }

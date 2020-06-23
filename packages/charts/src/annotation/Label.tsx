@@ -24,7 +24,6 @@ interface LabelProps {
 }
 
 export class Label extends React.Component<LabelProps> {
-
     public static defaultProps = {
         textAnchor: "middle",
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
@@ -33,7 +32,7 @@ export class Label extends React.Component<LabelProps> {
         opacity: 1,
         rotate: 0,
         x: ({ xScale, xAccessor, datum }) => xScale(xAccessor(datum)),
-        selectCanvas: (canvases) => canvases.bg,
+        selectCanvas: canvases => canvases.bg,
     };
 
     public static contextTypes = {
@@ -50,23 +49,20 @@ export class Label extends React.Component<LabelProps> {
                 canvasToDraw={this.props.selectCanvas}
                 svgDraw={this.renderSVG}
                 canvasDraw={this.drawOnCanvas}
-                drawOn={[]} />
+                drawOn={[]}
+            />
         );
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         drawOnCanvas2(ctx, this.props, this.context, moreProps);
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { chartConfig } = moreProps;
 
-        return (
-            <LabelAnnotation
-                yScale={getYScale(chartConfig)} {...this.props}
-                text={getText(this.props)} />
-        );
-    }
+        return <LabelAnnotation yScale={getYScale(chartConfig)} {...this.props} text={getText(this.props)} />;
+    };
 }
 
 function getText(props) {
@@ -87,13 +83,12 @@ function drawOnCanvas2(ctx: CanvasRenderingContext2D, props, context, moreProps)
     if (isDefined(canvasOriginX)) {
         ctx.translate(canvasOriginX, canvasOriginY);
     } else {
-        ctx.translate(margin.left + (0.5 * ratio), margin.top + (0.5 * ratio));
+        ctx.translate(margin.left + 0.5 * ratio, margin.top + 0.5 * ratio);
     }
 
     drawOnCanvas(ctx, props, moreProps);
 
     ctx.restore();
-
 }
 
 function drawOnCanvas(ctx: CanvasRenderingContext2D, props, moreProps) {

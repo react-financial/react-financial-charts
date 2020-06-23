@@ -5,12 +5,7 @@ import { format } from "d3-format";
 import { isDefined, noop, strokeDashTypes } from "../utils";
 
 import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
-import {
-    getValueFromOverride,
-    isHoverForInteractiveType,
-    saveNodeType,
-    terminate,
-} from "./utils";
+import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
 import { EachInteractiveYCoordinate } from "./wrapper/EachInteractiveYCoordinate";
 
 interface InteractiveYCoordinateProps {
@@ -65,7 +60,6 @@ interface InteractiveYCoordinateState {
 }
 
 export class InteractiveYCoordinate extends React.Component<InteractiveYCoordinateProps, InteractiveYCoordinateState> {
-
     public static defaultProps = {
         onChoosePosition: noop,
         onDragComplete: noop,
@@ -141,8 +135,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         this.terminate = terminate.bind(this);
 
         this.saveNodeType = saveNodeType.bind(this);
-        this.getSelectionState = isHoverForInteractiveType("yCoordinateList")
-            .bind(this);
+        this.getSelectionState = isHoverForInteractiveType("yCoordinateList").bind(this);
 
         this.state = {};
     }
@@ -155,7 +148,8 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
                 {yCoordinateList.map((each, idx) => {
                     const props = each;
                     return (
-                        <EachInteractiveYCoordinate key={each.id}
+                        <EachInteractiveYCoordinate
+                            key={each.id}
                             ref={this.saveNodeType(idx)}
                             index={idx}
                             {...props}
@@ -176,34 +170,36 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         const { onDelete, yCoordinateList } = this.props;
 
         onDelete(yCoordinateList[index], moreProps);
-    }
+    };
 
-    private readonly handleDragComplete = (moreProps) => {
+    private readonly handleDragComplete = moreProps => {
         const { override } = this.state;
         if (isDefined(override)) {
             const { yCoordinateList } = this.props;
-            const newAlertList = yCoordinateList
-                .map((each, idx) => {
-                    const selected = (idx === override.index);
-                    return selected
-                        ? {
-                            ...each,
-                            yValue: override.yValue,
-                            selected,
-                        }
-                        : {
-                            ...each,
-                            selected,
-                        };
-                });
-            const draggedAlert = newAlertList[override.index];
-            this.setState({
-                override: null,
-            }, () => {
-                this.props.onDragComplete(newAlertList, moreProps, draggedAlert);
+            const newAlertList = yCoordinateList.map((each, idx) => {
+                const selected = idx === override.index;
+                return selected
+                    ? {
+                          ...each,
+                          yValue: override.yValue,
+                          selected,
+                      }
+                    : {
+                          ...each,
+                          selected,
+                      };
             });
+            const draggedAlert = newAlertList[override.index];
+            this.setState(
+                {
+                    override: null,
+                },
+                () => {
+                    this.props.onDragComplete(newAlertList, moreProps, draggedAlert);
+                },
+            );
         }
-    }
+    };
 
     private readonly handleDrag = (index, yValue) => {
         this.setState({
@@ -212,5 +208,5 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
                 yValue,
             },
         });
-    }
+    };
 }

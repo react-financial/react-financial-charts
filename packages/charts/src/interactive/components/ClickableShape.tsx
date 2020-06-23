@@ -30,7 +30,6 @@ interface ClickableShapeProps {
 }
 
 export class ClickableShape extends React.Component<ClickableShapeProps> {
-
     public static defaultProps = {
         show: false,
         fillOpacity: 1,
@@ -66,7 +65,7 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
 
     private readonly renderSVG = () => {
         throw new Error("svg not implemented");
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, strokeOpacity, hovering, textBox } = this.props;
@@ -84,9 +83,9 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
         ctx.moveTo(x - halfWidth, y + halfWidth);
         ctx.lineTo(x + halfWidth, y - halfWidth);
         ctx.stroke();
-    }
+    };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = moreProps => {
         const { mouseXY } = moreProps;
         if (this.closeIcon) {
             const { textBox } = this.props;
@@ -103,24 +102,27 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
             }
         }
         return false;
-    }
+    };
 
     private readonly helper = (props: ClickableShapeProps, moreProps, ctx) => {
         const { yValue, text, textBox } = props;
         const { fontFamily, fontStyle, fontWeight, fontSize } = props;
         ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
 
-        const { chartConfig: { yScale } } = moreProps;
+        const {
+            chartConfig: { yScale },
+        } = moreProps;
 
-        const x = textBox.left
-            + textBox.padding.left
-            + ctx.measureText(text).width
-            + textBox.padding.right
-            + textBox.closeIcon.padding.left
-            + textBox.closeIcon.width / 2;
+        const x =
+            textBox.left +
+            textBox.padding.left +
+            ctx.measureText(text).width +
+            textBox.padding.right +
+            textBox.closeIcon.padding.left +
+            textBox.closeIcon.width / 2;
 
         const y = yScale(yValue);
 
         return [x, y];
-    }
+    };
 }

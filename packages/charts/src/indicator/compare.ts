@@ -1,4 +1,3 @@
-
 import { merge, rebind } from "../utils";
 
 import { compare } from "../calculator";
@@ -9,7 +8,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "Compare";
 
 interface CompareIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): CompareIndicator;
     accessor(): any;
@@ -28,17 +27,18 @@ interface CompareIndicator {
     options(newOptions: CompareOptions): CompareIndicator;
 }
 
-export default function () {
-
+export default function() {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.compare);
+        .accessor(d => d.compare);
 
     const underlyingAlgorithm = compare();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.compare = i; });
+        .merge((datum, i) => {
+            datum.compare = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

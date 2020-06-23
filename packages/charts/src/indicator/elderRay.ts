@@ -7,7 +7,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "ElderRay";
 
 interface ElderRayIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): ElderRayIndicator;
     accessor(): any;
@@ -26,17 +26,18 @@ interface ElderRayIndicator {
     options(newOptions: ElderRayOptions): ElderRayIndicator;
 }
 
-export default function () {
-
+export default function() {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.elderRay);
+        .accessor(d => d.elderRay);
 
     const underlyingAlgorithm = elderRay();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.elderRay = i; });
+        .merge((datum, i) => {
+            datum.elderRay = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

@@ -7,7 +7,7 @@ import baseIndicator from "./baseIndicator";
 const ALGORITHM_TYPE = "BollingerBand";
 
 interface BollingerBandIndicator {
-    (data: any[], options?: { merge: boolean; }): any;
+    (data: any[], options?: { merge: boolean }): any;
     id(): number;
     id(x: number): BollingerBandIndicator;
     accessor(): any;
@@ -26,16 +26,16 @@ interface BollingerBandIndicator {
     options(newOptions: BollingerBandOptions): BollingerBandIndicator;
 }
 
-export default function () {
-
-    const base = baseIndicator()
-        .type(ALGORITHM_TYPE);
+export default function() {
+    const base = baseIndicator().type(ALGORITHM_TYPE);
 
     const underlyingAlgorithm = bollingerband();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.bollingerBand = i; });
+        .merge((datum, i) => {
+            datum.bollingerBand = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

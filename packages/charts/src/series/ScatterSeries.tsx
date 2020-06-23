@@ -15,7 +15,6 @@ interface ScatterSeriesProps {
 }
 
 export class ScatterSeries extends React.Component<ScatterSeriesProps> {
-
     public static defaultProps = {
         className: "react-financial-charts-scatter",
     };
@@ -31,7 +30,7 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
         );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { className, markerProps } = this.props;
         const { xAccessor } = moreProps;
 
@@ -45,7 +44,7 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
                 })}
             </g>
         );
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor } = moreProps;
@@ -53,20 +52,25 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
         const points = this.helper(this.props, moreProps, xAccessor);
 
         this.drawOnCanvasHelper(ctx, this.props, points);
-    }
+    };
 
     private readonly helper = (props: ScatterSeriesProps, moreProps, xAccessor) => {
         const { yAccessor, markerProvider, markerProps } = props;
         let { marker: Marker } = props;
-        const { xScale, chartConfig: { yScale }, plotData } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+            plotData,
+        } = moreProps;
 
         if (!(markerProvider || Marker)) {
             throw new Error("required prop, either marker or markerProvider missing");
         }
 
-        return plotData.map((d) => {
-
-            if (markerProvider) { Marker = markerProvider(d); }
+        return plotData.map(d => {
+            if (markerProvider) {
+                Marker = markerProvider(d);
+            }
 
             const mProps = { ...Marker.defaultProps, ...markerProps };
 
@@ -82,29 +86,32 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
                 marker: Marker,
             };
         });
-    }
+    };
 
     private readonly drawOnCanvasHelper = (ctx: CanvasRenderingContext2D, props: ScatterSeriesProps, points) => {
-
         const { markerProps } = props;
 
-        // @ts-ignore
-        const nest = group(points, (d) => d.fill, (d) => d.stroke);
+        const nest = group(
+            points,
+            // @ts-ignore
+            d => d.fill,
+            // @ts-ignore
+            d => d.stroke,
+        );
 
         nest.forEach((fillValues, fillKey) => {
-
             if (fillKey !== "none") {
                 // @ts-ignore
                 ctx.fillStyle = fillKey;
             }
 
-            fillValues.forEach((strokeValues) => {
+            fillValues.forEach(strokeValues => {
                 // @ts-ignore
-                strokeValues.forEach((point) => {
+                strokeValues.forEach(point => {
                     const { marker } = point;
                     marker.drawOnCanvas({ ...marker.defaultProps, ...markerProps, fill: fillKey }, point, ctx);
                 });
             });
         });
-    }
+    };
 }

@@ -2,17 +2,7 @@ import { extent as d3Extent, max, min } from "d3-array";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
-import {
-    clearCanvas,
-    functor,
-    head,
-    identity,
-    isDefined,
-    isNotDefined,
-    last,
-    noop,
-    shallowEqual,
-} from "./utils";
+import { clearCanvas, functor, head, identity, isDefined, isNotDefined, last, noop, shallowEqual } from "./utils";
 
 import {
     // @ts-ignore
@@ -22,19 +12,22 @@ import {
     rightDomainBasedZoomAnchor,
 } from "./utils/zoomBehavior";
 
-import { getChartConfigWithUpdatedYScales, getCurrentCharts, getCurrentItem, getNewChartConfig } from "./utils/ChartDataUtil";
+import {
+    getChartConfigWithUpdatedYScales,
+    getCurrentCharts,
+    getCurrentItem,
+    getNewChartConfig,
+} from "./utils/ChartDataUtil";
 
 import { EventCapture } from "./EventCapture";
 
 import { CanvasContainer } from "./CanvasContainer";
 import evaluator from "./scale/evaluator";
 
-const CANDIDATES_FOR_RESET = [
-    "seriesName",
-];
+const CANDIDATES_FOR_RESET = ["seriesName"];
 
 function shouldResetChart(thisProps, nextProps) {
-    return !CANDIDATES_FOR_RESET.every((key) => {
+    return !CANDIDATES_FOR_RESET.every(key => {
         const result = shallowEqual(thisProps[key], nextProps[key]);
         // console.log(key, result);
         return result;
@@ -82,7 +75,7 @@ function getCursorStyle() {
 	.react-financial-charts-ew-resize-cursor {
 		cursor: ew-resize;
 	}`;
-    return (<style type="text/css">{tooltipStyle}</style>);
+    return <style type="text/css">{tooltipStyle}</style>;
 }
 
 function getDimensions(props) {
@@ -100,9 +93,7 @@ function calculateFullData(props) {
     const { data: fullData, plotFull, xScale, clamp, pointsPerPxThreshold, flipXScale } = props;
     const { xAccessor, displayXAccessor, minPointsPerPxThreshold } = props;
 
-    const useWholeData = isDefined(plotFull)
-        ? plotFull
-        : xAccessor === identity;
+    const useWholeData = isDefined(plotFull) ? plotFull : xAccessor === identity;
 
     const { filterData } = evaluator({
         xScale,
@@ -122,7 +113,6 @@ function calculateFullData(props) {
     };
 }
 function resetChart(props, firstCalculation = false) {
-
     const state = calculateState(props);
     const { xAccessor, displayXAccessor, fullData } = state;
     const { plotData: initialPlotData, xScale } = state;
@@ -147,14 +137,7 @@ function resetChart(props, firstCalculation = false) {
     };
 }
 
-function updateChart(
-    newState,
-    initialXScale,
-    props,
-    lastItemWasVisible,
-    initialChartConfig,
-) {
-
+function updateChart(newState, initialXScale, props, lastItemWasVisible, initialChartConfig) {
     const { fullData, xScale, xAccessor, displayXAccessor, filterData } = newState;
 
     const lastItem = last(fullData);
@@ -175,31 +158,31 @@ function updateChart(
         const [rangeStart, rangeEnd] = initialXScale.range();
         const [newRangeStart, newRangeEnd] = updatedXScale.range();
         const newDomainExtent = ((newRangeEnd - newRangeStart) / (rangeEnd - rangeStart)) * (end - start);
-        const newStart = maintainPointsPerPixelOnResize
-            ? end - newDomainExtent
-            : start;
+        const newStart = maintainPointsPerPixelOnResize ? end - newDomainExtent : start;
 
         const lastItemX = initialXScale(xAccessor(lastItem));
         // console.log("pointsPerPixel => ", newStart, start, end, updatedXScale(end));
-        const response = filterData(
-            fullData, [newStart, end], xAccessor, updatedXScale,
-            { fallbackStart: start, fallbackEnd: { lastItem, lastItemX } },
-        );
+        const response = filterData(fullData, [newStart, end], xAccessor, updatedXScale, {
+            fallbackStart: start,
+            fallbackEnd: { lastItem, lastItemX },
+        });
         initialPlotData = response.plotData;
         updatedXScale.domain(response.domain);
         // console.log("HERE!!!!!", start, end);
-    } else if (lastItemWasVisible
-        && end < xAccessor(lastItem)) {
+    } else if (lastItemWasVisible && end < xAccessor(lastItem)) {
         // this is when a new item is added and last item was visible
         // so slide over and show the new item also
 
         // get plotData between [xAccessor(l) - (end - start), xAccessor(l)] and DO change the domain
         const dx = initialXScale(xAccessor(lastItem)) - initialXScale.range()[1];
-        const [newStart, newEnd] = initialXScale.range().map((x) => x + dx).map(initialXScale.invert);
+        const [newStart, newEnd] = initialXScale
+            .range()
+            .map(x => x + dx)
+            .map(initialXScale.invert);
 
         const response = filterData(fullData, [newStart, newEnd], xAccessor, updatedXScale);
         initialPlotData = response.plotData;
-        updatedXScale.domain(response.domain);		// if last item was visible, then shift
+        updatedXScale.domain(response.domain); // if last item was visible, then shift
     }
     // plotData = getDataOfLength(fullData, showingInterval, plotData.length)
     const plotData = postCalculator(initialPlotData);
@@ -222,17 +205,16 @@ function updateChart(
 }
 
 function calculateState(props) {
-
-    const {
-        xAccessor: inputXAccesor, xExtents: xExtentsProp, data, padding, flipXScale,
-    } = props;
+    const { xAccessor: inputXAccesor, xExtents: xExtentsProp, data, padding, flipXScale } = props;
 
     if (process.env.NODE_ENV !== "production" && isDefined(props.xScale.invert)) {
         for (let i = 1; i < data.length; i++) {
             const prev = data[i - 1];
             const curr = data[i];
             if (inputXAccesor(prev) > inputXAccesor(curr)) {
-                throw new Error("'data' is not sorted on 'xAccessor', send 'data' sorted in ascending order of 'xAccessor'");
+                throw new Error(
+                    "'data' is not sorted on 'xAccessor', send 'data' sorted in ascending order of 'xAccessor'",
+                );
             }
         }
     }
@@ -240,9 +222,10 @@ function calculateState(props) {
     const direction = getXScaleDirection(flipXScale);
     const dimensions = getDimensions(props);
 
-    const extent = typeof xExtentsProp === "function"
-        ? xExtentsProp(data)
-        : d3Extent(xExtentsProp.map((d) => functor(d)).map((each) => each(data, inputXAccesor)));
+    const extent =
+        typeof xExtentsProp === "function"
+            ? xExtentsProp(data)
+            : d3Extent(xExtentsProp.map(d => functor(d)).map(each => each(data, inputXAccesor)));
 
     const { xAccessor, displayXAccessor, xScale, fullData, filterData } = calculateFullData(props);
     const updatedXScale = setXRange(xScale, dimensions, padding, direction);
@@ -264,16 +247,18 @@ function calculateState(props) {
 
 function setXRange(xScale, dimensions, padding, direction = 1) {
     if (xScale.rangeRoundPoints) {
-        if (isNaN(padding)) { throw new Error("padding has to be a number for ordinal scale"); }
+        if (isNaN(padding)) {
+            throw new Error("padding has to be a number for ordinal scale");
+        }
         xScale.rangeRoundPoints([0, dimensions.width], padding);
     } else if (xScale.padding) {
-        if (isNaN(padding)) { throw new Error("padding has to be a number for ordinal scale"); }
+        if (isNaN(padding)) {
+            throw new Error("padding has to be a number for ordinal scale");
+        }
         xScale.range([0, dimensions.width]);
         xScale.padding(padding / 2);
     } else {
-        const { left, right } = isNaN(padding)
-            ? padding
-            : { left: padding, right: padding };
+        const { left, right } = isNaN(padding) ? padding : { left: padding, right: padding };
         if (direction > 0) {
             xScale.range([left, dimensions.width - right]);
         } else {
@@ -321,12 +306,14 @@ interface ChartCanvasProps {
     readonly postCalculator?: any; // func
     readonly flipXScale?: boolean;
     readonly useCrossHairStyleCursor?: boolean;
-    readonly padding?: number | {
-        bottom: number;
-        left: number;
-        right: number;
-        top: number;
-    };
+    readonly padding?:
+        | number
+        | {
+              bottom: number;
+              left: number;
+              right: number;
+              top: number;
+          };
     readonly defaultFocus?: boolean;
     readonly zoomMultiplier?: number;
     readonly onLoadMore?: any; // func
@@ -350,7 +337,6 @@ interface ChartCanvasState {
 }
 
 export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasState> {
-
     public static defaultProps = {
         margin: { top: 0, right: 40, bottom: 40, left: 0 },
         type: "hybrid",
@@ -422,7 +408,14 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         getMutableState: PropTypes.func,
     };
 
-    public static ohlcv = (d) => ({ date: d.date, open: d.open, high: d.high, low: d.low, close: d.close, volume: d.volume });
+    public static ohlcv = d => ({
+        date: d.date,
+        open: d.open,
+        high: d.high,
+        low: d.low,
+        close: d.close,
+        volume: d.volume,
+    });
 
     private canvasContainerNode;
     private eventCaptureNode;
@@ -527,38 +520,31 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     public clearBothCanvas() {
         const canvases = this.getCanvasContexts();
         if (canvases && canvases.axes) {
-            clearCanvas([
-                canvases.axes,
-                canvases.mouseCoord,
-            ], this.props.ratio);
+            clearCanvas([canvases.axes, canvases.mouseCoord], this.props.ratio);
         }
     }
 
     public clearMouseCanvas() {
         const canvases = this.getCanvasContexts();
         if (canvases && canvases.mouseCoord) {
-            clearCanvas([
-                canvases.mouseCoord,
-            ], this.props.ratio);
+            clearCanvas([canvases.mouseCoord], this.props.ratio);
         }
     }
 
     public clearThreeCanvas() {
         const canvases = this.getCanvasContexts();
         if (canvases && canvases.axes) {
-            clearCanvas([
-                canvases.axes,
-                canvases.mouseCoord,
-                canvases.bg,
-            ], this.props.ratio);
+            clearCanvas([canvases.axes, canvases.mouseCoord, canvases.bg], this.props.ratio);
         }
     }
 
     public subscribe(id, rest) {
-        const { getPanConditions = functor({
-            draggable: false,
-            panEnabled: true,
-        }) } = rest;
+        const {
+            getPanConditions = functor({
+                draggable: false,
+                panEnabled: true,
+            }),
+        } = rest;
         this.subscriptions = this.subscriptions.concat({
             id,
             ...rest,
@@ -567,12 +553,11 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public unsubscribe(id) {
-        this.subscriptions = this.subscriptions.filter((each) => each.id !== id);
+        this.subscriptions = this.subscriptions.filter(each => each.id !== id);
     }
 
     public getAllPanConditions() {
-        return this.subscriptions
-            .map((each) => each.getPanConditions());
+        return this.subscriptions.map(each => each.getPanConditions());
     }
 
     public setCursorClass(className) {
@@ -582,11 +567,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public amIOnTop(id) {
-        const dragableComponents = this.subscriptions
-            .filter((each) => each.getPanConditions().draggable);
+        const dragableComponents = this.subscriptions.filter(each => each.getPanConditions().draggable);
 
-        return dragableComponents.length > 0
-            && last(dragableComponents).id === id;
+        return dragableComponents.length > 0 && last(dragableComponents).id === id;
     }
 
     public handleContextMenu(mouseXY, e) {
@@ -595,11 +578,15 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const currentCharts = getCurrentCharts(chartConfig, mouseXY);
         const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
 
-        this.triggerEvent("contextmenu", {
-            mouseXY,
-            currentItem,
-            currentCharts,
-        }, e);
+        this.triggerEvent(
+            "contextmenu",
+            {
+                mouseXY,
+                currentItem,
+                currentCharts,
+            },
+            e,
+        );
     }
 
     public calculateStateForDomain(newDomain) {
@@ -615,16 +602,10 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const { fullData } = this;
         const { postCalculator } = this.props;
 
-        const { plotData: beforePlotData, domain } = filterData(
-            fullData,
-            newDomain,
-            xAccessor,
-            initialXScale,
-            {
-                currentPlotData: initialPlotData,
-                currentDomain: initialXScale.domain(),
-            },
-        );
+        const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialXScale, {
+            currentPlotData: initialPlotData,
+            currentDomain: initialXScale.domain(),
+        });
 
         const plotData = postCalculator(beforePlotData);
         const updatedScale = initialXScale.copy().domain(domain);
@@ -663,24 +644,20 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const e = initialPinchXScale.range()[1];
 
         const xDash = Math.round(-(iBR[0] * fTL[0] - iTL[0] * fBR[0]) / (iTL[0] - iBR[0]));
-        const yDash = Math.round(e + ((e - iBR[0]) * (e - fTL[0]) - (e - iTL[0]) * (e - fBR[0])) / ((e - iTL[0]) - (e - iBR[0])));
+        const yDash = Math.round(
+            e + ((e - iBR[0]) * (e - fTL[0]) - (e - iTL[0]) * (e - fBR[0])) / (e - iTL[0] - (e - iBR[0])),
+        );
 
-        const x = Math.round(-xDash * iTL[0] / (-xDash + fTL[0]));
-        const y = Math.round(e - (yDash - e) * (e - iTL[0]) / (yDash + (e - fTL[0])));
+        const x = Math.round((-xDash * iTL[0]) / (-xDash + fTL[0]));
+        const y = Math.round(e - ((yDash - e) * (e - iTL[0])) / (yDash + (e - fTL[0])));
 
         const newDomain = [x, y].map(initialPinchXScale.invert);
         // var domainR = initial.right + right;
 
-        const { plotData: beforePlotData, domain } = filterData(
-            fullData,
-            newDomain,
-            xAccessor,
-            initialPinchXScale,
-            {
-                currentPlotData: initialPlotData,
-                currentDomain: initialXScale.domain(),
-            },
-        );
+        const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialPinchXScale, {
+            currentPlotData: initialPlotData,
+            currentDomain: initialXScale.domain(),
+        });
 
         const plotData = postCalculator(beforePlotData);
         const updatedScale = initialXScale.copy().domain(domain);
@@ -759,10 +736,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         }
 
         const { xAccessor, xScale: initialXScale, plotData: initialPlotData } = this.state;
-        const {
-            zoomMultiplier = ChartCanvas.defaultProps.zoomMultiplier,
-            zoomAnchor,
-        } = this.props;
+        const { zoomMultiplier = ChartCanvas.defaultProps.zoomMultiplier, zoomAnchor } = this.props;
         const { fullData } = this;
         const item = zoomAnchor({
             xScale: initialXScale,
@@ -774,7 +748,10 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
         const cx = initialXScale(item);
         const c = zoomDirection > 0 ? 1 * zoomMultiplier : 1 / zoomMultiplier;
-        const newDomain = initialXScale.range().map((x) => cx + (x - cx) * c).map(initialXScale.invert);
+        const newDomain = initialXScale
+            .range()
+            .map(x => cx + (x - cx) * c)
+            .map(initialXScale.invert);
 
         const { xScale, plotData, chartConfig } = this.calculateStateForDomain(newDomain);
 
@@ -795,25 +772,32 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             currentCharts,
         };
 
-        this.triggerEvent("zoom", {
-            xScale,
-            plotData,
-            chartConfig,
-            mouseXY,
-            currentCharts,
-            currentItem,
-            show: true,
-        }, e);
+        this.triggerEvent(
+            "zoom",
+            {
+                xScale,
+                plotData,
+                chartConfig,
+                mouseXY,
+                currentCharts,
+                currentItem,
+                show: true,
+            },
+            e,
+        );
 
-        this.setState({
-            xScale,
-            plotData,
-            chartConfig,
-        }, () => {
-            if (start < end) {
-                onLoadMore(start, end);
-            }
-        });
+        this.setState(
+            {
+                xScale,
+                plotData,
+                chartConfig,
+            },
+            () => {
+                if (start < end) {
+                    onLoadMore(start, end);
+                }
+            },
+        );
     }
 
     public xAxisZoom(newDomain) {
@@ -827,31 +811,35 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const end = xAccessor(firstItem);
         const { onLoadMore } = this.props;
 
-        this.setState({
-            xScale,
-            plotData,
-            chartConfig,
-        }, () => {
-            if (start < end) { onLoadMore(start, end); }
-        });
+        this.setState(
+            {
+                xScale,
+                plotData,
+                chartConfig,
+            },
+            () => {
+                if (start < end) {
+                    onLoadMore(start, end);
+                }
+            },
+        );
     }
 
     public yAxisZoom(chartId, newDomain) {
         this.clearThreeCanvas();
         const { chartConfig: initialChartConfig } = this.state;
-        const chartConfig = initialChartConfig
-            .map((each) => {
-                if (each.id === chartId) {
-                    const { yScale } = each;
-                    return {
-                        ...each,
-                        yScale: yScale.copy().domain(newDomain),
-                        yPanEnabled: true,
-                    };
-                } else {
-                    return each;
-                }
-            });
+        const chartConfig = initialChartConfig.map(each => {
+            if (each.id === chartId) {
+                const { yScale } = each;
+                return {
+                    ...each,
+                    yScale: yScale.copy().domain(newDomain),
+                    yPanEnabled: true,
+                };
+            } else {
+                return each;
+            }
+        });
 
         this.setState({
             chartConfig,
@@ -859,8 +847,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public triggerEvent(type, props?, e?) {
-
-        this.subscriptions.forEach((each) => {
+        this.subscriptions.forEach(each => {
             const state = {
                 ...this.state,
                 fullData: this.fullData,
@@ -871,7 +858,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public draw(props) {
-        this.subscriptions.forEach((each) => {
+        this.subscriptions.forEach(each => {
             if (isDefined(each.draw)) {
                 each.draw(props);
             }
@@ -890,22 +877,21 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const { postCalculator } = this.props;
 
         if (isNotDefined(initialXScale.invert)) {
-            throw new Error("xScale provided does not have an invert() method."
-                + "You are likely using an ordinal scale. This scale does not support zoom, pan");
+            throw new Error(
+                "xScale provided does not have an invert() method." +
+                    "You are likely using an ordinal scale. This scale does not support zoom, pan",
+            );
         }
 
-        const newDomain = initialXScale.range().map((x) => x - dx).map(initialXScale.invert);
+        const newDomain = initialXScale
+            .range()
+            .map(x => x - dx)
+            .map(initialXScale.invert);
 
-        const { plotData: beforePlotData, domain } = filterData(
-            fullData,
-            newDomain,
-            xAccessor,
-            initialXScale,
-            {
-                currentPlotData: this.hackyWayToStopPanBeyondBounds__plotData,
-                currentDomain: this.hackyWayToStopPanBeyondBounds__domain,
-            },
-        );
+        const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialXScale, {
+            currentPlotData: this.hackyWayToStopPanBeyondBounds__plotData,
+            currentDomain: this.hackyWayToStopPanBeyondBounds__domain,
+        });
 
         const updatedScale = initialXScale.copy().domain(domain);
         const plotData = postCalculator(beforePlotData);
@@ -934,8 +920,10 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         if (!this.waitingForPanAnimationFrame) {
             this.waitingForPanAnimationFrame = true;
 
-            this.hackyWayToStopPanBeyondBounds__plotData = this.hackyWayToStopPanBeyondBounds__plotData || this.state.plotData;
-            this.hackyWayToStopPanBeyondBounds__domain = this.hackyWayToStopPanBeyondBounds__domain || this.state.xScale.domain();
+            this.hackyWayToStopPanBeyondBounds__plotData =
+                this.hackyWayToStopPanBeyondBounds__plotData || this.state.plotData;
+            this.hackyWayToStopPanBeyondBounds__domain =
+                this.hackyWayToStopPanBeyondBounds__domain || this.state.xScale.domain();
 
             const state = this.panHelper(mousePosition, panStartXScale, dxdy, chartsToPan);
 
@@ -966,11 +954,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
         this.panInProgress = false;
 
-        const {
-            xScale,
-            plotData,
-            chartConfig,
-        } = state;
+        const { xScale, plotData, chartConfig } = state;
 
         this.triggerEvent("panend", state, e);
 
@@ -986,13 +970,18 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
             this.clearThreeCanvas();
 
-            this.setState({
-                xScale,
-                plotData,
-                chartConfig,
-            }, () => {
-                if (start < end) { onLoadMore(start, end); }
-            });
+            this.setState(
+                {
+                    xScale,
+                    plotData,
+                    chartConfig,
+                },
+                () => {
+                    if (start < end) {
+                        onLoadMore(start, end);
+                    }
+                },
+            );
         });
     }
 
@@ -1001,9 +990,13 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public handleMouseEnter(e) {
-        this.triggerEvent("mouseenter", {
-            show: true,
-        }, e);
+        this.triggerEvent(
+            "mouseenter",
+            {
+                show: true,
+            },
+            e,
+        );
     }
 
     public handleMouseMove(mouseXY, inputType, e) {
@@ -1013,14 +1006,18 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             const { chartConfig, plotData, xScale, xAccessor } = this.state;
             const currentCharts = getCurrentCharts(chartConfig, mouseXY);
             const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
-            this.triggerEvent("mousemove", {
-                show: true,
-                mouseXY,
-                // prevMouseXY is used in interactive components
-                prevMouseXY: this.prevMouseXY,
-                currentItem,
-                currentCharts,
-            }, e);
+            this.triggerEvent(
+                "mousemove",
+                {
+                    show: true,
+                    mouseXY,
+                    // prevMouseXY is used in interactive components
+                    prevMouseXY: this.prevMouseXY,
+                    currentItem,
+                    currentCharts,
+                },
+                e,
+            );
 
             this.prevMouseXY = mouseXY;
             this.mutableState = {
@@ -1052,12 +1049,16 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const currentCharts = getCurrentCharts(chartConfig, mouseXY);
         const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
 
-        this.triggerEvent("drag", {
-            startPos,
-            mouseXY,
-            currentItem,
-            currentCharts,
-        }, e);
+        this.triggerEvent(
+            "drag",
+            {
+                startPos,
+                mouseXY,
+                currentItem,
+                currentCharts,
+            },
+            e,
+        );
 
         this.mutableState = {
             mouseXY,
@@ -1132,7 +1133,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             newState = resetChart(nextProps);
             this.mutableState = {};
         } else {
-
             const [start, end] = this.state.xScale.domain();
             const prevLastItem = last(this.fullData);
 
@@ -1162,19 +1162,20 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     public resetYDomain(chartId) {
         const { chartConfig } = this.state;
         let changed = false;
-        const newChartConfig = chartConfig
-            .map((each) => {
-                if ((isNotDefined(chartId) || each.id === chartId)
-                    && !shallowEqual(each.yScale.domain(), each.realYDomain)) {
-                    changed = true;
-                    return {
-                        ...each,
-                        yScale: each.yScale.domain(each.realYDomain),
-                        yPanEnabled: false,
-                    };
-                }
-                return each;
-            });
+        const newChartConfig = chartConfig.map(each => {
+            if (
+                (isNotDefined(chartId) || each.id === chartId) &&
+                !shallowEqual(each.yScale.domain(), each.realYDomain)
+            ) {
+                changed = true;
+                return {
+                    ...each,
+                    yScale: each.yScale.domain(each.realYDomain),
+                    yPanEnabled: false,
+                };
+            }
+            return each;
+        });
 
         if (changed) {
             this.clearThreeCanvas();
@@ -1189,7 +1190,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public render() {
-
         const {
             type = ChartCanvas.defaultProps.type,
             useCrossHairStyleCursor,
@@ -1222,17 +1222,24 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                     ratio={ratio}
                     width={width}
                     height={height}
-                    zIndex={zIndex} />
-                <svg className={className} width={width} height={height} style={{ position: "absolute", zIndex: (zIndex + 5) }}>
+                    zIndex={zIndex}
+                />
+                <svg
+                    className={className}
+                    width={width}
+                    height={height}
+                    style={{ position: "absolute", zIndex: zIndex + 5 }}
+                >
                     {cursor}
                     <defs>
                         <clipPath id="chart-area-clip">
                             <rect x="0" y="0" width={dimensions.width} height={dimensions.height} />
                         </clipPath>
-                        {chartConfig
-                            .map((each, idx) => <clipPath key={idx} id={`chart-area-clip-${each.id}`}>
+                        {chartConfig.map((each, idx) => (
+                            <clipPath key={idx} id={`chart-area-clip-${each.id}`}>
                                 <rect x="0" y="0" width={each.width} height={each.height} />
-                            </clipPath>)}
+                            </clipPath>
+                        ))}
                     </defs>
                     <g transform={`translate(${margin.left + 0.5}, ${margin.top + 0.5})`}>
                         <EventCapture
@@ -1266,9 +1273,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                             onPanEnd={this.handlePanEnd}
                         />
 
-                        <g className="react-financial-charts-avoid-interaction">
-                            {this.props.children}
-                        </g>
+                        <g className="react-financial-charts-avoid-interaction">{this.props.children}</g>
                     </g>
                 </svg>
             </div>

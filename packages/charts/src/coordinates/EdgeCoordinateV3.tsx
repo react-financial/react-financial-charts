@@ -6,7 +6,9 @@ export function renderSVG(props) {
     const { className } = props;
 
     const edge = helper(props);
-    if (edge === null) { return null; }
+    if (edge === null) {
+        return null;
+    }
     let line;
     let coordinateBase;
     let coordinate;
@@ -30,20 +32,13 @@ export function renderSVG(props) {
 
         const path =
             edge.orient === "left"
-                ? `M0,0L0,${rectHeight}L${rectWidth},${rectHeight}L${rectWidth +
-                arrowWidth},10L${rectWidth},0L0,0L0,0`
-                : `M0,${arrowWidth}L${arrowWidth},${rectHeight}L${rectWidth +
-                arrowWidth},${rectHeight}L${rectWidth +
-                arrowWidth},0L${arrowWidth},0L0,${arrowWidth}`;
+                ? `M0,0L0,${rectHeight}L${rectWidth},${rectHeight}L${rectWidth + arrowWidth},10L${rectWidth},0L0,0L0,0`
+                : `M0,${arrowWidth}L${arrowWidth},${rectHeight}L${rectWidth + arrowWidth},${rectHeight}L${rectWidth +
+                      arrowWidth},0L${arrowWidth},0L0,${arrowWidth}`;
 
         coordinateBase =
             edge.orient === "left" || edge.orient === "right" ? (
-                <g
-                    key={1}
-                    transform={`translate(${edge.coordinateBase.edgeXRect},${
-                        edge.coordinateBase.edgeYRect
-                        })`}
-                >
+                <g key={1} transform={`translate(${edge.coordinateBase.edgeXRect},${edge.coordinateBase.edgeYRect})`}>
                     <path
                         d={path}
                         className="react-financial-charts-text-background"
@@ -58,17 +53,17 @@ export function renderSVG(props) {
                     />
                 </g>
             ) : (
-                    <rect
-                        key={1}
-                        className="react-financial-charts-text-background"
-                        x={edge.coordinateBase.edgeXRect}
-                        y={edge.coordinateBase.edgeYRect}
-                        height={rectHeight}
-                        width={rectWidth}
-                        fill={edge.coordinateBase.fill}
-                        opacity={edge.coordinateBase.opacity}
-                    />
-                );
+                <rect
+                    key={1}
+                    className="react-financial-charts-text-background"
+                    x={edge.coordinateBase.edgeXRect}
+                    y={edge.coordinateBase.edgeYRect}
+                    height={rectHeight}
+                    width={rectWidth}
+                    fill={edge.coordinateBase.fill}
+                    opacity={edge.coordinateBase.opacity}
+                />
+            );
 
         coordinate = (
             <text
@@ -179,14 +174,14 @@ function helper(props) {
     const line = hideLine
         ? undefined
         : {
-            opacity: lineOpacity,
-            stroke: lineStroke,
-            strokeDasharray: lineStrokeDasharray,
-            x1,
-            y1,
-            x2,
-            y2,
-        };
+              opacity: lineOpacity,
+              stroke: lineStroke,
+              strokeDasharray: lineStrokeDasharray,
+              x1,
+              y1,
+              x2,
+              y2,
+          };
 
     return {
         coordinateBase,
@@ -225,22 +220,11 @@ export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
 
     ctx.setLineDash([]);
     if (isDefined(edge.coordinateBase)) {
-        const {
-            arrowWidth,
-            rectWidth,
-            rectHeight,
-            rectRadius,
-        } = edge.coordinateBase;
+        const { arrowWidth, rectWidth, rectHeight, rectRadius } = edge.coordinateBase;
 
-        ctx.fillStyle = colorToRGBA(
-            edge.coordinateBase.fill,
-            edge.coordinateBase.opacity,
-        );
+        ctx.fillStyle = colorToRGBA(edge.coordinateBase.fill, edge.coordinateBase.opacity);
         if (isDefined(edge.coordinateBase.stroke)) {
-            ctx.strokeStyle = colorToRGBA(
-                edge.coordinateBase.stroke,
-                edge.coordinateBase.strokeOpacity,
-            );
+            ctx.strokeStyle = colorToRGBA(edge.coordinateBase.stroke, edge.coordinateBase.strokeOpacity);
             ctx.lineWidth = edge.coordinateBase.strokeWidth;
         }
 
@@ -278,15 +262,8 @@ export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
         }
 
         ctx.fillStyle = edge.coordinate.textFill;
-        ctx.textAlign =
-            edge.coordinate.textAnchor === "middle"
-                ? "center"
-                : edge.coordinate.textAnchor;
-        ctx.fillText(
-            edge.coordinate.displayCoordinate,
-            edge.coordinate.edgeXText,
-            edge.coordinate.edgeYText,
-        );
+        ctx.textAlign = edge.coordinate.textAnchor === "middle" ? "center" : edge.coordinate.textAnchor;
+        ctx.fillText(edge.coordinate.displayCoordinate, edge.coordinate.edgeXText, edge.coordinate.edgeYText);
     }
 }
 

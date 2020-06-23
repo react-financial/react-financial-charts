@@ -6,24 +6,23 @@ import { isDefined } from "../utils";
 
 interface RenkoSeriesProps {
     readonly classNames?: {
-        up: string,
-        down: string,
+        up: string;
+        down: string;
     };
     readonly stroke?: {
-        up: string,
-        down: string,
+        up: string;
+        down: string;
     };
     readonly fill?: {
-        up: string,
-        down: string,
-        partial: string,
+        up: string;
+        down: string;
+        partial: string;
     };
     readonly yAccessor?: any; // func
     readonly clip?: boolean;
 }
 
 export class RenkoSeries extends React.Component<RenkoSeriesProps> {
-
     public static defaultProps = {
         classNames: {
             up: "up",
@@ -38,59 +37,71 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
             down: "#ef5350",
             partial: "#4682B4",
         },
-        yAccessor: (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
+        yAccessor: d => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
         clip: true,
     };
 
     public render() {
         const { clip } = this.props;
 
-        return <GenericChartComponent
-            clip={clip}
-            svgDraw={this.renderSVG}
-            canvasDraw={this.drawOnCanvas}
-            canvasToDraw={getAxisCanvas}
-            drawOn={["pan"]}
-        />;
+        return (
+            <GenericChartComponent
+                clip={clip}
+                svgDraw={this.renderSVG}
+                canvasDraw={this.drawOnCanvas}
+                canvasToDraw={getAxisCanvas}
+                drawOn={["pan"]}
+            />
+        );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { xAccessor } = moreProps;
-        const { xScale, chartConfig: { yScale }, plotData } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+            plotData,
+        } = moreProps;
 
         const { yAccessor } = this.props;
 
-        const candles = getRenko(this.props, plotData, xScale, xAccessor, yScale, yAccessor)
-            .map((each, idx) => (<rect key={idx} className={each.className}
+        const candles = getRenko(this.props, plotData, xScale, xAccessor, yScale, yAccessor).map((each, idx) => (
+            <rect
+                key={idx}
+                className={each.className}
                 fill={each.fill}
                 x={each.x}
                 y={each.y}
                 width={each.width}
-                height={each.height} />));
+                height={each.height}
+            />
+        ));
 
         return (
             <g>
-                <g className="candle">
-                    {candles}
-                </g>
+                <g className="candle">{candles}</g>
             </g>
         );
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor } = moreProps;
-        const { xScale, chartConfig: { yScale }, plotData } = moreProps;
+        const {
+            xScale,
+            chartConfig: { yScale },
+            plotData,
+        } = moreProps;
 
         const { yAccessor } = this.props;
 
         const candles = getRenko(this.props, plotData, xScale, xAccessor, yScale, yAccessor);
 
         drawOnCanvas(ctx, candles);
-    }
+    };
 }
 
 function drawOnCanvas(ctx: CanvasRenderingContext2D, renko) {
-    renko.forEach((d) => {
+    renko.forEach(d => {
         ctx.beginPath();
 
         ctx.strokeStyle = d.stroke;
@@ -104,22 +115,19 @@ function drawOnCanvas(ctx: CanvasRenderingContext2D, renko) {
 
 function getRenko(props, plotData, xScale, xAccessor, yScale, yAccessor) {
     const { classNames, fill } = props;
-    const width = xScale(xAccessor(plotData[plotData.length - 1]))
-        - xScale(xAccessor(plotData[0]));
+    const width = xScale(xAccessor(plotData[plotData.length - 1])) - xScale(xAccessor(plotData[0]));
 
-    const candleWidth = (width / (plotData.length - 1));
+    const candleWidth = width / (plotData.length - 1);
     const candles = plotData
-        .filter((d) => isDefined(yAccessor(d).close))
-        .map((d) => {
+        .filter(d => isDefined(yAccessor(d).close))
+        .map(d => {
             const ohlc = yAccessor(d);
             const x = xScale(xAccessor(d)) - 0.5 * candleWidth;
             const y = yScale(Math.max(ohlc.open, ohlc.close));
             const height = Math.abs(yScale(ohlc.open) - yScale(ohlc.close));
-            const className = (ohlc.open <= ohlc.close) ? classNames.up : classNames.down;
+            const className = ohlc.open <= ohlc.close ? classNames.up : classNames.down;
 
-            const svgfill = d.fullyFormed
-                ? (ohlc.open <= ohlc.close ? fill.up : fill.down)
-                : fill.partial;
+            const svgfill = d.fullyFormed ? (ohlc.open <= ohlc.close ? fill.up : fill.down) : fill.partial;
 
             return {
                 className,

@@ -1,40 +1,18 @@
-import {
-    getCurrentItem,
-} from "./ChartDataUtil";
+import { getCurrentItem } from "./ChartDataUtil";
 
-import {
-    last,
-} from "./index";
+import { last } from "./index";
 
-export function mouseBasedZoomAnchor({
-    xScale,
-    xAccessor,
-    mouseXY,
-    plotData,
-    fullData,
-}) {
+export function mouseBasedZoomAnchor({ xScale, xAccessor, mouseXY, plotData, fullData }) {
     const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
     return xAccessor(currentItem);
 }
 
-export function lastVisibleItemBasedZoomAnchor({
-    xScale,
-    xAccessor,
-    mouseXY,
-    plotData,
-    fullData,
-}) {
+export function lastVisibleItemBasedZoomAnchor({ xScale, xAccessor, mouseXY, plotData, fullData }) {
     const lastItem = last(plotData);
     return xAccessor(lastItem);
 }
 
-export function rightDomainBasedZoomAnchor({
-    xScale,
-    xAccessor,
-    mouseXY,
-    plotData,
-    fullData,
-}) {
+export function rightDomainBasedZoomAnchor({ xScale, xAccessor, mouseXY, plotData, fullData }) {
     const [, end] = xScale.domain();
     return end;
 }

@@ -12,7 +12,6 @@ interface CurrentCoordinateProps {
 }
 
 export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
-
     public static defaultProps = {
         r: 3,
         className: "react-financial-charts-current-coordinate",
@@ -42,9 +41,9 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
         ctx.beginPath();
         ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI, false);
         ctx.fill();
-    }
+    };
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { className } = this.props;
 
         const circle = this.helper(this.props, moreProps);
@@ -54,15 +53,19 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
 
         const fillColor = circle.fill instanceof Function ? circle.fill(moreProps.currentItem) : circle.fill;
 
-        return (
-            <circle className={className} cx={circle.x} cy={circle.y} r={circle.r} fill={fillColor} />
-        );
-    }
+        return <circle className={className} cx={circle.x} cy={circle.y} r={circle.r} fill={fillColor} />;
+    };
 
     private readonly helper = (props: CurrentCoordinateProps, moreProps) => {
         const { fill, yAccessor, r } = props;
 
-        const { show, xScale, chartConfig: { yScale }, currentItem, xAccessor } = moreProps;
+        const {
+            show,
+            xScale,
+            chartConfig: { yScale },
+            currentItem,
+            xAccessor,
+        } = moreProps;
 
         if (!show || isNotDefined(currentItem)) {
             return undefined;
@@ -79,5 +82,5 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
         const y = Math.round(yScale(yValue));
 
         return { x, y, r, fill };
-    }
+    };
 }

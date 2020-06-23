@@ -1,7 +1,6 @@
 import { identity, mappedSlidingWindow } from "../utils";
 
-export default function () {
-
+export default function() {
     let source = identity;
 
     const calculator = (data: any[]) => {

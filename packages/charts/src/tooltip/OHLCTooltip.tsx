@@ -1,4 +1,3 @@
-
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 import * as React from "react";
@@ -19,47 +18,47 @@ const displayTextsDefault = {
 };
 
 const defaultDisplay = (props, _, itemsToDisplay) => {
+    const { className, textFill, labelFill, onClick, fontFamily, fontSize, displayTexts } = props;
 
-    const {
-        className,
-        textFill,
-        labelFill,
-        onClick,
-        fontFamily,
-        fontSize,
-        displayTexts,
-    } = props;
-
-    const {
-        open,
-        high,
-        low,
-        close,
-        volume,
-        x,
-        y,
-    } = itemsToDisplay;
+    const { open, high, low, close, volume, x, y } = itemsToDisplay;
 
     return (
         <g
             className={`react-financial-charts-tooltip-hover ${className}`}
             transform={`translate(${x}, ${y})`}
-            onClick={onClick}>
-            <ToolTipText
-                x={0}
-                y={0}
-                fontFamily={fontFamily}
-                fontSize={fontSize}>
-                <ToolTipTSpanLabel fill={labelFill} key="label_O">{displayTexts.o}</ToolTipTSpanLabel>
-                <tspan key="value_O" fill={textFill}>{open}</tspan>
-                <ToolTipTSpanLabel fill={labelFill} key="label_H">{displayTexts.h}</ToolTipTSpanLabel>
-                <tspan key="value_H" fill={textFill}>{high}</tspan>
-                <ToolTipTSpanLabel fill={labelFill} key="label_L">{displayTexts.l}</ToolTipTSpanLabel>
-                <tspan key="value_L" fill={textFill}>{low}</tspan>
-                <ToolTipTSpanLabel fill={labelFill} key="label_C">{displayTexts.c}</ToolTipTSpanLabel>
-                <tspan key="value_C" fill={textFill}>{close}</tspan>
-                <ToolTipTSpanLabel fill={labelFill} key="label_Vol">{displayTexts.v}</ToolTipTSpanLabel>
-                <tspan key="value_Vol" fill={textFill}>{volume}</tspan>
+            onClick={onClick}
+        >
+            <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
+                <ToolTipTSpanLabel fill={labelFill} key="label_O">
+                    {displayTexts.o}
+                </ToolTipTSpanLabel>
+                <tspan key="value_O" fill={textFill}>
+                    {open}
+                </tspan>
+                <ToolTipTSpanLabel fill={labelFill} key="label_H">
+                    {displayTexts.h}
+                </ToolTipTSpanLabel>
+                <tspan key="value_H" fill={textFill}>
+                    {high}
+                </tspan>
+                <ToolTipTSpanLabel fill={labelFill} key="label_L">
+                    {displayTexts.l}
+                </ToolTipTSpanLabel>
+                <tspan key="value_L" fill={textFill}>
+                    {low}
+                </tspan>
+                <ToolTipTSpanLabel fill={labelFill} key="label_C">
+                    {displayTexts.c}
+                </ToolTipTSpanLabel>
+                <tspan key="value_C" fill={textFill}>
+                    {close}
+                </tspan>
+                <ToolTipTSpanLabel fill={labelFill} key="label_Vol">
+                    {displayTexts.v}
+                </ToolTipTSpanLabel>
+                <tspan key="value_Vol" fill={textFill}>
+                    {volume}
+                </tspan>
             </ToolTipText>
         </g>
     );
@@ -76,7 +75,7 @@ interface OHLCTooltipProps {
     readonly origin?: number[] | any; // func
     readonly fontFamily?: string;
     readonly fontSize?: number;
-    readonly onClick?: ((event: React.MouseEvent<SVGGElement, MouseEvent>) => void);
+    readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
     readonly displayValuesFor?: any; // func
     readonly textFill?: string;
     readonly labelFill?: string;
@@ -85,9 +84,8 @@ interface OHLCTooltipProps {
 }
 
 export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
-
     public static defaultProps = {
-        accessor: (d) => {
+        accessor: d => {
             return {
                 date: d.date,
                 open: d.open,
@@ -109,16 +107,10 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                clip={false}
-                svgDraw={this.renderSVG}
-                drawOn={["mousemove"]}
-            />
-        );
+        return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const {
             displayValuesFor,
             xDisplayFormat,
@@ -130,7 +122,11 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
             lastAsDefault,
         } = this.props;
 
-        const { chartConfig: { width, height }, displayXAccessor, fullData } = moreProps;
+        const {
+            chartConfig: { width, height },
+            displayXAccessor,
+            fullData,
+        } = moreProps;
 
         const currentItem = displayValuesFor(this.props, moreProps);
         const displayItem = lastAsDefault ? currentItem || last(fullData) : currentItem;
@@ -172,5 +168,5 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
             y,
         };
         return this.props.children(this.props, moreProps, itemsToDisplay);
-    }
+    };
 }

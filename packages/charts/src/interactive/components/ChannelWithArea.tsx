@@ -18,9 +18,9 @@ interface ChannelWithAreaProps {
     readonly fillOpacity: number;
     readonly strokeOpacity: number;
     readonly type:
-    "XLINE" | // extends from -Infinity to +Infinity
-    "RAY" | // extends to +/-Infinity in one direction
-    "LINE"; // extends between the set bounds
+        | "XLINE" // extends from -Infinity to +Infinity
+        | "RAY" // extends to +/-Infinity in one direction
+        | "LINE"; // extends between the set bounds
     readonly onDragStart: any; // func
     readonly onDrag: any; // func
     readonly onDragComplete: any; // func
@@ -32,7 +32,6 @@ interface ChannelWithAreaProps {
 }
 
 export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
-
     public static defaultProps = {
         onDragStart: noop,
         onDrag: noop,
@@ -65,30 +64,27 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
         );
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = moreProps => {
         const { stroke, strokeWidth, fillOpacity, fill, strokeOpacity } = this.props;
         const { line1, line2 } = helper(this.props, moreProps);
 
         if (line1 !== undefined) {
             const { x1, y1, x2, y2 } = line1;
-            const line = line2 !== undefined
-                ? <line
-                    strokeWidth={strokeWidth}
-                    stroke={stroke}
-                    strokeOpacity={strokeOpacity}
-                    x1={x1}
-                    y1={line2.y1}
-                    x2={x2}
-                    y2={line2.y2}
-                />
-                : null;
-            const area = isDefined(line2)
-                ? <path
-                    fill={fill}
-                    fillOpacity={fillOpacity}
-                    d={getPath(line1, line2)}
-                />
-                : null;
+            const line =
+                line2 !== undefined ? (
+                    <line
+                        strokeWidth={strokeWidth}
+                        stroke={stroke}
+                        strokeOpacity={strokeOpacity}
+                        x1={x1}
+                        y1={line2.y1}
+                        x2={x2}
+                        y2={line2.y2}
+                    />
+                ) : null;
+            const area = isDefined(line2) ? (
+                <path fill={fill} fillOpacity={fillOpacity} d={getPath(line1, line2)} />
+            ) : null;
 
             return (
                 <g>
@@ -106,7 +102,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
                 </g>
             );
         }
-    }
+    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;
@@ -124,10 +120,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
             ctx.stroke();
 
             if (line2 !== undefined) {
-                const {
-                    y1: line2Y1,
-                    y2: line2Y2,
-                } = line2;
+                const { y1: line2Y1, y2: line2Y2 } = line2;
 
                 ctx.beginPath();
                 ctx.moveTo(x1, line2Y1);
@@ -146,17 +139,20 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
                 ctx.fill();
             }
         }
-    }
+    };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = moreProps => {
         const { tolerance, onHover } = this.props;
 
         if (isDefined(onHover)) {
-
             const { line1, line2 } = helper(this.props, moreProps);
 
             if (line1 !== undefined && line2 !== undefined) {
-                const { mouseXY, xScale, chartConfig: { yScale } } = moreProps;
+                const {
+                    mouseXY,
+                    xScale,
+                    chartConfig: { yScale },
+                } = moreProps;
 
                 const line1Hovering = isHovering({
                     x1Value: line1.x1,
@@ -186,7 +182,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
             }
         }
         return false;
-    }
+    };
 }
 
 function getPath(line1, line2) {
@@ -216,10 +212,10 @@ function getLines(props: ChannelWithAreaProps, moreProps) {
     });
     const line2 = isDefined(dy)
         ? {
-            ...line1,
-            y1: line1.y1 + dy,
-            y2: line1.y2 + dy,
-        }
+              ...line1,
+              y1: line1.y1 + dy,
+              y2: line1.y2 + dy,
+          }
         : undefined;
 
     return {
@@ -230,25 +226,30 @@ function getLines(props: ChannelWithAreaProps, moreProps) {
 
 function helper(props: ChannelWithAreaProps, moreProps) {
     const lines = getLines(props, moreProps);
-    const { xScale, chartConfig: { yScale } } = moreProps;
+    const {
+        xScale,
+        chartConfig: { yScale },
+    } = moreProps;
 
-    const line1 = lines.line1 !== undefined
-        ? {
-            x1: xScale(lines.line1.x1),
-            y1: yScale(lines.line1.y1),
-            x2: xScale(lines.line1.x2),
-            y2: yScale(lines.line1.y2),
-        }
-        : undefined;
+    const line1 =
+        lines.line1 !== undefined
+            ? {
+                  x1: xScale(lines.line1.x1),
+                  y1: yScale(lines.line1.y1),
+                  x2: xScale(lines.line1.x2),
+                  y2: yScale(lines.line1.y2),
+              }
+            : undefined;
 
-    const line2 = lines.line2 !== undefined
-        ? {
-            x1: line1!.x1,
-            y1: yScale(lines.line2.y1),
-            x2: line1!.x2,
-            y2: yScale(lines.line2.y2),
-        }
-        : undefined;
+    const line2 =
+        lines.line2 !== undefined
+            ? {
+                  x1: line1!.x1,
+                  y1: yScale(lines.line2.y1),
+                  x2: line1!.x2,
+                  y2: yScale(lines.line2.y2),
+              }
+            : undefined;
 
     return {
         lines,

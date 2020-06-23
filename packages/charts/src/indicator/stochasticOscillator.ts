@@ -6,15 +6,16 @@ import baseIndicator from "./baseIndicator";
 
 const ALGORITHM_TYPE = "STO";
 
-export default function () {
-    const base = baseIndicator()
-        .type(ALGORITHM_TYPE);
+export default function() {
+    const base = baseIndicator().type(ALGORITHM_TYPE);
 
     const underlyingAlgorithm = sto();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => { datum.sto = i; });
+        .merge((datum, i) => {
+            datum.sto = i;
+        });
 
     const indicator = (data: any[], options = { merge: true }) => {
         if (options.merge) {

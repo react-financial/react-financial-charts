@@ -13,13 +13,16 @@ import {
 
 interface StackedBarSeriesProps {
     readonly baseAt?: number | any; // func
-    readonly direction?: "up" | "down";
-    readonly stroke?: boolean;
-    readonly width?: number | any; // func
-    readonly opacity?: number;
-    readonly fill?: string | any; // func
     readonly className?: string | any; // func
     readonly clip?: boolean;
+    readonly direction?: "up" | "down";
+    readonly fill?: string | any; // func
+    readonly opacity?: number;
+    readonly stroke?: boolean;
+    readonly swapScales?: boolean;
+    readonly yAccessor: ((d: unknown) => number)[];
+    readonly width?: number | any; // func
+    readonly widthRatio?: number;
 }
 
 export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
@@ -42,7 +45,6 @@ export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
         return (
             <GenericChartComponent
                 clip={clip}
-                svgDraw={this.renderSVG}
                 canvasDraw={this.drawOnCanvas}
                 canvasToDraw={getAxisCanvas}
                 drawOn={["pan"]}
@@ -54,12 +56,6 @@ export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
         const { xAccessor } = moreProps;
 
         drawOnCanvasHelper(ctx, this.props, moreProps, xAccessor, d3Stack);
-    };
-
-    private readonly renderSVG = moreProps => {
-        const { xAccessor } = moreProps;
-
-        return <g>{svgHelper(this.props, moreProps, xAccessor, d3Stack)}</g>;
     };
 }
 
@@ -114,23 +110,6 @@ function convertToArray(item) {
     return Array.isArray(item) ? item : [item];
 }
 
-export function svgHelper(
-    props,
-    moreProps,
-    xAccessor,
-    stackFn,
-    defaultPostAction = identity,
-    postRotateAction = rotateXY,
-) {
-    const {
-        xScale,
-        chartConfig: { yScale },
-        plotData,
-    } = moreProps;
-    const bars = doStuff(props, xAccessor, plotData, xScale, yScale, stackFn, postRotateAction, defaultPostAction);
-    return getBarsSVG2(props, bars);
-}
-
 function doStuff(props, xAccessor, plotData, xScale, yScale, stackFn, postRotateAction, defaultPostAction) {
     const { yAccessor, swapScales } = props;
 
@@ -166,39 +145,6 @@ export const rotateXY = array =>
             width: each.height,
         };
     });
-
-export function getBarsSVG2(props, bars) {
-    const { opacity } = props;
-
-    return bars.map((d, idx) => {
-        if (d.width <= 1) {
-            return (
-                <line
-                    key={idx}
-                    className={d.className}
-                    stroke={d.fill}
-                    x1={d.x}
-                    y1={d.y}
-                    x2={d.x}
-                    y2={d.y + d.height}
-                />
-            );
-        }
-        return (
-            <rect
-                key={idx}
-                className={d.className}
-                stroke={d.stroke}
-                fill={d.fill}
-                x={d.x}
-                y={d.y}
-                width={d.width}
-                fillOpacity={opacity}
-                height={d.height}
-            />
-        );
-    });
-}
 
 export function drawOnCanvas2(props, ctx: CanvasRenderingContext2D, bars) {
     const { stroke } = props;

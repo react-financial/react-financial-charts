@@ -1,4 +1,3 @@
-import { curveStepBefore, line } from "d3-shape";
 import * as React from "react";
 import { isDefined, isNotDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
@@ -31,55 +30,8 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                svgDraw={this.renderSVG}
-                canvasToDraw={getAxisCanvas}
-                canvasDraw={this.drawOnCanvas}
-                drawOn={["pan"]}
-            />
-        );
+        return <GenericChartComponent canvasToDraw={getAxisCanvas} canvasDraw={this.drawOnCanvas} drawOn={["pan"]} />;
     }
-
-    private readonly renderSVG = moreProps => {
-        const {
-            xAccessor,
-            xScale,
-            chartConfig: { yScale },
-            plotData,
-        } = moreProps;
-
-        const {
-            className,
-            stroke = KagiSeries.defaultProps.stroke,
-            fill = KagiSeries.defaultProps.fill,
-            strokeWidth,
-        } = this.props;
-
-        const paths = helper(plotData, xAccessor).map((each, i) => {
-            const dataSeries = line()
-                .x(item => xScale(item[0]))
-                .y(item => yScale(item[1]))
-                .curve(curveStepBefore);
-
-            const data = dataSeries(each.plot);
-            if (data === null) {
-                return null;
-            }
-
-            return (
-                <path
-                    key={i}
-                    d={data}
-                    className={each.type}
-                    stroke={stroke[each.type]}
-                    fill={fill[each.type]}
-                    strokeWidth={strokeWidth}
-                />
-            );
-        });
-        return <g className={className}>{paths}</g>;
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { xAccessor } = moreProps;

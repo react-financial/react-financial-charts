@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
-import { drawOnCanvasHelper, identityStack, StackedBarSeries, svgHelper } from "./StackedBarSeries";
+import { drawOnCanvasHelper, identityStack, StackedBarSeries } from "./StackedBarSeries";
 
 interface GroupedBarSeriesProps {
     readonly baseAt: number | any; // func
@@ -23,14 +23,7 @@ export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                svgDraw={this.renderSVG}
-                canvasDraw={this.drawOnCanvas}
-                canvasToDraw={getAxisCanvas}
-                drawOn={["pan"]}
-            />
-        );
+        return <GenericChartComponent canvasDraw={this.drawOnCanvas} canvasToDraw={getAxisCanvas} drawOn={["pan"]} />;
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
@@ -39,17 +32,7 @@ export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {
         drawOnCanvasHelper(ctx, this.props, moreProps, xAccessor, identityStack, this.postProcessor);
     };
 
-    private readonly renderSVG = moreProps => {
-        const { xAccessor } = moreProps;
-
-        return (
-            <g className="react-financial-charts-grouped-bar-series">
-                {svgHelper(this.props, moreProps, xAccessor, identityStack, this.postProcessor)}
-            </g>
-        );
-    };
-
-    private readonly postProcessor = array => {
+    private readonly postProcessor = (array: any[]) => {
         return array.map(each => {
             return {
                 ...each,

@@ -1,14 +1,14 @@
 import { line as d3Line } from "d3-shape";
 import * as React from "react";
-import { getAxisCanvas, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
-
 import {
     colorToRGBA,
     getClosestItemIndexes,
-    getStrokeDasharray,
     getStrokeDasharrayCanvas,
     isDefined,
     strokeDashTypes,
+    getAxisCanvas,
+    getMouseCanvas,
+    GenericChartComponent,
 } from "@react-financial-charts/core";
 
 interface LineSeriesProps {
@@ -65,7 +65,6 @@ export class LineSeries extends React.Component<LineSeriesProps> {
 
         return (
             <GenericChartComponent
-                svgDraw={this.renderSVG}
                 canvasDraw={this.drawOnCanvas}
                 onClickWhenHover={this.props.onClick}
                 onDoubleClickWhenHover={this.props.onDoubleClick}
@@ -76,55 +75,6 @@ export class LineSeries extends React.Component<LineSeriesProps> {
             />
         );
     }
-
-    private readonly renderSVG = moreProps => {
-        const {
-            yAccessor,
-            stroke,
-            strokeOpacity,
-            strokeWidth,
-            hoverStrokeWidth,
-            defined,
-            strokeDasharray,
-        } = this.props;
-        const { connectNulls } = this.props;
-        const { interpolation, style } = this.props;
-        const { xAccessor, chartConfig } = moreProps;
-
-        const { xScale, plotData, hovering } = moreProps;
-
-        const { yScale } = chartConfig;
-        const dataSeries = d3Line()
-            .x(d => Math.round(xScale(xAccessor(d))))
-            .y(d => Math.round(yScale(yAccessor(d))));
-
-        if (isDefined(interpolation)) {
-            dataSeries.curve(interpolation);
-        }
-        if (!connectNulls) {
-            dataSeries.defined(d => defined(yAccessor(d)));
-        }
-
-        const data = dataSeries(plotData);
-        if (data === null) {
-            return null;
-        }
-
-        const { fill, className } = this.props;
-
-        return (
-            <path
-                style={style}
-                className={`${className} ${stroke ? "" : " line-stroke"}`}
-                d={data}
-                stroke={stroke}
-                strokeOpacity={strokeOpacity}
-                strokeWidth={hovering ? hoverStrokeWidth : strokeWidth}
-                strokeDasharray={getStrokeDasharray(strokeDasharray)}
-                fill={fill}
-            />
-        );
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {

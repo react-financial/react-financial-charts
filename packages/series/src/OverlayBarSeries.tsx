@@ -9,7 +9,7 @@ import {
     GenericChartComponent,
     plotDataLengthBarWidth,
 } from "@react-financial-charts/core";
-import { drawOnCanvas2, getBarsSVG2 } from "./StackedBarSeries";
+import { drawOnCanvas2 } from "./StackedBarSeries";
 
 interface OverlayBarSeriesProps {
     readonly baseAt?: number | any; // func
@@ -46,7 +46,6 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
 
         return (
             <GenericChartComponent
-                svgDraw={this.renderSVG}
                 canvasToDraw={getAxisCanvas}
                 canvasDraw={this.drawOnCanvas}
                 clip={clip}
@@ -54,13 +53,6 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
             />
         );
     }
-
-    private readonly renderSVG = moreProps => {
-        const { yAccessor } = this.props;
-
-        const bars = this.getBars(moreProps, yAccessor);
-        return <g className="react-financial-charts-bar-series">{getBarsSVG2(this.props, bars)}</g>;
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { yAccessor } = this.props;

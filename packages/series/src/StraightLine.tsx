@@ -2,7 +2,6 @@ import * as React from "react";
 import {
     colorToRGBA,
     getAxisCanvas,
-    getStrokeDasharray,
     getStrokeDasharrayCanvas,
     GenericChartComponent,
     strokeDashTypes,
@@ -30,40 +29,8 @@ export class StraightLine extends React.Component<StraightLineProps> {
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                svgDraw={this.renderSVG}
-                canvasDraw={this.drawOnCanvas}
-                canvasToDraw={getAxisCanvas}
-                drawOn={["pan"]}
-            />
-        );
+        return <GenericChartComponent canvasDraw={this.drawOnCanvas} canvasToDraw={getAxisCanvas} drawOn={["pan"]} />;
     }
-
-    private readonly renderSVG = moreProps => {
-        const { width, height } = moreProps;
-        const {
-            xScale,
-            chartConfig: { yScale },
-        } = moreProps;
-
-        const { className } = this.props;
-        const { type, stroke, strokeWidth, opacity, strokeDasharray } = this.props;
-        const { yValue, xValue } = this.props;
-
-        const lineCoordinates = this.getLineCoordinates(type, xScale, yScale, xValue, yValue, width, height);
-
-        return (
-            <line
-                className={className}
-                strokeDasharray={getStrokeDasharray(strokeDasharray)}
-                stroke={stroke}
-                strokeWidth={strokeWidth}
-                strokeOpacity={opacity}
-                {...lineCoordinates}
-            />
-        );
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {
@@ -72,10 +39,12 @@ export class StraightLine extends React.Component<StraightLineProps> {
             strokeWidth = StraightLine.defaultProps.strokeWidth,
             opacity,
             strokeDasharray,
+            yValue,
+            xValue,
         } = this.props;
-        const { yValue, xValue } = this.props;
-        const { xScale } = moreProps;
+
         const {
+            xScale,
             chartConfig: { yScale, width, height },
         } = moreProps;
 

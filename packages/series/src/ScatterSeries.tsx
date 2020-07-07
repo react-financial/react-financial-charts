@@ -16,44 +16,20 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                svgDraw={this.renderSVG}
-                canvasDraw={this.drawOnCanvas}
-                canvasToDraw={getAxisCanvas}
-                drawOn={["pan"]}
-            />
-        );
+        return <GenericChartComponent canvasDraw={this.drawOnCanvas} canvasToDraw={getAxisCanvas} drawOn={["pan"]} />;
     }
 
-    private readonly renderSVG = moreProps => {
-        const { className, markerProps } = this.props;
-        const { xAccessor } = moreProps;
-
-        const points = this.helper(this.props, moreProps, xAccessor);
-
-        return (
-            <g className={className}>
-                {points.map((point, idx) => {
-                    const { marker: Marker } = point;
-                    return <Marker key={idx} {...markerProps} point={point} />;
-                })}
-            </g>
-        );
-    };
-
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const { xAccessor } = moreProps;
+        const points = this.getMarkers(moreProps);
 
-        const points = this.helper(this.props, moreProps, xAccessor);
-
-        this.drawOnCanvasHelper(ctx, this.props, points);
+        this.drawOnCanvasHelper(ctx, points);
     };
 
-    private readonly helper = (props: ScatterSeriesProps, moreProps, xAccessor) => {
-        const { yAccessor, markerProvider, markerProps } = props;
-        let { marker: Marker } = props;
+    private readonly getMarkers = moreProps => {
+        const { yAccessor, markerProvider, markerProps } = this.props;
+        let { marker: Marker } = this.props;
         const {
+            xAccessor,
             xScale,
             chartConfig: { yScale },
             plotData,
@@ -84,8 +60,8 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
         });
     };
 
-    private readonly drawOnCanvasHelper = (ctx: CanvasRenderingContext2D, props: ScatterSeriesProps, points) => {
-        const { markerProps } = props;
+    private readonly drawOnCanvasHelper = (ctx: CanvasRenderingContext2D, points) => {
+        const { markerProps } = this.props;
 
         const nest = group(
             points,

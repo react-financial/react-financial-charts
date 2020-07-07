@@ -26,7 +26,6 @@ export class OHLCSeries extends React.Component<OHLCSeriesProps> {
 
         return (
             <GenericChartComponent
-                svgDraw={this.renderSVG}
                 canvasToDraw={getAxisCanvas}
                 canvasDraw={this.drawOnCanvas}
                 clip={clip}
@@ -34,34 +33,6 @@ export class OHLCSeries extends React.Component<OHLCSeriesProps> {
             />
         );
     }
-
-    private readonly renderSVG = moreProps => {
-        const { className, yAccessor } = this.props;
-        const { xAccessor } = moreProps;
-        const {
-            xScale,
-            chartConfig: { yScale },
-            plotData,
-        } = moreProps;
-
-        const barData = this.getOHLCBars(this.props, xAccessor, yAccessor, xScale, yScale, plotData);
-
-        const { bars, strokeWidth } = barData;
-
-        return (
-            <g className={className}>
-                {bars.map((d, idx) => (
-                    <path
-                        key={idx}
-                        className={d.className}
-                        stroke={d.stroke}
-                        strokeWidth={strokeWidth}
-                        d={`M${d.openX1} ${d.openY} L${d.openX2} ${d.openY} M${d.x} ${d.y1} L${d.x} ${d.y2} M${d.closeX1} ${d.closeY} L${d.closeX2} ${d.closeY}`}
-                    />
-                ))}
-            </g>
-        );
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { yAccessor } = this.props;

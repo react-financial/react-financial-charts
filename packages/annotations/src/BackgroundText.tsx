@@ -33,7 +33,7 @@ class BackgroundText extends React.PureComponent<BackgroundTextProps> {
     };
 
     public componentDidMount() {
-        if (this.context.chartCanvasType !== "svg" && this.context.getCanvasContexts !== undefined) {
+        if (this.context.getCanvasContexts !== undefined) {
             const contexts = this.context.getCanvasContexts();
             if (contexts) {
                 this.drawOnCanvas(contexts.bg, this.props, this.context, this.props.children);

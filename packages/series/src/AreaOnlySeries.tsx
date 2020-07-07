@@ -1,11 +1,4 @@
-import {
-    colorToRGBA,
-    first,
-    functor,
-    getAxisCanvas,
-    GenericChartComponent,
-    isDefined,
-} from "@react-financial-charts/core";
+import { colorToRGBA, first, functor, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { area as d3Area } from "d3-shape";
 import * as React from "react";
 
@@ -33,59 +26,21 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                svgDraw={this.renderSVG}
-                canvasDraw={this.drawOnCanvas}
-                canvasToDraw={getAxisCanvas}
-                drawOn={["pan"]}
-            />
-        );
+        return <GenericChartComponent canvasDraw={this.drawOnCanvas} canvasToDraw={getAxisCanvas} drawOn={["pan"]} />;
     }
 
-    private readonly renderSVG = moreProps => {
-        const { yAccessor, defined, base, style } = this.props;
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {
-            stroke,
             fill = AreaOnlySeries.defaultProps.fill,
-            className = "line",
+            stroke,
             opacity,
             interpolation,
+            canvasClip,
+            yAccessor,
+            defined,
+            base,
+            canvasGradient,
         } = this.props;
-
-        const {
-            xScale,
-            chartConfig: { yScale },
-            plotData,
-            xAccessor,
-        } = moreProps;
-
-        const newBase = functor(base);
-        const areaSeries = d3Area()
-            .defined(d => defined(yAccessor(d)))
-            .x(d => Math.round(xScale(xAccessor(d))))
-            .y0(d => newBase(yScale, d, moreProps))
-            .y1(d => Math.round(yScale(yAccessor(d))));
-
-        if (isDefined(interpolation)) {
-            areaSeries.curve(interpolation);
-        }
-
-        const data = areaSeries(plotData);
-        if (data === null) {
-            return null;
-        }
-
-        const newClassName = className.concat(isDefined(stroke) ? "" : " line-stroke");
-
-        return (
-            <path style={style} d={data} stroke={stroke} fill={colorToRGBA(fill, opacity)} className={newClassName} />
-        );
-    };
-
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const { yAccessor, defined, base, canvasGradient } = this.props;
-        const { fill = AreaOnlySeries.defaultProps.fill, stroke, opacity, interpolation, canvasClip } = this.props;
 
         const {
             xScale,
@@ -118,7 +73,7 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
             .y1(d => Math.round(yScale(yAccessor(d))))
             .context(ctx);
 
-        if (isDefined(interpolation)) {
+        if (interpolation !== undefined) {
             areaSeries.curve(interpolation);
         }
         areaSeries(plotData);

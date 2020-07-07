@@ -240,7 +240,7 @@ export function mousePosition(e: React.MouseEvent, defaultRect?) {
     return xy;
 }
 
-export function clearCanvas(canvasList, ratio) {
+export function clearCanvas(canvasList: CanvasRenderingContext2D[], ratio: number) {
     canvasList.forEach(each => {
         each.setTransform(1, 0, 0, 1, 0, 0);
         each.clearRect(-1, -1, each.canvas.width + 2, each.canvas.height + 2);
@@ -248,11 +248,11 @@ export function clearCanvas(canvasList, ratio) {
     });
 }
 
-export function capitalizeFirst(str) {
+export function capitalizeFirst(str: string) {
     return str.charAt(0).toUpperCase() + str.substring(1);
 }
 
-export function toObject(array, iteratee = identity) {
+export function toObject<T>(array: T[], iteratee = identity) {
     return array.reduce((returnObj, a) => {
         const [key, value] = iteratee(a);
         return {

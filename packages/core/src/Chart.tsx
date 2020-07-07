@@ -5,26 +5,28 @@ import * as React from "react";
 import { find, PureComponent } from "./utils";
 
 interface ChartProps {
-    readonly height?: number;
-    readonly origin?: number[] | ((width: number, height: number) => number[]);
-    readonly id: number | string;
-    readonly yExtents?: number[] | ((data: any) => number | number[]);
-    readonly yExtentsCalculator?: any; // func
-    readonly onContextMenu?: (props: any, event: React.MouseEvent) => void;
-    readonly yScale?: any; // func
     readonly flipYScale?: boolean;
+    readonly height?: number;
+    readonly id: number | string;
+    readonly onContextMenu?: (props: any, event: React.MouseEvent) => void;
+    readonly origin?: number[] | ((width: number, height: number) => number[]);
     readonly padding?: number | { top: number; bottom: number };
+    readonly yExtents?: number[] | ((data: any) => number) | ((data: any) => number[]);
+    readonly yExtentsCalculator?: any; // func
+    readonly yPan?: boolean;
+    readonly yPanEnabled?: boolean;
+    readonly yScale?: any; // func
 }
 
 export class Chart extends PureComponent<ChartProps> {
     public static defaultProps = {
+        flipYScale: false,
         id: 0,
         origin: [0, 0],
         padding: 0,
-        yScale: scaleLinear(),
-        flipYScale: false,
         yPan: true,
         yPanEnabled: false,
+        yScale: scaleLinear(),
     };
 
     public static contextTypes = {
@@ -37,13 +39,6 @@ export class Chart extends PureComponent<ChartProps> {
         chartConfig: PropTypes.object.isRequired,
         chartId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     };
-
-    constructor(props: ChartProps, context) {
-        super(props, context);
-
-        this.yScale = this.yScale.bind(this);
-        this.listener = this.listener.bind(this);
-    }
 
     public componentDidMount() {
         const { id } = this.props;
@@ -61,7 +56,7 @@ export class Chart extends PureComponent<ChartProps> {
         unsubscribe(`chart_${id}`);
     }
 
-    public listener(type, moreProps, state, e) {
+    public readonly listener = (type, moreProps, state, e) => {
         const { id, onContextMenu } = this.props;
 
         if (type === "contextmenu") {
@@ -72,12 +67,12 @@ export class Chart extends PureComponent<ChartProps> {
                 }
             }
         }
-    }
+    };
 
-    public yScale() {
+    public readonly yScale = () => {
         const chartConfig = find(this.context.chartConfig, each => each.id === this.props.id);
         return chartConfig.yScale.copy();
-    }
+    };
 
     public getChildContext() {
         const { id: chartId } = this.props;
@@ -92,6 +87,7 @@ export class Chart extends PureComponent<ChartProps> {
 
     public render() {
         const { origin } = find(this.context.chartConfig, each => each.id === this.props.id);
+
         const [x, y] = origin;
 
         return <g transform={`translate(${x}, ${y})`}>{this.props.children}</g>;

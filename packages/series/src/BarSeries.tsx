@@ -1,14 +1,7 @@
 import * as React from "react";
 import { functor, isDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
-import {
-    drawOnCanvas2,
-    drawOnCanvasHelper,
-    getBarsSVG2,
-    identityStack,
-    StackedBarSeries,
-    svgHelper,
-} from "./StackedBarSeries";
+import { drawOnCanvas2, drawOnCanvasHelper, identityStack, StackedBarSeries } from "./StackedBarSeries";
 
 interface BarSeriesProps {
     readonly baseAt?: number | any; // func
@@ -31,7 +24,6 @@ export class BarSeries extends React.Component<BarSeriesProps> {
         return (
             <GenericChartComponent
                 clip={clip}
-                svgDraw={this.renderSVG}
                 canvasToDraw={getAxisCanvas}
                 canvasDraw={this.drawOnCanvas}
                 drawOn={["pan"]}
@@ -46,16 +38,6 @@ export class BarSeries extends React.Component<BarSeriesProps> {
         } else {
             const bars = getBars(this.props, moreProps);
             drawOnCanvas2(this.props, ctx, bars);
-        }
-    };
-
-    private readonly renderSVG = moreProps => {
-        if (this.props.swapScales) {
-            const { xAccessor } = moreProps;
-            return <g>{svgHelper(this.props, moreProps, xAccessor, identityStack)}</g>;
-        } else {
-            const bars = getBars(this.props, moreProps);
-            return <g>{getBarsSVG2(this.props, bars)}</g>;
         }
     };
 }

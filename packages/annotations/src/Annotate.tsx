@@ -28,11 +28,11 @@ export class Annotate extends React.Component<AnnotateProps> {
 
         const { className, usingProps, with: Annotation, when } = this.props;
 
-        const data = this.plotfilter(when, plotData);
+        const data = plotData.filter(when);
 
         return (
             <g className={className}>
-                {data.map((d: any, idx) => {
+                {data.map((d, idx) => {
                     return (
                         <Annotation
                             key={idx}
@@ -47,9 +47,5 @@ export class Annotate extends React.Component<AnnotateProps> {
                 })}
             </g>
         );
-    };
-
-    private readonly plotfilter = (when: any, plotData: any[]) => {
-        return plotData.filter(when);
     };
 }

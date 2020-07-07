@@ -42,14 +42,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
     };
 
     public render() {
-        return (
-            <GenericChartComponent
-                svgDraw={this.renderSVG}
-                canvasDraw={this.drawOnCanvas}
-                canvasToDraw={getAxisCanvas}
-                drawOn={["pan"]}
-            />
-        );
+        return <GenericChartComponent canvasDraw={this.drawOnCanvas} canvasToDraw={getAxisCanvas} drawOn={["pan"]} />;
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
@@ -57,48 +50,6 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         const { rects, sessionBg } = this.helper(this.props, moreProps, xAccessor, width);
 
         this.drawOnCanvasContext(ctx, this.props, rects, sessionBg);
-    };
-
-    private readonly renderSVG = moreProps => {
-        const { className, opacity } = this.props;
-        const { showSessionBackground, sessionBackGround, sessionBackGroundOpacity } = this.props;
-
-        const { xAccessor, width } = moreProps;
-        const { rects, sessionBg } = this.helper(this.props, moreProps, xAccessor, width);
-
-        const sessionBgSvg = showSessionBackground
-            ? sessionBg.map((d, idx) => (
-                  <rect key={idx} {...d} opacity={sessionBackGroundOpacity} fill={sessionBackGround} />
-              ))
-            : null;
-
-        return (
-            <g className={className}>
-                {sessionBgSvg}
-                {rects.map((d, i) => (
-                    <g key={i}>
-                        <rect
-                            x={d.x}
-                            y={d.y}
-                            width={d.w1}
-                            height={d.height}
-                            fill={d.fill1}
-                            stroke={d.stroke1}
-                            fillOpacity={opacity}
-                        />
-                        <rect
-                            x={d.x + d.w1}
-                            y={d.y}
-                            width={d.w2}
-                            height={d.height}
-                            fill={d.fill2}
-                            stroke={d.stroke2}
-                            fillOpacity={opacity}
-                        />
-                    </g>
-                ))}
-            </g>
-        );
     };
 
     private readonly drawOnCanvasContext = (ctx: CanvasRenderingContext2D, props, rects, sessionBg) => {

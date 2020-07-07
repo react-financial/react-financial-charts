@@ -20,8 +20,8 @@ interface CandlestickSeriesProps {
     readonly fill?: string | any; // func
     readonly opacity?: number;
     readonly stroke?: string | any; // func
-    readonly wickStroke?: string | any; // func
     readonly wickClassName?: string;
+    readonly wickStroke?: string | any; // func
     readonly width?: number | any; // func
     readonly widthRatio?: number;
     readonly yAccessor?: any; // func
@@ -50,7 +50,6 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         return (
             <GenericChartComponent
                 clip={clip}
-                svgDraw={this.renderSVG}
                 canvasDraw={this.drawOnCanvas}
                 canvasToDraw={getAxisCanvas}
                 drawOn={["pan"]}
@@ -59,11 +58,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        this.drawOnCanvasPrivate(ctx, this.props, moreProps);
-    };
-
-    private readonly renderSVG = moreProps => {
-        const { className, wickClassName, candleClassName } = this.props;
+        const { opacity, candleStrokeWidth = CandlestickSeries.defaultProps.candleStrokeWidth } = this.props;
         const {
             xScale,
             chartConfig: { yScale },
@@ -72,86 +67,6 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         } = moreProps;
 
         const candleData = this.getCandleData(this.props, xAccessor, xScale, yScale, plotData);
-
-        return (
-            <g className={className}>
-                <g className={wickClassName} key="wicks">
-                    {this.getWicksSVG(candleData)}
-                </g>
-                <g className={candleClassName} key="candles">
-                    {this.getCandlesSVG(this.props, candleData)}
-                </g>
-            </g>
-        );
-    };
-
-    private readonly getWicksSVG = candleData => {
-        const wicks = candleData.map((each, idx) => {
-            const d = each.wick;
-            return (
-                <path
-                    key={idx}
-                    className={each.className}
-                    stroke={d.stroke}
-                    d={`M${d.x},${d.y1} L${d.x},${d.y2} M${d.x},${d.y3} L${d.x},${d.y4}`}
-                />
-            );
-        });
-
-        return wicks;
-    };
-
-    private readonly getCandlesSVG = (props: CandlestickSeriesProps, candleData) => {
-        const { opacity, candleStrokeWidth } = props;
-
-        const candles = candleData.map((d, idx) => {
-            if (d.width <= 1) {
-                return (
-                    <line
-                        className={d.className}
-                        key={idx}
-                        x1={d.x}
-                        y1={d.y}
-                        x2={d.x}
-                        y2={d.y + d.height}
-                        stroke={d.fill}
-                    />
-                );
-            } else if (d.height === 0) {
-                return <line key={idx} x1={d.x} y1={d.y} x2={d.x + d.width} y2={d.y + d.height} stroke={d.fill} />;
-            }
-            return (
-                <rect
-                    key={idx}
-                    className={d.className}
-                    fillOpacity={opacity}
-                    x={d.x}
-                    y={d.y}
-                    width={d.width}
-                    height={d.height}
-                    fill={d.fill}
-                    stroke={d.stroke}
-                    strokeWidth={candleStrokeWidth}
-                />
-            );
-        });
-        return candles;
-    };
-
-    private readonly drawOnCanvasPrivate = (
-        ctx: CanvasRenderingContext2D,
-        props: CandlestickSeriesProps,
-        moreProps,
-    ) => {
-        const { opacity, candleStrokeWidth = CandlestickSeries.defaultProps.candleStrokeWidth } = props;
-        const {
-            xScale,
-            chartConfig: { yScale },
-            plotData,
-            xAccessor,
-        } = moreProps;
-
-        const candleData = this.getCandleData(props, xAccessor, xScale, yScale, plotData);
 
         const wickNest = group(candleData, d => d.wick.stroke);
 

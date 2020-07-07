@@ -445,7 +445,9 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
 
         const moreProps = this.getMoreProps();
 
-        const ctx = canvasToDraw(getCanvasContexts());
+        const contexts = getCanvasContexts();
+
+        const ctx = canvasToDraw(contexts);
 
         this.preCanvasDraw(ctx, moreProps);
         canvasDraw(ctx, moreProps);

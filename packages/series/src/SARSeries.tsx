@@ -2,7 +2,6 @@ import * as React from "react";
 import {
     colorToRGBA,
     first,
-    isDefined,
     getAxisCanvas,
     getMouseCanvas,
     GenericChartComponent,
@@ -50,7 +49,6 @@ export class SARSeries extends React.Component<SARSeriesProps> {
 
         return (
             <GenericChartComponent
-                svgDraw={this.renderSVG}
                 canvasDraw={this.drawOnCanvas}
                 onClickWhenHover={this.props.onClick}
                 onDoubleClickWhenHover={this.props.onDoubleClick}
@@ -59,36 +57,6 @@ export class SARSeries extends React.Component<SARSeriesProps> {
             />
         );
     }
-
-    private readonly renderSVG = moreProps => {
-        const { className, yAccessor, fill = SARSeries.defaultProps.fill } = this.props;
-        const {
-            xAccessor,
-            plotData,
-            xScale,
-            chartConfig: { yScale },
-        } = moreProps;
-
-        return (
-            <g className={className}>
-                {plotData
-                    .filter(each => isDefined(yAccessor(each)))
-                    .map((each, idx) => {
-                        const color = yAccessor(each) > each.close ? fill.falling : fill.rising;
-
-                        return (
-                            <circle
-                                key={idx}
-                                cx={xScale(xAccessor(each))}
-                                cy={yScale(yAccessor(each))}
-                                r={3}
-                                fill={color}
-                            />
-                        );
-                    })}
-            </g>
-        );
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { yAccessor, fill = SARSeries.defaultProps.fill, opacity } = this.props;

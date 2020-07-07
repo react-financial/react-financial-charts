@@ -11,9 +11,6 @@ interface AreaSeriesProps {
     readonly fill?: string;
     readonly interpolation?: any; // func
     readonly opacity?: number;
-    /**
-     * Stroke color
-     */
     readonly stroke?: string;
     readonly strokeDasharray?: strokeDashTypes;
     readonly strokeOpacity?: number;
@@ -26,7 +23,7 @@ interface AreaSeriesProps {
  * `AreaSeries` component
  */
 export class AreaSeries extends Component<AreaSeriesProps> {
-    public static defaultProps = {
+    public static defaultProps: Partial<AreaSeriesProps> = {
         className: "react-financial-charts-area",
         fill: "#2196f3",
         opacity: 0.1,

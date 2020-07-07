@@ -102,7 +102,8 @@ function calculateFullData(props) {
         filterData,
     };
 }
-function resetChart(props, firstCalculation = false) {
+
+function resetChart(props) {
     const state = calculateState(props);
     const { xAccessor, displayXAccessor, fullData } = state;
     const { plotData: initialPlotData, xScale } = state;
@@ -282,7 +283,6 @@ interface ChartCanvasProps {
         top: number;
     };
     readonly ratio: number;
-    readonly type?: "svg" | "hybrid";
     readonly pointsPerPxThreshold?: number;
     readonly minPointsPerPxThreshold?: number;
     readonly data: any[];
@@ -329,7 +329,6 @@ interface ChartCanvasState {
 export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasState> {
     public static defaultProps = {
         margin: { top: 0, right: 40, bottom: 40, left: 0 },
-        type: "hybrid",
         pointsPerPxThreshold: 2,
         minPointsPerPxThreshold: 1 / 100,
         className: "react-financial-charts",
@@ -383,7 +382,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         displayXAccessor: PropTypes.func.isRequired,
         width: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired,
-        chartCanvasType: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
         margin: PropTypes.object.isRequired,
         ratio: PropTypes.number.isRequired,
         getCanvasContexts: PropTypes.func,
@@ -398,7 +396,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         getMutableState: PropTypes.func,
     };
 
-    public static ohlcv = d => ({
+    public static ohlcv = (d: any) => ({
         date: d.date,
         open: d.open,
         high: d.high,
@@ -407,8 +405,8 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         volume: d.volume,
     });
 
-    private canvasContainerNode;
-    private eventCaptureNode;
+    private readonly canvasContainerRef = React.createRef<CanvasContainer>();
+    private readonly eventCaptureRef = React.createRef<EventCapture>();
     private finalPinch?: boolean;
     private fullData;
     private lastSubscriptionId;
@@ -462,8 +460,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         this.subscribe = this.subscribe.bind(this);
         this.unsubscribe = this.unsubscribe.bind(this);
         this.amIOnTop = this.amIOnTop.bind(this);
-        this.saveEventCaptureNode = this.saveEventCaptureNode.bind(this);
-        this.saveCanvasContainerNode = this.saveCanvasContainerNode.bind(this);
         this.setCursorClass = this.setCursorClass.bind(this);
         this.getMutableState = this.getMutableState.bind(this);
 
@@ -472,17 +468,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         this.mutableState = {};
         this.lastSubscriptionId = 0;
 
-        const { fullData, ...state } = resetChart(props, true);
+        const { fullData, ...state } = resetChart(props);
         this.state = state;
         this.fullData = fullData;
-    }
-
-    public saveEventCaptureNode(node) {
-        this.eventCaptureNode = node;
-    }
-
-    public saveCanvasContainerNode(node) {
-        this.canvasContainerNode = node;
     }
 
     public getMutableState() {
@@ -497,8 +485,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public getCanvasContexts() {
-        if (this.canvasContainerNode) {
-            return this.canvasContainerNode.getCanvasContexts();
+        const current = this.canvasContainerRef.current;
+        if (current !== null) {
+            return current.getCanvasContexts();
         }
     }
 
@@ -551,9 +540,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public setCursorClass(className) {
-        if (this.eventCaptureNode != null) {
-            this.eventCaptureNode.setCursorClass(className);
-        }
+        this.eventCaptureRef.current?.setCursorClass(className);
     }
 
     public amIOnTop(id) {
@@ -672,7 +659,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public cancelDrag() {
-        this.eventCaptureNode.cancelDrag();
+        this.eventCaptureRef.current?.cancelDrag();
         this.triggerEvent("dragcancel");
     }
 
@@ -1095,7 +1082,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             xScale: this.state.xScale,
             xAccessor: this.state.xAccessor,
             displayXAccessor: this.state.displayXAccessor,
-            chartCanvasType: this.props.type,
             margin: this.props.margin,
             ratio: this.props.ratio,
             xAxisZoom: this.xAxisZoom,
@@ -1181,7 +1167,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
     public render() {
         const {
-            type = ChartCanvas.defaultProps.type,
             useCrossHairStyleCursor,
             onSelect,
             height,
@@ -1207,8 +1192,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         return (
             <div style={{ position: "relative", width, height }} className={className} onClick={onSelect}>
                 <CanvasContainer
-                    ref={this.saveCanvasContainerNode}
-                    type={type}
+                    ref={this.canvasContainerRef}
                     ratio={ratio}
                     width={width}
                     height={height}
@@ -1233,7 +1217,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                     </defs>
                     <g transform={`translate(${margin.left + 0.5}, ${margin.top + 0.5})`}>
                         <EventCapture
-                            ref={this.saveEventCaptureNode}
+                            ref={this.eventCaptureRef}
                             useCrossHairStyleCursor={cursorStyle}
                             mouseMove={mouseMoveEvent && interaction}
                             zoom={zoomEvent && interaction}

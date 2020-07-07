@@ -468,10 +468,11 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
         const moreProps = this.getMoreProps();
 
         const ctx = canvasToDraw(getCanvasContexts());
-
-        this.preCanvasDraw(ctx, moreProps);
-        canvasDraw(ctx, moreProps);
-        this.postCanvasDraw(ctx, moreProps);
+        if(ctx){
+            this.preCanvasDraw(ctx, moreProps);
+            canvasDraw(ctx, moreProps);
+            this.postCanvasDraw(ctx, moreProps);
+        }
     }
 
     public render() {
@@ -497,9 +498,13 @@ class GenericComponent extends React.Component<GenericComponentProps, GenericCom
 export default GenericComponent;
 
 export function getAxisCanvas(contexts) {
-    return contexts.axes;
+    if(contexts){
+        return contexts.axes;
+    }
 }
 
 export function getMouseCanvas(contexts) {
-    return contexts.mouseCoord;
+    if(contexts){
+        return contexts.mouseCoord;
+    }   
 }

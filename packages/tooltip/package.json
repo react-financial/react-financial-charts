@@ -1,0 +1,52 @@
+{
+  "name": "@react-financial-charts/tooltip",
+  "version": "0.5.1",
+  "description": "Tooltips for react-financial-charts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "sideEffects": false,
+  "author": "Reactive Markets",
+  "keywords": [
+    "charts",
+    "charting",
+    "stockcharts",
+    "finance",
+    "financial",
+    "finance-chart",
+    "react",
+    "d3"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactivemarkets/react-financial-charts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/reactivemarkets/react-financial-charts/issues"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rimraf lib",
+    "compile": "tsc -p tsconfig.json",
+    "test": "jest",
+    "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "@react-financial-charts/core": "file:../core",
+    "d3-array": "2.4.0",
+    "d3-format": "^1.4.4",
+    "d3-time-format": "2.2.3",
+    "prop-types": "15.7.2"
+  },
+  "peerDependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  }
+}

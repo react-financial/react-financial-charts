@@ -6,6 +6,17 @@
     "postinstall": "npm run bootstrap",
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
+    "build:annotations": "lerna run build --scope='*/annotations'",
+    "build:axes": "lerna run build --scope='*/axes'",
+    "build:charts": "lerna run build --scope='react-financial-charts'",
+    "build:coordinates": "lerna run build --scope='*/coordinates'",
+    "build:core": "lerna run build --scope='*/core'",
+    "build:indicators": "lerna run build --scope='*/indicators'",
+    "build:interactive": "lerna run build --scope='*/interactive'",
+    "build:scales": "lerna run build --scope='*/scales'",
+    "build:series": "lerna run build --scope='*/series'",
+    "build:tooltip": "lerna run build --scope='*/tooltip'",
+    "build:utils": "lerna run build --scope='*/utils'",
     "clean": "run-s clean:packages clean:modules",
     "clean:packages": "lerna run clean",
     "clean:modules": "lerna clean --yes",
@@ -66,7 +77,17 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@react-financial-charts/annotations": "file:packages/annotations",
+    "@react-financial-charts/axes": "file:packages/axes",
+    "@react-financial-charts/coordinates": "file:packages/coordinates",
+    "@react-financial-charts/core": "file:packages/core",
+    "@react-financial-charts/indicators": "file:packages/indicators",
+    "@react-financial-charts/interactive": "file:packages/interactive",
+    "@react-financial-charts/scales": "file:packages/scales",
+    "@react-financial-charts/series": "file:packages/series",
     "@react-financial-charts/stories": "file:packages/stories",
+    "@react-financial-charts/tooltip": "file:packages/tooltip",
+    "@react-financial-charts/utils": "file:packages/utils",
     "react-financial-charts": "file:packages/charts"
   }
 }

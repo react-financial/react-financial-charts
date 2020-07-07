@@ -1,9 +1,9 @@
 import * as React from "react";
-import { RSISeries } from "react-financial-charts/lib/series";
+import { RSISeries } from "@react-financial-charts/series";
 import RSIIndicator from "./rsiIndicator";
 
 export default {
-    title: "Visualization|Indicator/RSI",
+    title: "Visualization/Indicator/RSI",
     component: RSISeries,
     parameters: {
         componentSubtitle:

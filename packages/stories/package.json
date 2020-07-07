@@ -3,7 +3,7 @@
   "version": "0.5.1",
   "description": "Stories for react financial charts",
   "private": true,
-  "author": "reactivemarkets",
+  "author": "Reactive Markets",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf ../docs lib",
@@ -11,12 +11,20 @@
     "start": "start-storybook -p 4444"
   },
   "dependencies": {
+    "@react-financial-charts/annotations": "file:../annotations",
+    "@react-financial-charts/axes": "file:../axes",
+    "@react-financial-charts/coordinates": "file:../coordinates",
+    "@react-financial-charts/core": "file:../core",
+    "@react-financial-charts/indicators": "file:../indicators",
+    "@react-financial-charts/interactive": "file:../interactive",
+    "@react-financial-charts/scales": "file:../scales",
+    "@react-financial-charts/series": "file:../series",
+    "@react-financial-charts/tooltip": "file:../tooltip",
+    "@react-financial-charts/utils": "file:../utils",
     "d3-dsv": "^1.2.0",
     "d3-format": "^1.4.4",
     "d3-time-format": "^2.2.3",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-financial-charts": "file:../charts",
-    "react-virtualized-auto-sizer": "^1.0.2"
+    "react-dom": "^16.13.1"
   }
 }

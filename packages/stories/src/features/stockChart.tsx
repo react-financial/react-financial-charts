@@ -1,22 +1,21 @@
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 import * as React from "react";
-import { Chart, ChartCanvas } from "react-financial-charts";
-import { XAxis, YAxis } from "react-financial-charts/lib/axes";
+import { Chart, ChartCanvas, lastVisibleItemBasedZoomAnchor } from "@react-financial-charts/core";
+import { XAxis, YAxis } from "@react-financial-charts/axes";
 import {
     CrossHairCursor,
     EdgeIndicator,
     MouseCoordinateX,
     MouseCoordinateY,
-} from "react-financial-charts/lib/coordinates";
-import { elderRay, ema } from "react-financial-charts/lib/indicator";
-import { ZoomButtons } from "react-financial-charts/lib/interactive";
-import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
-import { BarSeries, CandlestickSeries, ElderRaySeries, LineSeries } from "react-financial-charts/lib/series";
-import { MovingAverageTooltip, OHLCTooltip, SingleValueTooltip } from "react-financial-charts/lib/tooltip";
-import { withDeviceRatio } from "react-financial-charts/lib/utils";
-import { lastVisibleItemBasedZoomAnchor } from "react-financial-charts/lib/utils/zoomBehavior";
-import { IOHLCData, withOHLCData, withSize } from "../data";
+} from "@react-financial-charts/coordinates";
+import { elderRay, ema } from "@react-financial-charts/indicators";
+import { ZoomButtons } from "@react-financial-charts/interactive";
+import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
+import { BarSeries, CandlestickSeries, ElderRaySeries, LineSeries } from "@react-financial-charts/series";
+import { MovingAverageTooltip, OHLCTooltip, SingleValueTooltip } from "@react-financial-charts/tooltip";
+import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
+import { IOHLCData, withOHLCData } from "../data";
 
 interface StockChartProps {
     readonly data: IOHLCData[];
@@ -177,5 +176,7 @@ class StockChart extends React.Component<StockChartProps> {
     };
 }
 
-export default withOHLCData()(withSize(600)(withDeviceRatio()(StockChart)));
-export const IntradayStockChart = withOHLCData("MSFT_INTRA_DAY")(withSize(600)(withDeviceRatio()(StockChart)));
+export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(StockChart)));
+export const IntradayStockChart = withOHLCData("MSFT_INTRA_DAY")(
+    withSize({ style: { minHeight: 600 } })(withDeviceRatio()(StockChart)),
+);

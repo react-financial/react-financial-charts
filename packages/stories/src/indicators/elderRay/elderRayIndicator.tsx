@@ -1,13 +1,13 @@
 import { format } from "d3-format";
 import * as React from "react";
-import { Chart, ChartCanvas } from "react-financial-charts";
-import { XAxis, YAxis } from "react-financial-charts/lib/axes";
-import { change, elderRay } from "react-financial-charts/lib/indicator";
-import { discontinuousTimeScaleProviderBuilder } from "react-financial-charts/lib/scale";
-import { ElderRaySeries } from "react-financial-charts/lib/series";
-import { SingleValueTooltip } from "react-financial-charts/lib/tooltip";
-import { withDeviceRatio } from "react-financial-charts/lib/utils";
-import { IOHLCData, withOHLCData, withSize } from "../../data";
+import { Chart, ChartCanvas } from "@react-financial-charts/core";
+import { XAxis, YAxis } from "@react-financial-charts/axes";
+import { change, elderRay } from "@react-financial-charts/indicators";
+import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
+import { ElderRaySeries } from "@react-financial-charts/series";
+import { SingleValueTooltip } from "@react-financial-charts/tooltip";
+import { IOHLCData, withOHLCData } from "../../data";
+import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
 
 interface ChartProps {
     readonly data: IOHLCData[];

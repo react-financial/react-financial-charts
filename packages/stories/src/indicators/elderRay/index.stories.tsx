@@ -1,9 +1,9 @@
 import * as React from "react";
-import { forceIndex } from "react-financial-charts/lib/indicator";
+import { forceIndex } from "@react-financial-charts/indicators";
 import ElderRayIndicator from "./elderRayIndicator";
 
 export default {
-    title: "Visualization|Indicator/Elder Ray",
+    title: "Visualization/Indicator/Elder Ray",
     component: forceIndex,
     parameters: {
         componentSubtitle: `This indicator consists of three separate indicators

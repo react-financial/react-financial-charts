@@ -1,2 +1,9 @@
-export { ChartCanvas } from "./ChartCanvas";
-export { Chart } from "./Chart";
+export * from "@react-financial-charts/annotations";
+export * from "@react-financial-charts/axes";
+export * from "@react-financial-charts/coordinates";
+export * from "@react-financial-charts/core";
+export * from "@react-financial-charts/indicators";
+export * from "@react-financial-charts/interactive";
+export * from "@react-financial-charts/scales";
+export * from "@react-financial-charts/series";
+export * from "@react-financial-charts/tooltip";

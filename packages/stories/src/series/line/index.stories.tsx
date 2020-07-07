@@ -1,10 +1,10 @@
 import * as React from "react";
-import { LineSeries } from "react-financial-charts/lib/series";
+import { LineSeries } from "@react-financial-charts/series";
 import { Daily, Intraday } from "./basicLineSeries";
 
 export default {
     component: LineSeries,
-    title: "Visualization|Series/Line",
+    title: "Visualization/Series/Line",
 };
 
 export const daily = () => <Daily />;

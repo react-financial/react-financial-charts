@@ -3,7 +3,7 @@ import StockChart, { IntradayStockChart } from "./stockChart";
 
 export default {
     component: StockChart,
-    title: "Features|Full Screen",
+    title: "Features/Full Screen",
 };
 
 export const daily = () => <StockChart />;

@@ -1,9 +1,9 @@
 import * as React from "react";
-import { SARSeries } from "react-financial-charts/lib/series";
+import { SARSeries } from "@react-financial-charts/series";
 import SARIndicator from "./sarIndicator";
 
 export default {
-    title: "Visualization|Indicator/SAR",
+    title: "Visualization/Indicator/SAR",
     component: SARSeries,
     parameters: {
         componentSubtitle: `SAR stands for 'stop and reverse'.

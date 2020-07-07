@@ -36,20 +36,16 @@
     "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "d3-array": "^2.4.0",
-    "d3-force": "^2.0.1",
-    "d3-format": "^1.4.4",
-    "d3-interpolate": "^1.4.0",
-    "d3-path": "^1.0.9",
-    "d3-scale": "^3.2.1",
-    "d3-selection": "^1.4.1",
-    "d3-shape": "^1.3.7",
-    "d3-time": "^1.1.0",
-    "d3-time-format": "^2.2.3",
-    "debug": "^4.1.1",
-    "lodash.flattendeep": "^4.4.0",
-    "prop-types": "^15.7.2",
-    "save-svg-as-png": "^1.4.17"
+    "@react-financial-charts/annotations": "file:../annotations",
+    "@react-financial-charts/axes": "file:../axes",
+    "@react-financial-charts/coordinates": "file:../coordinates",
+    "@react-financial-charts/core": "file:../core",
+    "@react-financial-charts/indicators": "file:../indicators",
+    "@react-financial-charts/interactive": "file:../interactive",
+    "@react-financial-charts/scales": "file:../scales",
+    "@react-financial-charts/series": "file:../series",
+    "@react-financial-charts/tooltip": "file:../tooltip",
+    "@react-financial-charts/utils": "file:../utils"
   },
   "peerDependencies": {
     "react": "^16.0.0",

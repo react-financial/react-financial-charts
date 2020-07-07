@@ -1,10 +1,12 @@
 # React Financial Charts
 
-[![CircleCI](https://circleci.com/gh/reactivemarkets/react-financial-charts/tree/master.svg?style=shield)](https://circleci.com/gh/reactivemarkets/react-financial-charts/tree/master)
+> **Note:** this repo is a fork of [react-stockcharts](https://github.com/rrag/react-stockcharts), renamed, converted to typescript and bug fixes applied due to the original project being unmaintained.
+
+> **Note:** v1 is a fully breaking change with large parts, if not all, rewritten. Do not expect the same API! although the same features should exist.
+
+![ci](https://github.com/reactivemarkets/react-financial-charts/workflows/ci/badge.svg)
 [![codecov](https://codecov.io/gh/reactivemarkets/react-financial-charts/branch/master/graph/badge.svg)](https://codecov.io/gh/reactivemarkets/react-financial-charts)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=reactivemarkets/react-financial-charts)](https://dependabot.com) [![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/reactivemarkets/react-financial-charts/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react-financial-charts.svg?style=flat)](https://www.npmjs.com/package/react-financial-charts)
-
-> **Note:** this repo is a fork of [react-stockcharts](https://github.com/rrag/react-stockcharts), renamed, converted to typescript and bug fixes applied due to the original project being unmaintained.
 
 Charts dedicated to finance.
 
@@ -92,14 +94,15 @@ npm start
 - [x] Implement PRs from react-stockcharts
 - [x] Add all typings
 - [x] Move examples to storybook
+- [x] Add all series' to storybook
+- [x] Split project into multiple packages
 - [ ] Correct all class props
 - [ ] Fix issues with empty datasets
 - [ ] Migrate to new React Context API
 - [ ] Remove all UNSAFE methods
-- [ ] Add all series' to storybook
 - [ ] Add documentation to storybook
 - [ ] Add full test suite
-- [ ] Split project into multiple packages
+
 
 ## LICENSE
 

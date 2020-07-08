@@ -31,8 +31,10 @@
     "test": "lerna run test --stream",
     "prestart": "npm run build",
     "prepublishOnly": "npm run build",
-    "publish": "lerna publish from-package --no-git-reset --yes",
+    "publish": "lerna publish from-package --yes",
     "release": "lerna version --yes",
+    "release:pre": "lerna version --conventional-prerelease --yes",
+    "release:grad": "lerna version --conventional-graduate --yes",
     "watch": "lerna run watch --parallel"
   },
   "workspaces": [

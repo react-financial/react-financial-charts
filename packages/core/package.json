@@ -1,6 +1,6 @@
 {
   "name": "@react-financial-charts/core",
-  "version": "0.5.1",
+  "version": "1.0.0-alpha.0",
   "description": "Core code for react-financial-charts",
   "publishConfig": {
     "access": "public"

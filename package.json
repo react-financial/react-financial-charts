@@ -72,7 +72,7 @@
     "prettier": "^2.0.5",
     "react-docgen-typescript-loader": "^3.7.2",
     "rimraf": "^3.0.2",
-    "source-map-loader": "^1.0.0",
+    "source-map-loader": "^1.0.1",
     "ts-jest": "^26.1.1",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.6"

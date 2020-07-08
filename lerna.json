@@ -9,6 +9,10 @@
     "bootstrap": {
       "hoist": true
     },
+    "publish": {
+      "preDistTag": "next",
+      "noGitReset": true
+    },
     "version": {
       "allowBranch": "master",
       "conventionalCommits": true,

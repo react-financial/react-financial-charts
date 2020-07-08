@@ -47,7 +47,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly getPosition = moreProps => {
+    private readonly getPosition = (moreProps) => {
         const { position } = this.props;
         const { height, width } = moreProps.chartConfig;
 
@@ -79,7 +79,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         return { xyPos, textAnchor };
     };
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { displayValuesFor } = this.props;
         const { chartId } = moreProps;
 

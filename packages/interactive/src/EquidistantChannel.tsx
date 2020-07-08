@@ -158,7 +158,7 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
         });
     };
 
-    private readonly handleDragChannelComplete = moreProps => {
+    private readonly handleDragChannelComplete = (moreProps) => {
         const { override } = this.state;
         const { channels } = this.props;
 
@@ -179,7 +179,7 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
         }
     };
 
-    private readonly handleStart = xyValue => {
+    private readonly handleStart = (xyValue) => {
         const { current } = this.state;
 
         if (isNotDefined(current) || isNotDefined(current.startXY)) {
@@ -212,7 +212,7 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
                 });
             } else {
                 const newChannels = [
-                    ...channels.map(d => ({ ...d, selected: false })),
+                    ...channels.map((d) => ({ ...d, selected: false })),
                     {
                         ...current,
                         selected: true,
@@ -232,7 +232,7 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
         }
     };
 
-    private readonly handleDrawChannel = xyValue => {
+    private readonly handleDrawChannel = (xyValue) => {
         const { current } = this.state;
 
         if (isDefined(current) && isDefined(current.startXY)) {

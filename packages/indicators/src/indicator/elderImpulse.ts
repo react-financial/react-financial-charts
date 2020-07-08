@@ -5,14 +5,11 @@ import { ElderImpulse as appearanceOptions } from "./defaultOptionsForAppearance
 
 const ALGORITHM_TYPE = "ElderImpulse";
 
-export default function() {
+export default function () {
     let macdSource;
     let emaSource;
 
-    const base = baseIndicator()
-        .type(ALGORITHM_TYPE)
-        .stroke(appearanceOptions.stroke)
-        .fill(undefined);
+    const base = baseIndicator().type(ALGORITHM_TYPE).stroke(appearanceOptions.stroke).fill(undefined);
 
     const underlyingAlgorithm = slidingWindow()
         .windowSize(2)
@@ -49,19 +46,19 @@ export default function() {
             datum.elderImpulse = i;
         });
 
-    const indicator = function(data, options = { merge: true }) {
+    const indicator = function (data, options = { merge: true }) {
         const newData = options.merge ? mergedAlgorithm(data) : underlyingAlgorithm(data);
 
         return newData;
     };
-    indicator.macdSource = function(x) {
+    indicator.macdSource = function (x) {
         if (!arguments.length) {
             return macdSource;
         }
         macdSource = x;
         return indicator;
     };
-    indicator.emaSource = function(x) {
+    indicator.emaSource = function (x) {
         if (!arguments.length) {
             return emaSource;
         }

@@ -29,10 +29,10 @@ export class DrawingObjectSelector extends React.Component<DrawingObjectSelector
         );
     }
 
-    private readonly getInteraction = moreProps => {
+    private readonly getInteraction = (moreProps) => {
         const { getInteractiveNodes, drawingObjectMap } = this.props;
         const interactiveNodes = getInteractiveNodes();
-        const interactives = mapObject(interactiveNodes, each => {
+        const interactives = mapObject(interactiveNodes, (each) => {
             const key = drawingObjectMap[each.type];
 
             const valueArray = isDefined(key) ? each.node.props[key] : undefined;

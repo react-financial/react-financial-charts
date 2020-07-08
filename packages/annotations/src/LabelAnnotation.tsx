@@ -56,7 +56,7 @@ export class LabelAnnotation extends React.Component<LabelAnnotationProps> {
         );
     }
 
-    private readonly handleClick = e => {
+    private readonly handleClick = (e) => {
         const { onClick } = this.props;
 
         if (onClick) {

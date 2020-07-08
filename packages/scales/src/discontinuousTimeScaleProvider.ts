@@ -14,7 +14,7 @@ function evaluateLevel(d, date, i, formatters) {
                 format: formatters[eachLevel(d, date, i)],
             };
         })
-        .find(l => !!l.format);
+        .find((l) => !!l.format);
 }
 
 const discontinuousIndexCalculator = slidingWindow()
@@ -95,11 +95,11 @@ const discontinuousIndexCalculatorLocalTime = discontinuousIndexCalculator.accum
 );
 
 function doStuff(realDateAccessor, inputDateAccessor, initialIndex, formatters) {
-    return function(data) {
+    return function (data) {
         const dateAccessor = realDateAccessor(inputDateAccessor);
         const calculate = discontinuousIndexCalculatorLocalTime.source(dateAccessor).misc({ initialIndex, formatters });
 
-        const index = calculate(data).map(each => {
+        const index = calculate(data).map((each) => {
             const { format } = each;
             return {
                 // ...each,
@@ -117,14 +117,14 @@ function doStuff(realDateAccessor, inputDateAccessor, initialIndex, formatters) 
 export function discontinuousTimeScaleProviderBuilder() {
     let initialIndex = 0;
     let realDateAccessor = identity;
-    let inputDateAccessor = d => d.date;
-    let indexAccessor = d => d.idx;
+    let inputDateAccessor = (d) => d.date;
+    let indexAccessor = (d) => d.idx;
     let indexMutator = (d, idx) => ({ ...d, idx });
     let withIndex;
 
     let currentFormatters = defaultFormatters;
 
-    const discontinuousTimeScaleProvider = function(data) {
+    const discontinuousTimeScaleProvider = function (data) {
         let index = withIndex;
 
         if (isNotDefined(index)) {
@@ -146,48 +146,48 @@ export function discontinuousTimeScaleProviderBuilder() {
         return {
             data: finalData,
             xScale,
-            xAccessor: d => d && indexAccessor(d).index,
+            xAccessor: (d) => d && indexAccessor(d).index,
             displayXAccessor: realDateAccessor(inputDateAccessor),
         };
     };
 
-    discontinuousTimeScaleProvider.initialIndex = function(x) {
+    discontinuousTimeScaleProvider.initialIndex = function (x) {
         if (!arguments.length) {
             return initialIndex;
         }
         initialIndex = x;
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.inputDateAccessor = function(x) {
+    discontinuousTimeScaleProvider.inputDateAccessor = function (x) {
         if (!arguments.length) {
             return inputDateAccessor;
         }
         inputDateAccessor = x;
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.indexAccessor = function(x) {
+    discontinuousTimeScaleProvider.indexAccessor = function (x) {
         if (!arguments.length) {
             return indexAccessor;
         }
         indexAccessor = x;
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.indexMutator = function(x) {
+    discontinuousTimeScaleProvider.indexMutator = function (x) {
         if (!arguments.length) {
             return indexMutator;
         }
         indexMutator = x;
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.withIndex = function(x) {
+    discontinuousTimeScaleProvider.withIndex = function (x) {
         if (!arguments.length) {
             return withIndex;
         }
         withIndex = x;
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.utc = function() {
-        realDateAccessor = dateAccessor => d => {
+    discontinuousTimeScaleProvider.utc = function () {
+        realDateAccessor = (dateAccessor) => (d) => {
             const date = dateAccessor(d);
             // The getTimezoneOffset() method returns the time-zone offset from UTC, in minutes, for the current locale.
             const offsetInMillis = date.getTimezoneOffset() * 60 * 1000;
@@ -195,7 +195,7 @@ export function discontinuousTimeScaleProviderBuilder() {
         };
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.setLocale = function(locale, formatters = null) {
+    discontinuousTimeScaleProvider.setLocale = function (locale, formatters = null) {
         if (locale) {
             timeFormatDefaultLocale(locale);
         }
@@ -206,7 +206,7 @@ export function discontinuousTimeScaleProviderBuilder() {
         return discontinuousTimeScaleProvider;
     };
 
-    discontinuousTimeScaleProvider.indexCalculator = function() {
+    discontinuousTimeScaleProvider.indexCalculator = function () {
         return doStuff(realDateAccessor, inputDateAccessor, initialIndex, currentFormatters);
     };
 

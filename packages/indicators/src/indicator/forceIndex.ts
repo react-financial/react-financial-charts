@@ -27,10 +27,10 @@ interface ForceIndexIndicator {
     options(newOptions: ForceIndexOptions): ForceIndexIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor(d => d.forceIndex);
+        .accessor((d) => d.forceIndex);
 
     const underlyingAlgorithm = forceIndex();
 

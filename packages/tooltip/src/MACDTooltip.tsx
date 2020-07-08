@@ -46,7 +46,7 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { onClick, displayInit, fontFamily, fontSize, displayFormat, className } = this.props;
         const { yAccessor, options, appearance, labelFill } = this.props;
         const { displayValuesFor } = this.props;

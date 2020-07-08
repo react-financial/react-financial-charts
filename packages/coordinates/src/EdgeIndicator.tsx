@@ -74,7 +74,7 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         drawOnCanvas(ctx, props);
     };
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const edge = this.helper(this.props, moreProps);
         const props = {
             ...this.props,

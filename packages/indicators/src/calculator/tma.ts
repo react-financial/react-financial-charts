@@ -41,7 +41,7 @@ export interface TMAOptions {
     readonly windowSize: number;
 }
 
-export default function() {
+export default function () {
     let options = defaultOptions;
 
     const calculator = (data: any[]) => {

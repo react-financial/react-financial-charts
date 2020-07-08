@@ -33,7 +33,7 @@ export function getDimensions({ width, height }, chartProps) {
 }
 
 function values(func) {
-    return d => {
+    return (d) => {
         const obj = func(d);
         if (isObject(obj)) {
             return mapObject(obj);
@@ -51,7 +51,7 @@ function isArraySize2AndNumber(yExtentsProp) {
 }
 
 export function getNewChartConfig(innerDimension, children, existingChartConfig = []) {
-    return React.Children.map(children, each => {
+    return React.Children.map(children, (each) => {
         if (each && each.type.toString() === Chart.toString()) {
             const chartProps = {
                 ...Chart.defaultProps,
@@ -76,7 +76,7 @@ export function getNewChartConfig(innerDimension, children, existingChartConfig 
                 ? (Array.isArray(yExtentsProp) ? yExtentsProp : [yExtentsProp]).map(functor)
                 : undefined;
 
-            const prevChartConfig = find(existingChartConfig, d => d.id === id);
+            const prevChartConfig = find(existingChartConfig, (d) => d.id === id);
 
             if (isArraySize2AndNumber(yExtentsProp)) {
                 if (
@@ -121,16 +121,16 @@ export function getNewChartConfig(innerDimension, children, existingChartConfig 
             };
         }
         return undefined;
-    }).filter(each => isDefined(each));
+    }).filter((each) => isDefined(each));
 }
 export function getCurrentCharts(chartConfig, mouseXY) {
     const currentCharts = chartConfig
-        .filter(eachConfig => {
+        .filter((eachConfig) => {
             const top = eachConfig.origin[1];
             const bottom = top + eachConfig.height;
             return mouseXY[1] > top && mouseXY[1] < bottom;
         })
-        .map(config => config.id);
+        .map((config) => config.id);
 
     return currentCharts;
 }
@@ -155,7 +155,7 @@ function setRange(scale, height, padding, flipYScale) {
 }
 
 function yDomainFromYExtents(yExtents, yScale, plotData) {
-    const yValues = yExtents.map(eachExtent => plotData.map(values(eachExtent)));
+    const yValues = yExtents.map((eachExtent) => plotData.map(values(eachExtent)));
 
     const allYValues = flattenDeep(yValues);
 
@@ -179,7 +179,7 @@ export function getChartConfigWithUpdatedYScales(
         const yDomainDY = isDefined(dy)
             ? yScale
                   .range()
-                  .map(each => each - dy)
+                  .map((each) => each - dy)
                   .map(yScale.invert)
             : yScale.domain();
         return {

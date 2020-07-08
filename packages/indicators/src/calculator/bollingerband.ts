@@ -45,7 +45,7 @@ interface BollingerBandCalculator {
     options(newOptions: BollingerBandOptions): BollingerBandCalculator;
 }
 
-export default function() {
+export default function () {
     let options: BollingerBandOptions = defaultOptions;
 
     const calculator = (data: any[]) => {
@@ -59,14 +59,14 @@ export default function() {
                 ? ema().options({ windowSize, sourcePath })
                 : slidingWindow()
                       .windowSize(windowSize)
-                      .accumulator(values => mean(values))
+                      .accumulator((values) => mean(values))
                       .sourcePath(sourcePath);
 
         const bollingerBandAlgorithm = slidingWindow()
             .windowSize(windowSize)
-            .accumulator(values => {
+            .accumulator((values) => {
                 const avg = last(values).mean;
-                const stdDev = deviation<any>(values, each => source(each.datum));
+                const stdDev = deviation<any>(values, (each) => source(each.datum));
                 if (stdDev === undefined) {
                     return undefined;
                 }

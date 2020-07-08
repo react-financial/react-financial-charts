@@ -172,7 +172,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         onDelete(yCoordinateList[index], moreProps);
     };
 
-    private readonly handleDragComplete = moreProps => {
+    private readonly handleDragComplete = (moreProps) => {
         const { override } = this.state;
         if (isDefined(override)) {
             const { yCoordinateList } = this.props;

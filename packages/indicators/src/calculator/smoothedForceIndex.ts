@@ -4,7 +4,7 @@ import ema from "./ema";
 import forceIndex from "./forceIndex";
 import sma from "./sma";
 
-export default function() {
+export default function () {
     const underlyingAlgorithm = forceIndex();
 
     let options = defaultOptions;
@@ -27,7 +27,7 @@ export default function() {
         // @ts-ignore
         const smoothed = forceMA(force);
 
-        return zip(force, smoothed).map(d => ({
+        return zip(force, smoothed).map((d) => ({
             force: d[0],
             smoothed: d[1],
         }));

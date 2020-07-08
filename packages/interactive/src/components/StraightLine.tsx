@@ -84,7 +84,7 @@ class StraightLine extends React.Component<StraightLineProps> {
         );
     }
 
-    private readonly isHover = moreProps => {
+    private readonly isHover = (moreProps) => {
         const { tolerance, onHover } = this.props;
 
         if (isDefined(onHover)) {
@@ -111,7 +111,7 @@ class StraightLine extends React.Component<StraightLineProps> {
         return false;
     };
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { stroke, strokeWidth, strokeOpacity, strokeDasharray } = this.props;
 
         const lineWidth = strokeWidth;

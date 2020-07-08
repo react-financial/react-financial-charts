@@ -26,10 +26,10 @@ interface SMAIndicator {
     options(newOptions: SMAOptions): SMAIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor(d => d.sma);
+        .accessor((d) => d.sma);
 
     const underlyingAlgorithm = sma();
 

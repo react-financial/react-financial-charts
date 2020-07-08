@@ -185,7 +185,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         );
     }
 
-    private readonly handleHover = moreProps => {
+    private readonly handleHover = (moreProps) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
@@ -193,7 +193,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         }
     };
 
-    private readonly handleEdge2Drag = moreProps => {
+    private readonly handleEdge2Drag = (moreProps) => {
         const { index, onDrag } = this.props;
         const { x1Value, y1Value } = this.props;
 
@@ -207,7 +207,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         });
     };
 
-    private readonly handleEdge1Drag = moreProps => {
+    private readonly handleEdge1Drag = (moreProps) => {
         const { index, onDrag } = this.props;
         const { x2Value, y2Value } = this.props;
 
@@ -240,7 +240,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         });
     };
 
-    private readonly handleLineDrag = moreProps => {
+    private readonly handleLineDrag = (moreProps) => {
         const { index, onDrag } = this.props;
 
         const { x1Value, y1Value, x2Value, y2Value } = this.dragStart;
@@ -298,10 +298,7 @@ export function getNewXY(moreProps) {
 
     const x = getXValue(xScale, xAccessor, mouseXY, plotData);
 
-    const [small, big] = yScale
-        .domain()
-        .slice()
-        .sort(d3Ascending);
+    const [small, big] = yScale.domain().slice().sort(d3Ascending);
     const y = yScale.invert(mouseY);
     const newY = Math.min(Math.max(y, small), big);
 

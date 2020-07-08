@@ -75,9 +75,9 @@ export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesPr
         const boxHeight = Math.abs(yScale(anyBox.open) - yScale(anyBox.close));
 
         const columns = plotData
-            .filter(d => isDefined(d.close))
-            .map(d => {
-                const boxes = d.boxes.map(box => ({
+            .filter((d) => isDefined(d.close))
+            .map((d) => {
+                const boxes = d.boxes.map((box) => ({
                     columnWidth,
                     boxHeight,
                     open: yScale(box.open),
@@ -99,9 +99,9 @@ export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesPr
 
         ctx.lineWidth = strokeWidth;
 
-        columns.forEach(col => {
+        columns.forEach((col) => {
             const [offsetX, offsetY] = col.offset;
-            col.boxes.forEach(box => {
+            col.boxes.forEach((box) => {
                 if (col.direction > 0) {
                     ctx.fillStyle = fill.up;
                     ctx.strokeStyle = stroke.up;

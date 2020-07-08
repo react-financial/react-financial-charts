@@ -83,7 +83,7 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const {
             chartId,
             chartConfig,

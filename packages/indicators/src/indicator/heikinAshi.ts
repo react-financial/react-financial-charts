@@ -5,10 +5,10 @@ import { merge, rebind } from "@react-financial-charts/core";
 
 const ALGORITHM_TYPE = "HeikinAshi";
 
-export default function() {
+export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor(d => d.ha);
+        .accessor((d) => d.ha);
 
     const underlyingAlgorithm = heikinAshi();
 

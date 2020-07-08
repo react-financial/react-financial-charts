@@ -29,8 +29,8 @@ export const plotDataLengthBarWidth = (props: { widthRatio: number }, moreProps:
  * @param interval a d3-time time interval.
  * @return {Function} the width function.
  */
-export const timeIntervalBarWidth = interval => {
-    return function(props: { widthRatio: number }, moreProps: { xScale: any; xAccessor: any; plotData: any }) {
+export const timeIntervalBarWidth = (interval) => {
+    return function (props: { widthRatio: number }, moreProps: { xScale: any; xAccessor: any; plotData: any }) {
         const { widthRatio } = props;
         const { xScale, xAccessor, plotData } = moreProps;
 

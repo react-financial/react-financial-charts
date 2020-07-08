@@ -167,7 +167,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         drawOnCanvas(ctx, yCoord);
     };
 
-    private readonly isHover = moreProps => {
+    private readonly isHover = (moreProps) => {
         const { onHover } = this.props;
 
         if (isDefined(onHover)) {

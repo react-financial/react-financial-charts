@@ -43,7 +43,7 @@ export class StandardDeviationChannel extends React.Component<
     StandardDeviationChannelState
 > {
     public static defaultProps = {
-        snapTo: d => d.close,
+        snapTo: (d) => d.close,
         appearance: {
             stroke: "#000000",
             fillOpacity: 0.2,
@@ -178,7 +178,7 @@ export class StandardDeviationChannel extends React.Component<
 
         if (this.mouseMoved && isDefined(current) && isDefined(current.start)) {
             const newChannels = [
-                ...channels.map(d => ({ ...d, selected: false })),
+                ...channels.map((d) => ({ ...d, selected: false })),
                 {
                     start: current.start,
                     end: xyValue,
@@ -198,7 +198,7 @@ export class StandardDeviationChannel extends React.Component<
         }
     };
 
-    private readonly handleStart = xyValue => {
+    private readonly handleStart = (xyValue) => {
         const { current } = this.state;
 
         if (isNotDefined(current) || isNotDefined(current.start)) {
@@ -218,7 +218,7 @@ export class StandardDeviationChannel extends React.Component<
         }
     };
 
-    private readonly handleDrawLine = xyValue => {
+    private readonly handleDrawLine = (xyValue) => {
         const { current } = this.state;
 
         if (isDefined(current) && isDefined(current.start)) {
@@ -232,7 +232,7 @@ export class StandardDeviationChannel extends React.Component<
         }
     };
 
-    private readonly handleDragLineComplete = moreProps => {
+    private readonly handleDragLineComplete = (moreProps) => {
         const { override } = this.state;
         const { channels } = this.props;
         if (isDefined(override)) {

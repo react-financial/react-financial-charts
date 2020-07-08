@@ -26,10 +26,10 @@ interface EMAIndicator {
     options(newOptions: EMAOptions): EMAIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor(d => d.ema);
+        .accessor((d) => d.ema);
 
     const underlyingAlgorithm = ema();
 

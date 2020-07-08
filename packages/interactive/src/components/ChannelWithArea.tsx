@@ -67,7 +67,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
         );
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { stroke, strokeWidth, fillOpacity, fill, strokeOpacity } = this.props;
         const { line1, line2 } = helper(this.props, moreProps);
 
@@ -144,7 +144,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
         }
     };
 
-    private readonly isHover = moreProps => {
+    private readonly isHover = (moreProps) => {
         const { tolerance, onHover } = this.props;
 
         if (isDefined(onHover)) {

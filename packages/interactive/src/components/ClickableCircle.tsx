@@ -57,7 +57,7 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
         );
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { stroke, strokeWidth, fill } = this.props;
         const { fillOpacity, strokeOpacity } = this.props;
         const { r } = this.props;
@@ -95,7 +95,7 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
         ctx.stroke();
     };
 
-    private readonly isHover = moreProps => {
+    private readonly isHover = (moreProps) => {
         const { mouseXY } = moreProps;
         const r = this.props.r + 7;
         const [x, y] = this.helper(this.props, moreProps);

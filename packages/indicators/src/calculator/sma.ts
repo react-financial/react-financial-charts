@@ -8,7 +8,7 @@ export interface SMAOptions {
     readonly windowSize: number;
 }
 
-export default function() {
+export default function () {
     let options = defaultOptions;
 
     const calculator = (data: any[]) => {
@@ -17,7 +17,7 @@ export default function() {
         const average = slidingWindow()
             .windowSize(windowSize)
             .sourcePath(sourcePath)
-            .accumulator(values => mean(values));
+            .accumulator((values) => mean(values));
 
         return average(data);
     };

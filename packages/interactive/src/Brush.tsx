@@ -84,7 +84,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         );
     }
 
-    private readonly drawOnCanvas = ctx => {
+    private readonly drawOnCanvas = (ctx) => {
         const { rect } = this.state;
         if (isDefined(rect)) {
             const { x, y, height, width } = rect;
@@ -102,7 +102,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         }
     };
 
-    private readonly handleZoomStart = moreProps => {
+    private readonly handleZoomStart = (moreProps) => {
         this.zoomHappening = false;
         const {
             mouseXY: [, mouseY],
@@ -125,7 +125,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         });
     };
 
-    private readonly handleDrawSquare = moreProps => {
+    private readonly handleDrawSquare = (moreProps) => {
         if (this.state.x1y1 == null) {
             return;
         }
@@ -167,7 +167,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         });
     };
 
-    private readonly handleZoomComplete = moreProps => {
+    private readonly handleZoomComplete = (moreProps) => {
         if (this.zoomHappening) {
             const { onBrush } = this.props;
             const { start, end } = this.state;

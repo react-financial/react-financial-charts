@@ -22,7 +22,7 @@ export interface SAROptions {
     readonly maxAccelerationFactor: number;
 }
 
-export default function() {
+export default function () {
     let options = defaultOptions;
 
     const calculator = (data: any[]) => {
@@ -93,7 +93,7 @@ export default function() {
                 };
             });
 
-        const calculatedData = algorithm(data).map(d => d.sar);
+        const calculatedData = algorithm(data).map((d) => d.sar);
 
         return calculatedData;
     };

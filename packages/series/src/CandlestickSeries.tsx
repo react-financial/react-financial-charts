@@ -32,16 +32,16 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         candleClassName: "react-financial-charts-candlestick-candle",
         candleStrokeWidth: 0.5,
         className: "react-financial-charts-candlestick",
-        classNames: d => (d.close > d.open ? "up" : "down"),
+        classNames: (d) => (d.close > d.open ? "up" : "down"),
         clip: true,
-        fill: d => (d.close > d.open ? "#26a69a" : "#ef5350"),
+        fill: (d) => (d.close > d.open ? "#26a69a" : "#ef5350"),
         opacity: 1,
-        stroke: d => (d.close > d.open ? "#26a69a" : "#ef5350"),
+        stroke: (d) => (d.close > d.open ? "#26a69a" : "#ef5350"),
         wickClassName: "react-financial-charts-candlestick-wick",
-        wickStroke: d => (d.close > d.open ? "#26a69a" : "#ef5350"),
+        wickStroke: (d) => (d.close > d.open ? "#26a69a" : "#ef5350"),
         width: plotDataLengthBarWidth,
         widthRatio: 0.8,
-        yAccessor: d => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
+        yAccessor: (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
     };
 
     public render() {
@@ -68,12 +68,12 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
 
         const candleData = this.getCandleData(this.props, xAccessor, xScale, yScale, plotData);
 
-        const wickNest = group(candleData, d => d.wick.stroke);
+        const wickNest = group(candleData, (d) => d.wick.stroke);
 
         wickNest.forEach((values, key) => {
             ctx.strokeStyle = key;
             ctx.fillStyle = key;
-            values.forEach(each => {
+            values.forEach((each) => {
                 const d = each.wick;
 
                 ctx.fillRect(d.x - 0.5, d.y1, 1, d.y2 - d.y1);
@@ -83,9 +83,9 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
 
         const candleNest = group(
             candleData,
-            d => d.stroke,
+            (d) => d.stroke,
             // @ts-ignore
-            d => d.fill,
+            (d) => d.fill,
         );
 
         candleNest.forEach((strokeValues, strokeKey) => {
@@ -103,7 +103,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
                 // @ts-ignore
                 ctx.fillStyle = fillStyle;
 
-                values.forEach(d => {
+                values.forEach((d) => {
                     if (d.width <= 1) {
                         ctx.fillRect(d.x - 0.5, d.y, 1, d.height);
                     } else if (d.height === 0) {

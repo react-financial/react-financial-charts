@@ -140,7 +140,7 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
         }
     };
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { enabled, r, stroke, strokeWidth, opacity } = this.props;
         const { x, y } = this.mutableState;
         const { show } = moreProps;

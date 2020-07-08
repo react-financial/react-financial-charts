@@ -55,7 +55,7 @@ interface EachFibRetracementState {
 
 export class EachFibRetracement extends React.Component<EachFibRetracementProps, EachFibRetracementState> {
     public static defaultProps = {
-        yDisplayFormat: d => d.toFixed(2),
+        yDisplayFormat: (d) => d.toFixed(2),
         interactive: true,
         appearance: {
             stroke: "#000000",
@@ -232,7 +232,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
         );
     }
 
-    private readonly handleEdge2Drag = moreProps => {
+    private readonly handleEdge2Drag = (moreProps) => {
         const { index, onDrag } = this.props;
         const { x1, y1, y2 } = this.props;
 
@@ -246,7 +246,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
         });
     };
 
-    private readonly handleEdge1Drag = moreProps => {
+    private readonly handleEdge1Drag = (moreProps) => {
         const { index, onDrag } = this.props;
         const { y1, x2, y2 } = this.props;
 
@@ -260,7 +260,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
         });
     };
 
-    private readonly handleLineNSResizeBottom = moreProps => {
+    private readonly handleLineNSResizeBottom = (moreProps) => {
         const { index, onDrag } = this.props;
         const { x1, y1, x2 } = this.props;
 
@@ -274,7 +274,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
         });
     };
 
-    private readonly handleLineNSResizeTop = moreProps => {
+    private readonly handleLineNSResizeTop = (moreProps) => {
         const { index, onDrag } = this.props;
         const { x1, x2, y2 } = this.props;
 
@@ -288,7 +288,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
         });
     };
 
-    private readonly handleLineMove = moreProps => {
+    private readonly handleLineMove = (moreProps) => {
         const { index, onDrag } = this.props;
 
         const { x1: x1Value, y1: y1Value, x2: x2Value, y2: y2Value } = this.dragStart;
@@ -333,7 +333,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
         };
     };
 
-    private readonly handleHover = moreProps => {
+    private readonly handleHover = (moreProps) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
@@ -344,7 +344,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
 
 function helper({ x1, y1, x2, y2 }) {
     const dy = y2 - y1;
-    const retracements = [100, 61.8, 50, 38.2, 23.6, 0].map(each => ({
+    const retracements = [100, 61.8, 50, 38.2, 23.6, 0].map((each) => ({
         percent: each,
         x1,
         x2,

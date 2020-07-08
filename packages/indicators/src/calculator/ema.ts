@@ -39,7 +39,7 @@ interface EMACalculator {
     options(newOptions: EMAOptions): EMACalculator;
 }
 
-export default function() {
+export default function () {
     let options: EMAOptions = defaultOptions;
 
     const calculator = (data: any[]) => {
@@ -52,7 +52,7 @@ export default function() {
         let initialAccumulator = 0;
         let skip = 0;
 
-        return data.map(function(d, i) {
+        return data.map(function (d, i) {
             const v = source(d, i);
             if (isNotDefined(previous) && isNotDefined(v)) {
                 skip++;

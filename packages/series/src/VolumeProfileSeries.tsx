@@ -31,9 +31,9 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         showSessionBackground: false,
         sessionBackGround: "#4682B4",
         sessionBackGroundOpacity: 0.3,
-        source: d => d.close,
-        volume: d => d.volume,
-        absoluteChange: d => d.absoluteChange,
+        source: (d) => d.close,
+        volume: (d) => d.volume,
+        absoluteChange: (d) => d.absoluteChange,
         bySession: false,
         sessionStart: ({ d, i, plotData }) => i > 0 && plotData[i - 1].date.getMonth() !== d.date.getMonth(),
         orient: "left",
@@ -58,7 +58,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         if (showSessionBackground) {
             ctx.fillStyle = colorToRGBA(sessionBackGround, sessionBackGroundOpacity);
 
-            sessionBg.forEach(each => {
+            sessionBg.forEach((each) => {
                 const { x, y, height, width } = each;
 
                 ctx.beginPath();
@@ -68,7 +68,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
             });
         }
 
-        rects.forEach(each => {
+        rects.forEach((each) => {
             const { x, y, height, w1, w2, stroke1, stroke2, fill1, fill2 } = each;
 
             if (w1 > 0) {
@@ -129,14 +129,12 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
 
         const sessions = bySession ? sessionBuilder(plotData) : [plotData];
 
-        const allRects = sessions.map(session => {
+        const allRects = sessions.map((session) => {
             const begin = bySession ? realXScale(xAccessor(head(session))) : 0;
             const finish = bySession ? realXScale(xAccessor(last(session))) : width;
             const sessionWidth = finish - begin + dx;
 
-            const histogram2 = d3Histogram()
-                .value(source)
-                .thresholds(bins);
+            const histogram2 = d3Histogram().value(source).thresholds(bins);
 
             const rolledup = (data: any[]) => {
                 const sortFunction = orient === "right" ? descending : ascending;
@@ -145,26 +143,26 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
 
                 return rollup(
                     sortedData,
-                    leaves => sum<any>(leaves, d => d.volume),
-                    d => d.direction,
+                    (leaves) => sum<any>(leaves, (d) => d.volume),
+                    (d) => d.direction,
                 );
             };
 
             const values = histogram2(session);
 
             const volumeInBins = values
-                .map(arr =>
-                    arr.map(d => {
+                .map((arr) =>
+                    arr.map((d) => {
                         return absoluteChange(d) > 0
                             ? { direction: "up", volume: volume(d) }
                             : { direction: "down", volume: volume(d) };
                     }),
                 )
-                .map(arr => Array.from(rolledup(arr)));
+                .map((arr) => Array.from(rolledup(arr)));
 
-            const volumeValues = volumeInBins.map(each => sum(each.map(d => d[1])));
+            const volumeValues = volumeInBins.map((each) => sum(each.map((d) => d[1])));
 
-            const base = xScaleD => head(xScaleD.range());
+            const base = (xScaleD) => head(xScaleD.range());
 
             const [start, end] =
                 orient === "right"
@@ -175,13 +173,13 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
                 .domain([0, max(volumeValues)!])
                 .range([start, end]);
 
-            const totalVolumes = volumeInBins.map(volumes => {
-                const totalVolume = sum<any>(volumes, d => d.value);
+            const totalVolumes = volumeInBins.map((volumes) => {
+                const totalVolume = sum<any>(volumes, (d) => d.value);
                 const totalVolumeX = xScale(totalVolume);
                 const widthLocal = base(xScale) - totalVolumeX;
                 const x = widthLocal < 0 ? totalVolumeX + widthLocal : totalVolumeX;
 
-                const ws = volumes.map(d => {
+                const ws = volumes.map((d) => {
                     return {
                         type: d[0],
                         width: (d[1] * Math.abs(widthLocal)) / totalVolume,
@@ -223,8 +221,8 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         });
 
         return {
-            rects: merge<any>(allRects.map(d => d.rects)),
-            sessionBg: allRects.map(d => d.sessionBg),
+            rects: merge<any>(allRects.map((d) => d.rects)),
+            sessionBg: allRects.map((d) => d.sessionBg),
         };
     };
 }

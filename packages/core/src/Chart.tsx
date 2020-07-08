@@ -70,14 +70,14 @@ export class Chart extends PureComponent<ChartProps> {
     };
 
     public readonly yScale = () => {
-        const chartConfig = find(this.context.chartConfig, each => each.id === this.props.id);
+        const chartConfig = find(this.context.chartConfig, (each) => each.id === this.props.id);
         return chartConfig.yScale.copy();
     };
 
     public getChildContext() {
         const { id: chartId } = this.props;
 
-        const chartConfig = find(this.context.chartConfig, each => each.id === chartId);
+        const chartConfig = find(this.context.chartConfig, (each) => each.id === chartId);
 
         return {
             chartId,
@@ -86,7 +86,7 @@ export class Chart extends PureComponent<ChartProps> {
     }
 
     public render() {
-        const { origin } = find(this.context.chartConfig, each => each.id === this.props.id);
+        const { origin } = find(this.context.chartConfig, (each) => each.id === this.props.id);
 
         const [x, y] = origin;
 

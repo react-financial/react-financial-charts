@@ -64,7 +64,7 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
         drawOnCanvas(ctx, props);
     };
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const props = this.helper(this.props, moreProps);
         return renderSVG(props);
     };

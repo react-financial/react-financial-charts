@@ -43,7 +43,7 @@ export class SingleValueTooltip extends React.Component<SingleValueTooltipProps>
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { onClick, fontFamily, fontSize, labelFill, valueFill, className } = this.props;
         const {
             xDisplayFormat,

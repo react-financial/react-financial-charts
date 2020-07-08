@@ -147,7 +147,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
         }
     };
 
-    private readonly handleDragComplete = moreProps => {
+    private readonly handleDragComplete = (moreProps) => {
         const { override } = this.state;
         if (isDefined(override)) {
             const { textList } = this.props;

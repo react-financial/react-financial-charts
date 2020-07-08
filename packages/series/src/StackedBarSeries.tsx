@@ -63,7 +63,7 @@ export function identityStack() {
     let keys = [];
     function stack(data) {
         const response = keys.map((key, i) => {
-            const arrays = data.map(d => {
+            const arrays = data.map((d) => {
                 const array = [0, d[key]];
 
                 // @ts-ignore
@@ -76,7 +76,7 @@ export function identityStack() {
         });
         return response;
     }
-    stack.keys = function(x) {
+    stack.keys = function (x) {
         if (!arguments.length) {
             return keys;
         }
@@ -135,8 +135,8 @@ function doStuff(props, xAccessor, plotData, xScale, yScale, stackFn, postRotate
     return bars;
 }
 
-export const rotateXY = array =>
-    array.map(each => {
+export const rotateXY = (array) =>
+    array.map((each) => {
         return {
             ...each,
             x: each.y,
@@ -158,7 +158,7 @@ export function drawOnCanvas2(props, ctx: CanvasRenderingContext2D, bars) {
         const fillStyle = head(values).width <= 1 ? key : colorToRGBA(key, props.opacity);
         ctx.fillStyle = fillStyle;
 
-        values.forEach(d => {
+        values.forEach((d) => {
             if (d.width <= 1) {
                 ctx.fillRect(d.x - 0.5, d.y, 1, d.height);
             } else {
@@ -200,7 +200,7 @@ export function getBars(
 
     const offset = barWidth === 1 ? 0 : 0.5 * width;
 
-    const ds = plotData.map(each => {
+    const ds = plotData.map((each) => {
         const d = {
             appearance: {},
             x: xAccessor(each),
@@ -225,7 +225,7 @@ export function getBars(
 
     const newData = data.map((each, i) => {
         const key = each.key;
-        return each.map(d => {
+        return each.map((d) => {
             const array = [d[0], d[1]];
 
             // @ts-ignore
@@ -239,7 +239,7 @@ export function getBars(
     });
 
     const bars = merge<any>(newData)
-        .map(d => {
+        .map((d) => {
             let y = yScale(d[1]);
             let h = getBase(xScale, yScale, d.data) - yScale(d[1] - d[0]);
             if (h < 0) {
@@ -258,7 +258,7 @@ export function getBars(
                 width: barWidth,
             };
         })
-        .filter(bar => !isNaN(bar.y));
+        .filter((bar) => !isNaN(bar.y));
 
     return after(bars);
 }

@@ -27,10 +27,10 @@ interface SARIndicator {
     options(newOptions: SAROptions): SARIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor(d => d.sar);
+        .accessor((d) => d.sar);
 
     const underlyingAlgorithm = sar();
 

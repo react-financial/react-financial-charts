@@ -40,7 +40,7 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
         ctx.fill();
     };
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { className } = this.props;
 
         const circle = this.helper(this.props, moreProps);

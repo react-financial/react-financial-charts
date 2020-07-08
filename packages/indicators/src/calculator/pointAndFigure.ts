@@ -16,13 +16,13 @@ function createBox(d, dateAccessor, dateMutator) {
 }
 
 function updateColumns(columnData, dateAccessor, dateMutator) {
-    columnData.forEach(function(d) {
+    columnData.forEach(function (d) {
         d.startOfYear = false;
         d.startOfQuarter = false;
         d.startOfMonth = false;
         d.startOfWeek = false;
 
-        d.boxes.forEach(function(eachBox) {
+        d.boxes.forEach(function (eachBox) {
             if (isNotDefined(d.open)) {
                 d.open = eachBox.open;
             }
@@ -67,9 +67,9 @@ function updateColumns(columnData, dateAccessor, dateMutator) {
     return columnData;
 }
 
-export default function() {
+export default function () {
     let options = defaultOptions;
-    let dateAccessor = d => d.date;
+    let dateAccessor = (d) => d.date;
     let dateMutator = (d, date) => {
         d.date = date;
     };
@@ -98,7 +98,7 @@ export default function() {
 
         columnData.push(column);
 
-        rawData.forEach(function(d) {
+        rawData.forEach(function (d) {
             // @ts-ignore
             column.volume = (column.volume || 0) + d.volume;
 

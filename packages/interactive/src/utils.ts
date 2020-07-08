@@ -16,7 +16,7 @@ export function terminate() {
 }
 
 export function saveNodeType(type) {
-    return node => {
+    return (node) => {
         // @ts-ignore
         if (isNotDefined(node) && isDefined(this.nodes[type])) {
             // @ts-ignore
@@ -29,13 +29,13 @@ export function saveNodeType(type) {
     };
 }
 export function isHoverForInteractiveType(interactiveType) {
-    return function(moreProps) {
+    return function (moreProps) {
         // this has to be function as it is bound to this
 
         // @ts-ignore
         if (isDefined(this.nodes)) {
             // @ts-ignore
-            const selecedNodes = this.nodes.map(node => node.isHover(moreProps));
+            const selecedNodes = this.nodes.map((node) => node.isHover(moreProps));
             // @ts-ignore
             const interactive = this.props[interactiveType].map((t, idx) => {
                 return {
@@ -50,7 +50,7 @@ export function isHoverForInteractiveType(interactiveType) {
 
 export function isHover(moreProps) {
     // @ts-ignore
-    const hovering = mapObject(this.nodes, node => node.isHover(moreProps)).reduce((a, b) => {
+    const hovering = mapObject(this.nodes, (node) => node.isHover(moreProps)).reduce((a, b) => {
         return a || b;
     });
     return hovering;
@@ -69,7 +69,7 @@ function getMouseXY(moreProps, [ox, oy]) {
 
 export function getMorePropsForChart(moreProps, chartId) {
     const { chartConfig: chartConfigList } = moreProps;
-    const chartConfig = find(chartConfigList, each => each.id === chartId);
+    const chartConfig = find(chartConfigList, (each) => each.id === chartId);
 
     const { origin } = chartConfig;
     const mouseXY = getMouseXY(moreProps, origin);
@@ -82,8 +82,8 @@ export function getMorePropsForChart(moreProps, chartId) {
 
 export function getSelected(interactives) {
     const selected = interactives
-        .map(each => {
-            const objects = each.objects.filter(obj => {
+        .map((each) => {
+            const objects = each.objects.filter((obj) => {
                 return obj.selected;
             });
             return {
@@ -91,6 +91,6 @@ export function getSelected(interactives) {
                 objects,
             };
         })
-        .filter(each => each.objects.length > 0);
+        .filter((each) => each.objects.length > 0);
     return selected;
 }

@@ -177,7 +177,7 @@ export class EachLinearRegressionChannel extends React.Component<
         );
     }
 
-    private readonly handleHover = moreProps => {
+    private readonly handleHover = (moreProps) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
@@ -185,7 +185,7 @@ export class EachLinearRegressionChannel extends React.Component<
         }
     };
 
-    private readonly handleEdge2Drag = moreProps => {
+    private readonly handleEdge2Drag = (moreProps) => {
         const { index, onDrag, snapTo } = this.props;
         const { x1Value } = this.props;
 
@@ -197,7 +197,7 @@ export class EachLinearRegressionChannel extends React.Component<
         });
     };
 
-    private readonly handleEdge1Drag = moreProps => {
+    private readonly handleEdge1Drag = (moreProps) => {
         const { index, onDrag, snapTo } = this.props;
         const { x2Value } = this.props;
 

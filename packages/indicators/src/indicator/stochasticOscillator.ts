@@ -6,7 +6,7 @@ import baseIndicator from "./baseIndicator";
 
 const ALGORITHM_TYPE = "STO";
 
-export default function() {
+export default function () {
     const base = baseIndicator().type(ALGORITHM_TYPE);
 
     const underlyingAlgorithm = sto();

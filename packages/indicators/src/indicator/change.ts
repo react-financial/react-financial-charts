@@ -26,7 +26,7 @@ interface ChangeIndicator {
     options(newOptions: ChangeOptions): ChangeIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator().type(ALGORITHM_TYPE);
 
     const underlyingAlgorithm = change();

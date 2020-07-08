@@ -28,12 +28,12 @@ interface MACDIndicator {
     options(newOptions: MACDOptions): MACDIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
         .fill(appearanceOptions.fill)
         .stroke(appearanceOptions.stroke)
-        .accessor(d => d.macd);
+        .accessor((d) => d.macd);
 
     const underlyingAlgorithm = macd();
 

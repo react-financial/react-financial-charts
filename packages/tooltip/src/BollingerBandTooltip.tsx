@@ -40,7 +40,7 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { onClick, displayFormat, yAccessor, options, textFill, labelFill } = this.props;
         const { className, displayValuesFor, displayInit, fontFamily, fontSize } = this.props;
 

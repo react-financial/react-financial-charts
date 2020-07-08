@@ -26,10 +26,10 @@ interface ElderRayIndicator {
     options(newOptions: ElderRayOptions): ElderRayIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor(d => d.elderRay);
+        .accessor((d) => d.elderRay);
 
     const underlyingAlgorithm = elderRay();
 

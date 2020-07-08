@@ -3,9 +3,9 @@ import atr from "./atr";
 
 import { Kagi as defaultOptions } from "./defaultOptionsForComputation";
 
-export default function() {
+export default function () {
     let options = defaultOptions;
-    let dateAccessor = d => d.date;
+    let dateAccessor = (d) => d.date;
     let dateMutator = (d, date) => {
         d.date = date;
     };
@@ -27,7 +27,7 @@ export default function() {
                 });
 
             atrCalculator(data);
-            reversalThreshold = d => d["atr" + windowSize];
+            reversalThreshold = (d) => d["atr" + windowSize];
         } else {
             reversalThreshold = functor(reversal);
         }
@@ -59,7 +59,7 @@ export default function() {
             startOfWeek?: any;
         } = {};
 
-        data.forEach(function(d) {
+        data.forEach(function (d) {
             if (isNotDefined(line.from)) {
                 dateMutator(line, dateAccessor(d));
                 line.from = dateAccessor(d);

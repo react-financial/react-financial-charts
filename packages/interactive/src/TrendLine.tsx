@@ -55,7 +55,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
         currentPositionstrokeOpacity: 1,
         currentPositionStrokeWidth: 3,
         currentPositionRadius: 0,
-        shouldDisableSnap: e => e.button === 2 || e.shiftKey,
+        shouldDisableSnap: (e) => e.button === 2 || e.shiftKey,
         hoverText: {
             ...HoverTextNearMouse.defaultProps,
             enable: true,
@@ -190,7 +190,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
 
         if (this.mouseMoved && isDefined(current) && isDefined(current.start)) {
             const newTrends = [
-                ...trends.map(d => ({ ...d, selected: false })),
+                ...trends.map((d) => ({ ...d, selected: false })),
                 {
                     start: current.start,
                     end: xyValue,
@@ -231,7 +231,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
         }
     };
 
-    private readonly handleDrawLine = xyValue => {
+    private readonly handleDrawLine = (xyValue) => {
         const { current } = this.state;
         if (isDefined(current) && isDefined(current.start)) {
             this.mouseMoved = true;
@@ -244,7 +244,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
         }
     };
 
-    private readonly handleDragLineComplete = moreProps => {
+    private readonly handleDragLineComplete = (moreProps) => {
         const { override } = this.state;
         if (isDefined(override)) {
             const { trends } = this.props;

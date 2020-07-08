@@ -48,7 +48,7 @@ interface EachEquidistantChannelState {
 
 export class EachEquidistantChannel extends React.Component<EachEquidistantChannelProps, EachEquidistantChannelState> {
     public static defaultProps = {
-        yDisplayFormat: d => d.toFixed(2),
+        yDisplayFormat: (d) => d.toFixed(2),
         interactive: true,
         selected: false,
         onDrag: noop,
@@ -175,7 +175,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         );
     };
 
-    private readonly handleChannelHeightChange = moreProps => {
+    private readonly handleChannelHeightChange = (moreProps) => {
         const { index, onDrag } = this.props;
 
         const { startXY, endXY } = this.dragStart;
@@ -200,7 +200,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         });
     };
 
-    private readonly handleLine1Edge2Drag = moreProps => {
+    private readonly handleLine1Edge2Drag = (moreProps) => {
         const { index, onDrag } = this.props;
         const { endXY } = this.dragStart;
 
@@ -229,7 +229,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         });
     };
 
-    private readonly handleLine1Edge1Drag = moreProps => {
+    private readonly handleLine1Edge1Drag = (moreProps) => {
         const { index, onDrag } = this.props;
         const { startXY } = this.dragStart;
 
@@ -258,7 +258,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         });
     };
 
-    private readonly handleChannelDrag = moreProps => {
+    private readonly handleChannelDrag = (moreProps) => {
         const { index, onDrag } = this.props;
 
         const { startXY, endXY } = this.dragStart;
@@ -303,7 +303,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         };
     };
 
-    private readonly handleHover = moreProps => {
+    private readonly handleHover = (moreProps) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,

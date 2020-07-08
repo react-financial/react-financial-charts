@@ -5,7 +5,7 @@ import baseIndicator from "./baseIndicator";
 
 const ALGORITHM_TYPE = "Renko";
 
-export default function() {
+export default function () {
     const base = baseIndicator().type(ALGORITHM_TYPE);
 
     const underlyingAlgorithm = renko();

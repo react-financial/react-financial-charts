@@ -32,7 +32,6 @@
     "build": "npm run clean && npm run compile",
     "clean": "rimraf lib",
     "compile": "tsc -p tsconfig.json",
-    "test": "jest",
     "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
   },
   "dependencies": {

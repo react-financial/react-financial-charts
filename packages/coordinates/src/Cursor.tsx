@@ -137,7 +137,7 @@ class Cursor extends React.Component<CursorProps> {
 
             ctx.translate(originX, originY);
 
-            cursors.forEach(line => {
+            cursors.forEach((line) => {
                 const dashArray = getStrokeDasharrayCanvas(line.strokeDasharray);
                 const xShapeFill = this.getXCursorShapeFill(moreProps);
 
@@ -175,7 +175,7 @@ class Cursor extends React.Component<CursorProps> {
         }
     };
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const cursors = this.getXYCursor(this.props, moreProps);
         if (cursors === undefined) {
             return null;

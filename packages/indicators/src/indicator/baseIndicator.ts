@@ -22,7 +22,7 @@ export interface BaseIndicator {
     type(x: string): BaseIndicator;
 }
 
-export default function() {
+export default function () {
     let id = i++;
     let accessor: any;
     let stroke: string | any;

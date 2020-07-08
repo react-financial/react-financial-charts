@@ -152,7 +152,7 @@ export class EachInteractiveYCoordinate extends React.Component<
         );
     }
 
-    private readonly handleCloseIconHover = moreProps => {
+    private readonly handleCloseIconHover = (moreProps) => {
         if (this.state.closeIconHover !== moreProps.hovering) {
             this.setState({
                 closeIconHover: moreProps.hovering,
@@ -160,7 +160,7 @@ export class EachInteractiveYCoordinate extends React.Component<
         }
     };
 
-    private readonly handleHover = moreProps => {
+    private readonly handleHover = (moreProps) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
@@ -169,12 +169,12 @@ export class EachInteractiveYCoordinate extends React.Component<
         }
     };
 
-    private readonly handleDelete = moreProps => {
+    private readonly handleDelete = (moreProps) => {
         const { index, onDelete } = this.props;
         onDelete(index, moreProps);
     };
 
-    private readonly handleDrag = moreProps => {
+    private readonly handleDrag = (moreProps) => {
         const { index, onDrag } = this.props;
         const {
             mouseXY: [, mouseY],
@@ -188,7 +188,7 @@ export class EachInteractiveYCoordinate extends React.Component<
         onDrag(index, newYValue);
     };
 
-    private readonly handleDragStart = moreProps => {
+    private readonly handleDragStart = (moreProps) => {
         const { yValue } = this.props;
         const { mouseXY } = moreProps;
         const {

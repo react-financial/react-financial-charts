@@ -135,7 +135,7 @@ export class RSISeries extends React.Component<RSISeriesProps> {
         );
     }
 
-    private readonly renderClip = moreProps => {
+    private readonly renderClip = (moreProps) => {
         const { chartConfig } = moreProps;
         const { overSold, overBought } = this.props;
         const { yScale, width, height } = chartConfig;

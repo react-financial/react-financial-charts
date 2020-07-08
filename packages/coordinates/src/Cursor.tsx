@@ -1,12 +1,13 @@
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { GenericComponent, getMouseCanvas } from "@react-financial-charts/core";
 
 import {
     colorToRGBA,
     first,
     getStrokeDasharray,
     getStrokeDasharrayCanvas,
+    GenericComponent,
+    getMouseCanvas,
     isNotDefined,
     last,
     strokeDashTypes,

@@ -1,9 +1,7 @@
 import * as React from "react";
 
-import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
+import { isNotDefined, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { drawOnCanvas, renderSVG } from "./EdgeCoordinateV3";
-
-import { isNotDefined } from "@react-financial-charts/core";
 
 interface MouseCoordinateXProps {
     readonly at?: "bottom" | "top";

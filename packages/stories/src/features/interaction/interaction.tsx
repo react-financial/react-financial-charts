@@ -77,4 +77,4 @@ class Interaction extends React.Component<ChartProps> {
     };
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(Interaction)));
+export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(Interaction)));

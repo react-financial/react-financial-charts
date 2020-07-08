@@ -68,4 +68,4 @@ class ElderRayIndicator extends React.Component<ChartProps> {
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(ElderRayIndicator)));
+export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(ElderRayIndicator)));

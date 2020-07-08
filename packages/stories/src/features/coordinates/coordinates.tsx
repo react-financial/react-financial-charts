@@ -62,4 +62,4 @@ class Coordinates extends React.Component<ChartProps> {
     };
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(Coordinates)));
+export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(Coordinates)));

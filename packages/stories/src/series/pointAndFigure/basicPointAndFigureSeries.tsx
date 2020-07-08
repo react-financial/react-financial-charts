@@ -60,6 +60,10 @@ class BasicPointAndFigureSeries extends React.Component<ChartProps> {
     };
 }
 
-export const Daily = withOHLCData()(withSize()(withDeviceRatio()(BasicPointAndFigureSeries)));
+export const Daily = withOHLCData()(
+    withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicPointAndFigureSeries)),
+);
 
-export const Intraday = withOHLCData("MSFT_INTRA_DAY")(withSize()(withDeviceRatio()(BasicPointAndFigureSeries)));
+export const Intraday = withOHLCData("MSFT_INTRA_DAY")(
+    withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicPointAndFigureSeries)),
+);

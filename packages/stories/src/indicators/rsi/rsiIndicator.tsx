@@ -67,4 +67,4 @@ class RSIIndicator extends React.Component<ChartProps> {
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(RSIIndicator)));
+export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(RSIIndicator)));

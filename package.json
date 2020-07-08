@@ -41,6 +41,7 @@
   "devDependencies": {
     "@babel/core": "^7.10.3",
     "@storybook/addon-docs": "^5.3.19",
+    "@storybook/addon-essentials": "^5.3.19",
     "@storybook/react": "^5.3.19",
     "@storybook/theming": "^5.3.19",
     "@types/d3-array": "^2.0.0",

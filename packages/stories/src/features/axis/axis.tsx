@@ -62,4 +62,4 @@ class AxisExample extends React.Component<ChartProps> {
     };
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(AxisExample)));
+export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(AxisExample)));

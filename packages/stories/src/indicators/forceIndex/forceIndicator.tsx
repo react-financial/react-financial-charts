@@ -80,4 +80,4 @@ class ForceIndicator extends React.Component<ChartProps> {
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(ForceIndicator)));
+export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(ForceIndicator)));

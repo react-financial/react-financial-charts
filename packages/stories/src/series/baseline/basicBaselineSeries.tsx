@@ -60,6 +60,8 @@ class BasicBaselineSeries extends React.Component<ChartProps> {
     };
 }
 
-export const Daily = withOHLCData()(withSize()(withDeviceRatio()(BasicBaselineSeries)));
+export const Daily = withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicBaselineSeries)));
 
-export const Intraday = withOHLCData("MSFT_INTRA_DAY")(withSize()(withDeviceRatio()(BasicBaselineSeries)));
+export const Intraday = withOHLCData("MSFT_INTRA_DAY")(
+    withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicBaselineSeries)),
+);

@@ -91,4 +91,4 @@ class EMAIndicator extends React.Component<ChartProps> {
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(EMAIndicator)));
+export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(EMAIndicator)));

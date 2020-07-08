@@ -1,7 +1,7 @@
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
-import { functor, identity, isDefined, isNotDefined, noop } from "./utils";
+import { functor, identity, isDefined, noop } from "./utils";
 
 const aliases = {
     mouseleave: "mousemove", // to draw interactive after mouse exit
@@ -75,7 +75,6 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         margin: PropTypes.object.isRequired,
         chartId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         getCanvasContexts: PropTypes.func,
-        chartCanvasType: PropTypes.string,
         xScale: PropTypes.func.isRequired,
         xAccessor: PropTypes.func.isRequired,
         displayXAccessor: PropTypes.func.isRequired,
@@ -320,17 +319,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         const proceed = this.props.drawOn.indexOf(type) > -1;
 
         if (proceed || this.props.selected /* this is to draw as soon as you select */ || force) {
-            const { chartCanvasType } = this.context;
-            const { canvasDraw } = this.props;
-
-            if (isNotDefined(canvasDraw) || chartCanvasType === "svg") {
-                const { updateCount } = this.state;
-                this.setState({
-                    updateCount: updateCount + 1,
-                });
-            } else {
-                this.drawOnCanvas();
-            }
+            this.drawOnCanvas();
         }
     }
 
@@ -363,7 +352,6 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     }
 
     public componentDidUpdate(prevProps) {
-        const { chartCanvasType } = this.context;
         const { canvasDraw, selected, interactiveCursorClass } = this.props;
 
         if (prevProps.selected !== selected) {
@@ -376,7 +364,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
                 setCursorClass(null);
             }
         }
-        if (isDefined(canvasDraw) && !this.evaluationInProgress && chartCanvasType !== "svg") {
+        if (isDefined(canvasDraw) && !this.evaluationInProgress) {
             this.updateMoreProps(this.moreProps);
             this.drawOnCanvas();
         }
@@ -448,17 +436,16 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         const contexts = getCanvasContexts();
 
         const ctx = canvasToDraw(contexts);
-
         this.preCanvasDraw(ctx, moreProps);
         canvasDraw(ctx, moreProps);
         this.postCanvasDraw(ctx, moreProps);
     }
 
     public render() {
-        const { chartCanvasType, chartId } = this.context;
+        const { chartId } = this.context;
         const { canvasDraw, clip, svgDraw } = this.props;
 
-        if (isDefined(canvasDraw) && chartCanvasType !== "svg") {
+        if (isDefined(canvasDraw)) {
             return null;
         }
 

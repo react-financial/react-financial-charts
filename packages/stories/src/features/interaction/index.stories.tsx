@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ChartCanvas } from "@react-financial-charts/core";
 import {
+    ChartCanvas,
     lastVisibleItemBasedZoomAnchor,
     mouseBasedZoomAnchor,
     rightDomainBasedZoomAnchor,

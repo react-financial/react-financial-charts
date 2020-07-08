@@ -1,11 +1,16 @@
 import { format } from "d3-format";
 import * as React from "react";
-
-import { GenericChartComponent } from "@react-financial-charts/core";
-import { getAxisCanvas } from "@react-financial-charts/core";
+import {
+    first,
+    functor,
+    isDefined,
+    getAxisCanvas,
+    GenericChartComponent,
+    last,
+    noop,
+    strokeDashTypes,
+} from "@react-financial-charts/core";
 import { drawOnCanvas, renderSVG } from "./EdgeCoordinateV3";
-
-import { first, functor, isDefined, last, noop, strokeDashTypes } from "@react-financial-charts/core";
 
 interface EdgeIndicatorProps {
     readonly arrowWidth?: number;

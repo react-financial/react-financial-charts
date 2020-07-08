@@ -14,7 +14,6 @@ export class GenericChartComponent extends GenericComponent {
         margin: PropTypes.object.isRequired,
         chartId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         getCanvasContexts: PropTypes.func,
-        chartCanvasType: PropTypes.string,
         xScale: PropTypes.func.isRequired,
         xAccessor: PropTypes.func.isRequired,
         displayXAccessor: PropTypes.func.isRequired,

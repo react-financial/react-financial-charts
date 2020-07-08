@@ -9,19 +9,25 @@ plugins:
 extends:
     - "eslint:recommended"
     - "plugin:react/recommended"
-    - "plugin:jest/recommended"
     - "plugin:@typescript-eslint/eslint-recommended"
     - "plugin:@typescript-eslint/recommended"
     - "prettier/@typescript-eslint"
     - "plugin:prettier/recommended"
+    - "plugin:jest/recommended"
 rules:
     "@typescript-eslint/explicit-module-boundary-types": off
     "@typescript-eslint/interface-name-prefix": off
     "@typescript-eslint/no-non-null-assertion": off
     "@typescript-eslint/ban-ts-comment": off
     "@typescript-eslint/ban-types": off
+    "react/display-name": off
     "react/prop-types": off
-    prefer-rest-params: 0
+    "arrow-spacing": error
+    "curly": error
+    "no-duplicate-imports": error
+    "no-multiple-empty-lines": error
+    "no-var": error
+    "prefer-rest-params": 0
 settings:
   react:
     version: detect

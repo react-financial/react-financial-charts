@@ -5,7 +5,6 @@ import * as React from "react";
 import { Chart } from "../Chart";
 
 import {
-    find,
     functor,
     getClosestItem,
     isDefined,
@@ -50,7 +49,7 @@ function isArraySize2AndNumber(yExtentsProp) {
     return false;
 }
 
-export function getNewChartConfig(innerDimension, children, existingChartConfig = []) {
+export function getNewChartConfig(innerDimension, children, existingChartConfig: any[] = []) {
     return React.Children.map(children, (each) => {
         if (each && each.type.toString() === Chart.toString()) {
             const chartProps = {
@@ -76,7 +75,7 @@ export function getNewChartConfig(innerDimension, children, existingChartConfig 
                 ? (Array.isArray(yExtentsProp) ? yExtentsProp : [yExtentsProp]).map(functor)
                 : undefined;
 
-            const prevChartConfig = find(existingChartConfig, (d) => d.id === id);
+            const prevChartConfig = existingChartConfig.find((d) => d.id === id);
 
             if (isArraySize2AndNumber(yExtentsProp)) {
                 if (

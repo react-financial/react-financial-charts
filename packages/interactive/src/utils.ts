@@ -1,4 +1,4 @@
-import { find, isDefined, isNotDefined, mapObject } from "@react-financial-charts/core";
+import { isDefined, isNotDefined, mapObject } from "@react-financial-charts/core";
 
 export function getValueFromOverride(override, index, key, defaultValue) {
     if (isDefined(override) && override.index === index) {
@@ -69,7 +69,7 @@ function getMouseXY(moreProps, [ox, oy]) {
 
 export function getMorePropsForChart(moreProps, chartId) {
     const { chartConfig: chartConfigList } = moreProps;
-    const chartConfig = find(chartConfigList, (each) => each.id === chartId);
+    const chartConfig = chartConfigList.find((each) => each.id === chartId);
 
     const { origin } = chartConfig;
     const mouseXY = getMouseXY(moreProps, origin);

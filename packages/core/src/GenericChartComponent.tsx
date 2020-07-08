@@ -1,7 +1,7 @@
 import * as PropTypes from "prop-types";
 
 import { GenericComponent } from "./GenericComponent";
-import { find, isDefined } from "./utils";
+import { isDefined } from "./utils";
 
 const ALWAYS_TRUE_TYPES = ["drag", "dragend"];
 
@@ -84,7 +84,7 @@ export class GenericChartComponent extends GenericComponent {
 
         if (chartConfigList && Array.isArray(chartConfigList)) {
             const { chartId } = this.context;
-            const chartConfig = find(chartConfigList, (each) => each.id === chartId);
+            const chartConfig = chartConfigList.find((each) => each.id === chartId);
             this.moreProps.chartConfig = chartConfig;
         }
         if (isDefined(this.moreProps.chartConfig)) {

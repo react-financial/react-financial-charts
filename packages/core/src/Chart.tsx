@@ -2,13 +2,13 @@ import { scaleLinear } from "d3-scale";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
-import { find, PureComponent } from "./utils";
+import { PureComponent } from "./utils";
 
 interface ChartProps {
     readonly flipYScale?: boolean;
     readonly height?: number;
     readonly id: number | string;
-    readonly onContextMenu?: (props: any, event: React.MouseEvent) => void;
+    readonly onContextMenu?: (event: React.MouseEvent, props: unknown) => void;
     readonly origin?: number[] | ((width: number, height: number) => number[]);
     readonly padding?: number | { top: number; bottom: number };
     readonly yExtents?: number[] | ((data: any) => number) | ((data: any) => number[]);
@@ -56,28 +56,10 @@ export class Chart extends PureComponent<ChartProps> {
         unsubscribe(`chart_${id}`);
     }
 
-    public readonly listener = (type, moreProps, state, e) => {
-        const { id, onContextMenu } = this.props;
-
-        if (type === "contextmenu") {
-            const { currentCharts } = moreProps;
-            if (currentCharts.indexOf(id) > -1) {
-                if (onContextMenu !== undefined) {
-                    onContextMenu(moreProps, e);
-                }
-            }
-        }
-    };
-
-    public readonly yScale = () => {
-        const chartConfig = find(this.context.chartConfig, (each) => each.id === this.props.id);
-        return chartConfig.yScale.copy();
-    };
-
     public getChildContext() {
         const { id: chartId } = this.props;
 
-        const chartConfig = find(this.context.chartConfig, (each) => each.id === chartId);
+        const chartConfig = this.context.chartConfig.find((each) => each.id === chartId);
 
         return {
             chartId,
@@ -86,10 +68,26 @@ export class Chart extends PureComponent<ChartProps> {
     }
 
     public render() {
-        const { origin } = find(this.context.chartConfig, (each) => each.id === this.props.id);
+        const { origin } = this.context.chartConfig.find((each) => each.id === this.props.id);
 
         const [x, y] = origin;
 
         return <g transform={`translate(${x}, ${y})`}>{this.props.children}</g>;
     }
+
+    private readonly listener = (type: string, moreProps, state, e) => {
+        const { id, onContextMenu } = this.props;
+
+        switch (type) {
+            case "contextmenu": {
+                const { currentCharts } = moreProps;
+                if (currentCharts.indexOf(id) > -1) {
+                    if (onContextMenu !== undefined) {
+                        onContextMenu(e, moreProps);
+                    }
+                }
+                break;
+            }
+        }
+    };
 }

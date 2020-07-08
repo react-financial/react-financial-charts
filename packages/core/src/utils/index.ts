@@ -91,16 +91,6 @@ export function getClosestValue(inputValue, currentValue) {
     return currentValue + diff;
 }
 
-// @ts-ignore
-export function find(list, predicate, context = this) {
-    for (let i = 0; i < list.length; ++i) {
-        if (predicate.call(context, list[i], i, list)) {
-            return list[i];
-        }
-    }
-    return undefined;
-}
-
 export function d3Window(node) {
     const d3win =
         node && ((node.ownerDocument && node.ownerDocument.defaultView) || (node.document && node) || node.defaultView);

@@ -60,6 +60,8 @@ class BasicRenkoSeries extends React.Component<ChartProps> {
     };
 }
 
-export const Daily = withOHLCData()(withSize()(withDeviceRatio()(BasicRenkoSeries)));
+export const Daily = withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicRenkoSeries)));
 
-export const Intraday = withOHLCData("MSFT_INTRA_DAY")(withSize()(withDeviceRatio()(BasicRenkoSeries)));
+export const Intraday = withOHLCData("MSFT_INTRA_DAY")(
+    withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicRenkoSeries)),
+);

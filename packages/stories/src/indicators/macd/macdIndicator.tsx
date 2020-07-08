@@ -86,4 +86,4 @@ class MACDIndicator extends React.Component<ChartProps> {
     }
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(MACDIndicator)));
+export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(MACDIndicator)));

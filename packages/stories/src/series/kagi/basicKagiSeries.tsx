@@ -59,6 +59,8 @@ class BasicKagiSeries extends React.Component<ChartProps> {
     };
 }
 
-export const Daily = withOHLCData()(withSize()(withDeviceRatio()(BasicKagiSeries)));
+export const Daily = withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicKagiSeries)));
 
-export const Intraday = withOHLCData("MSFT_INTRA_DAY")(withSize()(withDeviceRatio()(BasicKagiSeries)));
+export const Intraday = withOHLCData("MSFT_INTRA_DAY")(
+    withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicKagiSeries)),
+);

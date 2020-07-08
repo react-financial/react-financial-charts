@@ -69,4 +69,4 @@ class BollingerIndicator extends React.Component<ChartProps> {
     };
 }
 
-export default withOHLCData()(withSize()(withDeviceRatio()(BollingerIndicator)));
+export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BollingerIndicator)));

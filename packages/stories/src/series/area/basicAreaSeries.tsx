@@ -3,8 +3,8 @@ import { Chart, ChartCanvas } from "@react-financial-charts/core";
 import { XAxis, YAxis } from "@react-financial-charts/axes";
 import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
 import { AreaSeries } from "@react-financial-charts/series";
-import { IOHLCData, withOHLCData } from "../../data";
 import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
+import { IOHLCData, withOHLCData } from "../../data";
 
 interface ChartProps {
     readonly data: IOHLCData[];
@@ -59,6 +59,8 @@ class BasicAreaSeries extends React.Component<ChartProps> {
     };
 }
 
-export const Daily = withOHLCData()(withSize()(withDeviceRatio()(BasicAreaSeries)));
+export const Daily = withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicAreaSeries)));
 
-export const Intraday = withOHLCData("MSFT_INTRA_DAY")(withSize()(withDeviceRatio()(BasicAreaSeries)));
+export const Intraday = withOHLCData("MSFT_INTRA_DAY")(
+    withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicAreaSeries)),
+);

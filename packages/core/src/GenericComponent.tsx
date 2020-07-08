@@ -314,7 +314,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     }
 
     // @ts-ignore
-    public draw({ trigger, force } = { force: false }) {
+    public draw({ trigger, force }: { force: boolean; trigger: string } = { force: false }) {
         const type = aliases[trigger] || trigger;
         const proceed = this.props.drawOn.indexOf(type) > -1;
 
@@ -429,6 +429,10 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
 
     public drawOnCanvas() {
         const { canvasDraw, canvasToDraw } = this.props;
+        if (canvasDraw === undefined) {
+            return;
+        }
+
         const { getCanvasContexts } = this.context;
 
         const moreProps = this.getMoreProps();
@@ -436,9 +440,11 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         const contexts = getCanvasContexts();
 
         const ctx = canvasToDraw(contexts);
-        this.preCanvasDraw(ctx, moreProps);
-        canvasDraw(ctx, moreProps);
-        this.postCanvasDraw(ctx, moreProps);
+        if (ctx !== undefined) {
+            this.preCanvasDraw(ctx, moreProps);
+            canvasDraw(ctx, moreProps);
+            this.postCanvasDraw(ctx, moreProps);
+        }
     }
 
     public render() {

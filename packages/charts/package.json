@@ -31,8 +31,7 @@
   "scripts": {
     "build": "npm run clean && npm run compile",
     "clean": "rimraf lib",
-    "compile": "tsc -p tsconfig.json",
-    "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
+    "compile": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@react-financial-charts/annotations": "file:../annotations",

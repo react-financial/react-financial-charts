@@ -14,9 +14,9 @@ interface OHLCSeriesProps {
 export class OHLCSeries extends React.Component<OHLCSeriesProps> {
     public static defaultProps = {
         className: "react-financial-charts-ohlc",
-        yAccessor: d => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
-        classNames: d => (isDefined(d.absoluteChange) ? (d.absoluteChange > 0 ? "up" : "down") : "firstbar"),
-        stroke: d => (isDefined(d.absoluteChange) ? (d.absoluteChange > 0 ? "#26a69a" : "#ef5350") : "#000000"),
+        yAccessor: (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
+        classNames: (d) => (isDefined(d.absoluteChange) ? (d.absoluteChange > 0 ? "up" : "down") : "firstbar"),
+        stroke: (d) => (isDefined(d.absoluteChange) ? (d.absoluteChange > 0 ? "#26a69a" : "#ef5350") : "#000000"),
         strokeWidth: 1,
         clip: true,
     };
@@ -61,8 +61,8 @@ export class OHLCSeries extends React.Component<OHLCSeriesProps> {
         const strokeWidth = Math.min(barWidth, strokeWidthProp);
 
         const bars = plotData
-            .filter(d => isDefined(yAccessor(d).close))
-            .map(d => {
+            .filter((d) => isDefined(yAccessor(d).close))
+            .map((d) => {
                 const ohlc = yAccessor(d);
                 const x = Math.round(xScale(xAccessor(d)));
                 const y1 = yScale(ohlc.high);
@@ -91,7 +91,7 @@ export class OHLCSeries extends React.Component<OHLCSeriesProps> {
 
         wickNest.forEach((values, key) => {
             ctx.strokeStyle = key;
-            values.forEach(d => {
+            values.forEach((d) => {
                 ctx.beginPath();
                 ctx.moveTo(d.x, d.y1);
                 ctx.lineTo(d.x, d.y2);

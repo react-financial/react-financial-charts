@@ -46,7 +46,7 @@ interface MACDCalculator {
     options(newOptions: MACDOptions): MACDCalculator;
 }
 
-export default function() {
+export default function () {
     let options: MACDOptions = defaultOptions;
 
     const calculator = (data: any[]) => {
@@ -58,13 +58,13 @@ export default function() {
 
         const signalEMA = ema().options({ windowSize: signal, sourcePath: undefined });
 
-        const diff = zip(fastEMA(data), slowEMA(data)).map(d =>
+        const diff = zip(fastEMA(data), slowEMA(data)).map((d) =>
             d[0] !== undefined && d[1] !== undefined ? d[0] - d[1] : undefined,
         );
 
         const averageDiff = signalEMA(diff);
 
-        return zip(diff, averageDiff).map(d => ({
+        return zip(diff, averageDiff).map((d) => ({
             macd: d[0],
             signal: d[1],
             divergence: d[0] !== undefined && d[1] !== undefined ? d[0] - d[1] : undefined,

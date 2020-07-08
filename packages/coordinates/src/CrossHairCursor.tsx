@@ -52,7 +52,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
         );
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const lines = this.helper(this.props, moreProps);
         if (lines === undefined) {
             return null;
@@ -83,7 +83,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
 
             ctx.translate(originX, originY);
 
-            lines.forEach(line => {
+            lines.forEach((line) => {
                 const dashArray = getStrokeDasharrayCanvas(line.strokeDasharray);
 
                 ctx.strokeStyle = colorToRGBA(line.stroke, line.opacity);

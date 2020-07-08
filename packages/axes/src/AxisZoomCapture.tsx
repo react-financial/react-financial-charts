@@ -107,11 +107,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
             }
         }
 
-        select(d3Window(this.node))
-            .on(MOUSEMOVE, null)
-            .on(MOUSEUP, null)
-            .on(TOUCHMOVE, null)
-            .on(TOUCHEND, null);
+        select(d3Window(this.node)).on(MOUSEMOVE, null).on(MOUSEUP, null).on(TOUCHMOVE, null).on(TOUCHEND, null);
 
         this.setState({
             startPosition: null,
@@ -138,7 +134,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
 
             const tempRange = startScale
                 .range()
-                .map(d => (inverted ? d - sign(d - center) * diff : d + sign(d - center) * diff));
+                .map((d) => (inverted ? d - sign(d - center) * diff : d + sign(d - center) * diff));
 
             const newDomain = tempRange.map(startScale.invert);
 
@@ -151,7 +147,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         }
     };
 
-    private readonly handleDragStartTouch = e => {
+    private readonly handleDragStartTouch = (e) => {
         this.mouseInteraction = false;
 
         const { getScale, getMoreProps } = this.props;
@@ -159,9 +155,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         this.dragHappened = false;
 
         if (e.touches.length === 1 && startScale.invert) {
-            select(d3Window(this.node))
-                .on(TOUCHMOVE, this.handleDrag)
-                .on(TOUCHEND, this.handleDragEnd);
+            select(d3Window(this.node)).on(TOUCHMOVE, this.handleDrag).on(TOUCHEND, this.handleDragEnd);
 
             const startXY = touchPosition(getTouchProps(e.touches[0]), e);
 
@@ -174,7 +168,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         }
     };
 
-    private readonly handleDragStartMouse = e => {
+    private readonly handleDragStartMouse = (e) => {
         this.mouseInteraction = true;
 
         const { getScale, getMoreProps } = this.props;
@@ -182,9 +176,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         this.dragHappened = false;
 
         if (startScale.invert) {
-            select(d3Window(this.node))
-                .on(MOUSEMOVE, this.handleDrag, false)
-                .on(MOUSEUP, this.handleDragEnd, false);
+            select(d3Window(this.node)).on(MOUSEMOVE, this.handleDrag, false).on(MOUSEUP, this.handleDragEnd, false);
 
             const startXY = mousePosition(e);
 
@@ -198,7 +190,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         e.preventDefault();
     };
 
-    private readonly handleRightClick = e => {
+    private readonly handleRightClick = (e) => {
         e.stopPropagation();
         e.preventDefault();
 
@@ -206,9 +198,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
 
         const mouseXY = mousePosition(e, this.node.getBoundingClientRect());
 
-        select(d3Window(this.node))
-            .on(MOUSEMOVE, null)
-            .on(MOUSEUP, null);
+        select(d3Window(this.node)).on(MOUSEMOVE, null).on(MOUSEUP, null);
         this.setState({
             startPosition: null,
         });
@@ -216,7 +206,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         onContextMenu(mouseXY, e);
     };
 
-    private readonly saveNode = node => {
+    private readonly saveNode = (node) => {
         this.node = node;
     };
 }

@@ -25,7 +25,7 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
         this.drawOnCanvasHelper(ctx, points);
     };
 
-    private readonly getMarkers = moreProps => {
+    private readonly getMarkers = (moreProps) => {
         const { yAccessor, markerProvider, markerProps } = this.props;
         let { marker: Marker } = this.props;
         const {
@@ -39,7 +39,7 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
             throw new Error("required prop, either marker or markerProvider missing");
         }
 
-        return plotData.map(d => {
+        return plotData.map((d) => {
             if (markerProvider) {
                 Marker = markerProvider(d);
             }
@@ -66,9 +66,9 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
         const nest = group(
             points,
             // @ts-ignore
-            d => d.fill,
+            (d) => d.fill,
             // @ts-ignore
-            d => d.stroke,
+            (d) => d.stroke,
         );
 
         nest.forEach((fillValues, fillKey) => {
@@ -77,9 +77,9 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
                 ctx.fillStyle = fillKey;
             }
 
-            fillValues.forEach(strokeValues => {
+            fillValues.forEach((strokeValues) => {
                 // @ts-ignore
-                strokeValues.forEach(point => {
+                strokeValues.forEach((point) => {
                     const { marker } = point;
                     marker.drawOnCanvas({ ...marker.defaultProps, ...markerProps, fill: fillKey }, point, ctx);
                 });

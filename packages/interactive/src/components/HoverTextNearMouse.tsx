@@ -58,7 +58,7 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
         }
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { fontFamily, fontSize, fill, bgFill, bgOpacity } = this.props;
 
         const textMetaData = helper(
@@ -134,7 +134,7 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
         }
     };
 
-    private readonly saveNode = node => {
+    private readonly saveNode = (node) => {
         this.textNode = node;
     };
 }

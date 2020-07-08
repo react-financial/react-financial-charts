@@ -77,7 +77,7 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
         drawOnCanvas(ctx, props);
     };
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const props = this.helper(this.props, moreProps);
         if (isNotDefined(props)) {
             return null;

@@ -27,10 +27,10 @@ interface TMAIndicator {
     options(newOptions: TMAOptions): TMAIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor(d => d.tma);
+        .accessor((d) => d.tma);
 
     const underlyingAlgorithm = tma();
 

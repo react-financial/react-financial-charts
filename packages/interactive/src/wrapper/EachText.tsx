@@ -141,7 +141,7 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
         );
     }
 
-    private readonly handleHover = moreProps => {
+    private readonly handleHover = (moreProps) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
@@ -149,7 +149,7 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
         }
     };
 
-    private readonly handleDrag = moreProps => {
+    private readonly handleDrag = (moreProps) => {
         const { index, onDrag } = this.props;
         const {
             mouseXY: [, mouseY],
@@ -168,7 +168,7 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
         onDrag(index, xyValue);
     };
 
-    private readonly handleDragStart = moreProps => {
+    private readonly handleDragStart = (moreProps) => {
         const { position } = this.props;
         const { mouseXY } = moreProps;
         const {

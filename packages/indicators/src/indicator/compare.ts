@@ -27,10 +27,10 @@ interface CompareIndicator {
     options(newOptions: CompareOptions): CompareIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor(d => d.compare);
+        .accessor((d) => d.compare);
 
     const underlyingAlgorithm = compare();
 

@@ -80,17 +80,17 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
         return yScale(0);
     };
 
-    private readonly yAccessorForDivergence = d => {
+    private readonly yAccessorForDivergence = (d) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && yAccessor(d).divergence;
     };
 
-    private readonly yAccessorForSignal = d => {
+    private readonly yAccessorForSignal = (d) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && yAccessor(d).signal;
     };
 
-    private readonly yAccessorForMACD = d => {
+    private readonly yAccessorForMACD = (d) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && yAccessor(d).macd;
     };

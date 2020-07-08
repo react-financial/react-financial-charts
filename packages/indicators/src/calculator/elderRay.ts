@@ -37,9 +37,9 @@ export interface ElderRayOptions {
     readonly windowSize: number;
 }
 
-export default function() {
+export default function () {
     let options = defaultOptions;
-    let ohlc = d => ({ open: d.open, high: d.high, low: d.low, close: d.close });
+    let ohlc = (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close });
 
     const calculator = (data: any[]) => {
         const { windowSize, sourcePath, movingAverageType } = options;
@@ -49,10 +49,10 @@ export default function() {
                 ? ema().options({ windowSize, sourcePath })
                 : slidingWindow()
                       .windowSize(windowSize)
-                      .accumulator(values => mean(values))
+                      .accumulator((values) => mean(values))
                       .sourcePath(sourcePath);
 
-        return zip(data, meanAlgorithm(data)).map(d => {
+        return zip(data, meanAlgorithm(data)).map((d) => {
             const datum = d[0];
             const meanValue = d[1];
 

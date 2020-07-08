@@ -84,7 +84,7 @@ interface OHLCTooltipProps {
 
 export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
     public static defaultProps = {
-        accessor: d => {
+        accessor: (d) => {
             return {
                 date: d.date,
                 open: d.open,
@@ -109,7 +109,7 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const {
             displayValuesFor,
             xDisplayFormat,

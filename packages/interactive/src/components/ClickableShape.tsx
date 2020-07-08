@@ -81,7 +81,7 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
         ctx.stroke();
     };
 
-    private readonly isHover = moreProps => {
+    private readonly isHover = (moreProps) => {
         const { mouseXY } = moreProps;
         if (this.closeIcon) {
             const { textBox } = this.props;

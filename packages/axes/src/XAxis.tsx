@@ -107,7 +107,7 @@ export class XAxis extends React.Component<XAxisProps> {
         );
     }
 
-    private readonly axisZoomCallback = newXDomain => {
+    private readonly axisZoomCallback = (newXDomain) => {
         const { xAxisZoom } = this.context;
 
         xAxisZoom(newXDomain);
@@ -161,16 +161,13 @@ export class XAxis extends React.Component<XAxisProps> {
         return 8;
     };
 
-    private readonly getXScale = moreProps => {
+    private readonly getXScale = (moreProps) => {
         const { xScale: scale, width } = moreProps;
 
         if (scale.invert) {
             const trueRange = [0, width];
             const trueDomain = trueRange.map(scale.invert);
-            return scale
-                .copy()
-                .domain(trueDomain)
-                .range(trueRange);
+            return scale.copy().domain(trueDomain).range(trueRange);
         }
 
         return scale;

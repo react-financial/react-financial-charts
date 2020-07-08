@@ -70,7 +70,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
         );
     }
 
-    private readonly isHover = moreProps => {
+    private readonly isHover = (moreProps) => {
         const { onHover } = this.props;
 
         if (isDefined(onHover) && isDefined(this.textWidth) && !this.calculateTextWidth) {

@@ -30,14 +30,14 @@ import identity from "./identity";
 import { functor } from "./index";
 import noop from "./noop";
 
-export default function() {
+export default function () {
     let accumulateTill = functor(false);
     let accumulator = noop;
     let value = identity;
     let discardTillStart = false;
     let discardTillEnd = false;
 
-    const accumulatingWindow = function(data) {
+    const accumulatingWindow = function (data) {
         let accumulatedWindow: any[] | undefined = discardTillStart ? undefined : [];
         const response: any[] = [];
         let accumulatorIdx = 0;
@@ -64,35 +64,35 @@ export default function() {
         return response;
     };
 
-    accumulatingWindow.accumulateTill = function(x) {
+    accumulatingWindow.accumulateTill = function (x) {
         if (!arguments.length) {
             return accumulateTill;
         }
         accumulateTill = functor(x);
         return accumulatingWindow;
     };
-    accumulatingWindow.accumulator = function(x) {
+    accumulatingWindow.accumulator = function (x) {
         if (!arguments.length) {
             return accumulator;
         }
         accumulator = x;
         return accumulatingWindow;
     };
-    accumulatingWindow.value = function(x) {
+    accumulatingWindow.value = function (x) {
         if (!arguments.length) {
             return value;
         }
         value = x;
         return accumulatingWindow;
     };
-    accumulatingWindow.discardTillStart = function(x) {
+    accumulatingWindow.discardTillStart = function (x) {
         if (!arguments.length) {
             return discardTillStart;
         }
         discardTillStart = x;
         return accumulatingWindow;
     };
-    accumulatingWindow.discardTillEnd = function(x) {
+    accumulatingWindow.discardTillEnd = function (x) {
         if (!arguments.length) {
             return discardTillEnd;
         }

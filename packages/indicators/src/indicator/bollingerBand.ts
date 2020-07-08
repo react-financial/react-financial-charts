@@ -26,7 +26,7 @@ interface BollingerBandIndicator {
     options(newOptions: BollingerBandOptions): BollingerBandIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator().type(ALGORITHM_TYPE);
 
     const underlyingAlgorithm = bollingerband();

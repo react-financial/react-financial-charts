@@ -63,7 +63,7 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
         );
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;
         const { x1, y1, x2, y2, dy } = helper(this.props, moreProps);
         const line = {
@@ -119,7 +119,7 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
         ctx.stroke();
     };
 
-    private readonly isHover = moreProps => {
+    private readonly isHover = (moreProps) => {
         const { tolerance, onHover } = this.props;
 
         if (isDefined(onHover)) {
@@ -139,14 +139,14 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
 }
 
 export function edge1Provider(props) {
-    return function(moreProps) {
+    return function (moreProps) {
         const { x1, y1 } = helper(props, moreProps);
         return [x1, y1];
     };
 }
 
 export function edge2Provider(props) {
-    return function(moreProps) {
+    return function (moreProps) {
         const { x2, y2 } = helper(props, moreProps);
         return [x2, y2];
     };
@@ -170,14 +170,14 @@ function helper(props, moreProps) {
 
     const array = fullData.slice(startIndex, endIndex);
 
-    const xs = array.map(d => xAccessor(d).valueOf());
-    const ys = array.map(d => d.close);
+    const xs = array.map((d) => xAccessor(d).valueOf());
+    const ys = array.map((d) => d.close);
     const n = array.length;
 
-    const xys = zip<number>(xs, ys).map(d => {
+    const xys = zip<number>(xs, ys).map((d) => {
         return d[0] * d[1];
     });
-    const xSquareds = xs.map(x => Math.pow(x, 2));
+    const xSquareds = xs.map((x) => Math.pow(x, 2));
 
     const b = (n * sum(xys) - sum(xs) * sum(ys)) / (n * sum(xSquareds) - Math.pow(sum(xs), 2));
     const a = (sum(ys) - b * sum(xs)) / n;
@@ -190,7 +190,7 @@ function helper(props, moreProps) {
     const x2 = xScale(x2Value);
     const y2 = yScale(newy2);
 
-    const stdDev = type === "SD" ? deviation<any>(array, d => d.close) : 0;
+    const stdDev = type === "SD" ? deviation<any>(array, (d) => d.close) : 0;
 
     const dy = yScale(newy1 - stdDev!) - y1;
 

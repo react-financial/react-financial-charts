@@ -200,7 +200,7 @@ function tickHelper(props, scale) {
         canvas_dy = sign < 0 ? 0 : fontSize * 0.71;
         textAnchor = "middle";
 
-        ticks = tickValues.map(d => {
+        ticks = tickValues.map((d) => {
             const x = Math.round(scale(d));
             return {
                 value: d,
@@ -214,10 +214,10 @@ function tickHelper(props, scale) {
         });
 
         if (showTicks) {
-            const nodes = ticks.map(d => ({ id: d.value, value: d.value, fy: d.y2, origX: d.x1 }));
+            const nodes = ticks.map((d) => ({ id: d.value, value: d.value, fy: d.y2, origX: d.x1 }));
 
             const simulation = forceSimulation(nodes)
-                .force("x", forceX<any>(d => d.origX).strength(1))
+                .force("x", forceX<any>((d) => d.origX).strength(1))
                 .force("collide", forceCollide(22))
                 .stop();
 
@@ -225,7 +225,7 @@ function tickHelper(props, scale) {
                 simulation.tick();
             }
 
-            ticks = zip(ticks, nodes).map(d => {
+            ticks = zip(ticks, nodes).map((d) => {
                 const a: any = d[0];
                 const b: any = d[1];
 
@@ -240,7 +240,7 @@ function tickHelper(props, scale) {
             });
         }
     } else {
-        ticks = tickValues.map(d => {
+        ticks = tickValues.map((d) => {
             const y = Math.round(scale(d));
             return {
                 value: d,
@@ -313,12 +313,12 @@ function drawTicks(ctx: CanvasRenderingContext2D, result, moreProps) {
 
     ctx.fillStyle = tickStroke;
 
-    ticks.forEach(tick => {
+    ticks.forEach((tick) => {
         drawEachTick(ctx, tick, result);
     });
 
     if (showGridLines) {
-        ticks.forEach(tick => {
+        ticks.forEach((tick) => {
             drawGridLine(ctx, tick, result, moreProps);
         });
     }
@@ -328,7 +328,7 @@ function drawTicks(ctx: CanvasRenderingContext2D, result, moreProps) {
     ctx.textAlign = textAnchor === "middle" ? "center" : textAnchor;
 
     if (showTickLabel) {
-        ticks.forEach(tick => {
+        ticks.forEach((tick) => {
             drawEachTickLabel(ctx, tick, result);
         });
     }

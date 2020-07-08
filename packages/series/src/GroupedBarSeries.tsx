@@ -33,7 +33,7 @@ export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {
     };
 
     private readonly postProcessor = (array: any[]) => {
-        return array.map(each => {
+        return array.map((each) => {
             return {
                 ...each,
                 x: each.x + each.offset - each.groupOffset,

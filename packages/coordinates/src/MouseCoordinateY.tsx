@@ -52,7 +52,7 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
         );
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const props = this.helper(this.props, moreProps);
         if (isNotDefined(props)) {
             return null;

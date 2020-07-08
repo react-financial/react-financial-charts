@@ -47,9 +47,9 @@ export function withOHLCData(dataSet = "MSFT") {
                 fetch(
                     `https://raw.githubusercontent.com/reactivemarkets/react-financial-charts/master/packages/stories/src/data/${dataSet}.tsv`,
                 )
-                    .then(response => response.text())
-                    .then(data => tsvParse(data, parseData()))
-                    .then(data => {
+                    .then((response) => response.text())
+                    .then((data) => tsvParse(data, parseData()))
+                    .then((data) => {
                         this.setState({
                             data,
                         });

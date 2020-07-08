@@ -34,7 +34,7 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
             down: "#ef5350",
             partial: "#4682B4",
         },
-        yAccessor: d => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
+        yAccessor: (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
         clip: true,
     };
 
@@ -61,7 +61,7 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
 
         const renko = this.getRenko(plotData, xScale, xAccessor, yScale);
 
-        renko.forEach(d => {
+        renko.forEach((d) => {
             ctx.beginPath();
 
             ctx.strokeStyle = d.stroke;
@@ -79,8 +79,8 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
 
         const candleWidth = width / (plotData.length - 1);
         const candles = plotData
-            .filter(d => isDefined(yAccessor(d).close))
-            .map(d => {
+            .filter((d) => isDefined(yAccessor(d).close))
+            .map((d) => {
                 const ohlc = yAccessor(d);
                 const x = xScale(xAccessor(d)) - 0.5 * candleWidth;
                 const y = yScale(Math.max(ohlc.open, ohlc.close));

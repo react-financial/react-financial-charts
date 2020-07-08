@@ -4,10 +4,10 @@ import atr from "./atr";
 
 import { Renko as defaultOptions } from "./defaultOptionsForComputation";
 
-export default function() {
+export default function () {
     let options = defaultOptions;
 
-    let dateAccessor = d => d.date;
+    let dateAccessor = (d) => d.date;
     let dateMutator = (d, date) => {
         d.date = date;
     };
@@ -32,7 +32,7 @@ export default function() {
                 });
 
             atrCalculator(rawData);
-            brickSize = d => d["atr" + windowSize];
+            brickSize = (d) => d["atr" + windowSize];
         } else {
             brickSize = functor(fixedBrickSize);
         }
@@ -68,7 +68,7 @@ export default function() {
         } = {};
         let direction = 0;
 
-        rawData.forEach(function(d, idx) {
+        rawData.forEach(function (d, idx) {
             if (isNotDefined(brick.from)) {
                 brick.high = d.high;
                 brick.low = d.low;

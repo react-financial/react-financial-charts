@@ -29,21 +29,21 @@ import { max, mean, min, zip } from "d3-array";
 import { last, slidingWindow } from "@react-financial-charts/core";
 import { FullStochasticOscillator as defaultOptions } from "./defaultOptionsForComputation";
 
-export default function() {
+export default function () {
     let options = defaultOptions;
 
-    let source = d => ({ open: d.open, high: d.high, low: d.low, close: d.close });
+    let source = (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close });
 
     const calculator = (data: any[]) => {
         const { windowSize, kWindowSize, dWindowSize } = options;
 
-        const high = d => source(d).high;
-        const low = d => source(d).low;
-        const close = d => source(d).close;
+        const high = (d) => source(d).high;
+        const low = (d) => source(d).low;
+        const close = (d) => source(d).close;
 
         const kWindow = slidingWindow()
             .windowSize(windowSize)
-            .accumulator(values => {
+            .accumulator((values) => {
                 const highestHigh = max<any, number>(values, high);
                 if (highestHigh === undefined) {
                     return undefined;
@@ -63,18 +63,18 @@ export default function() {
         const kSmoothed = slidingWindow()
             .skipInitial(windowSize - 1)
             .windowSize(kWindowSize)
-            .accumulator(values => mean(values));
+            .accumulator((values) => mean(values));
 
         const dWindow = slidingWindow()
             .skipInitial(windowSize - 1 + kWindowSize - 1)
             .windowSize(dWindowSize)
-            .accumulator(values => mean(values));
+            .accumulator((values) => mean(values));
 
         const kData = kSmoothed(kWindow(data));
         const dData = dWindow(kData);
 
         // @ts-ignore
-        const indicatorData = zip(kData, dData).map(d => {
+        const indicatorData = zip(kData, dData).map((d) => {
             return {
                 K: d[0],
                 D: d[1],

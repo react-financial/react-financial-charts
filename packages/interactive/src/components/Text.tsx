@@ -45,7 +45,7 @@ export class Text extends React.Component<TextProps> {
         ctx.fillText(children, x, y);
     };
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { xyProvider, fontFamily, fontSize, fill, children } = this.props;
 
         const [x, y] = xyProvider(moreProps);

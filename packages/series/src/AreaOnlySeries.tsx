@@ -21,7 +21,7 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         className: "line",
         fill: "none",
         opacity: 1,
-        defined: d => !isNaN(d),
+        defined: (d) => !isNaN(d),
         base: (yScale /* , d, moreProps */) => first(yScale.range()),
     };
 
@@ -67,10 +67,10 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         ctx.beginPath();
         const newBase = functor(base);
         const areaSeries = d3Area()
-            .defined(d => defined(yAccessor(d)))
-            .x(d => Math.round(xScale(xAccessor(d))))
-            .y0(d => newBase(yScale, d, moreProps))
-            .y1(d => Math.round(yScale(yAccessor(d))))
+            .defined((d) => defined(yAccessor(d)))
+            .x((d) => Math.round(xScale(xAccessor(d))))
+            .y0((d) => newBase(yScale, d, moreProps))
+            .y1((d) => Math.round(yScale(yAccessor(d))))
             .context(ctx);
 
         if (interpolation !== undefined) {

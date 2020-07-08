@@ -106,7 +106,7 @@ export class YAxis extends React.Component<YAxisProps> {
         );
     }
 
-    private readonly axisZoomCallback = newYDomain => {
+    private readonly axisZoomCallback = (newYDomain) => {
         const { chartId, yAxisZoom } = this.context;
         yAxisZoom(chartId, newYDomain);
     };
@@ -160,15 +160,12 @@ export class YAxis extends React.Component<YAxisProps> {
         return 8;
     };
 
-    private readonly getYScale = moreProps => {
+    private readonly getYScale = (moreProps) => {
         const { yScale: scale, flipYScale, height } = moreProps.chartConfig;
         if (scale.invert) {
             const trueRange = flipYScale ? [0, height] : [height, 0];
             const trueDomain = trueRange.map(scale.invert);
-            return scale
-                .copy()
-                .domain(trueDomain)
-                .range(trueRange);
+            return scale.copy().domain(trueDomain).range(trueRange);
         }
         return scale;
     };

@@ -27,10 +27,10 @@ interface RSIIndicator {
     options(newOptions: RSIOptions): RSIIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor(d => d.rsi);
+        .accessor((d) => d.rsi);
 
     const underlyingAlgorithm = rsi();
 

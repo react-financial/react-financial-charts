@@ -43,7 +43,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         fill: "none",
         stroke: "#2196f3",
         strokeDasharray: "Solid",
-        defined: d => !isNaN(d),
+        defined: (d) => !isNaN(d),
         hoverTolerance: 6,
         highlightOnHover: false,
         connectNulls: false,
@@ -113,14 +113,14 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         ctx.setLineDash(lineDash);
 
         const dataSeries = d3Line()
-            .x(d => Math.round(xScale(xAccessor(d))))
-            .y(d => Math.round(yScale(yAccessor(d))));
+            .x((d) => Math.round(xScale(xAccessor(d))))
+            .y((d) => Math.round(yScale(yAccessor(d))));
 
         if (isDefined(interpolation)) {
             dataSeries.curve(interpolation);
         }
         if (!connectNulls) {
-            dataSeries.defined(d => defined(yAccessor(d)));
+            dataSeries.defined((d) => defined(yAccessor(d)));
         }
 
         ctx.beginPath();
@@ -132,7 +132,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         }
     };
 
-    private readonly isHover = moreProps => {
+    private readonly isHover = (moreProps) => {
         const { highlightOnHover, yAccessor, hoverTolerance = LineSeries.defaultProps.hoverTolerance } = this.props;
 
         if (!highlightOnHover) {

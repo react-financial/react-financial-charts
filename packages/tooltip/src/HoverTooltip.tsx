@@ -46,7 +46,7 @@ class HoverTooltip extends React.Component<HoverTooltipProps> {
         );
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const pointer = helper(this.props, moreProps);
 
         if (pointer === undefined) {
@@ -192,7 +192,7 @@ function calculateTooltipSize({ fontFamily, fontSize, fontFill }, content, ctx?)
     ctx.fillStyle = fontFill;
     ctx.textAlign = "left";
 
-    const measureText = str => ({
+    const measureText = (str) => ({
         width: ctx.measureText(str).width,
         height: fontSize,
     });
@@ -210,8 +210,8 @@ function calculateTooltipSize({ fontFamily, fontSize, fontFill }, content, ctx?)
 
 function sumSizes(...sizes) {
     return {
-        width: Math.max(...sizes.map(size => size.width)),
-        height: sum(sizes, d => d.height),
+        width: Math.max(...sizes.map((size) => size.width)),
+        height: sum(sizes, (d) => d.height),
     };
 }
 
@@ -236,7 +236,7 @@ function defaultOrigin(props, moreProps, bgSize, pointWidth) {
 
     if (isDefined(chartId) && isDefined(yAccessor) && isDefined(chartConfig) && isDefined(chartConfig.findIndex)) {
         const yValue = yAccessor(currentItem);
-        const chartIndex = chartConfig.findIndex(c => c.id === chartId);
+        const chartIndex = chartConfig.findIndex((c) => c.id === chartId);
 
         y = Math.round(chartConfig[chartIndex].yScale(yValue));
     }

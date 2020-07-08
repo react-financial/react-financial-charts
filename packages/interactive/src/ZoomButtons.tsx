@@ -153,13 +153,13 @@ export class ZoomButtons extends React.Component<ZoomButtonsProps> {
         const [start, end] = xScale.domain();
         const [newStart, newEnd] = xScale
             .range()
-            .map(x => cx + (x - cx) * c)
+            .map((x) => cx + (x - cx) * c)
             .map(xScale.invert);
 
         const left = interpolateNumber(start, newStart);
         const right = interpolateNumber(end, newEnd);
 
-        const foo = [0.25, 0.3, 0.5, 0.6, 0.75, 1].map(i => {
+        const foo = [0.25, 0.3, 0.5, 0.6, 0.75, 1].map((i) => {
             return [left(i), right(i)];
         });
 

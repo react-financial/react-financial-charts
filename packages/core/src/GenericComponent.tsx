@@ -55,7 +55,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     public static defaultProps = {
         svgDraw: functor(null),
         draw: [],
-        canvasToDraw: contexts => contexts.mouseCoord,
+        canvasToDraw: (contexts) => contexts.mouseCoord,
         clip: true,
         edgeClip: false,
         selected: false,
@@ -124,7 +124,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     }
 
     public updateMoreProps(moreProps) {
-        Object.keys(moreProps).forEach(key => {
+        Object.keys(moreProps).forEach((key) => {
             this.moreProps[key] = moreProps[key];
         });
     }

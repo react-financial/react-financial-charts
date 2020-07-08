@@ -24,7 +24,7 @@ export interface ATRCalculator {
     source(newSource: (d: any) => ATRSource): ATRCalculator;
 }
 
-export default function() {
+export default function () {
     let options: ATROptions = defaultOptions;
     let source = (d: any) => ({ open: d.open, high: d.high, low: d.low, close: d.close });
 
@@ -34,8 +34,8 @@ export default function() {
         const trueRangeAlgorithm = slidingWindow()
             .windowSize(2)
             .source(source)
-            .undefinedValue(d => d.high - d.low) // the first TR value is simply the High minus the Low
-            .accumulator(values => {
+            .undefinedValue((d) => d.high - d.low) // the first TR value is simply the High minus the Low
+            .accumulator((values) => {
                 const prev = values[0];
                 const d = values[1];
                 return Math.max(d.high - d.low, d.high - prev.close, d.low - prev.close);
@@ -46,7 +46,7 @@ export default function() {
         const atrAlgorithm = slidingWindow()
             .skipInitial(1) // trueRange starts from index 1 so ATR starts from 1
             .windowSize(windowSize)
-            .accumulator(values => {
+            .accumulator((values) => {
                 const tr = last(values);
                 const atr = isDefined(prevATR)
                     ? (prevATR * (windowSize - 1) + tr) / windowSize

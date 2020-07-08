@@ -42,7 +42,7 @@ interface Merge {
 
 // applies an algorithm to an array, merging the result back into
 // the source array using the given merge function.
-export default function() {
+export default function () {
     let algorithm = identity;
     let skipUndefined = true;
     let merge = noop;

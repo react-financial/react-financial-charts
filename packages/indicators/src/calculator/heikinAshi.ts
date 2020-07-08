@@ -1,6 +1,6 @@
 import { identity, mappedSlidingWindow } from "@react-financial-charts/core";
 
-export default function() {
+export default function () {
     let source = identity;
 
     const calculator = (data: any[]) => {

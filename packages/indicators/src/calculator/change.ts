@@ -15,7 +15,7 @@ interface ChangeCalculator {
     options(newOptions: ChangeOptions): ChangeCalculator;
 }
 
-export default function() {
+export default function () {
     let options: ChangeOptions = defaultOptions;
 
     const calculator = (data: any[]) => {

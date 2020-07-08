@@ -1,7 +1,7 @@
 import * as React from "react";
 import { colorToRGBA, isDefined } from "@react-financial-charts/core";
 
-const helper = props => {
+const helper = (props) => {
     const { coordinate: displayCoordinate, show, type, orient, edgeAt, hideLine } = props;
     const { fill, opacity, fontFamily, fontSize, textFill, lineStroke, lineOpacity, arrowWidth } = props;
     const { rectWidth, rectHeight } = props;
@@ -188,10 +188,12 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
 
             const path =
                 edge.orient === "left"
-                    ? `M0,0L0,${rectHeight}L${rectWidth},${rectHeight}L${rectWidth +
-                          arrowWidth},10L${rectWidth},0L0,0L0,0`
-                    : `M0,${arrowWidth}L${arrowWidth},${rectHeight}L${rectWidth +
-                          arrowWidth},${rectHeight}L${rectWidth + arrowWidth},0L${arrowWidth},0L0,${arrowWidth}`;
+                    ? `M0,0L0,${rectHeight}L${rectWidth},${rectHeight}L${
+                          rectWidth + arrowWidth
+                      },10L${rectWidth},0L0,0L0,0`
+                    : `M0,${arrowWidth}L${arrowWidth},${rectHeight}L${rectWidth + arrowWidth},${rectHeight}L${
+                          rectWidth + arrowWidth
+                      },0L${arrowWidth},0L0,${arrowWidth}`;
 
             coordinateBase =
                 edge.orient === "left" || edge.orient === "right" ? (

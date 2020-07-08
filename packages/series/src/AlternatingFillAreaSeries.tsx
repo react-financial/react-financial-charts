@@ -116,11 +116,11 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         );
     }
 
-    private readonly baseAt = yScale => {
+    private readonly baseAt = (yScale) => {
         return yScale(this.props.baseAt);
     };
 
-    private readonly renderClip = moreProps => {
+    private readonly renderClip = (moreProps) => {
         const { chartConfig } = moreProps;
         const { baseAt } = this.props;
         const { yScale, width, height } = chartConfig;

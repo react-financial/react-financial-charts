@@ -75,8 +75,8 @@ function getBars(props, moreProps) {
     const offset = Math.floor(0.5 * width);
 
     const bars = plotData
-        .filter(d => isDefined(yAccessor(d)))
-        .map(d => {
+        .filter((d) => isDefined(yAccessor(d)))
+        .map((d) => {
             const yValue = yAccessor(d);
             let y = yScale(yValue);
 

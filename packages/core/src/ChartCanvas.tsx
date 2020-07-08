@@ -17,7 +17,7 @@ import evaluator from "./utils/evaluator";
 const CANDIDATES_FOR_RESET = ["seriesName"];
 
 function shouldResetChart(thisProps, nextProps) {
-    return !CANDIDATES_FOR_RESET.every(key => {
+    return !CANDIDATES_FOR_RESET.every((key) => {
         const result = shallowEqual(thisProps[key], nextProps[key]);
         // console.log(key, result);
         return result;
@@ -168,7 +168,7 @@ function updateChart(newState, initialXScale, props, lastItemWasVisible, initial
         const dx = initialXScale(xAccessor(lastItem)) - initialXScale.range()[1];
         const [newStart, newEnd] = initialXScale
             .range()
-            .map(x => x + dx)
+            .map((x) => x + dx)
             .map(initialXScale.invert);
 
         const response = filterData(fullData, [newStart, newEnd], xAccessor, updatedXScale);
@@ -216,7 +216,7 @@ function calculateState(props) {
     const extent =
         typeof xExtentsProp === "function"
             ? xExtentsProp(data)
-            : d3Extent(xExtentsProp.map(d => functor(d)).map(each => each(data, inputXAccesor)));
+            : d3Extent(xExtentsProp.map((d) => functor(d)).map((each) => each(data, inputXAccesor)));
 
     const { xAccessor, displayXAccessor, xScale, fullData, filterData } = calculateFullData(props);
     const updatedXScale = setXRange(xScale, dimensions, padding, direction);
@@ -532,11 +532,11 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public unsubscribe(id) {
-        this.subscriptions = this.subscriptions.filter(each => each.id !== id);
+        this.subscriptions = this.subscriptions.filter((each) => each.id !== id);
     }
 
     public getAllPanConditions() {
-        return this.subscriptions.map(each => each.getPanConditions());
+        return this.subscriptions.map((each) => each.getPanConditions());
     }
 
     public setCursorClass(className) {
@@ -544,7 +544,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public amIOnTop(id) {
-        const dragableComponents = this.subscriptions.filter(each => each.getPanConditions().draggable);
+        const dragableComponents = this.subscriptions.filter((each) => each.getPanConditions().draggable);
 
         return dragableComponents.length > 0 && last(dragableComponents).id === id;
     }
@@ -727,7 +727,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const c = zoomDirection > 0 ? 1 * zoomMultiplier : 1 / zoomMultiplier;
         const newDomain = initialXScale
             .range()
-            .map(x => cx + (x - cx) * c)
+            .map((x) => cx + (x - cx) * c)
             .map(initialXScale.invert);
 
         const { xScale, plotData, chartConfig } = this.calculateStateForDomain(newDomain);
@@ -805,7 +805,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     public yAxisZoom(chartId, newDomain) {
         this.clearThreeCanvas();
         const { chartConfig: initialChartConfig } = this.state;
-        const chartConfig = initialChartConfig.map(each => {
+        const chartConfig = initialChartConfig.map((each) => {
             if (each.id === chartId) {
                 const { yScale } = each;
                 return {
@@ -824,7 +824,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public triggerEvent(type, props?, e?) {
-        this.subscriptions.forEach(each => {
+        this.subscriptions.forEach((each) => {
             const state = {
                 ...this.state,
                 fullData: this.fullData,
@@ -835,7 +835,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     }
 
     public draw(props) {
-        this.subscriptions.forEach(each => {
+        this.subscriptions.forEach((each) => {
             if (isDefined(each.draw)) {
                 each.draw(props);
             }
@@ -862,7 +862,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
         const newDomain = initialXScale
             .range()
-            .map(x => x - dx)
+            .map((x) => x - dx)
             .map(initialXScale.invert);
 
         const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialXScale, {
@@ -1138,7 +1138,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     public resetYDomain(chartId) {
         const { chartConfig } = this.state;
         let changed = false;
-        const newChartConfig = chartConfig.map(each => {
+        const newChartConfig = chartConfig.map((each) => {
             if (
                 (isNotDefined(chartId) || each.id === chartId) &&
                 !shallowEqual(each.yScale.domain(), each.realYDomain)

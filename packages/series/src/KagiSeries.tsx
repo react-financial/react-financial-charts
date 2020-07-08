@@ -52,13 +52,13 @@ function drawOnCanvas(ctx: CanvasRenderingContext2D, props, moreProps, xAccessor
 
     let begin = true;
 
-    paths.forEach(each => {
+    paths.forEach((each) => {
         ctx.strokeStyle = stroke[each.type];
         ctx.lineWidth = strokeWidth;
 
         ctx.beginPath();
         let prevX;
-        each.plot.forEach(d => {
+        each.plot.forEach((d) => {
             const [x1, y] = [xScale(d[0]), yScale(d[1])];
             if (begin) {
                 ctx.moveTo(x1, y);

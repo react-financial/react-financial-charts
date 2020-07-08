@@ -37,7 +37,7 @@ export function path(loc = []) {
     const key = Array.isArray(loc) ? loc : [loc];
     const length = key.length;
 
-    return function(obj, defaultValue?) {
+    return function (obj, defaultValue?) {
         if (length === 0) {
             return isDefined(obj) ? obj : defaultValue;
         }
@@ -55,13 +55,13 @@ export function functor(v) {
 }
 
 export function createVerticalLinearGradient(stops) {
-    return function(moreProps, ctx) {
+    return function (moreProps, ctx) {
         const {
             chartConfig: { height },
         } = moreProps;
 
         const grd = ctx.createLinearGradient(0, height, 0, 0);
-        stops.forEach(each => {
+        stops.forEach((each) => {
             grd.addColorStop(each.stop, each.color);
         });
 
@@ -86,7 +86,7 @@ export function getClosestValue(inputValue, currentValue) {
     const values = isArray(inputValue) ? inputValue : [inputValue];
 
     const diff = values
-        .map(each => each - currentValue)
+        .map((each) => each - currentValue)
         .reduce((diff1, diff2) => (Math.abs(diff1) < Math.abs(diff2) ? diff1 : diff2));
     return currentValue + diff;
 }
@@ -241,7 +241,7 @@ export function mousePosition(e: React.MouseEvent, defaultRect?) {
 }
 
 export function clearCanvas(canvasList: CanvasRenderingContext2D[], ratio: number) {
-    canvasList.forEach(each => {
+    canvasList.forEach((each) => {
         each.setTransform(1, 0, 0, 1, 0, 0);
         each.clearRect(-1, -1, each.canvas.width + 2, each.canvas.height + 2);
         each.scale(ratio, ratio);
@@ -267,7 +267,7 @@ export function mapValue(object, iteratee) {
     object = Object(object);
     const result = {};
 
-    Object.keys(object).forEach(key => {
+    Object.keys(object).forEach((key) => {
         const mappedValue = iteratee(object[key], key, object);
 
         if (isDefined(mappedValue)) {
@@ -302,5 +302,5 @@ export function replaceAtIndex(array, index, value) {
 // copied from https://github.com/lodash/lodash/blob/master/forOwn.js
 export function forOwn(obj, iteratee) {
     const object = Object(obj);
-    Object.keys(object).forEach(key => iteratee(object[key], key, object));
+    Object.keys(object).forEach((key) => iteratee(object[key], key, object));
 }

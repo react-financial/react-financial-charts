@@ -36,7 +36,7 @@ export class RSITooltip extends React.Component<RSITooltipProps> {
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { onClick, displayInit, fontFamily, fontSize, yAccessor, displayFormat, className } = this.props;
         const { options, labelFill, textFill, displayValuesFor } = this.props;
 

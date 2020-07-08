@@ -8,7 +8,7 @@ export interface CompareOptions {
     readonly sourcePath: string;
 }
 
-export default function() {
+export default function () {
     let options: CompareOptions = defaultOptions;
 
     const calculator = (data: any[]) => {
@@ -22,14 +22,14 @@ export default function() {
 
         const firsts = {};
 
-        const compareData = data.map(d => {
+        const compareData = data.map((d) => {
             const result = {};
 
-            mainKeys.forEach(key => {
+            mainKeys.forEach((key) => {
                 if (typeof d[key] === "object") {
                     // @ts-ignore
                     result[key] = {};
-                    Object.keys(d[key]).forEach(subkey => {
+                    Object.keys(d[key]).forEach((subkey) => {
                         // @ts-ignore
                         result[key][subkey] = (d[key][subkey] - b) / b;
                     });
@@ -39,7 +39,7 @@ export default function() {
                 }
             });
 
-            compareKeys.forEach(key => {
+            compareKeys.forEach((key) => {
                 if (isDefined(d[key]) && isNotDefined(firsts[key])) {
                     // @ts-ignore
                     firsts[key] = d[key];

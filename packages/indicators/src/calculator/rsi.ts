@@ -34,7 +34,7 @@ export interface RSIOptions {
     sourcePath?: string;
 }
 
-export default function() {
+export default function () {
     let options = defaultOptions;
 
     const calculator = (data: any[]) => {
@@ -47,10 +47,10 @@ export default function() {
         let prevAvgLoss;
         const rsiAlgorithm = slidingWindow()
             .windowSize(windowSize)
-            .accumulator(values => {
+            .accumulator((values) => {
                 const avgGain = isDefined(prevAvgGain)
                     ? (prevAvgGain * (windowSize - 1) + last(values).gain) / windowSize
-                    : mean<any>(values, each => each.gain);
+                    : mean<any>(values, (each) => each.gain);
 
                 if (avgGain === undefined) {
                     return undefined;
@@ -58,7 +58,7 @@ export default function() {
 
                 const avgLoss = isDefined(prevAvgLoss)
                     ? (prevAvgLoss * (windowSize - 1) + last(values).loss) / windowSize
-                    : mean<any>(values, each => each.loss);
+                    : mean<any>(values, (each) => each.loss);
 
                 if (avgLoss === undefined) {
                     return undefined;
@@ -76,7 +76,7 @@ export default function() {
         const gainsAndLossesCalculator = slidingWindow()
             .windowSize(2)
             .undefinedValue(() => [0, 0])
-            .accumulator(tuple => {
+            .accumulator((tuple) => {
                 const prev = tuple[0];
                 const now = tuple[1];
                 const change = source(now) - source(prev);

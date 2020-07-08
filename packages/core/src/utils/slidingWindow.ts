@@ -47,7 +47,7 @@ interface SlidingWindow {
     undefinedValue(x: any): SlidingWindow;
 }
 
-export default function() {
+export default function () {
     let undefinedValue;
     let windowSize = 10;
     let accumulator = noop;
@@ -80,7 +80,7 @@ export default function() {
         });
     };
 
-    slidingWindow.undefinedValue = function(x) {
+    slidingWindow.undefinedValue = function (x) {
         if (!arguments.length) {
             return undefinedValue;
         }
@@ -88,7 +88,7 @@ export default function() {
         return slidingWindow;
     };
 
-    slidingWindow.windowSize = function(x) {
+    slidingWindow.windowSize = function (x) {
         if (!arguments.length) {
             return windowSize;
         }
@@ -96,7 +96,7 @@ export default function() {
         return slidingWindow;
     };
 
-    slidingWindow.misc = function(x) {
+    slidingWindow.misc = function (x) {
         if (!arguments.length) {
             return misc;
         }
@@ -104,7 +104,7 @@ export default function() {
         return slidingWindow;
     };
 
-    slidingWindow.accumulator = function(x) {
+    slidingWindow.accumulator = function (x) {
         if (!arguments.length) {
             return accumulator;
         }
@@ -112,7 +112,7 @@ export default function() {
         return slidingWindow;
     };
 
-    slidingWindow.skipInitial = function(x) {
+    slidingWindow.skipInitial = function (x) {
         if (!arguments.length) {
             return skipInitial;
         }
@@ -120,7 +120,7 @@ export default function() {
         return slidingWindow;
     };
 
-    slidingWindow.sourcePath = function(x) {
+    slidingWindow.sourcePath = function (x) {
         if (!arguments.length) {
             return sourcePath;
         }
@@ -128,7 +128,7 @@ export default function() {
         return slidingWindow;
     };
 
-    slidingWindow.source = function(x) {
+    slidingWindow.source = function (x) {
         if (!arguments.length) {
             return source;
         }

@@ -78,7 +78,7 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
         const width = widthFunctor(this.props, moreProps);
         const offset = Math.floor(0.5 * width);
 
-        const bars = plotData.map(d => {
+        const bars = plotData.map((d) => {
             const innerBars = yAccessor
                 .map((eachYAccessor, i) => {
                     const yValue = eachYAccessor(d);
@@ -99,7 +99,7 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
                         i,
                     };
                 })
-                .filter(yValue => isDefined(yValue));
+                .filter((yValue) => isDefined(yValue));
 
             let b = getBase(xScale, yScale, d);
             let h;

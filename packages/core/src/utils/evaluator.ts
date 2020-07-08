@@ -140,7 +140,7 @@ function getFilteredResponse(data, left, right, xAccessor) {
     return filteredData;
 }
 
-export default function({ xScale, useWholeData, clamp, pointsPerPxThreshold, minPointsPerPxThreshold, flipXScale }) {
+export default function ({ xScale, useWholeData, clamp, pointsPerPxThreshold, minPointsPerPxThreshold, flipXScale }) {
     return extentsWrapper(
         useWholeData || isNotDefined(xScale.invert),
         clamp,

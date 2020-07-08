@@ -45,7 +45,7 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { onClick, fontFamily, fontSize, yAccessor, displayFormat, label } = this.props;
         const { className, displayInit, displayValuesFor, options, appearance, labelFill } = this.props;
         const {

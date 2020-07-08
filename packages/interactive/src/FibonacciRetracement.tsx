@@ -169,7 +169,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         );
     }
 
-    private readonly handleDrawRetracement = xyValue => {
+    private readonly handleDrawRetracement = (xyValue) => {
         const { current } = this.state;
         if (isDefined(current) && isDefined(current.x1)) {
             this.mouseMoved = true;
@@ -226,7 +226,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         });
     };
 
-    private readonly handleDragComplete = moreProps => {
+    private readonly handleDragComplete = (moreProps) => {
         const { retracements } = this.props;
         const { override } = this.state;
         if (isDefined(override)) {

@@ -30,7 +30,7 @@ export class Label extends React.Component<LabelProps> {
         opacity: 1,
         rotate: 0,
         x: ({ xScale, xAccessor, datum }) => xScale(xAccessor(datum)),
-        selectCanvas: canvases => canvases.bg,
+        selectCanvas: (canvases) => canvases.bg,
     };
 
     public static contextTypes = {
@@ -56,7 +56,7 @@ export class Label extends React.Component<LabelProps> {
         drawOnCanvas2(ctx, this.props, this.context, moreProps);
     };
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { chartConfig } = moreProps;
 
         return <LabelAnnotation yScale={getYScale(chartConfig)} {...this.props} text={getText(this.props)} />;

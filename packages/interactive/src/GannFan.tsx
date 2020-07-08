@@ -151,7 +151,10 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
         const { fans, appearance } = this.props;
 
         if (this.mouseMoved && isDefined(current) && isDefined(current.startXY)) {
-            const newfans = [...fans.map(d => ({ ...d, selected: false })), { ...current, selected: true, appearance }];
+            const newfans = [
+                ...fans.map((d) => ({ ...d, selected: false })),
+                { ...current, selected: true, appearance },
+            ];
             this.setState(
                 {
                     current: null,
@@ -163,7 +166,7 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
         }
     };
 
-    private readonly handleStart = xyValue => {
+    private readonly handleStart = (xyValue) => {
         const { current } = this.state;
 
         if (isNotDefined(current) || isNotDefined(current.startXY)) {
@@ -183,7 +186,7 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
         }
     };
 
-    private readonly handleDrawFan = xyValue => {
+    private readonly handleDrawFan = (xyValue) => {
         const { current } = this.state;
 
         if (isDefined(current) && isDefined(current.startXY)) {
@@ -198,7 +201,7 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
         }
     };
 
-    private readonly handleDragFanComplete = moreProps => {
+    private readonly handleDragFanComplete = (moreProps) => {
         const { override } = this.state;
         const { fans } = this.props;
 

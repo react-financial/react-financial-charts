@@ -33,8 +33,9 @@ export function renderSVG(props) {
         const path =
             edge.orient === "left"
                 ? `M0,0L0,${rectHeight}L${rectWidth},${rectHeight}L${rectWidth + arrowWidth},10L${rectWidth},0L0,0L0,0`
-                : `M0,${arrowWidth}L${arrowWidth},${rectHeight}L${rectWidth + arrowWidth},${rectHeight}L${rectWidth +
-                      arrowWidth},0L${arrowWidth},0L0,${arrowWidth}`;
+                : `M0,${arrowWidth}L${arrowWidth},${rectHeight}L${rectWidth + arrowWidth},${rectHeight}L${
+                      rectWidth + arrowWidth
+                  },0L${arrowWidth},0L0,${arrowWidth}`;
 
         coordinateBase =
             edge.orient === "left" || edge.orient === "right" ? (

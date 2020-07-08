@@ -67,7 +67,7 @@ export class GannFan extends React.Component<GannFanProps> {
         );
     }
 
-    private readonly renderSVG = moreProps => {
+    private readonly renderSVG = (moreProps) => {
         const { stroke, strokeWidth, fillOpacity, fill, strokeOpacity } = this.props;
 
         const lines = this.helper(this.props, moreProps);
@@ -115,7 +115,7 @@ export class GannFan extends React.Component<GannFanProps> {
         ctx.font = `${fontSize}px ${fontFamily}`;
         ctx.fillStyle = fontFill;
 
-        lines.forEach(line => {
+        lines.forEach((line) => {
             const { x1, y1, x2, y2, label } = line;
 
             ctx.beginPath();
@@ -139,7 +139,7 @@ export class GannFan extends React.Component<GannFanProps> {
         });
     };
 
-    private readonly isHover = moreProps => {
+    private readonly isHover = (moreProps) => {
         const { tolerance, onHover } = this.props;
         const { mouseXY } = moreProps;
         const [mouseX, mouseY] = mouseXY;
@@ -215,7 +215,7 @@ export class GannFan extends React.Component<GannFanProps> {
                 oneFourthY,
                 oneEighthY,
             ];
-            const lineCoods = lines.map(line => {
+            const lineCoods = lines.map((line) => {
                 // tslint:disable-next-line: no-shadowed-variable
                 const { x1, y1, x2, y2 } = generateLine({
                     type: "RAY",

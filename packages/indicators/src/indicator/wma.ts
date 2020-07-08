@@ -27,10 +27,10 @@ interface WMAIndicator {
     options(newOptions: WMAOptions): WMAIndicator;
 }
 
-export default function() {
+export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor(d => d.wma);
+        .accessor((d) => d.wma);
 
     const underlyingAlgorithm = wma();
 

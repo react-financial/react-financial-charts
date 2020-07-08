@@ -3,6 +3,7 @@ import * as React from "react";
 interface CanvasContainerProps {
     readonly height: number;
     readonly ratio: number;
+    readonly style?: React.CSSProperties;
     readonly width: number;
     readonly zIndex?: number;
 }
@@ -21,17 +22,17 @@ export class CanvasContainer extends React.PureComponent<CanvasContainerProps> {
     }
 
     public render() {
-        const { height, width, zIndex, ratio } = this.props;
+        const { height, ratio, style, width, zIndex } = this.props;
 
         const adjustedWidth = width * ratio;
         const adjustedHeight = height * ratio;
-        const style: React.CSSProperties = { position: "absolute", width, height };
+        const canvasStyle: React.CSSProperties = { position: "absolute", width, height };
 
         return (
-            <div style={{ position: "absolute", zIndex }}>
-                <canvas ref={this.bgRef} width={adjustedWidth} height={adjustedHeight} style={style} />
-                <canvas ref={this.axesRef} width={adjustedWidth} height={adjustedHeight} style={style} />
-                <canvas ref={this.mouseRef} width={adjustedWidth} height={adjustedHeight} style={style} />
+            <div style={{ ...style, position: "absolute", zIndex }}>
+                <canvas ref={this.bgRef} width={adjustedWidth} height={adjustedHeight} style={canvasStyle} />
+                <canvas ref={this.axesRef} width={adjustedWidth} height={adjustedHeight} style={canvasStyle} />
+                <canvas ref={this.mouseRef} width={adjustedWidth} height={adjustedHeight} style={canvasStyle} />
             </div>
         );
     }

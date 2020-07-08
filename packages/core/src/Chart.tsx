@@ -9,6 +9,7 @@ interface ChartProps {
     readonly height?: number;
     readonly id: number | string;
     readonly onContextMenu?: (event: React.MouseEvent, props: unknown) => void;
+    readonly onDoubleClick?: (event: React.MouseEvent, props: unknown) => void;
     readonly origin?: number[] | ((width: number, height: number) => number[]);
     readonly padding?: number | { top: number; bottom: number };
     readonly yExtents?: number[] | ((data: any) => number) | ((data: any) => number[]);
@@ -76,14 +77,23 @@ export class Chart extends PureComponent<ChartProps> {
     }
 
     private readonly listener = (type: string, moreProps, state, e) => {
-        const { id, onContextMenu } = this.props;
+        const { id, onContextMenu, onDoubleClick } = this.props;
 
         switch (type) {
             case "contextmenu": {
-                const { currentCharts } = moreProps;
-                if (currentCharts.indexOf(id) > -1) {
-                    if (onContextMenu !== undefined) {
+                if (onContextMenu !== undefined) {
+                    const { currentCharts } = moreProps;
+                    if (currentCharts.indexOf(id) > -1) {
                         onContextMenu(e, moreProps);
+                    }
+                }
+                break;
+            }
+            case "dblclick": {
+                if (onDoubleClick !== undefined) {
+                    const { currentCharts } = moreProps;
+                    if (currentCharts.indexOf(id) > -1) {
+                        onDoubleClick(e, moreProps);
                     }
                 }
                 break;

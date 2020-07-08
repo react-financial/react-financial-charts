@@ -7,11 +7,17 @@ interface CanvasContainerProps {
     readonly zIndex?: number;
 }
 
-export class CanvasContainer extends React.Component<CanvasContainerProps> {
-    private drawCanvas: { [key: string]: CanvasRenderingContext2D } = {};
+export class CanvasContainer extends React.PureComponent<CanvasContainerProps> {
+    private readonly bgRef = React.createRef<HTMLCanvasElement>();
+    private readonly axesRef = React.createRef<HTMLCanvasElement>();
+    private readonly mouseRef = React.createRef<HTMLCanvasElement>();
 
     public getCanvasContexts() {
-        return this.drawCanvas;
+        return {
+            bg: this.bgRef.current?.getContext("2d"),
+            axes: this.axesRef.current?.getContext("2d"),
+            mouseCoord: this.mouseRef.current?.getContext("2d"),
+        };
     }
 
     public render() {
@@ -23,29 +29,10 @@ export class CanvasContainer extends React.Component<CanvasContainerProps> {
 
         return (
             <div style={{ position: "absolute", zIndex }}>
-                <canvas id="bg" ref={this.setDrawCanvas} width={adjustedWidth} height={adjustedHeight} style={style} />
-                <canvas
-                    id="axes"
-                    ref={this.setDrawCanvas}
-                    width={adjustedWidth}
-                    height={adjustedHeight}
-                    style={style}
-                />
-                <canvas
-                    id="mouseCoord"
-                    ref={this.setDrawCanvas}
-                    width={adjustedWidth}
-                    height={adjustedHeight}
-                    style={style}
-                />
+                <canvas ref={this.bgRef} width={adjustedWidth} height={adjustedHeight} style={style} />
+                <canvas ref={this.axesRef} width={adjustedWidth} height={adjustedHeight} style={style} />
+                <canvas ref={this.mouseRef} width={adjustedWidth} height={adjustedHeight} style={style} />
             </div>
         );
     }
-
-    private readonly setDrawCanvas = (node: HTMLCanvasElement | null) => {
-        const context = node?.getContext("2d");
-        if (context !== null && context !== undefined) {
-            this.drawCanvas[node!.id] = context;
-        }
-    };
 }

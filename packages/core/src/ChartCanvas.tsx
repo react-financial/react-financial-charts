@@ -498,7 +498,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
     public clearBothCanvas() {
         const canvases = this.getCanvasContexts();
-        if (canvases && canvases.axes) {
+        if (canvases && canvases.axes && canvases.mouseCoord) {
             clearCanvas([canvases.axes, canvases.mouseCoord], this.props.ratio);
         }
     }
@@ -512,7 +512,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
     public clearThreeCanvas() {
         const canvases = this.getCanvasContexts();
-        if (canvases && canvases.axes) {
+        if (canvases && canvases.axes && canvases.mouseCoord && canvases.bg) {
             clearCanvas([canvases.axes, canvases.mouseCoord, canvases.bg], this.props.ratio);
         }
     }

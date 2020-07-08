@@ -8,7 +8,7 @@ export { default as merge } from "./merge";
 export { default as slidingWindow } from "./slidingWindow";
 export { default as identity } from "./identity";
 export { default as noop } from "./noop";
-export { default as shallowEqual } from "./shallowEqual";
+export * from "./shallowEqual";
 export { default as mappedSlidingWindow } from "./mappedSlidingWindow";
 export { default as accumulatingWindow } from "./accumulatingWindow";
 

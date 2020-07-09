@@ -1,46 +1,48 @@
 import * as React from "react";
-import { colorToRGBA, functor } from "@react-financial-charts/core";
+import { functor } from "@react-financial-charts/core";
 
 interface TriangleProps {
-    direction?: "top" | "bottom" | "left" | "right" | "hide" | ((datum: any) => any);
-    stroke?: string | ((datum) => string);
-    fill?: string | ((datum) => string);
-    opacity?: number;
-    point: {
+    readonly className?: string;
+    readonly direction?: "top" | "bottom" | "left" | "right" | "hide" | ((datum: unknown) => any);
+    readonly fillStyle?: string | ((datum: unknown) => string);
+    readonly opacity?: number;
+    readonly point: {
         x: number;
         y: number;
-        datum: any;
+        datum: unknown;
     };
-    className?: string;
-    strokeWidth?: number;
-    width?: number | ((datum: any) => number);
+    readonly strokeStyle?: string | ((datum: unknown) => string);
+    readonly strokeWidth?: number;
+    readonly width?: number | ((datum: unknown) => number);
 }
 
 export class Triangle extends React.Component<TriangleProps> {
     public static defaultProps = {
         direction: "top",
-        stroke: "#4682B4",
+        strokeStyle: "#4682B4",
         strokeWidth: 1,
         opacity: 0.5,
-        fill: "#4682B4",
+        fillStyle: "#4682B4",
         className: "react-financial-charts-marker-triangle",
     };
 
-    public static drawOnCanvas = (props: TriangleProps, point, ctx: CanvasRenderingContext2D) => {
-        const { opacity, strokeWidth = Triangle.defaultProps.strokeWidth } = props;
+    public static drawOnCanvas = (
+        props: TriangleProps,
+        point: { x: number; y: number; datum: unknown },
+        ctx: CanvasRenderingContext2D,
+    ) => {
+        const { fillStyle, strokeStyle, strokeWidth, width } = props;
 
-        ctx.strokeStyle = getStrokeColor(props);
-        ctx.lineWidth = strokeWidth;
-
-        const fill = getFillColor(props);
-        if (fill !== "none") {
-            ctx.fillStyle = colorToRGBA(fill, opacity);
+        if (strokeStyle !== undefined) {
+            ctx.strokeStyle = functor(strokeStyle)(point.datum);
         }
-        Triangle.drawOnCanvasWithNoStateChange(props, point, ctx);
-    };
+        if (strokeWidth !== undefined) {
+            ctx.lineWidth = strokeWidth;
+        }
+        if (fillStyle !== undefined) {
+            ctx.fillStyle = functor(fillStyle)(point.datum);
+        }
 
-    public static drawOnCanvasWithNoStateChange = (props: TriangleProps, point, ctx: CanvasRenderingContext2D) => {
-        const { width } = props;
         const w = functor(width)(point.datum);
         const { x, y } = point;
         const { innerOpposite, innerHypotenuse } = getTrianglePoints(w);
@@ -65,15 +67,15 @@ export class Triangle extends React.Component<TriangleProps> {
     };
 
     public render() {
-        const { className, strokeWidth, opacity, point, width } = this.props;
+        const { className, fillStyle, strokeStyle, strokeWidth, opacity, point, width } = this.props;
 
         const rotation = getRotationInDegrees(this.props, point);
         if (rotation == null) {
             return null;
         }
 
-        const fillColor = getFillColor(this.props);
-        const strokeColor = getStrokeColor(this.props);
+        const fillColor = functor(fillStyle)(point.datum);
+        const strokeColor = functor(strokeStyle)(point.datum);
 
         const w = functor(width)(point.datum);
         const { x, y } = point;
@@ -98,31 +100,19 @@ export class Triangle extends React.Component<TriangleProps> {
     }
 }
 
-function getTrianglePoints(width: number) {
+const getTrianglePoints = (width: number) => {
     const innerHypotenuse = (width / 2) * (1 / Math.cos((30 * Math.PI) / 180));
     const innerOpposite = (width / 2) * (1 / Math.tan((60 * Math.PI) / 180));
     return {
         innerOpposite,
         innerHypotenuse,
     };
-}
+};
 
-function getFillColor(props: TriangleProps) {
-    const { fill = Triangle.defaultProps.fill, point } = props;
-
-    return fill instanceof Function ? fill(point.datum) : fill;
-}
-
-function getStrokeColor(props: TriangleProps) {
-    const { stroke = Triangle.defaultProps.stroke, point } = props;
-
-    return stroke instanceof Function ? stroke(point.datum) : stroke;
-}
-
-function getRotationInDegrees(props: TriangleProps, point) {
+const getRotationInDegrees = (props: TriangleProps, point) => {
     const { direction = Triangle.defaultProps.direction } = props;
 
-    const directionVal = direction instanceof Function ? direction(point.datum) : direction;
+    const directionVal = functor(direction)(point.datum);
     if (directionVal === "hide") {
         return null;
     }
@@ -140,4 +130,4 @@ function getRotationInDegrees(props: TriangleProps, point) {
             break;
     }
     return rotate;
-}
+};

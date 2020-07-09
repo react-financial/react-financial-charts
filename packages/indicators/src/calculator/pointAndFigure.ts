@@ -192,7 +192,6 @@ export default function () {
                     // box.startOfQuarter = d.startOfQuarter;
                     // box.startOfMonth = d.startOfMonth;
                     // box.startOfWeek = d.startOfWeek;
-                    // console.table(column.boxes);
                     // var idx = index + 1;
                     column = {
                         boxes: [],

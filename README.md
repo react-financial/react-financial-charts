@@ -96,13 +96,12 @@ npm start
 - [x] Move examples to storybook
 - [x] Add all series' to storybook
 - [x] Split project into multiple packages
+- [x] Fix issues with empty datasets
 - [ ] Correct all class props
-- [ ] Fix issues with empty datasets
 - [ ] Migrate to new React Context API
 - [ ] Remove all UNSAFE methods
 - [ ] Add documentation to storybook
 - [ ] Add full test suite
-
 
 ## LICENSE
 

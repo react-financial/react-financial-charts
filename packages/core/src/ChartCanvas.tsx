@@ -19,7 +19,6 @@ const CANDIDATES_FOR_RESET = ["seriesName"];
 function shouldResetChart(thisProps, nextProps) {
     return !CANDIDATES_FOR_RESET.every((key) => {
         const result = shallowEqual(thisProps[key], nextProps[key]);
-        // console.log(key, result);
         return result;
     });
 }
@@ -103,17 +102,15 @@ function calculateFullData(props) {
     };
 }
 
-function resetChart(props) {
+const resetChart = (props) => {
     const state = calculateState(props);
-    const { xAccessor, displayXAccessor, fullData } = state;
-    const { plotData: initialPlotData, xScale } = state;
+    const { xAccessor, displayXAccessor, fullData, plotData: initialPlotData, xScale } = state;
     const { postCalculator, children } = props;
 
     const plotData = postCalculator(initialPlotData);
 
     const dimensions = getDimensions(props);
 
-    // @ts-ignore
     const chartConfig = getChartConfigWithUpdatedYScales(
         getNewChartConfig(dimensions, children),
         { plotData, xAccessor, displayXAccessor, fullData },
@@ -126,7 +123,7 @@ function resetChart(props) {
         plotData,
         chartConfig,
     };
-}
+};
 
 function updateChart(newState, initialXScale, props, lastItemWasVisible, initialChartConfig) {
     const { fullData, xScale, xAccessor, displayXAccessor, filterData } = newState;
@@ -141,7 +138,6 @@ function updateChart(newState, initialXScale, props, lastItemWasVisible, initial
 
     const updatedXScale = setXRange(xScale, dimensions, padding, direction);
 
-    // console.log("lastItemWasVisible =", lastItemWasVisible, end, xAccessor(lastItem), end >= xAccessor(lastItem));
     let initialPlotData;
     if (!lastItemWasVisible || end >= xAccessor(lastItem)) {
         // resize comes here...
@@ -152,14 +148,13 @@ function updateChart(newState, initialXScale, props, lastItemWasVisible, initial
         const newStart = maintainPointsPerPixelOnResize ? end - newDomainExtent : start;
 
         const lastItemX = initialXScale(xAccessor(lastItem));
-        // console.log("pointsPerPixel => ", newStart, start, end, updatedXScale(end));
+
         const response = filterData(fullData, [newStart, end], xAccessor, updatedXScale, {
             fallbackStart: start,
             fallbackEnd: { lastItem, lastItemX },
         });
         initialPlotData = response.plotData;
         updatedXScale.domain(response.domain);
-        // console.log("HERE!!!!!", start, end);
     } else if (lastItemWasVisible && end < xAccessor(lastItem)) {
         // this is when a new item is added and last item was visible
         // so slide over and show the new item also
@@ -175,10 +170,9 @@ function updateChart(newState, initialXScale, props, lastItemWasVisible, initial
         initialPlotData = response.plotData;
         updatedXScale.domain(response.domain); // if last item was visible, then shift
     }
-    // plotData = getDataOfLength(fullData, showingInterval, plotData.length)
+
     const plotData = postCalculator(initialPlotData);
 
-    // @ts-ignore
     const chartConfig = getChartConfigWithUpdatedYScales(
         getNewChartConfig(dimensions, children, initialChartConfig),
         { plotData, xAccessor, displayXAccessor, fullData },
@@ -423,63 +417,34 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     constructor(props: ChartCanvasProps) {
         super(props);
 
-        this.getDataInfo = this.getDataInfo.bind(this);
-        this.getCanvasContexts = this.getCanvasContexts.bind(this);
-
-        this.handleMouseMove = this.handleMouseMove.bind(this);
-        this.handleMouseEnter = this.handleMouseEnter.bind(this);
-        this.handleMouseLeave = this.handleMouseLeave.bind(this);
-        this.handleZoom = this.handleZoom.bind(this);
-        this.handlePinchZoom = this.handlePinchZoom.bind(this);
-        this.handlePinchZoomEnd = this.handlePinchZoomEnd.bind(this);
-        this.handlePan = this.handlePan.bind(this);
-        this.handlePanEnd = this.handlePanEnd.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-        this.handleMouseDown = this.handleMouseDown.bind(this);
-        this.handleDoubleClick = this.handleDoubleClick.bind(this);
-        this.handleContextMenu = this.handleContextMenu.bind(this);
-        this.handleDragStart = this.handleDragStart.bind(this);
-        this.handleDrag = this.handleDrag.bind(this);
-        this.handleDragEnd = this.handleDragEnd.bind(this);
-
-        this.panHelper = this.panHelper.bind(this);
-        this.pinchZoomHelper = this.pinchZoomHelper.bind(this);
-        this.xAxisZoom = this.xAxisZoom.bind(this);
-        this.yAxisZoom = this.yAxisZoom.bind(this);
-        this.resetYDomain = this.resetYDomain.bind(this);
-        this.calculateStateForDomain = this.calculateStateForDomain.bind(this);
-        this.generateSubscriptionId = this.generateSubscriptionId.bind(this);
-        this.getAllPanConditions = this.getAllPanConditions.bind(this);
-        this.setCursorClass = this.setCursorClass.bind(this);
-        this.getMutableState = this.getMutableState.bind(this);
-
         const { fullData, ...state } = resetChart(props);
+
         this.state = state;
         this.fullData = fullData;
     }
 
-    public getMutableState() {
+    public getMutableState = () => {
         return this.mutableState;
-    }
+    };
 
-    public getDataInfo() {
+    public getDataInfo = () => {
         return {
             ...this.state,
             fullData: this.fullData,
         };
-    }
+    };
 
-    public getCanvasContexts() {
+    public getCanvasContexts = () => {
         const current = this.canvasContainerRef.current;
         if (current !== null) {
             return current.getCanvasContexts();
         }
-    }
+    };
 
-    public generateSubscriptionId() {
+    public generateSubscriptionId = () => {
         this.lastSubscriptionId++;
         return this.lastSubscriptionId;
-    }
+    };
 
     public clearBothCanvas() {
         const canvases = this.getCanvasContexts();
@@ -520,13 +485,13 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         this.subscriptions = this.subscriptions.filter((each) => each.id !== id);
     };
 
-    public getAllPanConditions() {
+    public getAllPanConditions = () => {
         return this.subscriptions.map((each) => each.getPanConditions());
-    }
+    };
 
-    public setCursorClass(className) {
+    public setCursorClass = (className: string) => {
         this.eventCaptureRef.current?.setCursorClass(className);
-    }
+    };
 
     public amIOnTop = (id) => {
         const dragableComponents = this.subscriptions.filter((each) => each.getPanConditions().draggable);
@@ -534,7 +499,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         return dragableComponents.length > 0 && last(dragableComponents).id === id;
     };
 
-    public handleContextMenu(mouseXY, e) {
+    public handleContextMenu = (mouseXY, e) => {
         const { xAccessor, chartConfig, plotData, xScale } = this.state;
 
         const currentCharts = getCurrentCharts(chartConfig, mouseXY);
@@ -549,9 +514,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             },
             e,
         );
-    }
+    };
 
-    public calculateStateForDomain(newDomain) {
+    public calculateStateForDomain = (newDomain) => {
         const {
             xAccessor,
             displayXAccessor,
@@ -584,9 +549,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             plotData,
             chartConfig,
         };
-    }
+    };
 
-    public pinchZoomHelper(initialPinch, finalPinch) {
+    public pinchZoomHelper = (initialPinch, finalPinch) => {
         const { xScale: initialPinchXScale } = initialPinch;
 
         const {
@@ -641,14 +606,14 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             mouseXY,
             currentItem,
         };
-    }
+    };
 
     public cancelDrag() {
         this.eventCaptureRef.current?.cancelDrag();
         this.triggerEvent("dragcancel");
     }
 
-    public handlePinchZoom(initialPinch, finalPinch, e) {
+    public handlePinchZoom = (initialPinch, finalPinch, e) => {
         if (!this.waitingForPinchZoomAnimationFrame) {
             this.waitingForPinchZoomAnimationFrame = true;
             const state = this.pinchZoomHelper(initialPinch, finalPinch);
@@ -663,9 +628,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                 this.waitingForPinchZoomAnimationFrame = false;
             });
         }
-    }
+    };
 
-    public handlePinchZoomEnd(initialPinch, e) {
+    public handlePinchZoomEnd = (initialPinch, e) => {
         const { xAccessor } = this.state;
 
         if (this.finalPinch) {
@@ -690,9 +655,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                 }
             });
         }
-    }
+    };
 
-    public handleZoom(zoomDirection, mouseXY, e) {
+    public handleZoom = (zoomDirection, mouseXY, e) => {
         if (this.panInProgress) {
             return;
         }
@@ -760,9 +725,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                 }
             },
         );
-    }
+    };
 
-    public xAxisZoom(newDomain) {
+    public xAxisZoom = (newDomain) => {
         const { xScale, plotData, chartConfig } = this.calculateStateForDomain(newDomain);
         this.clearThreeCanvas();
 
@@ -785,9 +750,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                 }
             },
         );
-    }
+    };
 
-    public yAxisZoom(chartId, newDomain) {
+    public yAxisZoom = (chartId, newDomain) => {
         this.clearThreeCanvas();
         const { chartConfig: initialChartConfig } = this.state;
         const chartConfig = initialChartConfig.map((each) => {
@@ -806,7 +771,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         this.setState({
             chartConfig,
         });
-    }
+    };
 
     public triggerEvent(type, props?, e?) {
         this.subscriptions.forEach((each) => {
@@ -832,7 +797,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         this.draw({ force: true });
     };
 
-    public panHelper(mouseXY, initialXScale, { dx, dy }, chartsToPan) {
+    public panHelper = (mouseXY, initialXScale, { dx, dy }, chartsToPan) => {
         const { xAccessor, displayXAccessor, chartConfig: initialChartConfig } = this.state;
         const { filterData } = this.state;
         const { fullData } = this;
@@ -876,9 +841,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             currentCharts,
             currentItem,
         };
-    }
+    };
 
-    public handlePan(mousePosition, panStartXScale, dxdy, chartsToPan, e) {
+    public handlePan = (mousePosition, panStartXScale, dxdy, chartsToPan, e) => {
         if (!this.waitingForPanAnimationFrame) {
             this.waitingForPanAnimationFrame = true;
 
@@ -907,9 +872,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                 this.draw({ trigger: "pan" });
             });
         }
-    }
+    };
 
-    public handlePanEnd(mousePosition, panStartXScale, dxdy, chartsToPan, e) {
+    public handlePanEnd = (mousePosition, panStartXScale, dxdy, chartsToPan, e) => {
         const state = this.panHelper(mousePosition, panStartXScale, dxdy, chartsToPan);
         this.hackyWayToStopPanBeyondBounds__plotData = null;
         this.hackyWayToStopPanBeyondBounds__domain = null;
@@ -945,13 +910,13 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                 },
             );
         });
-    }
+    };
 
-    public handleMouseDown(mousePosition, currentCharts, e) {
+    public handleMouseDown = (mousePosition, currentCharts, e) => {
         this.triggerEvent("mousedown", this.mutableState, e);
-    }
+    };
 
-    public handleMouseEnter(e) {
+    public handleMouseEnter = (e) => {
         this.triggerEvent(
             "mouseenter",
             {
@@ -959,9 +924,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             },
             e,
         );
-    }
+    };
 
-    public handleMouseMove(mouseXY, inputType, e) {
+    public handleMouseMove = (mouseXY, inputType, e) => {
         if (!this.waitingForMouseMoveAnimationFrame) {
             this.waitingForMouseMoveAnimationFrame = true;
 
@@ -994,19 +959,19 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                 this.waitingForMouseMoveAnimationFrame = false;
             });
         }
-    }
+    };
 
-    public handleMouseLeave(e) {
+    public handleMouseLeave = (e) => {
         this.triggerEvent("mouseleave", { show: false }, e);
         this.clearMouseCanvas();
         this.draw({ trigger: "mouseleave" });
-    }
+    };
 
-    public handleDragStart({ startPos }, e) {
+    public handleDragStart = ({ startPos }, e) => {
         this.triggerEvent("dragstart", { startPos }, e);
-    }
+    };
 
-    public handleDrag({ startPos, mouseXY }, e) {
+    public handleDrag = ({ startPos, mouseXY }, e) => {
         const { chartConfig, plotData, xScale, xAccessor } = this.state;
         const currentCharts = getCurrentCharts(chartConfig, mouseXY);
         const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
@@ -1032,29 +997,29 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             this.clearMouseCanvas();
             this.draw({ trigger: "drag" });
         });
-    }
+    };
 
-    public handleDragEnd({ mouseXY }, e) {
+    public handleDragEnd = ({ mouseXY }, e) => {
         this.triggerEvent("dragend", { mouseXY }, e);
 
         requestAnimationFrame(() => {
             this.clearMouseCanvas();
             this.draw({ trigger: "dragend" });
         });
-    }
+    };
 
-    public handleClick(mousePosition, e) {
+    public handleClick = (mousePosition, e) => {
         this.triggerEvent("click", this.mutableState, e);
 
         requestAnimationFrame(() => {
             this.clearMouseCanvas();
             this.draw({ trigger: "click" });
         });
-    }
+    };
 
-    public handleDoubleClick(mousePosition, e) {
+    public handleDoubleClick = (mousePosition, e) => {
         this.triggerEvent("dblclick", {}, e);
-    }
+    };
 
     public getChildContext() {
         const dimensions = getDimensions(this.props);
@@ -1120,7 +1085,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         this.fullData = fullData;
     }
 
-    public resetYDomain(chartId) {
+    public resetYDomain = (chartId?: string) => {
         const { chartConfig } = this.state;
         let changed = false;
         const newChartConfig = chartConfig.map((each) => {
@@ -1144,7 +1109,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                 chartConfig: newChartConfig,
             });
         }
-    }
+    };
 
     public shouldComponentUpdate() {
         return !this.panInProgress;

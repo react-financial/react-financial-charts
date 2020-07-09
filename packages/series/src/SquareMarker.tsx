@@ -1,47 +1,46 @@
 import * as React from "react";
-import { colorToRGBA, functor } from "@react-financial-charts/core";
+import { functor } from "@react-financial-charts/core";
 
 interface SquareProps {
-    readonly stroke?: string;
-    readonly fill: string;
+    readonly className?: string;
+    readonly fillStyle?: string;
     readonly opacity: number;
     readonly point: {
         x: number;
         y: number;
-        datum: any;
+        datum: unknown;
     };
-    readonly className?: string;
+    readonly strokeStyle?: string;
     readonly strokeWidth?: number;
-    readonly width: number | ((datum: any) => number);
+    readonly width: number | ((datum: unknown) => number);
 }
 
 export class Square extends React.Component<SquareProps> {
     public static defaultProps = {
-        stroke: "#4682B4",
+        strokeStyle: "#4682B4",
         strokeWidth: 1,
         opacity: 0.5,
-        fill: "#4682B4",
+        fillStyle: "#4682B4",
         className: "react-financial-charts-marker-rect",
     };
 
-    public static drawOnCanvas = (props: SquareProps, point, ctx: CanvasRenderingContext2D) => {
-        const {
-            stroke = Square.defaultProps.stroke,
-            fill,
-            opacity,
-            strokeWidth = Square.defaultProps.strokeWidth,
-        } = props;
+    public static drawOnCanvas = (
+        props: SquareProps,
+        point: { x: number; y: number; datum: unknown },
+        ctx: CanvasRenderingContext2D,
+    ) => {
+        const { strokeStyle, fillStyle, strokeWidth, width } = props;
 
-        ctx.strokeStyle = stroke;
-        ctx.lineWidth = strokeWidth;
-        if (fill !== "none") {
-            ctx.fillStyle = colorToRGBA(fill, opacity);
+        if (strokeStyle !== undefined) {
+            ctx.strokeStyle = strokeStyle;
         }
-        Square.drawOnCanvasWithNoStateChange(props, point, ctx);
-    };
+        if (strokeWidth !== undefined) {
+            ctx.lineWidth = strokeWidth;
+        }
+        if (fillStyle !== undefined) {
+            ctx.fillStyle = fillStyle;
+        }
 
-    public static drawOnCanvasWithNoStateChange = (props: SquareProps, point, ctx: CanvasRenderingContext2D) => {
-        const { width } = props;
         const w = functor(width)(point.datum);
         const x = point.x - w / 2;
         const y = point.y - w / 2;
@@ -52,7 +51,7 @@ export class Square extends React.Component<SquareProps> {
     };
 
     public render() {
-        const { className, stroke, strokeWidth, opacity, fill, point, width } = this.props;
+        const { className, strokeStyle, strokeWidth, opacity, fillStyle, point, width } = this.props;
         const w = functor(width)(point.datum);
         const x = point.x - w / 2;
         const y = point.y - w / 2;
@@ -62,10 +61,10 @@ export class Square extends React.Component<SquareProps> {
                 className={className}
                 x={x}
                 y={y}
-                stroke={stroke}
+                stroke={strokeStyle}
                 strokeWidth={strokeWidth}
                 fillOpacity={opacity}
-                fill={fill}
+                fill={fillStyle}
                 width={w}
                 height={w}
             />

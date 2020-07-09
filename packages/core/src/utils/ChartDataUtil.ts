@@ -86,8 +86,6 @@ export function getNewChartConfig(innerDimension, children, existingChartConfig:
                     yPanEnabled &&
                     shallowEqual(prevChartConfig.originalYExtentsProp, yExtentsProp)
                 ) {
-                    // console.log(prevChartConfig.originalYExtentsProp, yExtentsProp)
-                    // console.log(prevChartConfig.yScale.domain())
                     yScale.domain(prevChartConfig.yScale.domain());
                 } else {
                     const [a, b] = yExtentsProp;
@@ -167,20 +165,21 @@ export function getChartConfigWithUpdatedYScales(
     chartConfig,
     { plotData, xAccessor, displayXAccessor, fullData },
     xDomain,
-    dy,
-    chartsToPan,
+    dy?: number,
+    chartsToPan?: any,
 ) {
     const yDomains = chartConfig.map(({ yExtentsCalculator, yExtents, yScale }) => {
         const realYDomain = isDefined(yExtentsCalculator)
             ? yExtentsCalculator({ plotData, xDomain, xAccessor, displayXAccessor, fullData })
             : yDomainFromYExtents(yExtents, yScale, plotData);
 
-        const yDomainDY = isDefined(dy)
-            ? yScale
-                  .range()
-                  .map((each) => each - dy)
-                  .map(yScale.invert)
-            : yScale.domain();
+        const yDomainDY =
+            dy !== undefined
+                ? yScale
+                      .range()
+                      .map((each) => each - dy)
+                      .map(yScale.invert)
+                : yScale.domain();
         return {
             realYDomain,
             yDomainDY,

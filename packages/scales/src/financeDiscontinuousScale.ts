@@ -55,8 +55,10 @@ export default function financeDiscontinuousScale(index, futureProvider, backing
 
         const [domainStart, domainEnd] = backingLinearScale.domain();
 
-        const start = Math.max(Math.ceil(domainStart), head(index).index) + Math.abs(head(index).index);
-        const end = Math.min(Math.floor(domainEnd), last(index).index) + Math.abs(head(index).index);
+        const dStart = Math.ceil(domainStart);
+        const dHead = head(index)?.index;
+        const start = Math.max(dStart, dHead) + Math.abs(dHead);
+        const end = Math.min(Math.floor(domainEnd), last(index)?.index) + Math.abs(dHead);
 
         const desiredTickCount = Math.ceil(((end - start) / (domainEnd - domainStart)) * backingTicks.length);
 

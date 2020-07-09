@@ -1,49 +1,46 @@
+import { functor } from "@react-financial-charts/core";
 import * as React from "react";
-import { colorToRGBA, functor } from "@react-financial-charts/core";
 
-interface CircleProps {
+interface CircleMarkerProps {
     readonly className?: string;
-    readonly fill?: string;
+    readonly fillStyle?: string;
     readonly opacity?: number;
     readonly point: {
         x: number;
         y: number;
-        datum: any;
+        datum: unknown;
     };
-    readonly r: number | ((datum: any) => number);
-    readonly stroke?: string;
+    readonly r: number | ((datum: unknown) => number);
+    readonly strokeStyle?: string;
     readonly strokeWidth?: number;
 }
 
-export class Circle extends React.Component<CircleProps> {
+export class CircleMarker extends React.Component<CircleMarkerProps> {
     public static defaultProps = {
-        stroke: "#4682B4",
+        strokeStyle: "#4682B4",
         strokeWidth: 1,
         opacity: 0.5,
-        fill: "#4682B4",
+        fillStyle: "#4682B4",
         className: "react-financial-charts-marker-circle",
     };
 
-    public static drawOnCanvas = (props: CircleProps, point, ctx: CanvasRenderingContext2D) => {
-        const {
-            stroke = Circle.defaultProps.stroke,
-            fill = Circle.defaultProps.fill,
-            opacity,
-            strokeWidth = Circle.defaultProps.strokeWidth,
-        } = props;
+    public static drawOnCanvas = (
+        props: CircleMarkerProps,
+        point: { x: number; y: number; datum: unknown },
+        ctx: CanvasRenderingContext2D,
+    ) => {
+        const { strokeStyle, fillStyle, r, strokeWidth } = props;
 
-        ctx.strokeStyle = stroke;
-        ctx.lineWidth = strokeWidth;
-
-        if (fill !== "none") {
-            ctx.fillStyle = colorToRGBA(fill, opacity);
+        if (strokeStyle !== undefined) {
+            ctx.strokeStyle = strokeStyle;
+        }
+        if (strokeWidth !== undefined) {
+            ctx.lineWidth = strokeWidth;
+        }
+        if (fillStyle !== undefined) {
+            ctx.fillStyle = fillStyle;
         }
 
-        Circle.drawOnCanvasWithNoStateChange(props, point, ctx);
-    };
-
-    public static drawOnCanvasWithNoStateChange = (props: CircleProps, point, ctx: CanvasRenderingContext2D) => {
-        const { r } = props;
         const radius = functor(r)(point.datum);
 
         ctx.moveTo(point.x, point.y);
@@ -54,7 +51,7 @@ export class Circle extends React.Component<CircleProps> {
     };
 
     public render() {
-        const { className, stroke, strokeWidth, opacity, fill, point, r } = this.props;
+        const { className, strokeStyle, strokeWidth, opacity, fillStyle, point, r } = this.props;
         const radius = functor(r)(point.datum);
 
         return (
@@ -62,10 +59,10 @@ export class Circle extends React.Component<CircleProps> {
                 className={className}
                 cx={point.x}
                 cy={point.y}
-                stroke={stroke}
+                stroke={strokeStyle}
                 strokeWidth={strokeWidth}
                 fillOpacity={opacity}
-                fill={fill}
+                fill={fillStyle}
                 r={radius}
             />
         );

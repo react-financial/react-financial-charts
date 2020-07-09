@@ -25,7 +25,6 @@ export function saveNodeType(type) {
             // @ts-ignore
             this.nodes[type] = node;
         }
-        // console.error(this.nodes)
     };
 }
 export function isHoverForInteractiveType(interactiveType) {

@@ -456,12 +456,12 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     }
 
     public render() {
-        const { chartId } = this.context;
         const { canvasDraw, clip, svgDraw } = this.props;
-
-        if (isDefined(canvasDraw)) {
+        if (canvasDraw !== undefined) {
             return null;
         }
+
+        const { chartId } = this.context;
 
         const suffix = isDefined(chartId) ? "-" + chartId : "";
 

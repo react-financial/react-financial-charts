@@ -318,7 +318,16 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         const proceed = this.props.drawOn.indexOf(type) > -1;
 
         if (proceed || this.props.selected /* this is to draw as soon as you select */ || force) {
-            this.drawOnCanvas();
+            const { canvasDraw } = this.props;
+
+            if (canvasDraw === undefined) {
+                const { updateCount } = this.state;
+                this.setState({
+                    updateCount: updateCount + 1,
+                });
+            } else {
+                this.drawOnCanvas();
+            }
         }
     }
 

@@ -4,7 +4,7 @@ import { functor } from "@react-financial-charts/core";
 interface BarAnnotationProps {
     readonly className?: string;
     readonly path?: any; // func
-    readonly onClick?: any; // func
+    readonly onClick?: (e: React.MouseEvent, data: { xScale: unknown; yScale: unknown; datum: unknown }) => void; // func
     readonly xAccessor?: any; // func
     readonly xScale?: any; // func
     readonly yScale?: any; // func
@@ -61,7 +61,7 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
             textRotate,
         } = this.props;
 
-        const { x, y, fill, tooltip } = helper(this.props, xAccessor, xScale, yScale);
+        const { x, y, fill, tooltip } = this.helper(this.props, xAccessor, xScale, yScale);
 
         const {
             textIcon,
@@ -114,26 +114,25 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
 
     private readonly onClick = (e: React.MouseEvent) => {
         const { onClick } = this.props;
-
-        if (onClick) {
+        if (onClick !== undefined) {
             const { xScale, yScale, datum } = this.props;
-            onClick({ xScale, yScale, datum }, e);
+            onClick(e, { xScale, yScale, datum });
         }
     };
-}
 
-function helper(props, xAccessor, xScale, yScale) {
-    const { x, y, datum, fill, tooltip, plotData } = props;
+    private readonly helper = (props, xAccessor, xScale, yScale) => {
+        const { x, y, datum, fill, tooltip, plotData } = props;
 
-    const xFunc = functor(x);
-    const yFunc = functor(y);
+        const xFunc = functor(x);
+        const yFunc = functor(y);
 
-    const [xPos, yPos] = [xFunc({ xScale, xAccessor, datum, plotData }), yFunc({ yScale, datum, plotData })];
+        const [xPos, yPos] = [xFunc({ xScale, xAccessor, datum, plotData }), yFunc({ yScale, datum, plotData })];
 
-    return {
-        x: xPos,
-        y: yPos,
-        fill: functor(fill)(datum),
-        tooltip: functor(tooltip)(datum),
+        return {
+            x: xPos,
+            y: yPos,
+            fill: functor(fill)(datum),
+            tooltip: functor(tooltip)(datum),
+        };
     };
 }

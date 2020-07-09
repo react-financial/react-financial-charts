@@ -14,14 +14,14 @@ interface BollingerBandTooltipProps {
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly labelFill?: string;
-    readonly onClick?: any; // Func
+    readonly onClick?: (event: React.MouseEvent) => void;
     readonly options: {
         movingAverageType: string;
         multiplier: number;
         sourcePath: string;
         windowSize: number;
     };
-    readonly origin?: number[];
+    readonly origin?: [number, number] | ((width: number, height: number) => [number, number]);
     readonly textFill?: string;
     readonly yAccessor?: any; // Func
 }
@@ -41,8 +41,19 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
     }
 
     private readonly renderSVG = (moreProps) => {
-        const { onClick, displayFormat, yAccessor, options, textFill, labelFill } = this.props;
-        const { className, displayValuesFor, displayInit, fontFamily, fontSize } = this.props;
+        const {
+            onClick,
+            displayFormat,
+            yAccessor,
+            options,
+            textFill,
+            labelFill,
+            className,
+            displayValuesFor,
+            displayInit,
+            fontFamily,
+            fontSize,
+        } = this.props;
 
         const {
             chartConfig: { width, height },

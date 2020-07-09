@@ -66,7 +66,7 @@ class ForceIndicator extends React.Component<ChartProps> {
                     <YAxis tickFormat={format(".2s")} />
 
                     <LineSeries yAccessor={yAccessor} />
-                    <StraightLine yValue={0} strokeDasharray="ShortDash2" />
+                    <StraightLine yValue={0} lineDash="ShortDash2" />
 
                     <SingleValueTooltip
                         yAccessor={yAccessor}

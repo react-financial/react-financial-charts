@@ -57,7 +57,7 @@ class ATRIndicator extends React.Component<ChartProps> {
                     <XAxis ticks={6} />
                     <YAxis ticks={2} />
 
-                    <LineSeries yAccessor={atr14.accessor()} stroke={atr14.stroke()} />
+                    <LineSeries yAccessor={atr14.accessor()} strokeStyle={atr14.stroke()} />
 
                     <SingleValueTooltip
                         yAccessor={atr14.accessor()}

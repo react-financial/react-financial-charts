@@ -101,7 +101,6 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         super(props, context);
         this.drawOnCanvas = this.drawOnCanvas.bind(this);
         this.getMoreProps = this.getMoreProps.bind(this);
-        this.listener = this.listener.bind(this);
         this.draw = this.draw.bind(this);
         this.updateMoreProps = this.updateMoreProps.bind(this);
         this.evaluateType = this.evaluateType.bind(this);
@@ -136,14 +135,14 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         /// empty
     }
 
-    public listener(type, moreProps, state, e) {
+    public listener = (type, moreProps, state, e) => {
         if (isDefined(moreProps)) {
             this.updateMoreProps(moreProps);
         }
         this.evaluationInProgress = true;
         this.evaluateType(type, e);
         this.evaluationInProgress = false;
-    }
+    };
 
     public evaluateType(type, e) {
         const newType = aliases[type] || type;

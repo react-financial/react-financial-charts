@@ -2,18 +2,16 @@ import React, { Component } from "react";
 import { strokeDashTypes } from "@react-financial-charts/core";
 import { AreaOnlySeries } from "./AreaOnlySeries";
 import { LineSeries } from "./LineSeries";
+import { CurveFactory } from "d3-shape";
 
 interface AreaSeriesProps {
     readonly baseAt?: number | ((yScale: any, d: [number, number], moreProps: any) => number);
-    readonly canvasClip?: any; // func
-    readonly canvasGradient?: any; // func
+    readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: unknown) => void;
     readonly className?: string;
-    readonly fill?: string;
-    readonly interpolation?: any; // func
-    readonly opacity?: number;
-    readonly stroke?: string;
+    readonly fillStyle?: string | CanvasGradient | CanvasPattern;
+    readonly interpolation?: CurveFactory;
+    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly strokeDasharray?: strokeDashTypes;
-    readonly strokeOpacity?: number;
     readonly strokeWidth?: number;
     readonly style?: React.CSSProperties;
     readonly yAccessor: (data: any) => number;
@@ -25,11 +23,9 @@ interface AreaSeriesProps {
 export class AreaSeries extends Component<AreaSeriesProps> {
     public static defaultProps: Partial<AreaSeriesProps> = {
         className: "react-financial-charts-area",
-        fill: "#2196f3",
-        opacity: 0.1,
-        stroke: "#2196f3",
+        fillStyle: "rgba(33, 150, 243, 0.1)",
+        strokeStyle: "#2196f3",
         strokeWidth: 3,
-        strokeOpacity: 1,
         strokeDasharray: "Solid",
     };
 
@@ -37,13 +33,10 @@ export class AreaSeries extends Component<AreaSeriesProps> {
         const {
             baseAt,
             className,
-            opacity,
-            stroke,
+            strokeStyle,
             strokeWidth,
-            strokeOpacity,
             strokeDasharray,
-            canvasGradient,
-            fill,
+            fillStyle,
             interpolation,
             style,
             canvasClip,
@@ -56,18 +49,14 @@ export class AreaSeries extends Component<AreaSeriesProps> {
                     yAccessor={yAccessor}
                     interpolation={interpolation}
                     base={baseAt}
-                    canvasGradient={canvasGradient}
-                    fill={fill}
-                    opacity={opacity}
+                    fillStyle={fillStyle}
                     style={style}
                     canvasClip={canvasClip}
-                    stroke="none"
                 />
                 <LineSeries
                     yAccessor={yAccessor}
-                    stroke={stroke}
+                    strokeStyle={strokeStyle}
                     strokeWidth={strokeWidth}
-                    strokeOpacity={strokeOpacity}
                     strokeDasharray={strokeDasharray}
                     interpolation={interpolation}
                     style={style}

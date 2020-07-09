@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Axis } from "@react-financial-charts/axes";
-import AxisExample from "./axis";
+import AxisExample from "./Axis";
 
 export default {
     component: Axis,

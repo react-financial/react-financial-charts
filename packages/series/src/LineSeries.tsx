@@ -1,18 +1,16 @@
-import { line as d3Line } from "d3-shape";
-import * as React from "react";
 import {
-    colorToRGBA,
     getClosestItemIndexes,
     getStrokeDasharrayCanvas,
-    isDefined,
     strokeDashTypes,
     getAxisCanvas,
     getMouseCanvas,
     GenericChartComponent,
 } from "@react-financial-charts/core";
+import { line as d3Line, CurveFactoryLineOnly, CurveFactory } from "d3-shape";
+import * as React from "react";
 
 interface LineSeriesProps {
-    readonly canvasClip?: any; // func
+    readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: unknown) => void;
     readonly className?: string;
     readonly connectNulls?: boolean;
     readonly defined?: any; // func
@@ -20,15 +18,14 @@ interface LineSeriesProps {
     readonly highlightOnHover?: boolean;
     readonly hoverStrokeWidth?: number;
     readonly hoverTolerance?: number;
-    readonly interpolation?: any; // func
+    readonly interpolation?: CurveFactory | CurveFactoryLineOnly;
     readonly onClick?: any; // func
     readonly onDoubleClick?: any; // func
     readonly onHover?: any; // func
     readonly onUnHover?: any; // func
     readonly onContextMenu?: any; // func
-    readonly stroke?: string;
+    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly strokeDasharray?: strokeDashTypes;
-    readonly strokeOpacity?: number;
     readonly strokeWidth?: number;
     readonly style?: React.CSSProperties;
     readonly yAccessor: (data: any) => number;
@@ -37,11 +34,10 @@ interface LineSeriesProps {
 export class LineSeries extends React.Component<LineSeriesProps> {
     public static defaultProps = {
         className: "line",
+        strokeStyle: "#2196f3",
         strokeWidth: 1,
-        strokeOpacity: 1,
         hoverStrokeWidth: 4,
         fill: "none",
-        stroke: "#2196f3",
         strokeDasharray: "Solid",
         defined: (d) => !isNaN(d),
         hoverTolerance: 6,
@@ -50,7 +46,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
     };
 
     public render() {
-        const { highlightOnHover, onHover, onUnHover } = this.props;
+        const { highlightOnHover, onClick, onContextMenu, onDoubleClick, onHover, onUnHover } = this.props;
         const hoverProps =
             highlightOnHover || onHover || onUnHover
                 ? {
@@ -66,11 +62,11 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         return (
             <GenericChartComponent
                 canvasDraw={this.drawOnCanvas}
-                onClickWhenHover={this.props.onClick}
-                onDoubleClickWhenHover={this.props.onDoubleClick}
-                onContextMenuWhenHover={this.props.onContextMenu}
-                onHover={this.props.onHover}
-                onUnHover={this.props.onUnHover}
+                onClickWhenHover={onClick}
+                onDoubleClickWhenHover={onDoubleClick}
+                onContextMenuWhenHover={onContextMenu}
+                onHover={onHover}
+                onUnHover={onUnHover}
                 {...hoverProps}
             />
         );
@@ -78,9 +74,9 @@ export class LineSeries extends React.Component<LineSeriesProps> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {
+            connectNulls,
             yAccessor,
-            stroke = LineSeries.defaultProps.stroke,
-            strokeOpacity,
+            strokeStyle,
             strokeWidth = LineSeries.defaultProps.strokeWidth,
             hoverStrokeWidth = LineSeries.defaultProps.hoverStrokeWidth,
             defined,
@@ -89,24 +85,24 @@ export class LineSeries extends React.Component<LineSeriesProps> {
             canvasClip,
         } = this.props;
 
-        const { connectNulls } = this.props;
-
-        const { xAccessor } = moreProps;
         const {
+            xAccessor,
             xScale,
             chartConfig: { yScale },
             plotData,
             hovering,
         } = moreProps;
 
-        if (canvasClip) {
+        if (canvasClip !== undefined) {
             ctx.save();
             canvasClip(ctx, moreProps);
         }
 
         ctx.lineWidth = hovering ? hoverStrokeWidth : strokeWidth;
 
-        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
+        if (strokeStyle !== undefined) {
+            ctx.strokeStyle = strokeStyle;
+        }
 
         const lineDash = getStrokeDasharrayCanvas(strokeDasharray);
 
@@ -116,9 +112,10 @@ export class LineSeries extends React.Component<LineSeriesProps> {
             .x((d) => Math.round(xScale(xAccessor(d))))
             .y((d) => Math.round(yScale(yAccessor(d))));
 
-        if (isDefined(interpolation)) {
+        if (interpolation !== undefined) {
             dataSeries.curve(interpolation);
         }
+
         if (!connectNulls) {
             dataSeries.defined((d) => defined(yAccessor(d)));
         }
@@ -127,24 +124,25 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         dataSeries.context(ctx)(plotData);
         ctx.stroke();
 
-        if (canvasClip) {
+        if (canvasClip !== undefined) {
             ctx.restore();
         }
     };
 
     private readonly isHover = (moreProps) => {
         const { highlightOnHover, yAccessor, hoverTolerance = LineSeries.defaultProps.hoverTolerance } = this.props;
-
         if (!highlightOnHover) {
             return false;
         }
 
-        const { mouseXY, currentItem, xScale, plotData } = moreProps;
         const {
             chartConfig: { yScale, origin },
+            xAccessor,
+            mouseXY,
+            currentItem,
+            xScale,
+            plotData,
         } = moreProps;
-
-        const { xAccessor } = moreProps;
 
         const [x, y] = mouseXY;
         const radius = hoverTolerance;

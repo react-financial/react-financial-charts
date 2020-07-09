@@ -129,10 +129,10 @@ export function getClosestItemIndexes(array, value, accessor) {
     }
     // for Date object === does not work, so using the <= in combination with >=
     // the same code works for both dates and numbers
-    if (accessor(array[lo]).valueOf() === value.valueOf()) {
+    if (accessor(array[lo])?.valueOf() === value?.valueOf()) {
         hi = lo;
     }
-    if (accessor(array[hi]).valueOf() === value.valueOf()) {
+    if (accessor(array[hi])?.valueOf() === value?.valueOf()) {
         lo = hi;
     }
 
@@ -212,22 +212,20 @@ export function isObject(d) {
 
 export const isArray = Array.isArray;
 
-export function touchPosition(touch, e) {
-    const container = e.target;
+export function touchPosition(touch, e: React.TouchEvent): [number, number] {
+    const container = e.currentTarget;
     const rect = container.getBoundingClientRect();
     const x = touch.clientX - rect.left - container.clientLeft;
     const y = touch.clientY - rect.top - container.clientTop;
-    const xy = [Math.round(x), Math.round(y)];
-    return xy;
+    return [Math.round(x), Math.round(y)];
 }
 
-export function mousePosition(e: React.MouseEvent, defaultRect?) {
+export function mousePosition(e: React.MouseEvent, defaultRect?): [number, number] {
     const container = e.currentTarget;
     const rect = defaultRect || container.getBoundingClientRect();
     const x = e.clientX - rect.left - container.clientLeft;
     const y = e.clientY - rect.top - container.clientTop;
-    const xy = [Math.round(x), Math.round(y)];
-    return xy;
+    return [Math.round(x), Math.round(y)];
 }
 
 export function clearCanvas(canvasList: CanvasRenderingContext2D[], ratio: number) {

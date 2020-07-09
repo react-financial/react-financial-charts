@@ -20,7 +20,6 @@ interface HoverTooltipProps {
 
 class HoverTooltip extends React.Component<HoverTooltipProps> {
     public static defaultProps = {
-        tooltipSVG: defaultTooltipSVG,
         tooltipCanvas: defaultTooltipCanvas,
         origin: defaultOrigin,
         fill: "#D4E2FD",
@@ -29,7 +28,6 @@ class HoverTooltip extends React.Component<HoverTooltipProps> {
         stroke: "#9B9BFF",
         fontFill: "#000000",
         opacity: 0.8,
-        backgroundShapeSVG: defaultBackgroundShapeSVG,
         backgroundShapeCanvas: defaultBackgroundShapeCanvas,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
@@ -41,43 +39,9 @@ class HoverTooltip extends React.Component<HoverTooltipProps> {
     };
 
     public render() {
-        return (
-            <GenericComponent svgDraw={this.renderSVG} canvasDraw={this.drawOnCanvas} drawOn={["mousemove", "pan"]} />
-        );
+        return <GenericComponent canvasDraw={this.drawOnCanvas} drawOn={["mousemove", "pan"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
-        const pointer = helper(this.props, moreProps);
-
-        if (pointer === undefined) {
-            return null;
-        }
-
-        const { bgFill, bgOpacity, backgroundShapeSVG, tooltipSVG } = this.props;
-        const { bgheight, bgwidth } = this.props;
-        const { height } = moreProps;
-
-        const { x, y, content, centerX, pointWidth, bgSize } = pointer;
-
-        const bgShape = isDefined(bgwidth) && isDefined(bgheight) ? { width: bgwidth, height: bgheight } : bgSize;
-
-        return (
-            <g>
-                <rect
-                    x={centerX - pointWidth / 2}
-                    y={0}
-                    width={pointWidth}
-                    height={height}
-                    fill={bgFill}
-                    opacity={bgOpacity}
-                />
-                <g className="react-financial-charts-tooltip-content" transform={`translate(${x}, ${y})`}>
-                    {backgroundShapeSVG(this.props, bgShape)}
-                    {tooltipSVG(this.props, content)}
-                </g>
-            </g>
-        );
-    };
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const pointer = helper(this.props, moreProps, ctx);
         const { height } = moreProps;
@@ -93,36 +57,6 @@ class HoverTooltip extends React.Component<HoverTooltipProps> {
 const PADDING = 5;
 const X = 10;
 const Y = 10;
-
-function defaultBackgroundShapeSVG({ fill, stroke, opacity }, { height, width }) {
-    return <rect height={height} width={width} fill={fill} opacity={opacity} stroke={stroke} />;
-}
-
-function defaultTooltipSVG({ fontFamily, fontSize, fontFill }, content) {
-    const tspans: any[] = [];
-    const startY = Y + fontSize * 0.9;
-
-    for (let i = 0; i < content.y.length; i++) {
-        const y = content.y[i];
-        const textY = startY + fontSize * (i + 1);
-
-        tspans.push(
-            <tspan key={`L-${i}`} x={X} y={textY} fill={y.stroke}>
-                {y.label}
-            </tspan>,
-        );
-        tspans.push(<tspan key={i}>: </tspan>);
-        tspans.push(<tspan key={`V-${i}`}>{y.value}</tspan>);
-    }
-    return (
-        <text fontFamily={fontFamily} fontSize={fontSize} fill={fontFill}>
-            <tspan x={X} y={startY}>
-                {content.x}
-            </tspan>
-            {tspans}
-        </text>
-    );
-}
 
 function defaultBackgroundShapeCanvas(props, { width, height }, ctx) {
     const { fill, stroke, opacity } = props;

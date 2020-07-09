@@ -49,7 +49,6 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
                 interactiveCursorClass={interactiveCursorClass}
                 isHover={this.isHover}
                 onClickWhenHover={onClick}
-                svgDraw={this.renderSVG}
                 canvasDraw={this.drawOnCanvas}
                 canvasToDraw={getMouseCanvas}
                 onHover={onHover}
@@ -58,10 +57,6 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
             />
         );
     }
-
-    private readonly renderSVG = () => {
-        throw new Error("svg not implemented");
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, strokeOpacity, hovering, textBox } = this.props;

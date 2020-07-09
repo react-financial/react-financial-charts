@@ -1,7 +1,3 @@
-import { mean } from "d3-array";
-import { event as d3Event, mouse, select, touches } from "d3-selection";
-import * as React from "react";
-
 import {
     d3Window,
     first,
@@ -11,58 +7,55 @@ import {
     MOUSEMOVE,
     mousePosition,
     MOUSEUP,
-    noop,
     sign,
     TOUCHEND,
     TOUCHMOVE,
     touchPosition,
 } from "@react-financial-charts/core";
+import { mean } from "d3-array";
+import { event as d3Event, mouse, select, touches } from "d3-selection";
+import * as React from "react";
 
 interface AxisZoomCaptureProps {
-    readonly innerTickSize?: number;
-    readonly outerTickSize?: number;
-    readonly tickFormat?: any; // func
-    readonly tickPadding?: number;
-    readonly tickSize?: number;
-    readonly ticks?: number;
-    readonly tickValues?: number[];
-    readonly showDomain?: boolean;
-    readonly showTicks?: boolean;
-    readonly className?: string;
     readonly axisZoomCallback?: any; // func
-    readonly inverted?: boolean;
     readonly bg: {
         h: number;
         x: number;
         w: number;
         y: number;
     };
-    readonly zoomCursorClassName?: string;
+    readonly className?: string;
     readonly getMoreProps: any; // func
     readonly getScale: any; // func
-    readonly getMouseDelta: any; // func
-    readonly onDoubleClick: any; // func
-    readonly onContextMenu: any; // func
+    readonly getMouseDelta: (startXY: [number, number], mouseXY: [number, number]) => number;
+    readonly innerTickSize?: number;
+    readonly inverted?: boolean;
+    readonly onDoubleClick?: (e: React.MouseEvent, mousePosition: [number, number]) => void;
+    readonly onContextMenu?: (e: React.MouseEvent, mousePosition: [number, number]) => void;
+    readonly outerTickSize?: number;
+    readonly showDomain?: boolean;
+    readonly showTicks?: boolean;
+    readonly tickFormat?: any; // func
+    readonly tickPadding?: number;
+    readonly tickSize?: number;
+    readonly ticks?: number;
+    readonly tickValues?: number[];
+    readonly zoomCursorClassName?: string;
 }
 
 interface AxisZoomCaptureState {
-    startPosition: any | null;
+    startPosition: { startScale: any; startXY: [number, number] } | null;
 }
 
 export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZoomCaptureState> {
-    public static defaultProps = {
-        onDoubleClick: noop,
-        onContextMenu: noop,
-        inverted: true,
-    };
+    private readonly ref = React.createRef<SVGRectElement>();
+    private mouseInteraction = false;
+    private clicked = false;
+    private dragHappened = false;
 
-    private node;
-    private mouseInteraction;
-    private clicked;
-    private dragHappened;
-
-    public constructor(props) {
+    public constructor(props: AxisZoomCaptureProps) {
         super(props);
+
         this.state = {
             startPosition: null,
         };
@@ -78,7 +71,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         return (
             <rect
                 className={`react-financial-charts-enable-interaction ${cursor} ${className}`}
-                ref={this.saveNode}
+                ref={this.ref}
                 x={bg.x}
                 y={bg.y}
                 opacity={0}
@@ -92,13 +85,19 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
     }
 
     private readonly handleDragEnd = () => {
+        const container = this.ref.current;
+        if (container === null) {
+            return;
+        }
+
         if (!this.dragHappened) {
             if (this.clicked) {
                 const e = d3Event;
-                const mouseXY = this.mouseInteraction ? mouse(this.node) : touches(this.node)[0];
+                const mouseXY = this.mouseInteraction ? mouse(container) : touches(container)[0];
                 const { onDoubleClick } = this.props;
-
-                onDoubleClick(mouseXY, e);
+                if (onDoubleClick !== undefined) {
+                    onDoubleClick(e, mouseXY);
+                }
             } else {
                 this.clicked = true;
                 setTimeout(() => {
@@ -107,7 +106,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
             }
         }
 
-        select(d3Window(this.node)).on(MOUSEMOVE, null).on(MOUSEUP, null).on(TOUCHMOVE, null).on(TOUCHEND, null);
+        select(d3Window(container)).on(MOUSEMOVE, null).on(MOUSEUP, null).on(TOUCHMOVE, null).on(TOUCHEND, null);
 
         this.setState({
             startPosition: null,
@@ -115,15 +114,20 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
     };
 
     private readonly handleDrag = () => {
-        const { startPosition } = this.state;
-        const { getMouseDelta, inverted } = this.props;
-
+        const container = this.ref.current;
+        if (container === null) {
+            return;
+        }
         this.dragHappened = true;
-        if (isDefined(startPosition)) {
+
+        const { getMouseDelta, inverted = true } = this.props;
+
+        const { startPosition } = this.state;
+        if (startPosition !== null) {
             const { startScale } = startPosition;
             const { startXY } = startPosition;
 
-            const mouseXY = this.mouseInteraction ? mouse(this.node) : touches(this.node)[0];
+            const mouseXY = this.mouseInteraction ? mouse(container) : touches(container)[0];
 
             const diff = getMouseDelta(startXY, mouseXY);
 
@@ -147,38 +151,51 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         }
     };
 
-    private readonly handleDragStartTouch = (e) => {
+    private readonly handleDragStartTouch = (event: React.TouchEvent<SVGRectElement>) => {
+        const container = this.ref.current;
+        if (container === null) {
+            return;
+        }
+
         this.mouseInteraction = false;
+        this.dragHappened = false;
 
         const { getScale, getMoreProps } = this.props;
         const startScale = getScale(getMoreProps());
-        this.dragHappened = false;
 
-        if (e.touches.length === 1 && startScale.invert) {
-            select(d3Window(this.node)).on(TOUCHMOVE, this.handleDrag).on(TOUCHEND, this.handleDragEnd);
+        if (event.touches.length === 1 && startScale.invert) {
+            select(d3Window(container)).on(TOUCHMOVE, this.handleDrag).on(TOUCHEND, this.handleDragEnd);
 
-            const startXY = touchPosition(getTouchProps(e.touches[0]), e);
+            const startXY = touchPosition(getTouchProps(event.touches[0]), event);
 
             this.setState({
                 startPosition: {
-                    startXY,
                     startScale,
+                    startXY,
                 },
             });
         }
     };
 
-    private readonly handleDragStartMouse = (e) => {
+    private readonly handleDragStartMouse = (event: React.MouseEvent<SVGRectElement, MouseEvent>) => {
+        event.preventDefault();
+
+        const container = this.ref.current;
+        if (container === null) {
+            return;
+        }
+
         this.mouseInteraction = true;
+        this.dragHappened = false;
 
         const { getScale, getMoreProps } = this.props;
-        const startScale = getScale(getMoreProps());
-        this.dragHappened = false;
+        const allProps = getMoreProps();
+        const startScale = getScale(allProps);
 
         if (startScale.invert) {
-            select(d3Window(this.node)).on(MOUSEMOVE, this.handleDrag, false).on(MOUSEUP, this.handleDragEnd, false);
+            select(d3Window(container)).on(MOUSEMOVE, this.handleDrag, false).on(MOUSEUP, this.handleDragEnd, false);
 
-            const startXY = mousePosition(e);
+            const startXY = mousePosition(event);
 
             this.setState({
                 startPosition: {
@@ -187,26 +204,31 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
                 },
             });
         }
-        e.preventDefault();
     };
 
-    private readonly handleRightClick = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+    private readonly handleRightClick = (event: React.MouseEvent<SVGRectElement, MouseEvent>) => {
+        event.stopPropagation();
+        event.preventDefault();
+
+        const container = this.ref.current;
+        if (container === null) {
+            return;
+        }
 
         const { onContextMenu } = this.props;
+        if (onContextMenu === undefined) {
+            return;
+        }
 
-        const mouseXY = mousePosition(e, this.node.getBoundingClientRect());
+        const defaultRect = container.getBoundingClientRect();
+        const mouseXY = mousePosition(event, defaultRect);
 
-        select(d3Window(this.node)).on(MOUSEMOVE, null).on(MOUSEUP, null);
+        select(d3Window(container)).on(MOUSEMOVE, null).on(MOUSEUP, null);
+
         this.setState({
             startPosition: null,
         });
 
-        onContextMenu(mouseXY, e);
-    };
-
-    private readonly saveNode = (node) => {
-        this.node = node;
+        onContextMenu(event, mouseXY);
     };
 }

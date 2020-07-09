@@ -1,4 +1,3 @@
-import { path as d3Path } from "d3-path";
 import * as React from "react";
 import {
     colorToRGBA,
@@ -52,7 +51,6 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
         return (
             <GenericChartComponent
                 isHover={this.isHover}
-                svgDraw={this.renderSVG}
                 canvasToDraw={getMouseCanvas}
                 canvasDraw={this.drawOnCanvas}
                 interactiveCursorClass={interactiveCursorClass}
@@ -66,46 +64,6 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
             />
         );
     }
-
-    private readonly renderSVG = (moreProps) => {
-        const { stroke, strokeWidth, fillOpacity, fill, strokeOpacity } = this.props;
-        const { line1, line2 } = helper(this.props, moreProps);
-
-        if (line1 !== undefined) {
-            const { x1, y1, x2, y2 } = line1;
-            const line =
-                line2 !== undefined ? (
-                    <line
-                        strokeWidth={strokeWidth}
-                        stroke={stroke}
-                        strokeOpacity={strokeOpacity}
-                        x1={x1}
-                        y1={line2.y1}
-                        x2={x2}
-                        y2={line2.y2}
-                    />
-                ) : null;
-            const area = isDefined(line2) ? (
-                <path fill={fill} fillOpacity={fillOpacity} d={getPath(line1, line2)} />
-            ) : null;
-
-            return (
-                <g>
-                    <line
-                        strokeWidth={strokeWidth}
-                        stroke={stroke}
-                        strokeOpacity={strokeOpacity}
-                        x1={x1}
-                        y1={y1}
-                        x2={x2}
-                        y2={y2}
-                    />
-                    {line}
-                    {area}
-                </g>
-            );
-        }
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;
@@ -186,17 +144,6 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
         }
         return false;
     };
-}
-
-function getPath(line1, line2) {
-    const ctx = d3Path();
-    ctx.moveTo(line1.x1, line1.y1);
-    ctx.lineTo(line1.x2, line1.y2);
-    ctx.lineTo(line1.x2, line2.y2);
-    ctx.lineTo(line1.x1, line2.y1);
-
-    ctx.closePath();
-    return ctx.toString();
 }
 
 function getLines(props: ChannelWithAreaProps, moreProps) {

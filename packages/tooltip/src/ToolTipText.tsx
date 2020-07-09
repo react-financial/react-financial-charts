@@ -1,21 +1,15 @@
 import * as React from "react";
 
-type ToolTipTextProps = React.SVGProps<SVGTextElement>;
-
-export class ToolTipText extends React.Component<ToolTipTextProps> {
+export class ToolTipText extends React.PureComponent<React.SVGProps<SVGTextElement>> {
     public static defaultProps = {
         className: "react-financial-charts-tooltip",
-        fontFamily: "'Helvetica Neue', Ubuntu, sans-serif",
+        fontFamily: "-apple-system, system-ui, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 11,
     };
 
     public render() {
-        const { children, fontFamily, fontSize, ...rest } = this.props;
+        const { children, ...rest } = this.props;
 
-        return (
-            <text fontFamily={fontFamily} fontSize={fontSize} {...rest}>
-                {children}
-            </text>
-        );
+        return <text {...rest}>{children}</text>;
     }
 }

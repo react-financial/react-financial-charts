@@ -37,20 +37,7 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
         disablePan: true,
     };
 
-    private mutableState;
-
-    constructor(props) {
-        super(props);
-        this.renderSVG = this.renderSVG.bind(this);
-        this.drawOnCanvas = this.drawOnCanvas.bind(this);
-
-        this.handleMousePosChange = this.handleMousePosChange.bind(this);
-        this.handleMouseDown = this.handleMouseDown.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-        this.xy = this.xy.bind(this);
-
-        this.mutableState = {};
-    }
+    private mutableState: any = {};
 
     public render() {
         const { enabled, disablePan } = this.props;
@@ -62,7 +49,6 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
                 onMouseMove={this.handleMousePosChange}
                 onPan={this.handleMousePosChange}
                 disablePan={enabled && disablePan}
-                svgDraw={this.renderSVG}
                 canvasDraw={this.drawOnCanvas}
                 canvasToDraw={getMouseCanvas}
                 drawOn={["mousemove", "pan"]}
@@ -138,15 +124,5 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
             ctx.arc(x, y, r, 0, 2 * Math.PI, false);
             ctx.stroke();
         }
-    };
-
-    private readonly renderSVG = (moreProps) => {
-        const { enabled, r, stroke, strokeWidth, opacity } = this.props;
-        const { x, y } = this.mutableState;
-        const { show } = moreProps;
-
-        return enabled && show && isDefined(x) ? (
-            <circle cx={x} cy={y} r={r} stroke={stroke} opacity={opacity} fill="none" strokeWidth={strokeWidth} />
-        ) : null;
     };
 }

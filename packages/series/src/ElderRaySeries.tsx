@@ -5,14 +5,14 @@ import { OverlayBarSeries } from "./OverlayBarSeries";
 import { StraightLine } from "./StraightLine";
 
 interface ElderRaySeriesProps {
-    readonly bearPowerFill?: string;
-    readonly bullPowerFill?: string;
+    readonly fillStyle?: {
+        bearPower: string | CanvasGradient | CanvasPattern;
+        bullPower: string | CanvasGradient | CanvasPattern;
+    };
     readonly className?: string;
     readonly clip?: boolean;
     readonly stroke?: boolean;
-    readonly strokeOpacity?: number;
-    readonly straightLineStroke?: string;
-    readonly straightLineOpacity?: number;
+    readonly straightLineStrokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly straightLineStrokeDasharray?: strokeDashTypes;
     readonly widthRatio?: number;
     readonly yAccessor: (data: any) => { bearPower: number; bullPower: number };
@@ -20,16 +20,15 @@ interface ElderRaySeriesProps {
 
 export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
     public static defaultProps = {
-        bearPowerFill: "#ef5350",
-        bullPowerFill: "#26a69a",
+        fillStyle: {
+            bearPower: "rgba(239, 83, 80, 0.7)",
+            bullPower: "rgba(38, 166, 153, 0.7)",
+        },
         className: "react-financial-charts-elderray-series",
         clip: true,
-        opacity: 0.7,
         stroke: true,
-        strokeOpacity: 0.7,
-        straightLineStroke: "#000000",
+        straightLineStrokeStyle: "rgba(0, 0, 0, 0.7)",
         straightLineStrokeDasharray: "Dash",
-        straightLineOpacity: 0.7,
         widthRatio: 0.8,
     };
 
@@ -38,10 +37,8 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
             className,
             clip,
             stroke,
-            strokeOpacity,
-            straightLineStroke,
+            straightLineStrokeStyle,
             straightLineStrokeDasharray,
-            straightLineOpacity,
             widthRatio,
         } = this.props;
 
@@ -51,8 +48,7 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
                     baseAt={this.yAccessorForBarBase}
                     className="react-financial-charts-elderray-bar"
                     stroke={stroke}
-                    fill={this.fillForEachBar}
-                    opacity={strokeOpacity}
+                    fillStyle={this.fillForEachBar}
                     widthRatio={widthRatio}
                     clip={clip}
                     yAccessor={[
@@ -65,9 +61,8 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
                 <StraightLine
                     className="react-financial-charts-elderray-straight-line"
                     yValue={0}
-                    stroke={straightLineStroke}
-                    strokeDasharray={straightLineStrokeDasharray}
-                    opacity={straightLineOpacity}
+                    strokeStyle={straightLineStrokeStyle}
+                    lineDash={straightLineStrokeDasharray}
                 />
             </g>
         );
@@ -104,8 +99,8 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
         return yScale(y);
     };
 
-    private readonly fillForEachBar = (d, yAccessorNumber) => {
-        const { bullPowerFill, bearPowerFill } = this.props;
-        return yAccessorNumber % 2 === 0 ? bullPowerFill : bearPowerFill;
+    private readonly fillForEachBar = (d: any, yAccessorNumber: number) => {
+        const { fillStyle } = this.props;
+        return yAccessorNumber % 2 === 0 ? fillStyle!.bullPower : fillStyle!.bearPower;
     };
 }

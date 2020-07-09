@@ -1,5 +1,4 @@
 import { deviation, sum, zip } from "d3-array";
-import { path as d3Path } from "d3-path";
 import * as React from "react";
 import {
     colorToRGBA,
@@ -51,7 +50,6 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
         return (
             <GenericChartComponent
                 isHover={this.isHover}
-                svgDraw={this.renderSVG}
                 canvasToDraw={getMouseCanvas}
                 canvasDraw={this.drawOnCanvas}
                 interactiveCursorClass={interactiveCursorClass}
@@ -62,30 +60,6 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
             />
         );
     }
-
-    private readonly renderSVG = (moreProps) => {
-        const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;
-        const { x1, y1, x2, y2, dy } = helper(this.props, moreProps);
-        const line = {
-            strokeWidth,
-            stroke,
-            strokeOpacity,
-        };
-        const ctx = d3Path();
-        ctx.moveTo(x1, y1 - dy);
-        ctx.lineTo(x2, y2 - dy);
-        ctx.lineTo(x2, y2 + dy);
-        ctx.lineTo(x1, y1 + dy);
-        ctx.closePath();
-        return (
-            <g>
-                <line {...line} x1={x1} y1={y1 - dy} x2={x2} y2={y2 - dy} />
-                <line {...line} x1={x1} y1={y1 + dy} x2={x2} y2={y2 + dy} />
-                <path d={ctx.toString()} fill={fill} fillOpacity={fillOpacity} />
-                <line {...line} x1={x1} y1={y1} x2={x2} y2={y2} />
-            </g>
-        );
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;

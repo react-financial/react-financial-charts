@@ -6,19 +6,14 @@ import { SVGComponent } from "./SVGComponent";
 
 interface RSISeriesProps {
     readonly className?: string;
-    readonly yAccessor: any; // func
-    readonly stroke?: {
-        line: strokeDashTypes;
-        top: string;
-        middle: string;
-        bottom: string;
-        outsideThreshold: string;
-        insideThreshold: string;
-    };
-    readonly opacity?: {
-        top: number;
-        middle: number;
-        bottom: number;
+    readonly yAccessor: (data: any) => any;
+    readonly strokeStyle?: {
+        line: string | CanvasGradient | CanvasPattern;
+        top: string | CanvasGradient | CanvasPattern;
+        middle: string | CanvasGradient | CanvasPattern;
+        bottom: string | CanvasGradient | CanvasPattern;
+        outsideThreshold: string | CanvasGradient | CanvasPattern;
+        insideThreshold: string | CanvasGradient | CanvasPattern;
     };
     readonly strokeDasharray?: {
         line: strokeDashTypes;
@@ -41,18 +36,13 @@ interface RSISeriesProps {
 export class RSISeries extends React.Component<RSISeriesProps> {
     public static defaultProps = {
         className: "react-financial-charts-rsi-series",
-        stroke: {
+        strokeStyle: {
             line: "#000000",
             top: "#B8C2CC",
             middle: "#8795A1",
             bottom: "#B8C2CC",
             outsideThreshold: "#b300b3",
             insideThreshold: "#ffccff",
-        },
-        opacity: {
-            top: 1,
-            middle: 1,
-            bottom: 1,
         },
         strokeDasharray: {
             line: "Solid" as strokeDashTypes,
@@ -78,8 +68,7 @@ export class RSISeries extends React.Component<RSISeriesProps> {
     public render() {
         const {
             className,
-            stroke = RSISeries.defaultProps.stroke,
-            opacity = RSISeries.defaultProps.opacity,
+            strokeStyle = RSISeries.defaultProps.strokeStyle,
             strokeDasharray = RSISeries.defaultProps.strokeDasharray,
             strokeWidth = RSISeries.defaultProps.strokeWidth,
         } = this.props;
@@ -93,32 +82,29 @@ export class RSISeries extends React.Component<RSISeriesProps> {
             <g className={className}>
                 <SVGComponent>{this.renderClip}</SVGComponent>
                 <StraightLine
-                    stroke={stroke.top}
-                    opacity={opacity.top}
+                    strokeStyle={strokeStyle.top}
                     yValue={overSold}
-                    strokeDasharray={strokeDasharray.top}
-                    strokeWidth={strokeWidth.top}
+                    lineDash={strokeDasharray.top}
+                    lineWidth={strokeWidth.top}
                 />
                 <StraightLine
-                    stroke={stroke.middle}
-                    opacity={opacity.middle}
+                    strokeStyle={strokeStyle.middle}
                     yValue={middle}
-                    strokeDasharray={strokeDasharray.middle}
-                    strokeWidth={strokeWidth.middle}
+                    lineDash={strokeDasharray.middle}
+                    lineWidth={strokeWidth.middle}
                 />
                 <StraightLine
-                    stroke={stroke.bottom}
-                    opacity={opacity.bottom}
+                    strokeStyle={strokeStyle.bottom}
                     yValue={overBought}
-                    strokeDasharray={strokeDasharray.bottom}
-                    strokeWidth={strokeWidth.bottom}
+                    lineDash={strokeDasharray.bottom}
+                    lineWidth={strokeWidth.bottom}
                 />
                 <LineSeries
                     style={style1}
                     canvasClip={this.topAndBottomClip}
                     className={className}
                     yAccessor={yAccessor}
-                    stroke={stroke.insideThreshold || stroke.line}
+                    strokeStyle={strokeStyle.insideThreshold || strokeStyle.line}
                     strokeWidth={strokeWidth.insideThreshold}
                     strokeDasharray={strokeDasharray.line}
                 />
@@ -127,7 +113,7 @@ export class RSISeries extends React.Component<RSISeriesProps> {
                     canvasClip={this.mainClip}
                     className={className}
                     yAccessor={yAccessor}
-                    stroke={stroke.outsideThreshold || stroke.line}
+                    strokeStyle={strokeStyle.outsideThreshold || strokeStyle.line}
                     strokeWidth={strokeWidth.outsideThreshold}
                     strokeDasharray={strokeDasharray.line}
                 />

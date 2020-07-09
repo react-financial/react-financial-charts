@@ -5,10 +5,10 @@ import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 export type layouts = "horizontal" | "horizontalRows" | "horizontalInline" | "vertical" | "verticalRows";
 
 interface SingleTooltipProps {
-    readonly origin: number[];
+    readonly origin: [number, number];
     readonly yLabel: string;
     readonly yValue: string;
-    readonly onClick?: (details: any, event: React.MouseEvent) => void;
+    readonly onClick?: (event: React.MouseEvent, details: unknown) => void;
     readonly fontFamily?: string;
     readonly labelFill: string;
     readonly valueFill: string;
@@ -46,7 +46,7 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
     /*
      * Renders the value beneath the label.
      */
-    public renderValueBeneathToLabel() {
+    public renderValueBeneathLabel() {
         const { origin, yLabel, yValue, labelFill, valueFill, withShape, fontSize, fontFamily } = this.props;
 
         return (
@@ -86,7 +86,7 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
                 comp = this.renderValueNextToLabel();
                 break;
             case "horizontalRows":
-                comp = this.renderValueBeneathToLabel();
+                comp = this.renderValueBeneathLabel();
                 break;
             case "horizontalInline":
                 comp = this.renderInline();
@@ -95,7 +95,7 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
                 comp = this.renderValueNextToLabel();
                 break;
             case "verticalRows":
-                comp = this.renderValueBeneathToLabel();
+                comp = this.renderValueBeneathLabel();
                 break;
             default:
                 comp = this.renderValueNextToLabel();
@@ -104,11 +104,10 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
         return comp;
     }
 
-    private readonly handleClick = (e: React.MouseEvent) => {
+    private readonly handleClick = (event: React.MouseEvent) => {
         const { onClick, forChart, options } = this.props;
-
         if (onClick !== undefined) {
-            onClick({ chartId: forChart, ...options }, e);
+            onClick(event, { chartId: forChart, ...options });
         }
     };
 }

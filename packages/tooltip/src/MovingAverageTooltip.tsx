@@ -15,7 +15,7 @@ interface SingleMAToolTipProps {
     readonly labelFill?: string;
     readonly onClick?: (details: any, event: React.MouseEvent<SVGRectElement, MouseEvent>) => void;
     readonly options: any;
-    readonly origin: number[];
+    readonly origin: [number, number];
     readonly textFill?: string;
     readonly value: string;
 }

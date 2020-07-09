@@ -1,10 +1,6 @@
-import * as PropTypes from "prop-types";
-import * as React from "react";
-
 import {
     colorToRGBA,
     first,
-    getStrokeDasharray,
     getStrokeDasharrayCanvas,
     GenericComponent,
     getMouseCanvas,
@@ -12,6 +8,8 @@ import {
     last,
     strokeDashTypes,
 } from "@react-financial-charts/core";
+import * as PropTypes from "prop-types";
+import * as React from "react";
 
 interface CursorProps {
     readonly className?: string;
@@ -55,7 +53,6 @@ class Cursor extends React.Component<CursorProps> {
     public render() {
         return (
             <GenericComponent
-                svgDraw={this.renderSVG}
                 clip={false}
                 canvasDraw={this.drawOnCanvas}
                 canvasToDraw={getMouseCanvas}
@@ -174,47 +171,6 @@ class Cursor extends React.Component<CursorProps> {
 
             ctx.restore();
         }
-    };
-
-    private readonly renderSVG = (moreProps) => {
-        const cursors = this.getXYCursor(this.props, moreProps);
-        if (cursors === undefined) {
-            return null;
-        }
-
-        const { className, useXCursorShape } = this.props;
-
-        return (
-            <g className={`react-financial-charts-crosshair ${className}`}>
-                {cursors.map(({ strokeDasharray, id, ...rest }, idx) => {
-                    if (useXCursorShape && id === "xCursor") {
-                        const { xCursorShapeOpacity, xCursorShapeStrokeDasharray } = this.props;
-                        const xShape = this.getXCursorShape(moreProps);
-                        const xShapeFill = this.getXCursorShapeFill(moreProps);
-                        const xShapeStroke = this.getXCursorShapeStroke(moreProps);
-                        return (
-                            <rect
-                                key={idx}
-                                x={xShape.xPos}
-                                y={0}
-                                width={xShape.shapeWidth}
-                                height={xShape.height}
-                                fill={xShapeFill != null ? xShapeFill : "none"}
-                                stroke={xCursorShapeStrokeDasharray == null ? null : xShapeStroke}
-                                strokeDasharray={
-                                    xCursorShapeStrokeDasharray == null
-                                        ? undefined
-                                        : getStrokeDasharray(xCursorShapeStrokeDasharray)
-                                }
-                                opacity={xCursorShapeOpacity}
-                            />
-                        );
-                    }
-
-                    return <line key={idx} strokeDasharray={getStrokeDasharray(strokeDasharray)} {...rest} />;
-                })}
-            </g>
-        );
     };
 }
 

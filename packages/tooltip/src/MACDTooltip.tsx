@@ -7,30 +7,30 @@ import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 interface MACDTooltipProps {
-    readonly origin: number[] | any; // func
+    readonly origin: number[] | ((width: number, height: number) => [number, number]);
     readonly className?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly labelFill?: string;
-    readonly yAccessor: any; // func
+    readonly onClick?: (event: React.MouseEvent) => void;
     readonly options: {
         slow: number;
         fast: number;
         signal: number;
     };
     readonly appearance: {
-        stroke: {
+        strokeStyle: {
             macd: string;
             signal: string;
         };
-        fill: {
+        fillStyle: {
             divergence: string;
         };
     };
     readonly displayFormat: any; // func
     readonly displayInit?: string;
     readonly displayValuesFor: any; // func
-    readonly onClick?: any; // func
+    readonly yAccessor: any; // func
 }
 
 export class MACDTooltip extends React.Component<MACDTooltipProps> {
@@ -47,9 +47,19 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
     }
 
     private readonly renderSVG = (moreProps) => {
-        const { onClick, displayInit, fontFamily, fontSize, displayFormat, className } = this.props;
-        const { yAccessor, options, appearance, labelFill } = this.props;
-        const { displayValuesFor } = this.props;
+        const {
+            onClick,
+            displayInit,
+            fontFamily,
+            fontSize,
+            displayValuesFor,
+            displayFormat,
+            className,
+            yAccessor,
+            options,
+            appearance,
+            labelFill,
+        } = this.props;
 
         const {
             chartConfig: { width, height },
@@ -70,17 +80,17 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
             <g className={className} transform={`translate(${x}, ${y})`} onClick={onClick}>
                 <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
                     <ToolTipTSpanLabel fill={labelFill}>MACD (</ToolTipTSpanLabel>
-                    <tspan fill={appearance.stroke.macd}>{options.slow}</tspan>
+                    <tspan fill={appearance.strokeStyle.macd}>{options.slow}</tspan>
                     <ToolTipTSpanLabel fill={labelFill}>, </ToolTipTSpanLabel>
-                    <tspan fill={appearance.stroke.macd}>{options.fast}</tspan>
+                    <tspan fill={appearance.strokeStyle.macd}>{options.fast}</tspan>
                     <ToolTipTSpanLabel fill={labelFill}>): </ToolTipTSpanLabel>
-                    <tspan fill={appearance.stroke.macd}>{macd}</tspan>
+                    <tspan fill={appearance.strokeStyle.macd}>{macd}</tspan>
                     <ToolTipTSpanLabel fill={labelFill}> Signal (</ToolTipTSpanLabel>
-                    <tspan fill={appearance.stroke.signal}>{options.signal}</tspan>
+                    <tspan fill={appearance.strokeStyle.signal}>{options.signal}</tspan>
                     <ToolTipTSpanLabel fill={labelFill}>): </ToolTipTSpanLabel>
-                    <tspan fill={appearance.stroke.signal}>{signal}</tspan>
+                    <tspan fill={appearance.strokeStyle.signal}>{signal}</tspan>
                     <ToolTipTSpanLabel fill={labelFill}> Divergence: </ToolTipTSpanLabel>
-                    <tspan fill={appearance.fill.divergence}>{divergence}</tspan>
+                    <tspan fill={appearance.fillStyle.divergence}>{divergence}</tspan>
                 </ToolTipText>
             </g>
         );

@@ -22,7 +22,6 @@ export class Text extends React.Component<TextProps> {
             <GenericChartComponent
                 isHover={this.isHover}
                 selected={selected}
-                svgDraw={this.renderSVG}
                 canvasToDraw={getMouseCanvas}
                 canvasDraw={this.drawOnCanvas}
                 drawOn={["mousemove", "pan", "drag"]}
@@ -43,17 +42,5 @@ export class Text extends React.Component<TextProps> {
 
         ctx.beginPath();
         ctx.fillText(children, x, y);
-    };
-
-    private readonly renderSVG = (moreProps) => {
-        const { xyProvider, fontFamily, fontSize, fill, children } = this.props;
-
-        const [x, y] = xyProvider(moreProps);
-
-        return (
-            <text x={x} y={y} fontFamily={fontFamily} fontSize={fontSize} fill={fill}>
-                {children}
-            </text>
-        );
     };
 }

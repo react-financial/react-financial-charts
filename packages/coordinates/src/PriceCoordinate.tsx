@@ -1,6 +1,6 @@
 import * as React from "react";
 import { getAxisCanvas, GenericChartComponent, functor, strokeDashTypes } from "@react-financial-charts/core";
-import { drawOnCanvas, renderSVG } from "./EdgeCoordinateV3";
+import { drawOnCanvas } from "./EdgeCoordinateV3";
 
 interface PriceCoordinateProps {
     readonly displayFormat: any; // func
@@ -51,7 +51,6 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
         return (
             <GenericChartComponent
                 clip={false}
-                svgDraw={this.renderSVG}
                 canvasDraw={this.drawOnCanvas}
                 canvasToDraw={getAxisCanvas}
                 drawOn={["pan"]}
@@ -62,11 +61,6 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const props = this.helper(this.props, moreProps);
         drawOnCanvas(ctx, props);
-    };
-
-    private readonly renderSVG = (moreProps) => {
-        const props = this.helper(this.props, moreProps);
-        return renderSVG(props);
     };
 
     private readonly helper = (props, moreProps) => {

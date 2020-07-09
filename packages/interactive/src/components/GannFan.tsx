@@ -1,5 +1,4 @@
 import { pairs } from "d3-array";
-import { path as d3Path } from "d3-path";
 import * as React from "react";
 
 import { generateLine, isHovering2 } from "./StraightLine";
@@ -52,7 +51,6 @@ export class GannFan extends React.Component<GannFanProps> {
         return (
             <GenericChartComponent
                 isHover={this.isHover}
-                svgDraw={this.renderSVG}
                 canvasToDraw={getMouseCanvas}
                 canvasDraw={this.drawOnCanvas}
                 interactiveCursorClass={interactiveCursorClass}
@@ -66,43 +64,6 @@ export class GannFan extends React.Component<GannFanProps> {
             />
         );
     }
-
-    private readonly renderSVG = (moreProps) => {
-        const { stroke, strokeWidth, fillOpacity, fill, strokeOpacity } = this.props;
-
-        const lines = this.helper(this.props, moreProps);
-        const pairsOfLines = pairs(lines);
-
-        return (
-            <g>
-                {lines.map((each, idx) => {
-                    const { x1, y1, x2, y2 } = each;
-                    return (
-                        <line
-                            key={idx}
-                            strokeWidth={strokeWidth}
-                            stroke={stroke}
-                            strokeOpacity={strokeOpacity}
-                            x1={x1}
-                            y1={y1}
-                            x2={x2}
-                            y2={y2}
-                        />
-                    );
-                })}
-                {pairsOfLines.map(([line1, line2], idx) => {
-                    const ctx = d3Path();
-                    ctx.moveTo(line1.x1, line1.y1);
-                    ctx.lineTo(line1.x2, line1.y2);
-                    ctx.lineTo(line2.x2, line2.y2);
-                    ctx.closePath();
-                    return (
-                        <path key={idx} stroke="none" fill={fill[idx]} fillOpacity={fillOpacity} d={ctx.toString()} />
-                    );
-                })}
-            </g>
-        );
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, strokeOpacity, fill, fillOpacity, fontFamily, fontSize, fontFill } = this.props;

@@ -21,7 +21,7 @@
     "clean:packages": "lerna run clean",
     "clean:modules": "lerna clean --yes",
     "convert": "run-s link bootstrap",
-    "docs": "lerna run docs --stream --include-dependencies",
+    "docs": "run-s build docs:stories",
     "docs:stories": "lerna run docs --stream",
     "link": "lerna link convert",
     "lint": "eslint . --ext ts --ext tsx --quiet",

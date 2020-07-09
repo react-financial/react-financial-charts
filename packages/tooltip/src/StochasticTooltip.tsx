@@ -7,12 +7,12 @@ import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 interface StochasticTooltipProps {
-    readonly origin: number[] | any; // func
+    readonly origin: number[] | ((width: number, height: number) => [number, number]);
     readonly className?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly labelFill?: string;
-    readonly onClick?: any; // func
+    readonly onClick?: (event: React.MouseEvent) => void;
     readonly yAccessor: any; // func
     readonly options: {
         windowSize: number;

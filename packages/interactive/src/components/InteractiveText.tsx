@@ -55,7 +55,6 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
         return (
             <GenericChartComponent
                 isHover={this.isHover}
-                svgDraw={this.renderSVG}
                 canvasToDraw={getMouseCanvas}
                 canvasDraw={this.drawOnCanvas}
                 interactiveCursorClass={interactiveCursorClass}
@@ -129,10 +128,6 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
 
         ctx.beginPath();
         ctx.fillText(text, x, y);
-    };
-
-    private readonly renderSVG = () => {
-        throw new Error("svg not implemented");
     };
 
     private readonly helper = (props, moreProps, textWidth) => {

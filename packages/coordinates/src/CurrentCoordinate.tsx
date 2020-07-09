@@ -3,9 +3,9 @@ import * as React from "react";
 
 interface CurrentCoordinateProps {
     readonly className?: string;
-    readonly fill?: string | ((dataItem: any) => string);
+    readonly fill?: string | ((dataItem: unknown) => string);
     readonly r: number;
-    readonly yAccessor: (item: any) => number;
+    readonly yAccessor: (item: unknown) => number;
 }
 
 export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
@@ -17,7 +17,6 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
     public render() {
         return (
             <GenericChartComponent
-                svgDraw={this.renderSVG}
                 canvasDraw={this.drawOnCanvas}
                 canvasToDraw={getMouseCanvas}
                 drawOn={["mousemove", "pan"]}
@@ -26,9 +25,9 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const circle = this.helper(this.props, moreProps);
-        if (!circle) {
-            return null;
+        const circle = this.getCircle(this.props, moreProps);
+        if (circle === undefined) {
+            return;
         }
 
         const fillColor = circle.fill instanceof Function ? circle.fill(moreProps.currentItem) : circle.fill;
@@ -40,20 +39,7 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
         ctx.fill();
     };
 
-    private readonly renderSVG = (moreProps) => {
-        const { className } = this.props;
-
-        const circle = this.helper(this.props, moreProps);
-        if (!circle) {
-            return null;
-        }
-
-        const fillColor = circle.fill instanceof Function ? circle.fill(moreProps.currentItem) : circle.fill;
-
-        return <circle className={className} cx={circle.x} cy={circle.y} r={circle.r} fill={fillColor} />;
-    };
-
-    private readonly helper = (props: CurrentCoordinateProps, moreProps) => {
+    private readonly getCircle = (props: CurrentCoordinateProps, moreProps) => {
         const { fill, yAccessor, r } = props;
 
         const {

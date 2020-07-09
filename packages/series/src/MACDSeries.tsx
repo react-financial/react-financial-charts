@@ -8,13 +8,13 @@ interface MACDSeriesProps {
     readonly className?: string;
     readonly clip?: boolean;
     readonly divergenceStroke?: boolean;
-    readonly fill?: {
-        divergence: string | any; // func
+    readonly fillStyle?: {
+        divergence: string | CanvasGradient | CanvasPattern;
     };
-    readonly opacity?: number;
-    readonly stroke?: {
-        macd: string;
-        signal: string;
+    readonly strokeStyle?: {
+        macd: string | CanvasGradient | CanvasPattern;
+        signal: string | CanvasGradient | CanvasPattern;
+        zero: string | CanvasGradient | CanvasPattern;
     };
     readonly widthRatio?: number;
     readonly width?: number | any; // func
@@ -28,32 +28,27 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
         className: "react-financial-charts-macd-series",
         clip: true,
         divergenceStroke: false,
-        fill: {
-            divergence: "#4682B4",
+        fillStyle: {
+            divergence: "rgba(70, 130, 180, 0.6)",
         },
-        opacity: 0.6,
-        stroke: {
+        strokeStyle: {
             macd: "#0093FF",
             signal: "#D84315",
+            zero: "rgba(0, 0, 0, 0.3)",
         },
         widthRatio: 0.5,
         width: BarSeries.defaultProps.width,
-        zeroLineStroke: "#000000",
-        zeroLineOpacity: 0.3,
     };
 
     public render() {
         const {
             className,
             clip,
-            fill = MACDSeries.defaultProps.fill,
-            opacity,
+            fillStyle = MACDSeries.defaultProps.fillStyle,
             divergenceStroke,
-            stroke = MACDSeries.defaultProps.stroke,
+            strokeStyle = MACDSeries.defaultProps.strokeStyle,
             widthRatio,
             width,
-            zeroLineStroke,
-            zeroLineOpacity,
         } = this.props;
 
         return (
@@ -64,14 +59,13 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
                     width={width}
                     widthRatio={widthRatio}
                     stroke={divergenceStroke}
-                    fill={fill.divergence}
-                    opacity={opacity}
+                    fillStyle={fillStyle.divergence}
                     clip={clip}
                     yAccessor={this.yAccessorForDivergence}
                 />
-                <LineSeries yAccessor={this.yAccessorForMACD} stroke={stroke.macd} />
-                <LineSeries yAccessor={this.yAccessorForSignal} stroke={stroke.signal} />
-                <StraightLine stroke={zeroLineStroke} opacity={zeroLineOpacity} yValue={0} />
+                <LineSeries yAccessor={this.yAccessorForMACD} strokeStyle={strokeStyle.macd} />
+                <LineSeries yAccessor={this.yAccessorForSignal} strokeStyle={strokeStyle.signal} />
+                <StraightLine strokeStyle={strokeStyle.zero} yValue={0} />
             </g>
         );
     }

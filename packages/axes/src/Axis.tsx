@@ -34,8 +34,8 @@ interface AxisProps {
     readonly getScale: any; // func
     readonly innerTickSize?: number;
     readonly inverted?: boolean;
-    readonly onContextMenu?: any; // func
-    readonly onDoubleClick?: any; // func
+    readonly onContextMenu?: (e: React.MouseEvent, mousePosition: [number, number]) => void;
+    readonly onDoubleClick?: (e: React.MouseEvent, mousePosition: [number, number]) => void;
     readonly orient?: "top" | "left" | "right" | "bottom";
     readonly outerTickSize: number;
     readonly range: number[];
@@ -62,7 +62,7 @@ interface AxisProps {
     readonly zoomCursorClassName?: string;
 }
 
-class Axis extends React.Component<AxisProps> {
+export class Axis extends React.Component<AxisProps> {
     public static defaultProps = {
         edgeClip: false,
         zoomEnabled: false,
@@ -141,7 +141,7 @@ class Axis extends React.Component<AxisProps> {
     };
 }
 
-function tickHelper(props, scale) {
+const tickHelper = (props, scale) => {
     const {
         orient,
         innerTickSize,
@@ -277,9 +277,9 @@ function tickHelper(props, scale) {
         showTickLabel,
         ...rest,
     };
-}
+};
 
-function drawAxisLine(ctx: CanvasRenderingContext2D, props: AxisProps, range) {
+const drawAxisLine = (ctx: CanvasRenderingContext2D, props: AxisProps, range) => {
     const { orient, outerTickSize, stroke, strokeWidth, strokeOpacity } = props;
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
@@ -303,9 +303,9 @@ function drawAxisLine(ctx: CanvasRenderingContext2D, props: AxisProps, range) {
     }
 
     ctx.stroke();
-}
+};
 
-function drawTicks(ctx: CanvasRenderingContext2D, result, moreProps) {
+const drawTicks = (ctx: CanvasRenderingContext2D, result, moreProps) => {
     const { showGridLines, tickStroke, tickStrokeOpacity, tickLabelFill } = result;
     const { textAnchor, fontSize, fontFamily, fontWeight, ticks, showTickLabel } = result;
 
@@ -332,9 +332,9 @@ function drawTicks(ctx: CanvasRenderingContext2D, result, moreProps) {
             drawEachTickLabel(ctx, tick, result);
         });
     }
-}
+};
 
-function drawGridLine(ctx: CanvasRenderingContext2D, tick, result, moreProps) {
+const drawGridLine = (ctx: CanvasRenderingContext2D, tick, result, moreProps) => {
     const { orient, gridLinesStrokeWidth, gridLinesStroke, gridLinesStrokeDasharray } = result;
 
     const { chartConfig } = moreProps;
@@ -363,9 +363,9 @@ function drawGridLine(ctx: CanvasRenderingContext2D, tick, result, moreProps) {
 
     ctx.setLineDash(lineDash);
     ctx.stroke();
-}
+};
 
-function drawEachTick(ctx: CanvasRenderingContext2D, tick, result) {
+const drawEachTick = (ctx: CanvasRenderingContext2D, tick, result) => {
     const { tickStrokeWidth, tickStrokeDasharray } = result;
 
     ctx.beginPath();
@@ -378,9 +378,9 @@ function drawEachTick(ctx: CanvasRenderingContext2D, tick, result) {
 
     ctx.setLineDash(lineDash);
     ctx.stroke();
-}
+};
 
-function drawEachTickLabel(ctx: CanvasRenderingContext2D, tick, result) {
+const drawEachTickLabel = (ctx: CanvasRenderingContext2D, tick, result) => {
     const { canvas_dy, format } = result;
 
     const text = format(tick.value);
@@ -388,6 +388,4 @@ function drawEachTickLabel(ctx: CanvasRenderingContext2D, tick, result) {
     ctx.beginPath();
 
     ctx.fillText(text, tick.labelX, tick.labelY + canvas_dy);
-}
-
-export default Axis;
+};

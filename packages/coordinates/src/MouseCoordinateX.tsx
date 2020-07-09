@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { isNotDefined, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
-import { drawOnCanvas, renderSVG } from "./EdgeCoordinateV3";
+import { drawOnCanvas } from "./EdgeCoordinateV3";
 
 interface MouseCoordinateXProps {
     readonly at?: "bottom" | "top";
@@ -57,7 +57,6 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
     public render() {
         return (
             <GenericChartComponent
-                svgDraw={this.renderSVG}
                 clip={false}
                 canvasDraw={this.drawOnCanvas}
                 canvasToDraw={getMouseCanvas}
@@ -73,15 +72,6 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
         }
 
         drawOnCanvas(ctx, props);
-    };
-
-    private readonly renderSVG = (moreProps) => {
-        const props = this.helper(this.props, moreProps);
-        if (isNotDefined(props)) {
-            return null;
-        }
-
-        return renderSVG(props);
     };
 
     private readonly helper = (props: MouseCoordinateXProps, moreProps) => {

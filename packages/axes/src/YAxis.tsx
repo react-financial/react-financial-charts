@@ -1,7 +1,7 @@
 import { strokeDashTypes } from "@react-financial-charts/core";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import Axis from "./Axis";
+import { Axis } from "./Axis";
 
 interface YAxisProps {
     readonly axisAt?: number | "left" | "right" | "middle";
@@ -11,13 +11,13 @@ interface YAxisProps {
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fontWeight?: number;
-    readonly getMouseDelta?: (startXY: number[], mouseXY: number[]) => number;
+    readonly getMouseDelta?: (startXY: [number, number], mouseXY: [number, number]) => number;
     readonly gridLinesStroke?: string;
     readonly gridLinesStrokeWidth?: number;
     readonly gridLinesStrokeDasharray?: strokeDashTypes;
     readonly innerTickSize?: number;
-    readonly onContextMenu?: any; // func
-    readonly onDoubleClick?: any; // func
+    readonly onContextMenu?: (e: React.MouseEvent, mousePosition: [number, number]) => void;
+    readonly onDoubleClick?: (e: React.MouseEvent, mousePosition: [number, number]) => void;
     readonly orient?: "left" | "right";
     readonly outerTickSize?: number;
     readonly showDomain?: boolean;

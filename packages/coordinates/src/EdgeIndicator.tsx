@@ -10,7 +10,7 @@ import {
     noop,
     strokeDashTypes,
 } from "@react-financial-charts/core";
-import { drawOnCanvas, renderSVG } from "./EdgeCoordinateV3";
+import { drawOnCanvas } from "./EdgeCoordinateV3";
 
 interface EdgeIndicatorProps {
     readonly arrowWidth?: number;
@@ -62,7 +62,6 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
             <GenericChartComponent
                 edgeClip
                 clip={false}
-                svgDraw={this.renderSVG}
                 canvasDraw={this.drawOnCanvas}
                 canvasToDraw={getAxisCanvas}
                 drawOn={["pan"]}
@@ -77,15 +76,6 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
             ...edge,
         };
         drawOnCanvas(ctx, props);
-    };
-
-    private readonly renderSVG = (moreProps) => {
-        const edge = this.helper(this.props, moreProps);
-        const props = {
-            ...this.props,
-            ...edge,
-        };
-        return renderSVG(props);
     };
 
     private readonly helper = (props, moreProps) => {

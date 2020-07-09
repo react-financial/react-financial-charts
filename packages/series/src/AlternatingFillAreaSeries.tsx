@@ -3,28 +3,21 @@ import * as React from "react";
 
 import { AreaSeries } from "./AreaSeries";
 import { SVGComponent } from "./SVGComponent";
+import { CurveFactory } from "d3-shape";
 
 interface AlternatingFillAreaSeriesProps {
     readonly baseAt: number;
     readonly className?: string;
-    readonly fill?: {
-        top: string;
-        bottom: string;
+    readonly fillStyle?: {
+        top: string | CanvasGradient | CanvasPattern;
+        bottom: string | CanvasGradient | CanvasPattern;
     };
-    readonly fillOpacity?: {
-        top: number;
-        bottom: number;
-    };
-    readonly interpolation?: any; // func
-    readonly stroke?: {
-        top: string;
-        bottom: string;
+    readonly interpolation?: CurveFactory;
+    readonly strokeStyle?: {
+        top: string | CanvasGradient | CanvasPattern;
+        bottom: string | CanvasGradient | CanvasPattern;
     };
     readonly strokeWidth?: {
-        top: number;
-        bottom: number;
-    };
-    readonly strokeOpacity?: {
         top: number;
         bottom: number;
     };
@@ -38,25 +31,17 @@ interface AlternatingFillAreaSeriesProps {
 export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAreaSeriesProps> {
     public static defaultProps = {
         className: "react-financial-charts-alternating-area",
-        fill: {
-            top: "#26a69a",
-            bottom: "#ef5350",
+        fillStyle: {
+            top: "rgba(38, 166, 154, 0.1)",
+            bottom: "rgba(239, 83, 80, 0.1)",
         },
-        fillOpacity: {
-            top: 0.1,
-            bottom: 0.1,
-        },
-        stroke: {
+        strokeStyle: {
             top: "#26a69a",
             bottom: "#ef5350",
         },
         strokeWidth: {
             top: 2,
             bottom: 2,
-        },
-        strokeOpacity: {
-            top: 1,
-            bottom: 1,
         },
         strokeDasharray: {
             top: "Solid" as strokeDashTypes,
@@ -72,12 +57,10 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
             className,
             yAccessor,
             interpolation,
-            stroke = AlternatingFillAreaSeries.defaultProps.stroke,
+            strokeStyle = AlternatingFillAreaSeries.defaultProps.strokeStyle,
             strokeWidth = AlternatingFillAreaSeries.defaultProps.strokeWidth,
-            strokeOpacity = AlternatingFillAreaSeries.defaultProps.strokeOpacity,
             strokeDasharray = AlternatingFillAreaSeries.defaultProps.strokeDasharray,
-            fill = AlternatingFillAreaSeries.defaultProps.fill,
-            fillOpacity = AlternatingFillAreaSeries.defaultProps.fillOpacity,
+            fillStyle = AlternatingFillAreaSeries.defaultProps.fillStyle,
         } = this.props;
 
         const style1 = { clipPath: `url(#${this.clipPathId1})` };
@@ -92,10 +75,8 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
                     yAccessor={yAccessor}
                     interpolation={interpolation}
                     baseAt={this.baseAt}
-                    fill={fill.top}
-                    opacity={fillOpacity.top}
-                    stroke={stroke.top}
-                    strokeOpacity={strokeOpacity.top}
+                    fillStyle={fillStyle.top}
+                    strokeStyle={strokeStyle.top}
                     strokeDasharray={strokeDasharray.top}
                     strokeWidth={strokeWidth.top}
                 />
@@ -105,10 +86,8 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
                     yAccessor={yAccessor}
                     interpolation={interpolation}
                     baseAt={this.baseAt}
-                    fill={fill.bottom}
-                    opacity={fillOpacity.bottom}
-                    stroke={stroke.bottom}
-                    strokeOpacity={strokeOpacity.bottom}
+                    fillStyle={fillStyle.bottom}
+                    strokeStyle={strokeStyle.bottom}
                     strokeDasharray={strokeDasharray.bottom}
                     strokeWidth={strokeWidth.bottom}
                 />

@@ -14,7 +14,7 @@ interface GroupTooltipProps {
     readonly displayValuesFor: any; // func
     readonly labelFill?: string;
     readonly layout: layouts;
-    readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
+    readonly onClick?: (event: React.MouseEvent, details: unknown) => void;
     readonly options: {
         labelFill?: string;
         yLabel: string | any; // func
@@ -22,7 +22,7 @@ interface GroupTooltipProps {
         valueFill?: string;
         withShape?: boolean;
     }[];
-    readonly origin: number[];
+    readonly origin: [number, number];
     readonly position: "topRight" | "bottomLeft" | "bottomRight";
     readonly valueFill?: string;
     readonly verticalSize?: number; // "verticalSize" only be used, if layout is "vertical", "verticalRows".
@@ -104,7 +104,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
             const yValue = currentItem && each.yAccessor(currentItem);
             const yDisplayValue = yValue ? displayFormat(yValue) : displayInit;
 
-            const orig = () => {
+            const orig: () => [number, number] = () => {
                 if (layout === "horizontal" || layout === "horizontalRows") {
                     return [width * idx, 0];
                 }

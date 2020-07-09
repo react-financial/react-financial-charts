@@ -71,7 +71,7 @@ interface OHLCTooltipProps {
     readonly volumeFormat?: any; // func
     readonly percentFormat?: any; // func
     readonly ohlcFormat?: any; // func
-    readonly origin?: number[] | any; // func
+    readonly origin?: [number, number] | any; // func
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;

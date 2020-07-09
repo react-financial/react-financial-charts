@@ -1,3 +1,3 @@
-export { default as Axis } from "./Axis";
+export * from "./Axis";
 export * from "./XAxis";
 export * from "./YAxis";

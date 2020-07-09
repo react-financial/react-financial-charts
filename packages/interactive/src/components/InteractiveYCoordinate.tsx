@@ -66,7 +66,6 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
             <GenericChartComponent
                 clip={false}
                 isHover={this.isHover}
-                svgDraw={this.renderSVG}
                 canvasToDraw={getMouseCanvas}
                 canvasDraw={this.drawOnCanvas}
                 interactiveCursorClass={interactiveCursorClass}
@@ -80,10 +79,6 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
             />
         );
     }
-
-    private readonly renderSVG = () => {
-        throw new Error("svg not implemented");
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const {

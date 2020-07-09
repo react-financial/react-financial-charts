@@ -17,11 +17,14 @@ interface OverlayBarSeriesProps {
     readonly stroke?: boolean;
     readonly width?: any;
     readonly widthRatio?: number;
-    readonly opacity?: number;
-    readonly fill?: string | any; // func
+    readonly fillStyle?:
+        | string
+        | CanvasGradient
+        | CanvasPattern
+        | ((data: any, y: number) => string | CanvasGradient | CanvasPattern);
     readonly className?: string | any; // func
     readonly xAccessor?: any; // func
-    readonly yAccessor?: any[]; // func
+    readonly yAccessor: any; // func
     readonly xScale?: any; // func
     readonly yScale?: any; // func
     readonly plotData?: number[];
@@ -34,8 +37,7 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
         direction: "up",
         className: "bar",
         stroke: false,
-        fill: "#4682B4",
-        opacity: 1,
+        fillStyle: "#4682B4",
         widthRatio: 0.5,
         width: plotDataLengthBarWidth,
         clip: true,
@@ -56,6 +58,7 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { yAccessor } = this.props;
+
         const bars = this.getBars(moreProps, yAccessor);
 
         drawOnCanvas2(this.props, ctx, bars);
@@ -68,10 +71,10 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
             chartConfig: { yScale },
             plotData,
         } = moreProps;
-        const { baseAt, className, fill, stroke } = this.props;
+        const { baseAt, className, fillStyle, stroke } = this.props;
 
         const getClassName = functor(className);
-        const getFill = functor(fill);
+        const getFill = functor(fillStyle);
         const getBase = functor(baseAt);
         const widthFunctor = functor(this.props.width);
 
@@ -95,7 +98,7 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
                         y,
                         className: getClassName(d, i),
                         stroke: stroke ? getFill(d, i) : "none",
-                        fill: getFill(d, i),
+                        fillStyle: getFill(d, i),
                         i,
                     };
                 })

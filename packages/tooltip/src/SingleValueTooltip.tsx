@@ -15,7 +15,7 @@ interface SingleValueTooltipProps {
     readonly yLabel: string;
     readonly labelFill?: string;
     readonly valueFill?: string;
-    readonly origin?: number[] | any; // func
+    readonly origin?: [number, number] | ((width: number, height: number) => [number, number]);
     readonly className?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
@@ -44,8 +44,14 @@ export class SingleValueTooltip extends React.Component<SingleValueTooltipProps>
     }
 
     private readonly renderSVG = (moreProps) => {
-        const { onClick, fontFamily, fontSize, labelFill, valueFill, className } = this.props;
         const {
+            onClick,
+            fontFamily,
+            fontSize,
+            labelFill,
+            valueFill,
+            className,
+            displayValuesFor,
             xDisplayFormat,
             yDisplayFormat,
             xLabel,
@@ -55,11 +61,11 @@ export class SingleValueTooltip extends React.Component<SingleValueTooltipProps>
             xInitDisplay,
             yInitDisplay,
         } = this.props;
-        const { displayValuesFor } = this.props;
 
         const {
             chartConfig: { width, height },
         } = moreProps;
+
         const currentItem = displayValuesFor(this.props, moreProps);
 
         const xDisplayValue =

@@ -1,17 +1,15 @@
-import { colorToRGBA, first, functor, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
-import { area as d3Area } from "d3-shape";
+import { first, functor, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
+import { area as d3Area, CurveFactory } from "d3-shape";
 import * as React from "react";
 
 interface AreaOnlySeriesProps {
     readonly base?: number | ((yScale: any, d: [number, number], moreProps: any) => number);
-    readonly canvasClip?: any; // func
-    readonly canvasGradient?: any; // func
+    readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: unknown) => void;
     readonly className?: string;
     readonly defined?: any; // func
-    readonly fill?: string;
-    readonly opacity?: number;
-    readonly interpolation?: any; // func
-    readonly stroke?: string;
+    readonly fillStyle?: string | CanvasGradient | CanvasPattern;
+    readonly interpolation?: CurveFactory;
+    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly style?: React.CSSProperties;
     readonly yAccessor: (data: any) => number;
 }
@@ -19,8 +17,6 @@ interface AreaOnlySeriesProps {
 export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
     public static defaultProps = {
         className: "line",
-        fill: "none",
-        opacity: 1,
         defined: (d) => !isNaN(d),
         base: (yScale /* , d, moreProps */) => first(yScale.range()),
     };
@@ -30,17 +26,7 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const {
-            fill = AreaOnlySeries.defaultProps.fill,
-            stroke,
-            opacity,
-            interpolation,
-            canvasClip,
-            yAccessor,
-            defined,
-            base,
-            canvasGradient,
-        } = this.props;
+        const { fillStyle, strokeStyle, interpolation, canvasClip, yAccessor, defined, base } = this.props;
 
         const {
             xScale,
@@ -49,19 +35,17 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
             xAccessor,
         } = moreProps;
 
-        if (canvasClip) {
+        if (canvasClip !== undefined) {
             ctx.save();
             canvasClip(ctx, moreProps);
         }
 
-        if (canvasGradient != null) {
-            ctx.fillStyle = canvasGradient(moreProps, ctx);
-        } else {
-            ctx.fillStyle = colorToRGBA(fill, opacity);
+        if (fillStyle !== undefined) {
+            ctx.fillStyle = fillStyle;
         }
 
-        if (stroke !== undefined) {
-            ctx.strokeStyle = stroke;
+        if (strokeStyle !== undefined) {
+            ctx.strokeStyle = strokeStyle;
         }
 
         ctx.beginPath();

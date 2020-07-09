@@ -2,7 +2,6 @@ import { group, merge } from "d3-array";
 import { stack as d3Stack } from "d3-shape";
 import * as React from "react";
 import {
-    colorToRGBA,
     functor,
     head,
     identity,
@@ -16,8 +15,12 @@ interface StackedBarSeriesProps {
     readonly className?: string | any; // func
     readonly clip?: boolean;
     readonly direction?: "up" | "down";
-    readonly fill?: string | any; // func
-    readonly opacity?: number;
+    readonly fillStyle?:
+        | string
+        | CanvasGradient
+        | CanvasPattern
+        | ((data: any, y: number) => string | CanvasGradient | CanvasPattern);
+    readonly spaceBetweenBar?: number;
     readonly stroke?: boolean;
     readonly swapScales?: boolean;
     readonly yAccessor: ((d: unknown) => number)[];
@@ -31,8 +34,7 @@ export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
         direction: "up",
         className: "bar",
         stroke: false,
-        fill: "#4682B4",
-        opacity: 0.5,
+        fillStyle: "rgba(70, 130, 180, 0.5)",
         width: plotDataLengthBarWidth,
         widthRatio: 0.8,
         clip: true,
@@ -87,8 +89,8 @@ export function identityStack() {
 }
 
 export function drawOnCanvasHelper(
-    ctx,
-    props,
+    ctx: CanvasRenderingContext2D,
+    props: StackedBarSeriesProps,
     moreProps,
     xAccessor,
     stackFn,
@@ -110,10 +112,19 @@ function convertToArray(item) {
     return Array.isArray(item) ? item : [item];
 }
 
-function doStuff(props, xAccessor, plotData, xScale, yScale, stackFn, postRotateAction, defaultPostAction) {
+function doStuff(
+    props: StackedBarSeriesProps,
+    xAccessor,
+    plotData,
+    xScale,
+    yScale,
+    stackFn,
+    postRotateAction,
+    defaultPostAction,
+) {
     const { yAccessor, swapScales } = props;
 
-    const modifiedYAccessor = swapScales ? convertToArray(props.xAccessor) : convertToArray(yAccessor);
+    const modifiedYAccessor = swapScales ? convertToArray(xAccessor) : convertToArray(yAccessor);
     const modifiedXAccessor = swapScales ? yAccessor : xAccessor;
 
     const modifiedXScale = swapScales ? yScale : xScale;
@@ -146,17 +157,16 @@ export const rotateXY = (array) =>
         };
     });
 
-export function drawOnCanvas2(props, ctx: CanvasRenderingContext2D, bars) {
+export function drawOnCanvas2(props: StackedBarSeriesProps, ctx: CanvasRenderingContext2D, bars) {
     const { stroke } = props;
 
-    const nest = group(bars, (d: any) => d.fill);
+    const nest = group(bars, (d: any) => d.fillStyle);
 
     nest.forEach((values, key) => {
         if (head(values).width > 1) {
             ctx.strokeStyle = key;
         }
-        const fillStyle = head(values).width <= 1 ? key : colorToRGBA(key, props.opacity);
-        ctx.fillStyle = fillStyle;
+        ctx.fillStyle = key;
 
         values.forEach((d) => {
             if (d.width <= 1) {
@@ -172,7 +182,7 @@ export function drawOnCanvas2(props, ctx: CanvasRenderingContext2D, bars) {
 }
 
 export function getBars(
-    props,
+    props: StackedBarSeriesProps,
     xAccessor,
     yAccessor,
     xScale,
@@ -181,10 +191,10 @@ export function getBars(
     stack = identityStack,
     after = identity,
 ) {
-    const { baseAt, className, fill, stroke, spaceBetweenBar = 0 } = props;
+    const { baseAt, className, fillStyle, stroke, spaceBetweenBar = 0 } = props;
 
     const getClassName = functor(className);
-    const getFill = functor(fill);
+    const getFill = functor(fillStyle);
     const getBase = functor(baseAt);
 
     const widthFunctor = functor(props.width);
@@ -211,7 +221,7 @@ export function getBars(
             const appearance = {
                 className: getClassName(each, i),
                 stroke: stroke ? getFill(each, i) : "none",
-                fill: getFill(each, i),
+                fillStyle: getFill(each, i),
             };
             d.appearance[key] = appearance;
         });

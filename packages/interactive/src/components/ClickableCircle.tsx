@@ -49,34 +49,12 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
                 onDragStart={onDragStart}
                 onDrag={onDrag}
                 onDragComplete={onDragComplete}
-                svgDraw={this.renderSVG}
                 canvasDraw={this.drawOnCanvas}
                 canvasToDraw={getMouseCanvas}
                 drawOn={["pan", "mousemove", "drag"]}
             />
         );
     }
-
-    private readonly renderSVG = (moreProps) => {
-        const { stroke, strokeWidth, fill } = this.props;
-        const { fillOpacity, strokeOpacity } = this.props;
-        const { r } = this.props;
-
-        const [x, y] = this.helper(this.props, moreProps);
-
-        return (
-            <circle
-                cx={x}
-                cy={y}
-                r={r}
-                strokeWidth={strokeWidth}
-                stroke={stroke}
-                strokeOpacity={strokeOpacity}
-                fill={fill}
-                fillOpacity={fillOpacity}
-            />
-        );
-    };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const { stroke, strokeWidth, fill } = this.props;

@@ -223,9 +223,6 @@ function calculateState(props) {
 
     const { plotData, domain } = filterData(fullData, extent, inputXAccesor, updatedXScale);
 
-    if (process.env.NODE_ENV !== "production" && plotData.length <= 1) {
-        throw new Error(`Showing ${plotData.length} datapoints, review the 'xExtents' prop of ChartCanvas`);
-    }
     return {
         plotData,
         xScale: updatedXScale.domain(domain),
@@ -409,11 +406,11 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     private readonly eventCaptureRef = React.createRef<EventCapture>();
     private finalPinch?: boolean;
     private fullData;
-    private lastSubscriptionId;
-    private mutableState;
-    private panInProgress: boolean;
+    private lastSubscriptionId = 0;
+    private mutableState = {};
+    private panInProgress = false;
     private prevMouseXY;
-    private subscriptions;
+    private subscriptions: any[] = [];
     private waitingForPinchZoomAnimationFrame?: boolean;
     private waitingForPanAnimationFrame?: boolean;
     private waitingForMouseMoveAnimationFrame?: boolean;
@@ -452,21 +449,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         this.resetYDomain = this.resetYDomain.bind(this);
         this.calculateStateForDomain = this.calculateStateForDomain.bind(this);
         this.generateSubscriptionId = this.generateSubscriptionId.bind(this);
-        this.draw = this.draw.bind(this);
-        this.redraw = this.redraw.bind(this);
         this.getAllPanConditions = this.getAllPanConditions.bind(this);
-
-        this.subscriptions = [];
-        this.subscribe = this.subscribe.bind(this);
-        this.unsubscribe = this.unsubscribe.bind(this);
-        this.amIOnTop = this.amIOnTop.bind(this);
         this.setCursorClass = this.setCursorClass.bind(this);
         this.getMutableState = this.getMutableState.bind(this);
-
-        this.panInProgress = false;
-        this.state = {};
-        this.mutableState = {};
-        this.lastSubscriptionId = 0;
 
         const { fullData, ...state } = resetChart(props);
         this.state = state;
@@ -517,7 +502,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         }
     }
 
-    public subscribe(id, rest) {
+    public subscribe = (id, rest) => {
         const {
             getPanConditions = functor({
                 draggable: false,
@@ -529,11 +514,11 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             ...rest,
             getPanConditions,
         });
-    }
+    };
 
-    public unsubscribe(id) {
+    public unsubscribe = (id) => {
         this.subscriptions = this.subscriptions.filter((each) => each.id !== id);
-    }
+    };
 
     public getAllPanConditions() {
         return this.subscriptions.map((each) => each.getPanConditions());
@@ -543,11 +528,11 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         this.eventCaptureRef.current?.setCursorClass(className);
     }
 
-    public amIOnTop(id) {
+    public amIOnTop = (id) => {
         const dragableComponents = this.subscriptions.filter((each) => each.getPanConditions().draggable);
 
         return dragableComponents.length > 0 && last(dragableComponents).id === id;
-    }
+    };
 
     public handleContextMenu(mouseXY, e) {
         const { xAccessor, chartConfig, plotData, xScale } = this.state;
@@ -834,18 +819,18 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         });
     }
 
-    public draw(props) {
+    public draw = (props) => {
         this.subscriptions.forEach((each) => {
             if (isDefined(each.draw)) {
                 each.draw(props);
             }
         });
-    }
+    };
 
-    public redraw() {
+    public redraw = () => {
         this.clearThreeCanvas();
         this.draw({ force: true });
-    }
+    };
 
     public panHelper(mouseXY, initialXScale, { dx, dy }, chartsToPan) {
         const { xAccessor, displayXAccessor, chartConfig: initialChartConfig } = this.state;
@@ -1183,12 +1168,15 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         } = this.props;
 
         const { plotData, xScale, xAccessor, chartConfig } = this.state;
+
         const dimensions = getDimensions(this.props);
 
         const interaction = isInteractionEnabled(xScale, xAccessor, plotData);
 
         const cursorStyle = useCrossHairStyleCursor && interaction;
+
         const cursor = getCursorStyle();
+
         return (
             <div style={{ position: "relative", width, height }} className={className} onClick={onSelect}>
                 <CanvasContainer

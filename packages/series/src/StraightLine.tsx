@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-    colorToRGBA,
     getAxisCanvas,
     getStrokeDasharrayCanvas,
     GenericChartComponent,
@@ -10,10 +9,9 @@ import {
 interface StraightLineProps {
     readonly className?: string;
     readonly type?: "vertical" | "horizontal";
-    readonly stroke?: string;
-    readonly strokeWidth?: number;
-    readonly strokeDasharray?: strokeDashTypes;
-    readonly opacity: number;
+    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly lineWidth?: number;
+    readonly lineDash?: strokeDashTypes | Iterable<number> | number[];
     readonly yValue?: number;
     readonly xValue?: number;
 }
@@ -22,10 +20,9 @@ export class StraightLine extends React.Component<StraightLineProps> {
     public static defaultProps = {
         className: "line",
         type: "horizontal",
-        stroke: "#000000",
-        opacity: 0.5,
-        strokeWidth: 1,
-        strokeDasharray: "Solid",
+        strokeStyle: "rgba(0, 0, 0, 0.5)",
+        lineWidth: 1,
+        lineDash: "Solid",
     };
 
     public render() {
@@ -33,15 +30,7 @@ export class StraightLine extends React.Component<StraightLineProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const {
-            type,
-            stroke = StraightLine.defaultProps.stroke,
-            strokeWidth = StraightLine.defaultProps.strokeWidth,
-            opacity,
-            strokeDasharray,
-            yValue,
-            xValue,
-        } = this.props;
+        const { type, strokeStyle, lineWidth, lineDash, yValue, xValue } = this.props;
 
         const {
             xScale,
@@ -50,14 +39,22 @@ export class StraightLine extends React.Component<StraightLineProps> {
 
         ctx.beginPath();
 
-        ctx.strokeStyle = colorToRGBA(stroke, opacity);
-        ctx.lineWidth = strokeWidth;
+        if (strokeStyle !== undefined) {
+            ctx.strokeStyle = strokeStyle;
+        }
+        if (lineWidth !== undefined) {
+            ctx.lineWidth = lineWidth;
+        }
+        if (lineDash !== undefined) {
+            if (typeof lineDash === "string") {
+                ctx.setLineDash(getStrokeDasharrayCanvas(lineDash));
+            } else {
+                ctx.setLineDash(lineDash);
+            }
+        }
 
         const { x1, y1, x2, y2 } = this.getLineCoordinates(type, xScale, yScale, xValue, yValue, width, height);
 
-        const lineDash = getStrokeDasharrayCanvas(strokeDasharray);
-
-        ctx.setLineDash(lineDash);
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();

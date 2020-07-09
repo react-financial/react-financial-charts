@@ -17,12 +17,13 @@ interface ChartProps {
 
 class MACDIndicator extends React.Component<ChartProps> {
     private readonly macdAppearance = {
-        fill: {
+        fillStyle: {
             divergence: "#4682B4",
         },
-        stroke: {
+        strokeStyle: {
             macd: "#0093FF",
             signal: "#D84315",
+            zero: "rgba(0, 0, 0, 0.3)",
         },
     };
     private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };

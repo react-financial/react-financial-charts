@@ -88,14 +88,14 @@ class StockChart extends React.Component<StockChartProps> {
                 zoomAnchor={lastVisibleItemBasedZoomAnchor}
             >
                 <Chart id={2} height={barChartHeight} origin={barChartOrigin} yExtents={this.barChartExtents}>
-                    <BarSeries fill={this.openCloseColor} yAccessor={this.yBarSeries} />
+                    <BarSeries fillStyle={this.volumeColor} yAccessor={this.volumeSeries} />
                 </Chart>
                 <Chart id={3} height={chartHeight} yExtents={this.candleChartExtents}>
                     <XAxis showGridLines showTickLabel={false} />
                     <YAxis showGridLines tickFormat={this.pricesDisplayFormat} />
                     <CandlestickSeries />
-                    <LineSeries yAccessor={ema26.accessor()} stroke={ema26.stroke()} />
-                    <LineSeries yAccessor={ema12.accessor()} stroke={ema12.stroke()} />
+                    <LineSeries yAccessor={ema26.accessor()} strokeStyle={ema26.stroke()} />
+                    <LineSeries yAccessor={ema12.accessor()} strokeStyle={ema12.stroke()} />
                     <MouseCoordinateY rectWidth={margin.right} displayFormat={this.pricesDisplayFormat} />
                     <EdgeIndicator
                         itemType="last"
@@ -163,12 +163,16 @@ class StockChart extends React.Component<StockChartProps> {
         return [data.high, data.low];
     };
 
-    private readonly yBarSeries = (data: IOHLCData) => {
-        return data.volume;
-    };
-
     private readonly yEdgeIndicator = (data: IOHLCData) => {
         return data.close;
+    };
+
+    private readonly volumeColor = (data: IOHLCData) => {
+        return data.close > data.open ? "rgba(38, 166, 154, 0.7)" : "rgba(239, 83, 80, 0.7)";
+    };
+
+    private readonly volumeSeries = (data: IOHLCData) => {
+        return data.volume;
     };
 
     private readonly openCloseColor = (data: IOHLCData) => {

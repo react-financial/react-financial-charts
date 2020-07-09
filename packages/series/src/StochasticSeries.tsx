@@ -8,38 +8,35 @@ interface StochasticSeriesProps {
     readonly overBought?: number;
     readonly overSold?: number;
     readonly middle?: number;
-    readonly refLineOpacity?: number;
-    readonly stroke?: {
-        top: string;
-        middle: string;
-        bottom: string;
-        dLine: string;
-        kLine: string;
+    readonly strokeStyle?: {
+        top: string | CanvasGradient | CanvasPattern;
+        middle: string | CanvasGradient | CanvasPattern;
+        bottom: string | CanvasGradient | CanvasPattern;
+        dLine: string | CanvasGradient | CanvasPattern;
+        kLine: string | CanvasGradient | CanvasPattern;
     };
-    readonly yAccessor: any; // func
+    readonly yAccessor: (data: unknown) => { K: number; D: number };
 }
 
 export class StochasticSeries extends React.Component<StochasticSeriesProps> {
     public static defaultProps = {
         className: "react-financial-charts-stochastic-series",
-        stroke: {
-            top: "#964B00",
-            middle: "#000000",
-            bottom: "#964B00",
+        strokeStyle: {
+            top: "rgba(150, 75, 0, 0.3)",
+            middle: "rgba(0, 0, 0, 0.3)",
+            bottom: "rgba(150, 75, 0, 0.3)",
             dLine: "#EA2BFF",
             kLine: "#74D400",
         },
         overSold: 80,
         middle: 50,
         overBought: 20,
-        refLineOpacity: 0.3,
     };
 
     public render() {
         const {
             className,
-            stroke = StochasticSeries.defaultProps.stroke,
-            refLineOpacity,
+            strokeStyle = StochasticSeries.defaultProps.strokeStyle,
             overSold,
             middle,
             overBought,
@@ -47,11 +44,11 @@ export class StochasticSeries extends React.Component<StochasticSeriesProps> {
 
         return (
             <g className={className}>
-                <LineSeries yAccessor={this.yAccessorForD} stroke={stroke.dLine} fill="none" />
-                <LineSeries yAccessor={this.yAccessorForK} stroke={stroke.kLine} fill="none" />
-                <StraightLine stroke={stroke.top} opacity={refLineOpacity} yValue={overSold} />
-                <StraightLine stroke={stroke.middle} opacity={refLineOpacity} yValue={middle} />
-                <StraightLine stroke={stroke.bottom} opacity={refLineOpacity} yValue={overBought} />
+                <LineSeries yAccessor={this.yAccessorForD} strokeStyle={strokeStyle.dLine} fill="none" />
+                <LineSeries yAccessor={this.yAccessorForK} strokeStyle={strokeStyle.kLine} fill="none" />
+                <StraightLine strokeStyle={strokeStyle.top} yValue={overSold} />
+                <StraightLine strokeStyle={strokeStyle.middle} yValue={middle} />
+                <StraightLine strokeStyle={strokeStyle.bottom} yValue={overBought} />
             </g>
         );
     }

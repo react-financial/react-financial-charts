@@ -1,8 +1,6 @@
 import * as React from "react";
 
-type ToolTipTSpanLabelProps = React.SVGProps<SVGTSpanElement>;
-
-export class ToolTipTSpanLabel extends React.Component<ToolTipTSpanLabelProps> {
+export class ToolTipTSpanLabel extends React.PureComponent<React.SVGProps<SVGTSpanElement>> {
     public static defaultProps = {
         className: "react-financial-charts-tooltip-label",
         fill: "#4682B4",

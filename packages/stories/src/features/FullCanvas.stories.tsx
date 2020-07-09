@@ -1,5 +1,5 @@
 import * as React from "react";
-import StockChart, { IntradayStockChart } from "./stockChart";
+import StockChart, { IntradayStockChart } from "./StockChart";
 
 export default {
     component: StockChart,

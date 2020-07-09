@@ -2,7 +2,6 @@ import * as React from "react";
 
 import {
     colorToRGBA,
-    getStrokeDasharray,
     getStrokeDasharrayCanvas,
     getMouseCanvas,
     GenericChartComponent,
@@ -69,7 +68,6 @@ class StraightLine extends React.Component<StraightLineProps> {
         return (
             <GenericChartComponent
                 isHover={this.isHover}
-                svgDraw={this.renderSVG}
                 canvasToDraw={getMouseCanvas}
                 canvasDraw={this.drawOnCanvas}
                 interactiveCursorClass={interactiveCursorClass}
@@ -109,26 +107,6 @@ class StraightLine extends React.Component<StraightLineProps> {
             return hovering;
         }
         return false;
-    };
-
-    private readonly renderSVG = (moreProps) => {
-        const { stroke, strokeWidth, strokeOpacity, strokeDasharray } = this.props;
-
-        const lineWidth = strokeWidth;
-
-        const { x1, y1, x2, y2 } = helper(this.props, moreProps);
-        return (
-            <line
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                stroke={stroke}
-                strokeWidth={lineWidth}
-                strokeDasharray={getStrokeDasharray(strokeDasharray)}
-                strokeOpacity={strokeOpacity}
-            />
-        );
     };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {

@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
     colorToRGBA,
-    getStrokeDasharray,
     getStrokeDasharrayCanvas,
     isDefined,
     getMouseCanvas,
@@ -73,7 +72,6 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         return (
             <GenericChartComponent
                 disablePan={enabled}
-                svgDraw={this.renderSVG}
                 canvasToDraw={getMouseCanvas}
                 canvasDraw={this.drawOnCanvas}
                 onMouseDown={this.handleZoomStart}
@@ -177,30 +175,5 @@ export class Brush extends React.Component<BrushProps, BrushState> {
             selected: false,
             rect: null,
         });
-    };
-
-    private readonly renderSVG = () => {
-        const { rect } = this.state;
-        if (isDefined(rect)) {
-            const { x, y, height, width } = rect;
-            const { stroke, strokeDashArray } = this.props;
-            const { strokeOpacity, fillOpacity } = this.props;
-
-            const dashArray = getStrokeDasharray(strokeDashArray);
-
-            return (
-                <rect
-                    strokeDasharray={dashArray}
-                    stroke={stroke}
-                    fill="none"
-                    strokeOpacity={strokeOpacity}
-                    fillOpacity={fillOpacity}
-                    x={x}
-                    y={y}
-                    width={width}
-                    height={height}
-                />
-            );
-        }
     };
 }

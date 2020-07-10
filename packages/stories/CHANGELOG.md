@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.1](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.0...v1.0.0-alpha.1) (2020-07-10)
+
+
+### Bug Fixes
+
+* correcting casing of StockChart.tsx ([0e1b11d](https://github.com/markmcdowell/react-financial-charts/commit/0e1b11d973be5fd0f028fc399cdef95b7c195108))
+* **core:** fixing issues with empty data sets ([23c2458](https://github.com/markmcdowell/react-financial-charts/commit/23c2458bfe55e97eef96f80030fe32b9cf5ac1e1))
+
+
+
+
+
 # [1.0.0-alpha.0](https://github.com/markmcdowell/react-financial-charts/compare/v0.5.1...v1.0.0-alpha.0) (2020-07-08)
 
 

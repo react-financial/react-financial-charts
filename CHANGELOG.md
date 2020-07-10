@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.1](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.0...v1.0.0-alpha.1) (2020-07-10)
+
+
+### Bug Fixes
+
+* correcting casing of StockChart.tsx ([0e1b11d](https://github.com/markmcdowell/react-financial-charts/commit/0e1b11d973be5fd0f028fc399cdef95b7c195108))
+* **core:** CanvasContainer is now a PureComponent ([ec4c43e](https://github.com/markmcdowell/react-financial-charts/commit/ec4c43e2a15dbf50d60d9547633c4dab44398fe5))
+* **core:** fixing issues with empty data sets ([23c2458](https://github.com/markmcdowell/react-financial-charts/commit/23c2458bfe55e97eef96f80030fe32b9cf5ac1e1))
+* **core:** fixing re-rendering of svg components ([af0f156](https://github.com/markmcdowell/react-financial-charts/commit/af0f156c66cd302ec8a45ff6c49e4121385b3ca9))
+
+
+### Features
+
+* **core:** adding onDoubleClick to Chart ([1b6498b](https://github.com/markmcdowell/react-financial-charts/commit/1b6498b2fba108d930004ddbaaea6573692a1fb4))
+
+
+
+
+
 # [1.0.0-alpha.0](https://github.com/markmcdowell/react-financial-charts/compare/v0.5.1...v1.0.0-alpha.0) (2020-07-08)
 
 

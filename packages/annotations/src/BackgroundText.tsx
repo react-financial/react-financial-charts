@@ -4,7 +4,8 @@ import * as React from "react";
 interface BackgroundTextProps {
     readonly x: number;
     readonly y: number;
-    readonly font?: string;
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
     readonly fillStyle?: string | CanvasGradient | CanvasPattern;
     readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly textAlign?: CanvasTextAlign;
@@ -13,10 +14,10 @@ interface BackgroundTextProps {
 
 export class BackgroundText extends React.PureComponent<BackgroundTextProps> {
     public static defaultProps = {
-        opacity: 0.3,
         fillStyle: "transparent",
         strokeStyle: "#dcdcdc",
-        font: "12px -apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
+        fontSize: 12,
         textAlign: "center",
     };
 
@@ -41,7 +42,7 @@ export class BackgroundText extends React.PureComponent<BackgroundTextProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, { interval }) => {
-        const { children, x, y, fillStyle, strokeStyle, font, textAlign } = this.props;
+        const { children, x, y, fillStyle, strokeStyle, fontFamily, fontSize, textAlign } = this.props;
 
         const text = children(interval);
 
@@ -50,10 +51,18 @@ export class BackgroundText extends React.PureComponent<BackgroundTextProps> {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.translate(0.5, 0.5);
 
-        ctx.font = font!;
-        ctx.fillStyle = fillStyle!;
-        ctx.strokeStyle = strokeStyle!;
-        ctx.textAlign = textAlign!;
+        if (fontFamily !== undefined) {
+            ctx.font = `${fontSize}px ${fontFamily}`;
+        }
+        if (fillStyle !== undefined) {
+            ctx.fillStyle = fillStyle;
+        }
+        if (strokeStyle !== undefined) {
+            ctx.strokeStyle = strokeStyle;
+        }
+        if (textAlign !== undefined) {
+            ctx.textAlign = textAlign;
+        }
 
         ctx.strokeText(text, x, y);
         ctx.fillText(text, x, y);

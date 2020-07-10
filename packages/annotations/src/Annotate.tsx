@@ -3,9 +3,9 @@ import { GenericChartComponent } from "@react-financial-charts/core";
 
 interface AnnotateProps {
     readonly className?: string;
-    readonly with?: any; // func
-    readonly when?: any; // func
-    readonly usingProps?: object;
+    readonly with: React.ElementType;
+    readonly when: (value: unknown, index: number, array: unknown[]) => boolean;
+    readonly usingProps?: unknown;
 }
 
 export class Annotate extends React.Component<AnnotateProps> {
@@ -28,7 +28,7 @@ export class Annotate extends React.Component<AnnotateProps> {
 
         const { className, usingProps, with: Annotation, when } = this.props;
 
-        const data = plotData.filter(when);
+        const data = (plotData as unknown[]).filter(when);
 
         return (
             <g className={className}>

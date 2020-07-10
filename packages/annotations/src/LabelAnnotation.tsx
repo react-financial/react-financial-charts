@@ -3,24 +3,27 @@ import { functor } from "@react-financial-charts/core";
 
 interface LabelAnnotationProps {
     readonly className?: string;
-    readonly text?: string | any; // func
-    readonly textAnchor?: string;
+    readonly datum?: unknown;
+    readonly fill?: string | ((datum: unknown) => string);
     readonly fontFamily?: string;
     readonly fontSize?: number;
+    readonly onClick?: (e: React.MouseEvent, data: { xScale: any; yScale: any; datum: unknown }) => void;
     readonly opacity?: number;
+    readonly plotData: unknown[];
     readonly rotate?: number;
-    readonly onClick?: any; // func
+    readonly text?: string | ((datum: unknown) => string);
+    readonly textAnchor?: string;
+    readonly tooltip?: string | ((datum: unknown) => string);
     readonly xAccessor?: any; // func
     readonly xScale?: any; // func
-    readonly yScale?: any; // func
-    readonly datum?: object;
     readonly x?: number | any; // func
+    readonly yScale?: any; // func
     readonly y?: number | any; // func
 }
 
 export class LabelAnnotation extends React.Component<LabelAnnotationProps> {
     public static defaultProps = {
-        className: "react-financial-charts-labelannotation",
+        className: "react-financial-charts-label-annotation",
         textAnchor: "middle",
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
@@ -32,9 +35,8 @@ export class LabelAnnotation extends React.Component<LabelAnnotationProps> {
 
     public render() {
         const { className, textAnchor, fontFamily, fontSize, opacity, rotate } = this.props;
-        const { xAccessor, xScale, yScale } = this.props;
 
-        const { xPos, yPos, fill, text, tooltip } = helper(this.props, xAccessor, xScale, yScale);
+        const { xPos, yPos, fill, text, tooltip } = this.helper();
 
         return (
             <g className={className}>
@@ -56,29 +58,27 @@ export class LabelAnnotation extends React.Component<LabelAnnotationProps> {
         );
     }
 
-    private readonly handleClick = (e) => {
-        const { onClick } = this.props;
-
-        if (onClick) {
-            const { xScale, yScale, datum } = this.props;
-            onClick({ xScale, yScale, datum }, e);
+    private readonly handleClick = (e: React.MouseEvent) => {
+        const { onClick, xScale, yScale, datum } = this.props;
+        if (onClick !== undefined) {
+            onClick(e, { xScale, yScale, datum });
         }
     };
-}
 
-export const helper = (props, xAccessor, xScale, yScale) => {
-    const { x, y, datum, fill, text, tooltip, plotData } = props;
+    private readonly helper = () => {
+        const { x, y, datum, fill, text, tooltip, xAccessor, xScale, yScale, plotData } = this.props;
 
-    const xFunc = functor(x);
-    const yFunc = functor(y);
+        const xFunc = functor(x);
+        const yFunc = functor(y);
 
-    const [xPos, yPos] = [xFunc({ xScale, xAccessor, datum, plotData }), yFunc({ yScale, datum, plotData })];
+        const [xPos, yPos] = [xFunc({ xScale, xAccessor, datum, plotData }), yFunc({ yScale, datum, plotData })];
 
-    return {
-        xPos,
-        yPos,
-        text: functor(text)(datum),
-        fill: functor(fill)(datum),
-        tooltip: functor(tooltip)(datum),
+        return {
+            xPos,
+            yPos,
+            text: functor(text)(datum),
+            fill: functor(fill)(datum),
+            tooltip: functor(tooltip)(datum),
+        };
     };
-};
+}

@@ -4,7 +4,7 @@ import { functor } from "@react-financial-charts/core";
 interface BarAnnotationProps {
     readonly className?: string;
     readonly path?: any; // func
-    readonly onClick?: (e: React.MouseEvent, data: { xScale: unknown; yScale: unknown; datum: unknown }) => void; // func
+    readonly onClick?: (e: React.MouseEvent, data: { xScale: unknown; yScale: unknown; datum: unknown }) => void;
     readonly xAccessor?: any; // func
     readonly xScale?: any; // func
     readonly yScale?: any; // func
@@ -113,9 +113,8 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
     }
 
     private readonly onClick = (e: React.MouseEvent) => {
-        const { onClick } = this.props;
+        const { onClick, xScale, yScale, datum } = this.props;
         if (onClick !== undefined) {
-            const { xScale, yScale, datum } = this.props;
             onClick(e, { xScale, yScale, datum });
         }
     };

@@ -124,7 +124,7 @@ class StockChart extends React.Component<StockChartProps> {
                     />
 
                     <ZoomButtons />
-                    <OHLCTooltip origin={[8, 16]} lastAsDefault />
+                    <OHLCTooltip origin={[8, 16]} />
                 </Chart>
                 <Chart
                     id={4}

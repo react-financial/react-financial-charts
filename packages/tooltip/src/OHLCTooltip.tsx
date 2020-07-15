@@ -2,8 +2,6 @@ import { functor, isDefined, GenericChartComponent, last } from "@react-financia
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 import * as React from "react";
-
-import { default as defaultDisplayValuesFor } from "./displayValuesFor";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
@@ -16,7 +14,7 @@ const displayTextsDefault = {
     na: "n/a",
 };
 
-const defaultDisplay = (props, _, itemsToDisplay) => {
+const defaultDisplay = (props: OHLCTooltipProps, _, itemsToDisplay) => {
     const { className, textFill, labelFill, onClick, fontFamily, fontSize, displayTexts } = props;
 
     const { open, high, low, close, volume, x, y } = itemsToDisplay;
@@ -64,22 +62,21 @@ const defaultDisplay = (props, _, itemsToDisplay) => {
 };
 
 interface OHLCTooltipProps {
-    readonly className?: string;
     readonly accessor?: any; // func
-    readonly xDisplayFormat?: any; // func
+    readonly className?: string;
     readonly children?: any; // func
-    readonly volumeFormat?: any; // func
-    readonly percentFormat?: any; // func
-    readonly ohlcFormat?: any; // func
-    readonly origin?: [number, number] | any; // func
+    readonly displayTexts?: any;
+    readonly displayValuesFor?: any; // func
     readonly fontFamily?: string;
     readonly fontSize?: number;
-    readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
-    readonly displayValuesFor?: any; // func
-    readonly textFill?: string;
     readonly labelFill?: string;
-    readonly displayTexts?: any;
-    readonly lastAsDefault?: boolean;
+    readonly ohlcFormat?: (n: number | { valueOf(): number }) => string;
+    readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
+    readonly origin?: [number, number] | ((width: number, height: number) => [number, number]);
+    readonly percentFormat?: (n: number | { valueOf(): number }) => string;
+    readonly textFill?: string;
+    readonly volumeFormat?: (n: number | { valueOf(): number }) => string;
+    readonly xDisplayFormat?: (date: Date) => string;
 }
 
 export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
@@ -98,11 +95,10 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
         volumeFormat: format(".4s"),
         percentFormat: format(".2%"),
         ohlcFormat: format(".2f"),
-        displayValuesFor: defaultDisplayValuesFor,
+        displayValuesFor: (_, props) => props.currentItem,
         origin: [0, 0],
         children: defaultDisplay,
         displayTexts: displayTextsDefault,
-        lastAsDefault: false,
     };
 
     public render() {
@@ -112,13 +108,12 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
     private readonly renderSVG = (moreProps) => {
         const {
             displayValuesFor,
-            xDisplayFormat,
+            xDisplayFormat = OHLCTooltip.defaultProps.xDisplayFormat,
             accessor,
-            volumeFormat,
-            ohlcFormat,
-            percentFormat,
+            volumeFormat = OHLCTooltip.defaultProps.volumeFormat,
+            ohlcFormat = OHLCTooltip.defaultProps.ohlcFormat,
+            percentFormat = OHLCTooltip.defaultProps.percentFormat,
             displayTexts,
-            lastAsDefault,
         } = this.props;
 
         const {
@@ -127,8 +122,7 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
             fullData,
         } = moreProps;
 
-        const currentItem = displayValuesFor(this.props, moreProps);
-        const displayItem = lastAsDefault ? currentItem || last(fullData) : currentItem;
+        const currentItem = displayValuesFor(this.props, moreProps) ?? last(fullData);
 
         let displayDate;
         let open;
@@ -137,10 +131,11 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
         let close;
         let volume;
         let percent;
+
         displayDate = open = high = low = close = volume = percent = displayTexts.na;
 
-        if (isDefined(displayItem) && isDefined(accessor(displayItem))) {
-            const item = accessor(displayItem);
+        if (isDefined(currentItem) && isDefined(accessor(currentItem))) {
+            const item = accessor(currentItem);
             volume = isDefined(item.volume) ? volumeFormat(item.volume) : displayTexts.na;
 
             displayDate = xDisplayFormat(displayXAccessor(item));

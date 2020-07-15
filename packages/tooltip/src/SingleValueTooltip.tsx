@@ -1,14 +1,12 @@
-import { functor, identity, isDefined, GenericChartComponent, noop } from "@react-financial-charts/core";
+import { functor, identity, GenericChartComponent, noop, last } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
-
-import { default as defaultDisplayValuesFor } from "./displayValuesFor";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 interface SingleValueTooltipProps {
-    readonly xDisplayFormat?: any; // func
-    readonly yDisplayFormat: any; // func
+    readonly xDisplayFormat?: (value: number) => string;
+    readonly yDisplayFormat?: (value: number) => string;
     readonly xInitDisplay?: string;
     readonly yInitDisplay?: string;
     readonly xLabel?: string;
@@ -20,30 +18,31 @@ interface SingleValueTooltipProps {
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
-    readonly displayValuesFor?: any; // func
-    readonly xAccessor?: (d: any) => any;
-    readonly yAccessor?: (d: any) => any;
+    readonly displayValuesFor?: (props: SingleValueTooltipProps, moreProps) => any;
+    readonly xAccessor?: (d: unknown) => number;
+    readonly yAccessor?: (d: unknown) => number;
 }
 
 export class SingleValueTooltip extends React.Component<SingleValueTooltipProps> {
     public static defaultProps = {
-        origin: [0, 0],
-        labelFill: "#4682B4",
-        valueFill: "#000000",
-        yDisplayFormat: format(".2f"),
-        displayValuesFor: defaultDisplayValuesFor,
-        xAccessor: noop,
-        yAccessor: identity,
-        xInitDisplay: "n/a",
-        yInitDisplay: "n/a",
         className: "react-financial-charts-tooltip",
+        displayValuesFor: (_, props) => props.currentItem,
+        labelFill: "#4682B4",
+        origin: [0, 0],
+        valueFill: "#000000",
+        xAccessor: noop,
+        xDisplayFormat: identity,
+        xInitDisplay: "n/a",
+        yAccessor: identity,
+        yDisplayFormat: format(".2f"),
+        yInitDisplay: "n/a",
     };
 
     public render() {
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = (moreProps: any) => {
         const {
             onClick,
             fontFamily,
@@ -51,34 +50,41 @@ export class SingleValueTooltip extends React.Component<SingleValueTooltipProps>
             labelFill,
             valueFill,
             className,
-            displayValuesFor,
-            xDisplayFormat,
-            yDisplayFormat,
+            displayValuesFor = SingleValueTooltip.defaultProps.displayValuesFor,
+            origin: originProp,
+            xDisplayFormat = SingleValueTooltip.defaultProps.xDisplayFormat,
+            yDisplayFormat = SingleValueTooltip.defaultProps.yDisplayFormat,
             xLabel,
             yLabel,
-            xAccessor,
-            yAccessor,
+            xAccessor = SingleValueTooltip.defaultProps.xAccessor,
+            yAccessor = SingleValueTooltip.defaultProps.yAccessor,
             xInitDisplay,
             yInitDisplay,
         } = this.props;
 
         const {
             chartConfig: { width, height },
+            fullData,
         } = moreProps;
 
-        const currentItem = displayValuesFor(this.props, moreProps);
+        const currentItem = displayValuesFor(this.props, moreProps) ?? last(fullData);
 
-        const xDisplayValue =
-            isDefined(currentItem) && isDefined(xAccessor!(currentItem))
-                ? xDisplayFormat(xAccessor!(currentItem))
-                : xInitDisplay;
-        const yDisplayValue =
-            isDefined(currentItem) && isDefined(yAccessor!(currentItem))
-                ? yDisplayFormat(yAccessor!(currentItem))
-                : yInitDisplay;
+        let xDisplayValue = xInitDisplay;
+        let yDisplayValue = yInitDisplay;
+        if (currentItem !== undefined) {
+            const xItem = xAccessor(currentItem);
+            if (xItem !== undefined) {
+                xDisplayValue = xDisplayFormat(xItem);
+            }
 
-        const { origin: originProp } = this.props;
+            const yItem = yAccessor(currentItem);
+            if (yItem !== undefined) {
+                yDisplayValue = yDisplayFormat(yItem);
+            }
+        }
+
         const origin = functor(originProp);
+
         const [x, y] = origin(width, height);
 
         return (

@@ -1,8 +1,6 @@
 import { functor, isDefined, GenericChartComponent } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
-
-import { default as defaultDisplayValuesFor } from "./displayValuesFor";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
@@ -27,7 +25,7 @@ export class RSITooltip extends React.Component<RSITooltipProps> {
     public static defaultProps = {
         displayFormat: format(".2f"),
         displayInit: "n/a",
-        displayValuesFor: defaultDisplayValuesFor,
+        displayValuesFor: (_, props) => props.currentItem,
         origin: [0, 0],
         className: "react-financial-charts-tooltip",
     };

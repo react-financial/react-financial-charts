@@ -1,7 +1,6 @@
-import { GenericChartComponent } from "@react-financial-charts/core";
+import { GenericChartComponent, last } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
-import { default as defaultDisplayValuesFor } from "./displayValuesFor";
 import { layouts, SingleTooltip } from "./SingleTooltip";
 import { ToolTipText } from "./ToolTipText";
 
@@ -9,16 +8,16 @@ interface GroupTooltipProps {
     readonly className?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
-    readonly displayFormat: any; // func
+    readonly displayFormat: (value: number) => string;
     readonly displayInit?: string;
-    readonly displayValuesFor: any; // func
+    readonly displayValuesFor: (props: GroupTooltipProps, moreProps: any) => any;
     readonly labelFill?: string;
     readonly layout: layouts;
     readonly onClick?: (event: React.MouseEvent, details: unknown) => void;
     readonly options: {
         labelFill?: string;
-        yLabel: string | any; // func
-        yAccessor: any;
+        yLabel: string;
+        yAccessor: (data: any) => number;
         valueFill?: string;
         withShape?: boolean;
     }[];
@@ -28,7 +27,6 @@ interface GroupTooltipProps {
     readonly verticalSize?: number; // "verticalSize" only be used, if layout is "vertical", "verticalRows".
     readonly width?: number; // "width" only be used, if layout is "horizontal" or "horizontalRows".
     readonly withShape: boolean; // "withShape" is ignored, if layout is "horizontalInline" or "vertical".
-    readonly yAccessor: any; // func
 }
 
 export class GroupTooltip extends React.Component<GroupTooltipProps> {
@@ -37,7 +35,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         layout: "horizontal",
         displayFormat: format(".2f"),
         displayInit: "n/a",
-        displayValuesFor: defaultDisplayValuesFor,
+        displayValuesFor: (_, props) => props.currentItem,
         origin: [0, 0],
         width: 60,
         verticalSize: 13,
@@ -80,21 +78,25 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
     };
 
     private readonly renderSVG = (moreProps) => {
-        const { displayValuesFor } = this.props;
-        const { chartId } = moreProps;
+        const { chartId, fullData } = moreProps;
 
         const {
             className,
-            displayInit,
+            displayInit = GroupTooltip.defaultProps.displayInit,
+            displayValuesFor,
             onClick,
             width = 60,
             verticalSize = 13,
             fontFamily,
             fontSize,
             layout,
+            origin,
+            displayFormat,
+            options,
         } = this.props;
-        const { origin, displayFormat, options } = this.props;
-        const currentItem = displayValuesFor(this.props, moreProps);
+
+        const currentItem = displayValuesFor(this.props, moreProps) ?? last(fullData);
+
         const { xyPos, textAnchor } = this.getPosition(moreProps);
 
         const xPos = xyPos != null && xyPos[0] != null ? xyPos[0] : origin[0];

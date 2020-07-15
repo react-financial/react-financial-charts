@@ -1,8 +1,6 @@
-import { functor, GenericChartComponent } from "@react-financial-charts/core";
+import { functor, GenericChartComponent, last } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
-import { default as defaultDisplayValuesFor } from "./displayValuesFor";
-
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
@@ -13,7 +11,7 @@ interface SingleMAToolTipProps {
     readonly fontSize?: number;
     readonly forChart: number | string;
     readonly labelFill?: string;
-    readonly onClick?: (details: any, event: React.MouseEvent<SVGRectElement, MouseEvent>) => void;
+    readonly onClick?: (event: React.MouseEvent<SVGRectElement, MouseEvent>, details: any) => void;
     readonly options: any;
     readonly origin: [number, number];
     readonly textFill?: string;
@@ -23,7 +21,9 @@ interface SingleMAToolTipProps {
 export class SingleMAToolTip extends React.Component<SingleMAToolTipProps> {
     public render() {
         const { color, displayName, fontSize, fontFamily, textFill, labelFill, value } = this.props;
+
         const translate = "translate(" + this.props.origin[0] + ", " + this.props.origin[1] + ")";
+
         return (
             <g transform={translate}>
                 <line x1={0} y1={2} x2={0} y2={28} stroke={color} strokeWidth={4} />
@@ -40,19 +40,18 @@ export class SingleMAToolTip extends React.Component<SingleMAToolTipProps> {
 
     private readonly onClick = (event: React.MouseEvent<SVGRectElement, MouseEvent>) => {
         const { onClick, forChart, options } = this.props;
-
         if (onClick !== undefined) {
-            onClick({ chartId: forChart, ...options }, event);
+            onClick(event, { chartId: forChart, ...options });
         }
     };
 }
 
 interface MovingAverageTooltipProps {
     readonly className?: string;
-    readonly displayFormat: any; // func
+    readonly displayFormat: (value: number) => string;
     readonly origin: number[];
     readonly displayInit?: string;
-    readonly displayValuesFor?: any; // func
+    readonly displayValuesFor?: (props: MovingAverageTooltipProps, moreProps: any) => any;
     readonly onClick?: (event: React.MouseEvent<SVGRectElement, MouseEvent>) => void;
     readonly textFill?: string;
     readonly labelFill?: string;
@@ -60,11 +59,10 @@ interface MovingAverageTooltipProps {
     readonly fontSize?: number;
     readonly width?: number;
     readonly options: {
-        yAccessor: any; // func
+        yAccessor: (data: any) => number;
         type: string;
         stroke: string;
         windowSize: number;
-        echo?: any;
     }[];
 }
 
@@ -74,7 +72,7 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
         className: "react-financial-charts-tooltip react-financial-charts-moving-average-tooltip",
         displayFormat: format(".2f"),
         displayInit: "n/a",
-        displayValuesFor: defaultDisplayValuesFor,
+        displayValuesFor: (_, props) => props.currentItem,
         origin: [0, 10],
         width: 65,
     };
@@ -88,12 +86,26 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
             chartId,
             chartConfig,
             chartConfig: { height },
+            fullData,
         } = moreProps;
 
-        const { className, displayInit, onClick, width = 65, fontFamily, fontSize, textFill, labelFill } = this.props;
-        const { origin: originProp, displayFormat, displayValuesFor, options } = this.props;
+        const {
+            className,
+            displayInit = MovingAverageTooltip.defaultProps.displayInit,
+            onClick,
+            width = 65,
+            fontFamily,
+            fontSize,
+            textFill,
+            labelFill,
+            origin: originProp,
+            displayFormat,
+            displayValuesFor = MovingAverageTooltip.defaultProps.displayValuesFor,
+            options,
+        } = this.props;
 
-        const currentItem = displayValuesFor(this.props, moreProps);
+        const currentItem = displayValuesFor(this.props, moreProps) ?? last(fullData);
+
         const config = chartConfig;
 
         const origin = functor(originProp);

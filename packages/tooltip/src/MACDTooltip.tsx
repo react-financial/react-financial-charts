@@ -1,8 +1,6 @@
-import { functor, GenericChartComponent } from "@react-financial-charts/core";
+import { functor, GenericChartComponent, last } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
-
-import { default as defaultDisplayValuesFor } from "./displayValuesFor";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
@@ -27,10 +25,10 @@ interface MACDTooltipProps {
             divergence: string;
         };
     };
-    readonly displayFormat: any; // func
+    readonly displayFormat: (value: number) => string;
     readonly displayInit?: string;
-    readonly displayValuesFor: any; // func
-    readonly yAccessor: any; // func
+    readonly displayValuesFor: (props: MACDTooltipProps, moreProps: any) => any | undefined;
+    readonly yAccessor: (data: any) => { macd: number; signal: number; divergence: number };
 }
 
 export class MACDTooltip extends React.Component<MACDTooltipProps> {
@@ -38,7 +36,7 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
         className: "react-financial-charts-tooltip",
         displayFormat: format(".2f"),
         displayInit: "n/a",
-        displayValuesFor: defaultDisplayValuesFor,
+        displayValuesFor: (_, props) => props.currentItem,
         origin: [0, 0],
     };
 
@@ -57,22 +55,24 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
             className,
             yAccessor,
             options,
+            origin: originProp,
             appearance,
             labelFill,
         } = this.props;
 
         const {
             chartConfig: { width, height },
+            fullData,
         } = moreProps;
 
-        const currentItem = displayValuesFor(this.props, moreProps);
+        const currentItem = displayValuesFor(this.props, moreProps) ?? last(fullData);
+
         const macdValue = currentItem && yAccessor(currentItem);
 
-        const macd = (macdValue && macdValue.macd && displayFormat(macdValue.macd)) || displayInit;
-        const signal = (macdValue && macdValue.signal && displayFormat(macdValue.signal)) || displayInit;
-        const divergence = (macdValue && macdValue.divergence && displayFormat(macdValue.divergence)) || displayInit;
+        const macd = (macdValue?.macd && displayFormat(macdValue.macd)) || displayInit;
+        const signal = (macdValue?.signal && displayFormat(macdValue.signal)) || displayInit;
+        const divergence = (macdValue?.divergence && displayFormat(macdValue.divergence)) || displayInit;
 
-        const { origin: originProp } = this.props;
         const origin = functor(originProp);
         const [x, y] = origin(width, height);
 

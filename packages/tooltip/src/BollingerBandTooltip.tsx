@@ -1,16 +1,14 @@
-import { functor, GenericChartComponent, isDefined } from "@react-financial-charts/core";
+import { functor, GenericChartComponent, last } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
-
-import { default as defaultDisplayValuesFor } from "./displayValuesFor";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 interface BollingerBandTooltipProps {
     readonly className?: string;
-    readonly displayFormat: any; // Func
+    readonly displayFormat: (value: number) => string;
     readonly displayInit?: string;
-    readonly displayValuesFor?: any; // Func
+    readonly displayValuesFor?: (props: BollingerBandTooltipProps, moreProps: any) => any;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly labelFill?: string;
@@ -23,14 +21,14 @@ interface BollingerBandTooltipProps {
     };
     readonly origin?: [number, number] | ((width: number, height: number) => [number, number]);
     readonly textFill?: string;
-    readonly yAccessor?: any; // Func
+    readonly yAccessor?: (data: any) => { bottom: number; middle: number; top: number };
 }
 
 export class BollingerBandTooltip extends React.Component<BollingerBandTooltipProps> {
     public static defaultProps = {
         className: "react-financial-charts-tooltip react-financial-charts-bollingerband-tooltip",
         displayFormat: format(".2f"),
-        displayValuesFor: defaultDisplayValuesFor,
+        displayValuesFor: (_, props) => props.currentItem,
         displayInit: "n/a",
         origin: [8, 8],
         yAccessor: (data: any) => data.bb,
@@ -44,12 +42,13 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
         const {
             onClick,
             displayFormat,
-            yAccessor,
+            yAccessor = BollingerBandTooltip.defaultProps.yAccessor,
             options,
+            origin: originProp,
             textFill,
             labelFill,
             className,
-            displayValuesFor,
+            displayValuesFor = BollingerBandTooltip.defaultProps.displayValuesFor,
             displayInit,
             fontFamily,
             fontSize,
@@ -57,22 +56,24 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
 
         const {
             chartConfig: { width, height },
+            fullData,
         } = moreProps;
 
-        const currentItem = displayValuesFor(this.props, moreProps);
+        const currentItem = displayValuesFor(this.props, moreProps) ?? last(fullData);
 
         let top = displayInit;
         let middle = displayInit;
         let bottom = displayInit;
 
-        if (isDefined(currentItem) && isDefined(yAccessor(currentItem))) {
+        if (currentItem !== undefined) {
             const item = yAccessor(currentItem);
-            top = displayFormat(item.top);
-            middle = displayFormat(item.middle);
-            bottom = displayFormat(item.bottom);
+            if (item !== undefined) {
+                top = displayFormat(item.top);
+                middle = displayFormat(item.middle);
+                bottom = displayFormat(item.bottom);
+            }
         }
 
-        const { origin: originProp } = this.props;
         const origin = functor(originProp);
         const [x, y] = origin(width, height);
 

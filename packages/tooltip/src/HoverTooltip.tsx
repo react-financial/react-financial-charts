@@ -1,96 +1,79 @@
 import { sum } from "d3-array";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { colorToRGBA, first, isDefined, isNotDefined, GenericComponent, last } from "@react-financial-charts/core";
+import { first, isDefined, GenericComponent, last } from "@react-financial-charts/core";
 
-interface HoverTooltipProps {
-    readonly chartId?: number | string;
-    readonly yAccessor?: any; // func
-    readonly tooltipSVG?: any; // func
-    readonly backgroundShapeSVG?: any; // func
-    readonly bgwidth?: number;
-    readonly bgheight?: number;
-    readonly bgFill: string;
-    readonly bgOpacity: number;
-    readonly tooltipContent: any; // func
-    readonly origin: number[] | any; // func
-    readonly fontFamily?: string;
-    readonly fontSize?: number;
-}
+const PADDING = 4;
+const X = 8;
+const Y = 8;
 
-class HoverTooltip extends React.Component<HoverTooltipProps> {
-    public static defaultProps = {
-        tooltipCanvas: defaultTooltipCanvas,
-        origin: defaultOrigin,
-        fill: "#D4E2FD",
-        bgFill: "#D4E2FD",
-        bgOpacity: 0.5,
-        stroke: "#9B9BFF",
-        fontFill: "#000000",
-        opacity: 0.8,
-        backgroundShapeCanvas: defaultBackgroundShapeCanvas,
-        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
-        fontSize: 12,
-    };
-
-    public static contextTypes = {
-        margin: PropTypes.object.isRequired,
-        ratio: PropTypes.number.isRequired,
-    };
-
-    public render() {
-        return <GenericComponent canvasDraw={this.drawOnCanvas} drawOn={["mousemove", "pan"]} />;
-    }
-
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const pointer = helper(this.props, moreProps, ctx);
-        const { height } = moreProps;
-
-        if (isNotDefined(pointer)) {
-            return null;
-        }
-
-        drawOnCanvas(ctx, this.props, this.context, pointer, height);
-    };
-}
-
-const PADDING = 5;
-const X = 10;
-const Y = 10;
-
-function defaultBackgroundShapeCanvas(props, { width, height }, ctx) {
-    const { fill, stroke, opacity } = props;
-
-    ctx.fillStyle = colorToRGBA(fill, opacity);
-    ctx.strokeStyle = stroke;
+const roundRect = (
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number,
+) => {
     ctx.beginPath();
-    ctx.rect(0, 0, width, height);
-    ctx.fill();
-    ctx.stroke();
-}
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+};
 
-function defaultTooltipCanvas({ fontFamily, fontSize, fontFill }, content, ctx) {
+const defaultBackgroundShapeCanvas = (props: HoverTooltipProps, { width, height }, ctx: CanvasRenderingContext2D) => {
+    const { toolTipFillStyle, toolTipStrokeStyle } = props;
+
+    ctx.beginPath();
+    roundRect(ctx, 0, 0, width, height, 4);
+    if (toolTipFillStyle !== undefined) {
+        ctx.fillStyle = toolTipFillStyle;
+        ctx.shadowColor = "#898";
+        ctx.shadowBlur = 4;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+    }
+    if (toolTipStrokeStyle !== undefined) {
+        ctx.strokeStyle = toolTipStrokeStyle;
+        ctx.stroke();
+    }
+};
+
+const defaultTooltipCanvas = (props: HoverTooltipProps, content, ctx: CanvasRenderingContext2D) => {
+    const { fontSize = 14, fontFamily, fontFill } = props;
+
     const startY = Y + fontSize * 0.9;
-    ctx.font = `${fontSize}px ${fontFamily}`;
-    ctx.fillStyle = fontFill;
+    ctx.font = `bold ${fontSize}px ${fontFamily}`;
+    if (fontFill !== undefined) {
+        ctx.fillStyle = fontFill;
+    }
     ctx.textAlign = "left";
     ctx.fillText(content.x, X, startY);
 
     for (let i = 0; i < content.y.length; i++) {
         const y = content.y[i];
-        const textY = startY + fontSize * (i + 1);
-        ctx.fillStyle = y.stroke || fontFill;
+        const textY = (i + 1) * PADDING + startY + fontSize * (i + 1);
+        ctx.font = `${fontSize}px ${fontFamily}`;
+        ctx.fillStyle = y.stroke ?? fontFill;
         ctx.fillText(y.label, X, textY);
 
-        ctx.fillStyle = fontFill;
+        if (fontFill !== undefined) {
+            ctx.fillStyle = fontFill;
+        }
         ctx.fillText(": " + y.value, X + ctx.measureText(y.label).width, textY);
     }
-}
+};
 
-function drawOnCanvas(ctx: CanvasRenderingContext2D, props, context, pointer, height) {
+const drawOnCanvas = (ctx: CanvasRenderingContext2D, props: HoverTooltipProps, context, pointer, height) => {
     const { margin, ratio } = context;
-    const { bgFill, bgOpacity } = props;
-    const { backgroundShapeCanvas, tooltipCanvas } = props;
+    const { backgroundShapeCanvas, tooltipCanvas, background } = props;
 
     const originX = 0.5 * ratio + margin.left;
     const originY = 0.5 * ratio + margin.top;
@@ -104,31 +87,36 @@ function drawOnCanvas(ctx: CanvasRenderingContext2D, props, context, pointer, he
 
     const { x, y, content, centerX, pointWidth, bgSize } = pointer;
 
-    ctx.fillStyle = colorToRGBA(bgFill, bgOpacity);
+    if (background?.fillStyle !== undefined) {
+        ctx.fillStyle = background.fillStyle;
+    }
     ctx.beginPath();
     ctx.rect(centerX - pointWidth / 2, 0, pointWidth, height);
     ctx.fill();
 
     ctx.translate(x, y);
+
     backgroundShapeCanvas(props, bgSize, ctx);
+
     tooltipCanvas(props, content, ctx);
 
     ctx.restore();
-}
+};
 
-function calculateTooltipSize({ fontFamily, fontSize, fontFill }, content, ctx?) {
-    if (isNotDefined(ctx)) {
+const calculateTooltipSize = (props: HoverTooltipProps, content, ctx?) => {
+    const { fontFamily, fontSize = 12, fontFill } = props;
+    if (ctx === undefined) {
         const canvas = document.createElement("canvas");
         ctx = canvas.getContext("2d");
     }
 
-    ctx.font = `${fontSize}px ${fontFamily}`;
+    ctx.font = `bold ${fontSize}px ${fontFamily}`;
     ctx.fillStyle = fontFill;
     ctx.textAlign = "left";
 
     const measureText = (str) => ({
         width: ctx.measureText(str).width,
-        height: fontSize,
+        height: fontSize + PADDING,
     });
 
     const { width, height } = content.y
@@ -140,32 +128,32 @@ function calculateTooltipSize({ fontFamily, fontSize, fontFill }, content, ctx?)
         width: width + 2 * X,
         height: height + 2 * Y,
     };
-}
+};
 
-function sumSizes(...sizes) {
+const sumSizes = (...sizes) => {
     return {
         width: Math.max(...sizes.map((size) => size.width)),
         height: sum(sizes, (d) => d.height),
     };
-}
+};
 
-function normalizeX(x, bgSize, pointWidth, width) {
-    // return x - bgSize.width - pointWidth / 2 - PADDING * 2 < 0
+const normalizeX = (x, bgSize, pointWidth, width) => {
     return x < width / 2 ? x + pointWidth / 2 + PADDING : x - bgSize.width - pointWidth / 2 - PADDING;
-}
+};
 
-function normalizeY(y, bgSize) {
+const normalizeY = (y, bgSize) => {
     return y - bgSize.height <= 0 ? y + PADDING : y - bgSize.height - PADDING;
-}
+};
 
-function defaultOrigin(props, moreProps, bgSize, pointWidth) {
+const defaultOrigin = (props: HoverTooltipProps, moreProps, bgSize, pointWidth) => {
     const { chartId, yAccessor } = props;
+
     const { mouseXY, xAccessor, currentItem, xScale, chartConfig, width } = moreProps;
 
-    // @ts-ignore
     let y = last(mouseXY);
 
     const xValue = xAccessor(currentItem);
+
     let x = Math.round(xScale(xValue));
 
     if (isDefined(chartId) && isDefined(yAccessor) && isDefined(chartConfig) && isDefined(chartConfig.findIndex)) {
@@ -179,34 +167,92 @@ function defaultOrigin(props, moreProps, bgSize, pointWidth) {
     y = normalizeY(y, bgSize);
 
     return [x, y];
+};
+interface HoverTooltipProps {
+    readonly background?: {
+        fillStyle?: string | CanvasGradient | CanvasPattern;
+        height?: number;
+        strokeStyle?: string | CanvasGradient | CanvasPattern;
+        width?: number;
+    };
+    readonly backgroundShapeCanvas?: any; // func
+    readonly chartId?: number | string;
+    readonly fontFamily?: string;
+    readonly fontFill?: string;
+    readonly fontSize?: number;
+    readonly origin?: (
+        props: HoverTooltipProps,
+        moreProps: any,
+        bgSize: { width: number; height: number },
+        pointWidth: number,
+    ) => [number, number];
+    readonly tooltip: {
+        content: (data: any) => { x: string; y: { label: string; value?: string; stroke?: string }[] };
+    };
+    readonly toolTipFillStyle?: string | CanvasGradient | CanvasPattern;
+    readonly toolTipStrokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly tooltipCanvas?: any; // func
+    readonly yAccessor: (data: any) => number;
 }
 
-function helper(props, moreProps, ctx?) {
-    const { show, xScale, currentItem, plotData } = moreProps;
-    const { origin, tooltipContent } = props;
-    const { xAccessor, displayXAccessor } = moreProps;
+export class HoverTooltip extends React.Component<HoverTooltipProps> {
+    public static defaultProps = {
+        background: {
+            fillStyle: "rgba(33, 148, 243, 0.1)",
+        },
+        toolTipFillStyle: "rgba(250, 250, 250, 1)",
+        toolTipStrokeStyle: "rgba(33, 148, 243)",
+        tooltipCanvas: defaultTooltipCanvas,
+        origin: defaultOrigin,
+        backgroundShapeCanvas: defaultBackgroundShapeCanvas,
+        fontFill: "#000000",
+        fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
+        fontSize: 14,
+    };
 
-    if (!show || isNotDefined(currentItem)) {
-        return;
+    public static contextTypes = {
+        margin: PropTypes.object.isRequired,
+        ratio: PropTypes.number.isRequired,
+    };
+
+    public render() {
+        return <GenericComponent canvasDraw={this.drawOnCanvas} drawOn={["mousemove", "pan"]} />;
     }
 
-    const xValue = xAccessor(currentItem);
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+        const pointer = this.helper(ctx, moreProps);
+        if (pointer === undefined) {
+            return null;
+        }
 
-    if (!show || isNotDefined(xValue)) {
-        return;
-    }
+        const { height } = moreProps;
 
-    const content = tooltipContent({ currentItem, xAccessor: displayXAccessor });
-    const centerX = xScale(xValue);
-    // @ts-ignore
-    const pointWidth =
-        Math.abs(xScale(xAccessor(last(plotData))) - xScale(xAccessor(first(plotData)))) / (plotData.length - 1);
+        drawOnCanvas(ctx, this.props, this.context, pointer, height);
+    };
 
-    const bgSize = calculateTooltipSize(props, content, ctx);
+    private readonly helper = (ctx: CanvasRenderingContext2D, moreProps) => {
+        const { show, xScale, currentItem, plotData, xAccessor, displayXAccessor } = moreProps;
 
-    const [x, y] = origin(props, moreProps, bgSize, pointWidth);
+        const { origin = HoverTooltip.defaultProps.origin, tooltip } = this.props;
 
-    return { x, y, content, centerX, pointWidth, bgSize };
+        if (!show || currentItem === undefined) {
+            return;
+        }
+
+        const xValue = xAccessor(currentItem);
+        if (xValue === undefined) {
+            return;
+        }
+
+        const content = tooltip.content({ currentItem, xAccessor: displayXAccessor });
+        const centerX = xScale(xValue);
+        const pointWidth =
+            Math.abs(xScale(xAccessor(last(plotData))) - xScale(xAccessor(first(plotData)))) / (plotData.length - 1);
+
+        const bgSize = calculateTooltipSize(this.props, content, ctx);
+
+        const [x, y] = origin(this.props, moreProps, bgSize, pointWidth);
+
+        return { x, y, content, centerX, pointWidth, bgSize };
+    };
 }
-
-export default HoverTooltip;

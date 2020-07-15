@@ -1,8 +1,6 @@
-import { functor, GenericChartComponent } from "@react-financial-charts/core";
+import { functor, GenericChartComponent, last } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
-
-import { default as defaultDisplayValuesFor } from "./displayValuesFor";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
@@ -13,7 +11,7 @@ interface StochasticTooltipProps {
     readonly fontSize?: number;
     readonly labelFill?: string;
     readonly onClick?: (event: React.MouseEvent) => void;
-    readonly yAccessor: any; // func
+    readonly yAccessor: (currentItem: any) => { K: number; D: number };
     readonly options: {
         windowSize: number;
         kWindowSize: number;
@@ -25,20 +23,20 @@ interface StochasticTooltipProps {
             kLine: string;
         };
     };
-    readonly displayFormat: any; // func
+    readonly displayFormat: (value: number) => string;
     readonly displayInit?: string;
-    readonly displayValuesFor?: any; // func
+    readonly displayValuesFor?: (props: StochasticTooltipProps, moreProps: any) => any;
     readonly label: string;
 }
 
 export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
     public static defaultProps = {
+        className: "react-financial-charts-tooltip",
         displayFormat: format(".2f"),
         displayInit: "n/a",
-        displayValuesFor: defaultDisplayValuesFor,
-        origin: [0, 0],
-        className: "react-financial-charts-tooltip",
+        displayValuesFor: (_, props) => props.currentItem,
         label: "STO",
+        origin: [0, 0],
     };
 
     public render() {
@@ -46,22 +44,38 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
     }
 
     private readonly renderSVG = (moreProps) => {
-        const { onClick, fontFamily, fontSize, yAccessor, displayFormat, label } = this.props;
-        const { className, displayInit, displayValuesFor, options, appearance, labelFill } = this.props;
+        const {
+            onClick,
+            fontFamily,
+            fontSize,
+            yAccessor,
+            displayFormat,
+            origin: originProp,
+            label,
+            className,
+            displayInit,
+            displayValuesFor = StochasticTooltip.defaultProps.displayValuesFor,
+            options,
+            appearance,
+            labelFill,
+        } = this.props;
         const {
             chartConfig: { width, height },
+            fullData,
         } = moreProps;
 
-        const currentItem = displayValuesFor(this.props, moreProps);
-        const { stroke } = appearance;
+        const currentItem = displayValuesFor(this.props, moreProps) ?? last(fullData);
+
         const stochastic = currentItem && yAccessor(currentItem);
 
-        const K = (stochastic && stochastic.K && displayFormat(stochastic.K)) || displayInit;
-        const D = (stochastic && stochastic.D && displayFormat(stochastic.D)) || displayInit;
+        const K = (stochastic?.K && displayFormat(stochastic.K)) ?? displayInit;
+        const D = (stochastic?.D && displayFormat(stochastic.D)) ?? displayInit;
 
-        const { origin: originProp } = this.props;
         const origin = functor(originProp);
+
         const [x, y] = origin(width, height);
+
+        const { stroke } = appearance;
 
         return (
             <g className={className} transform={`translate(${x}, ${y})`} onClick={onClick}>

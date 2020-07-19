@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.4](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2020-07-19)
+
+
+### Bug Fixes
+
+* **utils:** @types/react-virtualized-auto-sizer is required as a dependency ([fa9e5ed](https://github.com/reactivemarkets/react-financial-charts/commit/fa9e5ed801fa464d6efe283aaf4026272e71b352))
+
+
+
+
+
 # [1.0.0-alpha.3](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2020-07-19)
 
 

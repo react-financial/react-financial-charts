@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.3](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2020-07-19)
+
+
+### Bug Fixes
+
+* **utils:** re-exporting AutoSizerProps ([3615c6c](https://github.com/markmcdowell/react-financial-charts/commit/3615c6c26892c1692a8b517e321287a6d2b246a5))
+
+
+
+
+
 # [1.0.0-alpha.2](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2020-07-15)
 
 **Note:** Version bump only for package root

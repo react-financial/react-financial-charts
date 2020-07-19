@@ -6,6 +6,8 @@ interface WithSizeProps {
     readonly height: number;
 }
 
+export { AutoSizerProps };
+
 export const withSize = (props?: Omit<AutoSizerProps, "children">) => {
     return <TProps extends WithSizeProps>(OriginalComponent: React.ComponentClass<TProps>) => {
         return class WithSize extends React.Component<Omit<TProps, "width" | "height">> {

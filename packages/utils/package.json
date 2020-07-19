@@ -38,6 +38,7 @@
     "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
   },
   "dependencies": {
+    "@types/react-virtualized-auto-sizer": "^1.0.0",
     "react-virtualized-auto-sizer": "^1.0.2"
   },
   "peerDependencies": {

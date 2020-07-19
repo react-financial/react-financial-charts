@@ -78,7 +78,7 @@
     "source-map-loader": "^1.0.1",
     "ts-jest": "^26.1.2",
     "ts-loader": "^8.0.0",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "@react-financial-charts/annotations": "file:packages/annotations",

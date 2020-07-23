@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.5](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2020-07-23)
+
+
+### Features
+
+* **tooltip:** adding change to ohlc tooltip ([bc38b73](https://github.com/markmcdowell/react-financial-charts/commit/bc38b7387270837276739ba1e77832053ddf8769))
+
+
+
+
+
 # [1.0.0-alpha.4](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2020-07-19)
 
 **Note:** Version bump only for package @react-financial-charts/stories

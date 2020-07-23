@@ -19,8 +19,8 @@ interface SingleValueTooltipProps {
     readonly fontSize?: number;
     readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
     readonly displayValuesFor?: (props: SingleValueTooltipProps, moreProps) => any;
-    readonly xAccessor?: (d: unknown) => number;
-    readonly yAccessor?: (d: unknown) => number;
+    xAccessor?<T>(d: T): number;
+    yAccessor?<T>(d: T): number;
 }
 
 export class SingleValueTooltip extends React.Component<SingleValueTooltipProps> {

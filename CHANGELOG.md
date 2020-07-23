@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.6](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2020-07-23)
+
+
+### Bug Fixes
+
+* **tooltip:** removing generic from SingleValueTooltip ([8035b85](https://github.com/markmcdowell/react-financial-charts/commit/8035b85c5df72f6076b778fb2c3bbef6f3d1d7a6))
+
+
+
+
+
 # [1.0.0-alpha.5](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2020-07-23)
 
 

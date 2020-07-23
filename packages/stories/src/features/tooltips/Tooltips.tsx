@@ -63,7 +63,7 @@ class Tooltips extends React.Component<ChartProps> {
                     <CandlestickSeries />
                     <LineSeries yAccessor={ema12.accessor()} strokeStyle={ema12.stroke()} />
 
-                    <OHLCTooltip origin={[8, 16]} />
+                    <OHLCTooltip origin={[8, 16]} textFill={(d) => (d.close > d.open ? "#26a69a" : "#ef5350")} />
                     <HoverTooltip
                         yAccessor={ema12.accessor()}
                         tooltip={{

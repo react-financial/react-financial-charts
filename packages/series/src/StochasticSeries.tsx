@@ -15,7 +15,7 @@ interface StochasticSeriesProps {
         dLine: string | CanvasGradient | CanvasPattern;
         kLine: string | CanvasGradient | CanvasPattern;
     };
-    readonly yAccessor: (data: unknown) => { K: number; D: number };
+    readonly yAccessor: (data: any) => { K: number; D: number };
 }
 
 export class StochasticSeries extends React.Component<StochasticSeriesProps> {
@@ -44,8 +44,8 @@ export class StochasticSeries extends React.Component<StochasticSeriesProps> {
 
         return (
             <g className={className}>
-                <LineSeries yAccessor={this.yAccessorForD} strokeStyle={strokeStyle.dLine} fill="none" />
-                <LineSeries yAccessor={this.yAccessorForK} strokeStyle={strokeStyle.kLine} fill="none" />
+                <LineSeries yAccessor={this.yAccessorForD} strokeStyle={strokeStyle.dLine} />
+                <LineSeries yAccessor={this.yAccessorForK} strokeStyle={strokeStyle.kLine} />
                 <StraightLine strokeStyle={strokeStyle.top} yValue={overSold} />
                 <StraightLine strokeStyle={strokeStyle.middle} yValue={middle} />
                 <StraightLine strokeStyle={strokeStyle.bottom} yValue={overBought} />

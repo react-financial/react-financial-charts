@@ -4,6 +4,6 @@ export {
 } from "./discontinuousTimeScaleProvider";
 export { default as financeDiscontinuousScale } from "./financeDiscontinuousScale";
 
-export function defaultScaleProvider(xScale) {
+export const defaultScaleProvider = (xScale) => {
     return (data, xAccessor) => ({ data, xScale, xAccessor, displayXAccessor: xAccessor });
-}
+};

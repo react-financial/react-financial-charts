@@ -39,6 +39,7 @@ export class GenericChartComponent extends GenericComponent {
         this.postCanvasDraw = this.postCanvasDraw.bind(this);
         this.shouldTypeProceed = this.shouldTypeProceed.bind(this);
         this.preEvaluate = this.preEvaluate.bind(this);
+        this.updateMoreProps = this.updateMoreProps.bind(this);
     }
 
     public preCanvasDraw(ctx: CanvasRenderingContext2D, moreProps) {

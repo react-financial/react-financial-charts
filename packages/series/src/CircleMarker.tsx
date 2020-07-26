@@ -8,9 +8,9 @@ interface CircleMarkerProps {
     readonly point: {
         x: number;
         y: number;
-        datum: unknown;
+        datum: any;
     };
-    readonly r: number | ((datum: unknown) => number);
+    readonly r: number | ((datum: any) => number);
     readonly strokeStyle?: string;
     readonly strokeWidth?: number;
 }

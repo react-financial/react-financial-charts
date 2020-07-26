@@ -1,13 +1,21 @@
-import * as React from "react";
 import { functor } from "@react-financial-charts/core";
+import { ScaleContinuousNumeric } from "d3-scale";
+import * as React from "react";
 
 interface BarAnnotationProps {
     readonly className?: string;
     readonly path?: any; // func
-    readonly onClick?: (e: React.MouseEvent, data: { xScale: unknown; yScale: unknown; datum: unknown }) => void;
+    readonly onClick?: (
+        e: React.MouseEvent,
+        data: {
+            xScale?: ScaleContinuousNumeric<number, number>;
+            yScale?: ScaleContinuousNumeric<number, number>;
+            datum: any;
+        },
+    ) => void;
     readonly xAccessor?: any; // func
-    readonly xScale?: any; // func
-    readonly yScale?: any; // func
+    readonly xScale?: ScaleContinuousNumeric<number, number>;
+    readonly yScale?: ScaleContinuousNumeric<number, number>;
     readonly datum?: object;
     readonly stroke?: string;
     readonly fill?: string;

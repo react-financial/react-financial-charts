@@ -1,21 +1,29 @@
-import * as React from "react";
 import { functor } from "@react-financial-charts/core";
+import { ScaleContinuousNumeric } from "d3-scale";
+import * as React from "react";
 
 interface SvgPathAnnotationProps {
     readonly className?: string;
-    readonly datum?: unknown;
-    readonly fill?: string | ((datum: unknown) => string);
-    readonly onClick?: (e: React.MouseEvent, data: { xScale: any; yScale: any; datum: unknown }) => void;
+    readonly datum?: any;
+    readonly fill?: string | ((datum: any) => string);
+    readonly onClick?: (
+        e: React.MouseEvent,
+        data: {
+            xScale?: ScaleContinuousNumeric<number, number>;
+            yScale?: ScaleContinuousNumeric<number, number>;
+            datum: any;
+        },
+    ) => void;
     readonly opacity?: number;
     readonly path: any; // func
-    readonly plotData: unknown[];
+    readonly plotData: any[];
     readonly stroke?: string;
-    readonly tooltip?: string | ((datum: unknown) => string);
+    readonly tooltip?: string | ((datum: any) => string);
     readonly xAccessor?: any; // func
     readonly x?: number | any; // func
-    readonly xScale?: any; // func
+    readonly xScale?: ScaleContinuousNumeric<number, number>;
     readonly y?: number | any; // func
-    readonly yScale?: any; // func
+    readonly yScale?: ScaleContinuousNumeric<number, number>;
 }
 
 export class SvgPathAnnotation extends React.Component<SvgPathAnnotationProps> {

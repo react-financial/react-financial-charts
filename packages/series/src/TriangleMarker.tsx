@@ -3,17 +3,17 @@ import { functor } from "@react-financial-charts/core";
 
 interface TriangleProps {
     readonly className?: string;
-    readonly direction?: "top" | "bottom" | "left" | "right" | "hide" | ((datum: unknown) => any);
-    readonly fillStyle?: string | ((datum: unknown) => string);
+    readonly direction?: "top" | "bottom" | "left" | "right" | "hide" | ((datum: any) => any);
+    readonly fillStyle?: string | ((datum: any) => string);
     readonly opacity?: number;
     readonly point: {
         x: number;
         y: number;
-        datum: unknown;
+        datum: any;
     };
-    readonly strokeStyle?: string | ((datum: unknown) => string);
+    readonly strokeStyle?: string | ((datum: any) => string);
     readonly strokeWidth?: number;
-    readonly width?: number | ((datum: unknown) => number);
+    readonly width?: number | ((datum: any) => number);
 }
 
 export class Triangle extends React.Component<TriangleProps> {

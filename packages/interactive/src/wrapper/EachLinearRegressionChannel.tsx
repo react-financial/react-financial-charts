@@ -149,8 +149,8 @@ export class EachLinearRegressionChannel extends React.Component<
                     show={selected || hover}
                     xyProvider={edge1Provider(this.props)}
                     r={r}
-                    fill={edgeFill}
-                    stroke={edgeStroke}
+                    fillStyle={edgeFill}
+                    strokeStyle={edgeStroke}
                     strokeWidth={edgeStrokeWidth}
                     interactiveCursorClass={edgeInteractiveCursor}
                     onDrag={this.handleEdge1Drag}
@@ -161,8 +161,8 @@ export class EachLinearRegressionChannel extends React.Component<
                     show={selected || hover}
                     xyProvider={edge2Provider(this.props)}
                     r={r}
-                    fill={edgeFill}
-                    stroke={edgeStroke}
+                    fillStyle={edgeFill}
+                    strokeStyle={edgeStroke}
                     strokeWidth={edgeStrokeWidth}
                     interactiveCursorClass={edgeInteractiveCursor}
                     onDrag={this.handleEdge2Drag}

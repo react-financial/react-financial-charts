@@ -5,18 +5,17 @@ import {
     GenericChartComponent,
     getStrokeDasharrayCanvas,
     identity,
-    isDefined,
-    isNotDefined,
     last,
     strokeDashTypes,
 } from "@react-financial-charts/core";
 import { range as d3Range, zip } from "d3-array";
 import { forceCollide, forceSimulation, forceX } from "d3-force";
+import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
 import { AxisZoomCapture } from "./AxisZoomCapture";
 
 interface AxisProps {
-    readonly axisZoomCallback?: any; // func
+    readonly axisZoomCallback?: (domain: any) => void;
     readonly bg: {
         h: number;
         x: number;
@@ -30,8 +29,8 @@ interface AxisProps {
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fontWeight?: number;
-    readonly getMouseDelta: any; // func
-    readonly getScale: any; // func
+    readonly getMouseDelta: (startXY: [number, number], mouseXY: [number, number]) => number;
+    readonly getScale: (moreProps: any) => ScaleContinuousNumeric<number, number>;
     readonly innerTickSize?: number;
     readonly inverted?: boolean;
     readonly onContextMenu?: (e: React.MouseEvent, mousePosition: [number, number]) => void;
@@ -42,8 +41,7 @@ interface AxisProps {
     readonly showDomain?: boolean;
     readonly showTicks?: boolean;
     readonly showTickLabel?: boolean;
-    readonly stroke: string;
-    readonly strokeOpacity?: number;
+    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
     readonly strokeWidth: number;
     readonly tickFormat?: (data: any) => string;
     readonly tickPadding?: number;
@@ -141,16 +139,16 @@ export class Axis extends React.Component<AxisProps> {
     };
 }
 
-const tickHelper = (props, scale) => {
+const tickHelper = (props: AxisProps, scale: ScaleContinuousNumeric<number, number>) => {
     const {
         orient,
-        innerTickSize,
+        innerTickSize = 4,
         tickFormat,
-        tickPadding,
+        tickPadding = 4,
         tickLabelFill,
         tickStrokeWidth,
         tickStrokeDasharray,
-        fontSize,
+        fontSize = 12,
         fontFamily,
         fontWeight,
         showTicks,
@@ -165,18 +163,18 @@ const tickHelper = (props, scale) => {
     } = props;
 
     let tickValues;
-    if (isDefined(tickValuesProp)) {
+    if (tickValuesProp !== undefined) {
         if (typeof tickValuesProp === "function") {
             tickValues = tickValuesProp(scale.domain());
         } else {
             tickValues = tickValuesProp;
         }
-    } else if (isDefined(tickInterval)) {
+    } else if (tickInterval !== undefined) {
         const [min, max] = scale.domain();
         const baseTickValues = d3Range(min, max, (max - min) / tickInterval);
 
         tickValues = tickIntervalFunction ? tickIntervalFunction(min, max, tickInterval) : baseTickValues;
-    } else if (isDefined(scale.ticks)) {
+    } else if (scale.ticks !== undefined) {
         tickValues = scale.ticks(tickArguments);
     } else {
         tickValues = scale.domain();
@@ -184,7 +182,7 @@ const tickHelper = (props, scale) => {
 
     const baseFormat = scale.tickFormat ? scale.tickFormat(tickArguments) : identity;
 
-    const format = isNotDefined(tickFormat) ? baseFormat : (d: any) => tickFormat(d) || "";
+    const format = tickFormat === undefined ? baseFormat : (d: any) => tickFormat(d) || "";
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
     const tickSpacing = Math.max(innerTickSize, 0) + tickPadding;
@@ -200,6 +198,9 @@ const tickHelper = (props, scale) => {
         canvas_dy = sign < 0 ? 0 : fontSize * 0.71;
         textAnchor = "middle";
 
+        const y2 = sign * innerTickSize;
+        const labelY = sign * tickSpacing;
+
         ticks = tickValues.map((d) => {
             const x = Math.round(scale(d));
             return {
@@ -207,9 +208,9 @@ const tickHelper = (props, scale) => {
                 x1: x,
                 y1: 0,
                 x2: x,
-                y2: sign * innerTickSize,
+                y2,
                 labelX: x,
-                labelY: sign * tickSpacing,
+                labelY,
             };
         });
 
@@ -242,13 +243,15 @@ const tickHelper = (props, scale) => {
     } else {
         ticks = tickValues.map((d) => {
             const y = Math.round(scale(d));
+            const x2 = sign * innerTickSize;
+            const labelX = sign * tickSpacing;
             return {
                 value: d,
                 x1: 0,
                 y1: y,
-                x2: sign * innerTickSize,
+                x2,
                 y2: y,
-                labelX: sign * tickSpacing,
+                labelX,
                 labelY: y,
             };
         });
@@ -280,26 +283,29 @@ const tickHelper = (props, scale) => {
 };
 
 const drawAxisLine = (ctx: CanvasRenderingContext2D, props: AxisProps, range) => {
-    const { orient, outerTickSize, stroke, strokeWidth, strokeOpacity } = props;
+    const { orient, outerTickSize, strokeStyle, strokeWidth } = props;
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
     const xAxis = orient === "bottom" || orient === "top";
 
     ctx.lineWidth = strokeWidth;
-    ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
+    ctx.strokeStyle = strokeStyle;
 
     ctx.beginPath();
 
+    const firstPoint = first(range);
+    const lastPoint = last(range);
+    const tickSize = sign * outerTickSize;
     if (xAxis) {
-        ctx.moveTo(first(range), sign * outerTickSize);
-        ctx.lineTo(first(range), 0);
-        ctx.lineTo(last(range), 0);
-        ctx.lineTo(last(range), sign * outerTickSize);
+        ctx.moveTo(firstPoint, tickSize);
+        ctx.lineTo(firstPoint, 0);
+        ctx.lineTo(lastPoint, 0);
+        ctx.lineTo(lastPoint, tickSize);
     } else {
-        ctx.moveTo(sign * outerTickSize, first(range));
-        ctx.lineTo(0, first(range));
-        ctx.lineTo(0, last(range));
-        ctx.lineTo(sign * outerTickSize, last(range));
+        ctx.moveTo(tickSize, firstPoint);
+        ctx.lineTo(0, firstPoint);
+        ctx.lineTo(0, lastPoint);
+        ctx.lineTo(tickSize, lastPoint);
     }
 
     ctx.stroke();
@@ -310,7 +316,6 @@ const drawTicks = (ctx: CanvasRenderingContext2D, result, moreProps) => {
     const { textAnchor, fontSize, fontFamily, fontWeight, ticks, showTickLabel } = result;
 
     ctx.strokeStyle = colorToRGBA(tickStroke, tickStrokeOpacity);
-
     ctx.fillStyle = tickStroke;
 
     ticks.forEach((tick) => {

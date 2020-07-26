@@ -167,8 +167,8 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
                 cx={xy[0]}
                 cy={xy[1]}
                 r={r}
-                fill={fill}
-                stroke={edgeStroke}
+                fillStyle={fill}
+                strokeStyle={edgeStroke}
                 strokeWidth={edgeStrokeWidth}
                 interactiveCursorClass={cursor}
                 onDragStart={this.handleDragStart}

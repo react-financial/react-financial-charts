@@ -1,4 +1,5 @@
 import { merge } from "d3-array";
+import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
 import {
     first,
@@ -25,8 +26,8 @@ interface OverlayBarSeriesProps {
     readonly className?: string | any; // func
     readonly xAccessor?: any; // func
     readonly yAccessor: any; // func
-    readonly xScale?: any; // func
-    readonly yScale?: any; // func
+    readonly xScale?: ScaleContinuousNumeric<number, number>;
+    readonly yScale?: ScaleContinuousNumeric<number, number>;
     readonly plotData?: number[];
     readonly clip?: boolean;
 }

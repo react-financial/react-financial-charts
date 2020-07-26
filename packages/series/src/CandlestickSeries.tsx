@@ -1,30 +1,48 @@
+import { functor, getAxisCanvas, GenericChartComponent, plotDataLengthBarWidth } from "@react-financial-charts/core";
 import { group } from "d3-array";
+import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
 
-import {
-    colorToRGBA,
-    functor,
-    head,
-    isDefined,
-    getAxisCanvas,
-    GenericChartComponent,
-    plotDataLengthBarWidth,
-} from "@react-financial-charts/core";
+interface ICandle {
+    readonly x: number;
+    readonly y: number;
+    readonly height: number;
+    readonly className?: string;
+    readonly fill: string;
+    readonly stroke: string;
+    readonly direction: number;
+    readonly width: number;
+    readonly wick: {
+        readonly stroke: string;
+        readonly x: number;
+        readonly y1: number;
+        readonly y2: number;
+        readonly y3: number;
+        readonly y4: number;
+    };
+}
 
 interface CandlestickSeriesProps {
     readonly candleClassName?: string;
     readonly candleStrokeWidth?: number;
     readonly className?: string;
-    readonly classNames?: string | any; // func
+    readonly classNames?: string | (() => string);
     readonly clip?: boolean;
-    readonly fill?: string | any; // func
-    readonly opacity?: number;
-    readonly stroke?: string | any; // func
+    readonly fill?: string | CanvasGradient | CanvasPattern | ((data: any) => string | CanvasGradient | CanvasPattern);
+    readonly stroke?:
+        | string
+        | CanvasGradient
+        | CanvasPattern
+        | ((data: any) => string | CanvasGradient | CanvasPattern);
     readonly wickClassName?: string;
-    readonly wickStroke?: string | any; // func
-    readonly width?: number | any; // func
+    readonly wickStroke?:
+        | string
+        | CanvasGradient
+        | CanvasPattern
+        | ((data: any) => string | CanvasGradient | CanvasPattern);
+    readonly width?: number | ((props: CandlestickSeriesProps, moreProps: any) => number);
     readonly widthRatio?: number;
-    readonly yAccessor?: any; // func
+    readonly yAccessor?: (data: any) => { open: number; high: number; low: number; close: number };
 }
 
 export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
@@ -35,7 +53,6 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         classNames: (d) => (d.close > d.open ? "up" : "down"),
         clip: true,
         fill: (d) => (d.close > d.open ? "#26a69a" : "#ef5350"),
-        opacity: 1,
         stroke: (d) => (d.close > d.open ? "#26a69a" : "#ef5350"),
         wickClassName: "react-financial-charts-candlestick-wick",
         wickStroke: (d) => (d.close > d.open ? "#26a69a" : "#ef5350"),
@@ -58,7 +75,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const { opacity, candleStrokeWidth = CandlestickSeries.defaultProps.candleStrokeWidth } = this.props;
+        const { candleStrokeWidth = CandlestickSeries.defaultProps.candleStrokeWidth } = this.props;
         const {
             xScale,
             chartConfig: { yScale },
@@ -66,7 +83,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
             xAccessor,
         } = moreProps;
 
-        const candleData = this.getCandleData(this.props, xAccessor, xScale, yScale, plotData);
+        const candleData = this.getCandleData(xAccessor, xScale, yScale, plotData);
 
         const wickNest = group(candleData, (d) => d.wick.stroke);
 
@@ -84,7 +101,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         const candleNest = group(
             candleData,
             (d) => d.stroke,
-            // @ts-ignore
+            // @ts-ignore typings are incorrect for d3-array
             (d) => d.fill,
         );
 
@@ -95,14 +112,10 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
                 ctx.lineWidth = candleStrokeWidth;
             }
             strokeValues.forEach((values, key) => {
-                const fillStyle =
-                    head(values).width <= 1
-                        ? key
-                        : // @ts-ignore
-                          colorToRGBA(key, opacity);
                 // @ts-ignore
-                ctx.fillStyle = fillStyle;
+                ctx.fillStyle = key;
 
+                // @ts-ignore
                 values.forEach((d) => {
                     if (d.width <= 1) {
                         ctx.fillRect(d.x - 0.5, d.y, 1, d.height);
@@ -119,18 +132,26 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         });
     };
 
-    private readonly getCandleData = (props: CandlestickSeriesProps, xAccessor, xScale, yScale, plotData) => {
-        const { wickStroke: wickStrokeProp } = props;
+    private readonly getCandleData = (
+        xAccessor: (data: any) => number,
+        xScale: ScaleContinuousNumeric<number, number>,
+        yScale: ScaleContinuousNumeric<number, number>,
+        plotData: any[],
+    ): ICandle[] => {
+        const {
+            classNames,
+            fill: fillProp,
+            stroke: strokeProp,
+            yAccessor = CandlestickSeries.defaultProps.yAccessor,
+            wickStroke: wickStrokeProp,
+        } = this.props;
+
         const wickStroke = functor(wickStrokeProp);
-
-        const { classNames, fill: fillProp, stroke: strokeProp, yAccessor } = props;
         const className = functor(classNames);
-
         const fill = functor(fillProp);
         const stroke = functor(strokeProp);
-
-        const widthFunctor = functor(props.width);
-        const width = widthFunctor(props, {
+        const widthFunctor = functor(this.props.width);
+        const width = widthFunctor(this.props, {
             xScale,
             xAccessor,
             plotData,
@@ -139,20 +160,15 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         const trueOffset = 0.5 * width;
         const offset = trueOffset > 0.7 ? Math.round(trueOffset) : Math.floor(trueOffset);
 
-        const candles: any[] = [];
-
-        // tslint:disable-next-line: prefer-for-of
-        for (let i = 0; i < plotData.length; i++) {
-            const d = plotData[i];
-            if (isDefined(yAccessor(d).close)) {
-                const x = Math.round(xScale(xAccessor(d)));
-
+        return plotData
+            .filter((d) => d.close !== undefined)
+            .map((d) => {
                 const ohlc = yAccessor(d);
+                const x = Math.round(xScale(xAccessor(d)));
                 const y = Math.round(yScale(Math.max(ohlc.open, ohlc.close)));
                 const height = Math.max(1, Math.round(Math.abs(yScale(ohlc.open) - yScale(ohlc.close))));
 
-                candles.push({
-                    // type: "line"
+                return {
                     x: x - offset,
                     y,
                     wick: {
@@ -160,7 +176,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
                         x,
                         y1: Math.round(yScale(ohlc.high)),
                         y2: y,
-                        y3: y + height, // Math.round(yScale(Math.min(ohlc.open, ohlc.close))),
+                        y3: y + height,
                         y4: Math.round(yScale(ohlc.low)),
                     },
                     height,
@@ -169,10 +185,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
                     fill: fill(ohlc),
                     stroke: stroke(ohlc),
                     direction: ohlc.close - ohlc.open,
-                });
-            }
-        }
-
-        return candles;
+                };
+            });
     };
 }

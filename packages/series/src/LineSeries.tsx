@@ -10,11 +10,10 @@ import { line as d3Line, CurveFactoryLineOnly, CurveFactory } from "d3-shape";
 import * as React from "react";
 
 interface LineSeriesProps {
-    readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: unknown) => void;
+    readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
     readonly className?: string;
     readonly connectNulls?: boolean;
     readonly defined?: any; // func
-    readonly fill?: string;
     readonly highlightOnHover?: boolean;
     readonly hoverStrokeWidth?: number;
     readonly hoverTolerance?: number;
@@ -37,7 +36,6 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         strokeStyle: "#2196f3",
         strokeWidth: 1,
         hoverStrokeWidth: 4,
-        fill: "none",
         strokeDasharray: "Solid",
         defined: (d) => !isNaN(d),
         hoverTolerance: 6,

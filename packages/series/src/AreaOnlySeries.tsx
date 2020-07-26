@@ -1,10 +1,13 @@
 import { first, functor, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { area as d3Area, CurveFactory } from "d3-shape";
 import * as React from "react";
+import { ScaleContinuousNumeric } from "d3-scale";
 
 interface AreaOnlySeriesProps {
-    readonly base?: number | ((yScale: any, d: [number, number], moreProps: any) => number);
-    readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: unknown) => void;
+    readonly base?:
+        | number
+        | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
+    readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
     readonly className?: string;
     readonly defined?: any; // func
     readonly fillStyle?: string | CanvasGradient | CanvasPattern;
@@ -18,7 +21,7 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
     public static defaultProps = {
         className: "line",
         defined: (d) => !isNaN(d),
-        base: (yScale /* , d, moreProps */) => first(yScale.range()),
+        base: (yScale) => first(yScale.range()),
     };
 
     public render() {

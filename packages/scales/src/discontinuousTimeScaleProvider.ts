@@ -1,10 +1,9 @@
 import { identity, isNotDefined, slidingWindow, zipper } from "@react-financial-charts/core";
 import { timeFormat, timeFormatDefaultLocale } from "d3-time-format";
-
 import financeDiscontinuousScale from "./financeDiscontinuousScale";
 import { defaultFormatters, levelDefinition } from "./levels";
 
-function evaluateLevel(d, date, i, formatters) {
+const evaluateLevel = (d, date, i, formatters) => {
     return levelDefinition
         .map((eachLevel, idx) => {
             return {
@@ -14,8 +13,8 @@ function evaluateLevel(d, date, i, formatters) {
                 format: formatters[eachLevel(d, date, i)],
             };
         })
-        .find((l) => !!l.format);
-}
+        .find((level) => !!level.format);
+};
 
 const discontinuousIndexCalculator = slidingWindow()
     .windowSize(2)
@@ -135,7 +134,6 @@ export function discontinuousTimeScaleProviderBuilder() {
 
         const inputIndex = index;
 
-        // @ts-ignore
         const xScale = financeDiscontinuousScale(inputIndex);
 
         const mergedData = zipper().combine(indexMutator);

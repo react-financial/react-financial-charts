@@ -1,12 +1,15 @@
-import React, { Component } from "react";
 import { strokeDashTypes } from "@react-financial-charts/core";
+import { ScaleContinuousNumeric } from "d3-scale";
+import { CurveFactory } from "d3-shape";
+import React, { Component } from "react";
 import { AreaOnlySeries } from "./AreaOnlySeries";
 import { LineSeries } from "./LineSeries";
-import { CurveFactory } from "d3-shape";
 
 interface AreaSeriesProps {
-    readonly baseAt?: number | ((yScale: any, d: [number, number], moreProps: any) => number);
-    readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: unknown) => void;
+    readonly baseAt?:
+        | number
+        | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
+    readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
     readonly className?: string;
     readonly fillStyle?: string | CanvasGradient | CanvasPattern;
     readonly interpolation?: CurveFactory;
@@ -61,7 +64,6 @@ export class AreaSeries extends Component<AreaSeriesProps> {
                     interpolation={interpolation}
                     style={style}
                     canvasClip={canvasClip}
-                    fill="none"
                     highlightOnHover={false}
                 />
             </g>

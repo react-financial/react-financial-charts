@@ -1,6 +1,6 @@
 {
   "name": "@react-financial-charts/annotations",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.7",
   "description": "Annotations for react-financial-charts",
   "publishConfig": {
     "access": "public"
@@ -42,8 +42,8 @@
     "react-dom": "^16.0.0"
   },
   "dependencies": {
-    "@types/d3-scale": "2.0.0",
     "@react-financial-charts/core": "file:../core",
+    "@types/d3-scale": "2.0.0",
     "prop-types": "^15.7.2"
   }
 }

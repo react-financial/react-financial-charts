@@ -13,7 +13,7 @@ interface GroupTooltipProps {
     readonly displayValuesFor: (props: GroupTooltipProps, moreProps: any) => any;
     readonly labelFill?: string;
     readonly layout: layouts;
-    readonly onClick?: (event: React.MouseEvent, details: unknown) => void;
+    readonly onClick?: (event: React.MouseEvent, details: any) => void;
     readonly options: {
         labelFill?: string;
         yLabel: string;

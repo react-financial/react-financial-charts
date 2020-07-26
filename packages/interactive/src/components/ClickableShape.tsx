@@ -1,5 +1,5 @@
 import * as React from "react";
-import { colorToRGBA, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
+import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { isHovering2 } from "./StraightLine";
 
 interface ClickableShapeProps {
@@ -7,8 +7,7 @@ interface ClickableShapeProps {
     readonly fontFamily: string;
     readonly fontStyle: string;
     readonly fontSize: number;
-    readonly stroke: string;
-    readonly strokeOpacity: number;
+    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
     readonly strokeWidth: number;
     readonly text: string;
     readonly textBox: {
@@ -28,8 +27,6 @@ interface ClickableShapeProps {
 export class ClickableShape extends React.Component<ClickableShapeProps> {
     public static defaultProps = {
         show: false,
-        fillOpacity: 1,
-        strokeOpacity: 1,
         strokeWidth: 1,
     };
 
@@ -59,7 +56,7 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const { stroke, strokeWidth, strokeOpacity, hovering, textBox } = this.props;
+        const { strokeStyle, strokeWidth, hovering, textBox } = this.props;
 
         const [x, y] = this.helper(this.props, moreProps, ctx);
 
@@ -67,7 +64,7 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
         ctx.beginPath();
 
         ctx.lineWidth = hovering ? strokeWidth + 1 : strokeWidth;
-        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
+        ctx.strokeStyle = strokeStyle;
         const halfWidth = textBox.closeIcon.width / 2;
         ctx.moveTo(x - halfWidth, y - halfWidth);
         ctx.lineTo(x + halfWidth, y + halfWidth);

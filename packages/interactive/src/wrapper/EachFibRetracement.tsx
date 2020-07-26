@@ -19,9 +19,8 @@ interface EachFibRetracementProps {
     readonly type: string;
     readonly selected: boolean;
     readonly appearance: {
-        stroke: string;
+        strokeStyle: string;
         strokeWidth: number;
-        strokeOpacity: number;
         fontFamily: string;
         fontSize: number;
         fontFill: string;
@@ -58,9 +57,8 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
         yDisplayFormat: (d) => d.toFixed(2),
         interactive: true,
         appearance: {
-            stroke: "#000000",
+            strokeStyle: "#000000",
             strokeWidth: 1,
-            strokeOpacity: 1,
             fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
             fontSize: 10,
             fontFill: "#000000",
@@ -97,7 +95,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
     public render() {
         const { x1, x2, y1, y2 } = this.props;
         const { interactive, yDisplayFormat, type, appearance } = this.props;
-        const { stroke, strokeWidth, strokeOpacity } = appearance;
+        const { strokeStyle, strokeWidth } = appearance;
         const { fontFamily, fontSize, fontFill } = appearance;
         const { edgeStroke, edgeFill, nsEdgeFill, edgeStrokeWidth, r } = appearance;
         const { hoverText, selected } = this.props;
@@ -177,9 +175,8 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
                                 y1Value={line.y}
                                 x2Value={line.x2}
                                 y2Value={line.y}
-                                stroke={stroke}
+                                strokeStyle={strokeStyle}
                                 strokeWidth={hover || selected ? strokeWidth + 1 : strokeWidth}
-                                strokeOpacity={strokeOpacity}
                                 interactiveCursorClass={interactiveCursorClass}
                                 onDragStart={this.handleLineDragStart}
                                 onDrag={dragHandler}
@@ -190,7 +187,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
                                 xyProvider={xyProvider}
                                 fontFamily={fontFamily}
                                 fontSize={fontSize}
-                                fill={fontFill}
+                                fillStyle={fontFill}
                             >
                                 {text}
                             </Text>
@@ -200,8 +197,8 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
                                 cx={line.x1}
                                 cy={line.y}
                                 r={r}
-                                fill={firstOrLast ? nsEdgeFill : edgeFill}
-                                stroke={edgeStroke}
+                                fillStyle={firstOrLast ? nsEdgeFill : edgeFill}
+                                strokeStyle={edgeStroke}
                                 strokeWidth={edgeStrokeWidth}
                                 interactiveCursorClass={interactiveEdgeCursorClass}
                                 onDrag={edge1DragHandler}
@@ -213,8 +210,8 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
                                 cx={line.x2}
                                 cy={line.y}
                                 r={r}
-                                fill={firstOrLast ? nsEdgeFill : edgeFill}
-                                stroke={edgeStroke}
+                                fillStyle={firstOrLast ? nsEdgeFill : edgeFill}
+                                strokeStyle={edgeStroke}
                                 strokeWidth={edgeStrokeWidth}
                                 interactiveCursorClass={interactiveEdgeCursorClass}
                                 onDrag={edge2DragHandler}

@@ -1,33 +1,36 @@
+import { GenericComponent, functor } from "@react-financial-charts/core";
+import { ScaleContinuousNumeric } from "d3-scale";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { GenericComponent, functor } from "@react-financial-charts/core";
 
 interface LabelProps {
     readonly className?: string;
+    readonly datum?: any;
     readonly fillStyle?:
         | string
         | CanvasGradient
         | CanvasPattern
-        | ((datum: unknown) => string | CanvasGradient | CanvasPattern);
+        | ((datum: any) => string | CanvasGradient | CanvasPattern);
     readonly fontFamily?: string;
     readonly fontSize?: number;
+    readonly fontWeight?: string;
     readonly rotate?: number;
-    readonly selectCanvas?: (canvases: unknown) => unknown;
-    readonly text?: string | ((datum: unknown) => string);
+    readonly selectCanvas?: (canvases: any) => any;
+    readonly text?: string | ((datum: any) => string);
     readonly textAlign?: CanvasTextAlign;
-    readonly x?: number | any; // func
-    readonly xAccessor?: any; // func
-    readonly xScale?: any; // func
-    readonly y?: number | any; // func
-    readonly yScale?: any; // func
-    readonly datum?: unknown;
+    readonly x: number | any; // func
+    readonly xAccessor?: (datym: any) => any;
+    readonly xScale?: ScaleContinuousNumeric<number, number>;
+    readonly y: number | any; // func
+    readonly yScale?: ScaleContinuousNumeric<number, number>;
 }
 
 export class Label extends React.Component<LabelProps> {
     public static defaultProps = {
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
-        fontSize: 12,
-        fillStyle: "#000000",
+        fontSize: 64,
+        fontWeight: "bold",
+        fillStyle: "#dcdcdc",
         rotate: 0,
         x: ({ xScale, xAccessor, datum }) => xScale(xAccessor(datum)),
         selectCanvas: (canvases) => canvases.bg,
@@ -49,7 +52,7 @@ export class Label extends React.Component<LabelProps> {
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         ctx.save();
 
-        const { textAlign = "center", fontFamily, fontSize, rotate } = this.props;
+        const { textAlign = "center", fontFamily, fontSize, fontWeight, rotate } = this.props;
 
         const { canvasOriginX, canvasOriginY, margin, ratio } = this.context;
 
@@ -77,7 +80,7 @@ export class Label extends React.Component<LabelProps> {
         }
 
         if (fontFamily !== undefined) {
-            ctx.font = `${fontSize}px ${fontFamily}`;
+            ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
         }
         if (fillStyle !== undefined) {
             ctx.fillStyle = fillStyle;
@@ -91,7 +94,12 @@ export class Label extends React.Component<LabelProps> {
         ctx.restore();
     };
 
-    private readonly helper = (moreProps, xAccessor, xScale, yScale) => {
+    private readonly helper = (
+        moreProps,
+        xAccessor,
+        xScale: ScaleContinuousNumeric<number, number>,
+        yScale: ScaleContinuousNumeric<number, number>,
+    ) => {
         const { x, y, datum, fillStyle, text } = this.props;
 
         const { plotData } = moreProps;

@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import {
-    colorToRGBA,
     getStrokeDasharrayCanvas,
     getMouseCanvas,
     GenericChartComponent,
@@ -16,30 +15,29 @@ interface StraightLineProps {
     readonly y1Value: any;
     readonly y2Value: any;
     readonly interactiveCursorClass?: string;
-    readonly stroke: string;
-    readonly strokeWidth: number;
-    readonly strokeOpacity: number;
-    readonly strokeDasharray: strokeDashTypes;
+    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
+    readonly strokeWidth?: number;
+    readonly strokeDasharray?: strokeDashTypes;
     readonly type:
         | "XLINE" // extends from -Infinity to +Infinity
         | "RAY" // extends to +/-Infinity in one direction
         | "LINE"; // extends between the set bounds
-    readonly onEdge1Drag: any; // func
-    readonly onEdge2Drag: any; // func
-    readonly onDragStart: any; // func
-    readonly onDrag: any; // func
-    readonly onDragComplete: any; // func
+    readonly onEdge1Drag?: any; // func
+    readonly onEdge2Drag?: any; // func
+    readonly onDragStart?: any; // func
+    readonly onDrag?: any; // func
+    readonly onDragComplete?: any; // func
     readonly onHover?: any; // func
     readonly onUnHover?: any; // func
     readonly defaultClassName?: string;
-    readonly r: number;
-    readonly edgeFill: string;
-    readonly edgeStroke: string;
-    readonly edgeStrokeWidth: number;
-    readonly withEdge: boolean;
-    readonly children: any; // func
-    readonly tolerance: number;
-    readonly selected: boolean;
+    readonly r?: number;
+    readonly edgeFill?: string;
+    readonly edgeStroke?: string;
+    readonly edgeStrokeWidth?: number;
+    readonly withEdge?: boolean;
+    readonly children?: any; // func
+    readonly tolerance?: number;
+    readonly selected?: boolean;
 }
 
 class StraightLine extends React.Component<StraightLineProps> {
@@ -110,11 +108,11 @@ class StraightLine extends React.Component<StraightLineProps> {
     };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const { stroke, strokeWidth, strokeOpacity, strokeDasharray } = this.props;
+        const { strokeWidth = StraightLine.defaultProps.strokeWidth, strokeDasharray, strokeStyle } = this.props;
         const { x1, y1, x2, y2 } = helper(this.props, moreProps);
 
         ctx.lineWidth = strokeWidth;
-        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
+        ctx.strokeStyle = strokeStyle;
 
         const lineDash = getStrokeDasharrayCanvas(strokeDasharray);
 

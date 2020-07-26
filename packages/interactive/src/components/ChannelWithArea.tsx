@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-    colorToRGBA,
-    isDefined,
-    isNotDefined,
-    getMouseCanvas,
-    GenericChartComponent,
-    noop,
-} from "@react-financial-charts/core";
+import { isDefined, isNotDefined, getMouseCanvas, GenericChartComponent, noop } from "@react-financial-charts/core";
 import { generateLine, isHovering } from "./StraightLine";
 
 interface ChannelWithAreaProps {
@@ -14,11 +7,9 @@ interface ChannelWithAreaProps {
     readonly endXY?: number[];
     readonly dy?: number;
     readonly interactiveCursorClass?: string;
-    readonly stroke: string;
+    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
     readonly strokeWidth: number;
-    readonly fill: string;
-    readonly fillOpacity: number;
-    readonly strokeOpacity: number;
+    readonly fillStyle: string | CanvasGradient | CanvasPattern;
     readonly type:
         | "XLINE" // extends from -Infinity to +Infinity
         | "RAY" // extends to +/-Infinity in one direction
@@ -66,14 +57,14 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;
+        const { strokeStyle, strokeWidth, fillStyle } = this.props;
         const { line1, line2 } = helper(this.props, moreProps);
 
         if (line1 !== undefined) {
             const { x1, y1, x2, y2 } = line1;
 
             ctx.lineWidth = strokeWidth;
-            ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
+            ctx.strokeStyle = strokeStyle;
 
             ctx.beginPath();
             ctx.moveTo(x1, y1);
@@ -88,7 +79,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
                 ctx.lineTo(x2, line2Y2);
                 ctx.stroke();
 
-                ctx.fillStyle = colorToRGBA(fill, fillOpacity);
+                ctx.fillStyle = fillStyle;
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);
 

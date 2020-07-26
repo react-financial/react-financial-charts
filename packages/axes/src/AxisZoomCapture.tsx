@@ -2,7 +2,6 @@ import {
     d3Window,
     first,
     getTouchProps,
-    isDefined,
     last,
     MOUSEMOVE,
     mousePosition,
@@ -13,11 +12,12 @@ import {
     touchPosition,
 } from "@react-financial-charts/core";
 import { mean } from "d3-array";
+import { ScaleContinuousNumeric } from "d3-scale";
 import { event as d3Event, mouse, select, touches } from "d3-selection";
 import * as React from "react";
 
 interface AxisZoomCaptureProps {
-    readonly axisZoomCallback?: any; // func
+    readonly axisZoomCallback?: (domain: any) => void;
     readonly bg: {
         h: number;
         x: number;
@@ -25,8 +25,8 @@ interface AxisZoomCaptureProps {
         y: number;
     };
     readonly className?: string;
-    readonly getMoreProps: any; // func
-    readonly getScale: any; // func
+    readonly getMoreProps: () => any;
+    readonly getScale: (moreProps: any) => ScaleContinuousNumeric<number, number>;
     readonly getMouseDelta: (startXY: [number, number], mouseXY: [number, number]) => number;
     readonly innerTickSize?: number;
     readonly inverted?: boolean;
@@ -44,7 +44,7 @@ interface AxisZoomCaptureProps {
 }
 
 interface AxisZoomCaptureState {
-    startPosition: { startScale: any; startXY: [number, number] } | null;
+    startPosition: { startScale: ScaleContinuousNumeric<number, number>; startXY: [number, number] } | null;
 }
 
 export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZoomCaptureState> {
@@ -64,9 +64,8 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
     public render() {
         const { bg, className, zoomCursorClassName } = this.props;
 
-        const cursor = isDefined(this.state.startPosition)
-            ? zoomCursorClassName
-            : "react-financial-charts-default-cursor";
+        const cursor =
+            this.state.startPosition !== null ? zoomCursorClassName : "react-financial-charts-default-cursor";
 
         return (
             <rect
@@ -146,7 +145,9 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
                 sign(last(startScale.range()) - first(startScale.range())) === sign(last(tempRange) - first(tempRange))
             ) {
                 const { axisZoomCallback } = this.props;
-                axisZoomCallback(newDomain);
+                if (axisZoomCallback !== undefined) {
+                    axisZoomCallback(newDomain);
+                }
             }
         }
     };
@@ -161,9 +162,10 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         this.dragHappened = false;
 
         const { getScale, getMoreProps } = this.props;
-        const startScale = getScale(getMoreProps());
+        const allProps = getMoreProps();
+        const startScale = getScale(allProps);
 
-        if (event.touches.length === 1 && startScale.invert) {
+        if (event.touches.length === 1 && startScale.invert !== undefined) {
             select(d3Window(container)).on(TOUCHMOVE, this.handleDrag).on(TOUCHEND, this.handleDragEnd);
 
             const startXY = touchPosition(getTouchProps(event.touches[0]), event);
@@ -192,7 +194,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         const allProps = getMoreProps();
         const startScale = getScale(allProps);
 
-        if (startScale.invert) {
+        if (startScale.invert !== undefined) {
             select(d3Window(container)).on(MOUSEMOVE, this.handleDrag, false).on(MOUSEUP, this.handleDragEnd, false);
 
             const startXY = mousePosition(event);

@@ -3,9 +3,9 @@ import * as React from "react";
 
 interface CurrentCoordinateProps {
     readonly className?: string;
-    readonly fill?: string | ((dataItem: unknown) => string);
+    readonly fill?: string | ((dataItem: any) => string);
     readonly r: number;
-    readonly yAccessor: (item: unknown) => number;
+    readonly yAccessor: (item: any) => number;
 }
 
 export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {

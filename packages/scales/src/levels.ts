@@ -7,7 +7,7 @@ export const defaultFormatters = {
     hourFormat: "%H:%M",
     minuteFormat: "%H:%M",
     secondFormat: "%H:%M:%S",
-    milliSecondFormat: "%L",
+    milliSecondFormat: "%H:%M:%S.%L",
 };
 
 export const levelDefinition = [

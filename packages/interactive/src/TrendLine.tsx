@@ -29,8 +29,7 @@ interface TrendLineProps {
     readonly hoverText: object;
     readonly trends: any[];
     readonly appearance: {
-        stroke: string;
-        strokeOpacity: number;
+        strokeStyle: string;
         strokeWidth: number;
         strokeDasharray: strokeDashTypes;
         edgeStrokeWidth: number;
@@ -66,8 +65,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
         },
         trends: [],
         appearance: {
-            stroke: "#000000",
-            strokeOpacity: 1,
+            strokeStyle: "#000000",
             strokeWidth: 1,
             strokeDasharray: "Solid",
             edgeStrokeWidth: 1,
@@ -121,9 +119,8 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                     y1Value={current.start[1]}
                     x2Value={current.end[0]}
                     y2Value={current.end[1]}
-                    stroke={appearance.stroke}
+                    strokeStyle={appearance.strokeStyle}
                     strokeWidth={appearance.strokeWidth}
-                    strokeOpacity={appearance.strokeOpacity}
                 />
             ) : null;
 
@@ -150,7 +147,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                             y1Value={getValueFromOverride(override, idx, "y1Value", each.start[1])}
                             x2Value={getValueFromOverride(override, idx, "x2Value", each.end[0])}
                             y2Value={getValueFromOverride(override, idx, "y2Value", each.end[1])}
-                            stroke={eachAppearance.stroke}
+                            strokeStyle={eachAppearance.strokeStyle}
                             strokeWidth={eachAppearance.strokeWidth}
                             strokeOpacity={eachAppearance.strokeOpacity}
                             strokeDasharray={eachAppearance.strokeDasharray}

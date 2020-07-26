@@ -8,11 +8,11 @@ interface SquareProps {
     readonly point: {
         x: number;
         y: number;
-        datum: unknown;
+        datum: any;
     };
     readonly strokeStyle?: string;
     readonly strokeWidth?: number;
-    readonly width: number | ((datum: unknown) => number);
+    readonly width: number | ((datum: any) => number);
 }
 
 export class Square extends React.Component<SquareProps> {

@@ -6,7 +6,7 @@ import { levelDefinition } from "./levels";
 
 const MAX_LEVEL = levelDefinition.length - 1;
 
-export default function financeDiscontinuousScale(index, futureProvider, backingLinearScale = scaleLinear()) {
+export default function financeDiscontinuousScale(index, backingLinearScale = scaleLinear()) {
     if (isNotDefined(index)) {
         throw new Error("Use the discontinuousTimeScaleProvider to create financeDiscontinuousScale");
     }
@@ -137,7 +137,7 @@ export default function financeDiscontinuousScale(index, futureProvider, backing
         return scale;
     };
     scale.copy = function () {
-        return financeDiscontinuousScale(index, futureProvider, backingLinearScale.copy());
+        return financeDiscontinuousScale(index, backingLinearScale.copy());
     };
     return scale;
 }

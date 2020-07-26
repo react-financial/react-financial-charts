@@ -1,3 +1,4 @@
+import { ScaleContinuousNumeric } from "d3-scale";
 import { event as d3Event, mouse, select, touches } from "d3-selection";
 import * as React from "react";
 
@@ -28,7 +29,7 @@ interface EventCaptureProps {
     readonly height: number;
     readonly chartConfig: { origin: number[]; height: number }[];
     readonly xAccessor: any; // func
-    readonly xScale: any; // func
+    readonly xScale: ScaleContinuousNumeric<number, number>;
     readonly disableInteraction: boolean;
     readonly getAllPanConditions: () => { panEnabled: boolean; draggable: boolean }[];
     readonly onMouseMove?: (touchXY: number[], eventType: string, event: React.TouchEvent) => void;

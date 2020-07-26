@@ -1,8 +1,6 @@
 import * as React from "react";
 import {
-    colorToRGBA,
     getStrokeDasharrayCanvas,
-    isDefined,
     getMouseCanvas,
     GenericChartComponent,
     noop,
@@ -14,10 +12,8 @@ interface BrushProps {
     readonly onStart: any; // func
     readonly onBrush: any; // func
     readonly type?: "1D" | "2D";
-    readonly stroke?: string;
-    readonly fill?: string;
-    readonly strokeOpacity?: number;
-    readonly fillOpacity?: number;
+    readonly strokeStyle?: string;
+    readonly fillStyle?: string;
     readonly interactiveState: object;
     readonly strokeDashArray?: strokeDashTypes;
 }
@@ -33,10 +29,8 @@ interface BrushState {
 export class Brush extends React.Component<BrushProps, BrushState> {
     public static defaultProps = {
         type: "2D",
-        stroke: "#000000",
-        fillOpacity: 0.3,
-        strokeOpacity: 1,
-        fill: "#3h3h3h",
+        strokeStyle: "#000000",
+        fillStyle: "#3h3h3h",
         onBrush: noop,
         onStart: noop,
         strokeDashArray: "ShortDash",
@@ -82,17 +76,20 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D) => {
         const { rect } = this.state;
-        if (isDefined(rect)) {
+        if (rect !== null) {
             const { x, y, height, width } = rect;
-            const { stroke = Brush.defaultProps.stroke, fill = Brush.defaultProps.fill, strokeDashArray } = this.props;
-            const { strokeOpacity, fillOpacity } = this.props;
+            const {
+                strokeStyle = Brush.defaultProps.strokeStyle,
+                fillStyle = Brush.defaultProps.fillStyle,
+                strokeDashArray,
+            } = this.props;
 
             const dashArray = getStrokeDasharrayCanvas(strokeDashArray);
 
-            ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
-            ctx.fillStyle = colorToRGBA(fill, fillOpacity);
+            ctx.strokeStyle = strokeStyle;
+            ctx.fillStyle = fillStyle;
             ctx.setLineDash(dashArray);
             ctx.beginPath();
             ctx.fillRect(x, y, width, height);

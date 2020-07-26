@@ -5,7 +5,7 @@ interface TextProps {
     readonly children: string;
     readonly fontFamily: string;
     readonly fontSize: number;
-    readonly fill: string;
+    readonly fillStyle: string | CanvasGradient | CanvasPattern;
     readonly selected?: boolean;
     readonly xyProvider: (moreProps: any) => number[];
 }
@@ -34,11 +34,12 @@ export class Text extends React.Component<TextProps> {
     };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const { xyProvider, fontFamily, fontSize, fill, children } = this.props;
+        const { xyProvider, fontFamily, fontSize, fillStyle, children } = this.props;
+
         const [x, y] = xyProvider(moreProps);
 
         ctx.font = `${fontSize}px ${fontFamily}`;
-        ctx.fillStyle = fill;
+        ctx.fillStyle = fillStyle;
 
         ctx.beginPath();
         ctx.fillText(children, x, y);

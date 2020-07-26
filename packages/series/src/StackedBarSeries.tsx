@@ -23,7 +23,7 @@ interface StackedBarSeriesProps {
     readonly spaceBetweenBar?: number;
     readonly stroke?: boolean;
     readonly swapScales?: boolean;
-    readonly yAccessor: ((d: unknown) => number)[];
+    readonly yAccessor: ((d: any) => number)[];
     readonly width?: number | any; // func
     readonly widthRatio?: number;
 }

@@ -27,8 +27,6 @@ interface EachEquidistantChannelProps {
     };
     readonly appearance: {
         stroke: string;
-        fillOpacity: number;
-        strokeOpacity: number;
         strokeWidth: number;
         fill: string;
         edgeStroke: string;
@@ -77,7 +75,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
     public render() {
         const { startXY, endXY, dy } = this.props;
         const { interactive, hoverText, appearance } = this.props;
-        const { edgeFill, edgeFill2, stroke, strokeWidth, strokeOpacity, fill, fillOpacity } = appearance;
+        const { edgeFill, edgeFill2, stroke, strokeWidth, fill } = appearance;
         const { selected } = this.props;
         const { onDragComplete } = this.props;
         const { hover } = this.state;
@@ -133,11 +131,9 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
                     startXY={startXY}
                     endXY={endXY}
                     dy={dy}
-                    stroke={stroke}
+                    strokeStyle={stroke}
                     strokeWidth={hover || selected ? strokeWidth + 1 : strokeWidth}
-                    strokeOpacity={strokeOpacity}
-                    fill={fill}
-                    fillOpacity={fillOpacity}
+                    fillStyle={fill}
                     interactiveCursorClass="react-financial-charts-move-cursor"
                     onDragStart={this.handleDragStart}
                     onDrag={this.handleChannelDrag}
@@ -164,8 +160,8 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
                 cx={xy[0]}
                 cy={xy[1]}
                 r={r}
-                fill={fill}
-                stroke={edgeStroke}
+                fillStyle={fill}
+                strokeStyle={edgeStroke}
                 strokeWidth={edgeStrokeWidth}
                 interactiveCursorClass={cursor}
                 onDragStart={this.handleDragStart}

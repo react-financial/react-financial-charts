@@ -29,7 +29,7 @@ interface EachTrendLineProps {
     strokeOpacity: number;
     defaultClassName?: string;
     selected?: boolean;
-    stroke: string;
+    strokeStyle: string;
     strokeWidth: number;
     strokeDasharray: strokeDashTypes;
     edgeStrokeWidth: number;
@@ -70,7 +70,6 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         edgeStrokeWidth: 2,
         r: 5,
         strokeWidth: 1,
-        strokeOpacity: 1,
         strokeDasharray: "Solid",
         hoverText: {
             enable: false,
@@ -100,9 +99,8 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
             x2Value,
             y2Value,
             type,
-            stroke,
+            strokeStyle,
             strokeWidth,
-            strokeOpacity,
             strokeDasharray,
             r,
             edgeStrokeWidth,
@@ -112,7 +110,6 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
             lineInteractiveCursor,
             hoverText,
             selected,
-
             onDragComplete,
         } = this.props;
 
@@ -137,9 +134,8 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
                     x2Value={x2Value}
                     y2Value={y2Value}
                     type={type}
-                    stroke={stroke}
+                    strokeStyle={strokeStyle}
                     strokeWidth={hover || selected ? strokeWidth + 1 : strokeWidth}
-                    strokeOpacity={strokeOpacity}
                     strokeDasharray={strokeDasharray}
                     interactiveCursorClass={lineInteractiveCursor}
                     onDragStart={this.handleLineDragStart}
@@ -152,10 +148,9 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
                     cx={x1Value}
                     cy={y1Value}
                     r={r}
-                    fill={edgeFill}
-                    stroke={anchor === "edge1" ? stroke : edgeStroke}
+                    fillStyle={edgeFill}
+                    strokeStyle={anchor === "edge1" ? strokeStyle : edgeStroke}
                     strokeWidth={edgeStrokeWidth}
-                    strokeOpacity={1}
                     interactiveCursorClass={edgeInteractiveCursor}
                     onDragStart={this.handleEdge1DragStart}
                     onDrag={this.handleEdge1Drag}
@@ -167,10 +162,9 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
                     cx={x2Value}
                     cy={y2Value}
                     r={r}
-                    fill={edgeFill}
-                    stroke={anchor === "edge2" ? stroke : edgeStroke}
+                    fillStyle={edgeFill}
+                    strokeStyle={anchor === "edge2" ? strokeStyle : edgeStroke}
                     strokeWidth={edgeStrokeWidth}
-                    strokeOpacity={1}
                     interactiveCursorClass={edgeInteractiveCursor}
                     onDragStart={this.handleEdge2DragStart}
                     onDrag={this.handleEdge2Drag}

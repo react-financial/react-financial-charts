@@ -1,4 +1,4 @@
-import { scaleLinear } from "d3-scale";
+import { scaleLinear, ScaleContinuousNumeric } from "d3-scale";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
@@ -8,15 +8,15 @@ interface ChartProps {
     readonly flipYScale?: boolean;
     readonly height?: number;
     readonly id: number | string;
-    readonly onContextMenu?: (event: React.MouseEvent, props: unknown) => void;
-    readonly onDoubleClick?: (event: React.MouseEvent, props: unknown) => void;
+    readonly onContextMenu?: (event: React.MouseEvent, props: any) => void;
+    readonly onDoubleClick?: (event: React.MouseEvent, props: any) => void;
     readonly origin?: number[] | ((width: number, height: number) => number[]);
     readonly padding?: number | { top: number; bottom: number };
     readonly yExtents?: number[] | ((data: any) => number) | ((data: any) => number[]);
     readonly yExtentsCalculator?: any; // func
     readonly yPan?: boolean;
     readonly yPanEnabled?: boolean;
-    readonly yScale?: any; // func
+    readonly yScale?: ScaleContinuousNumeric<number, number>;
 }
 
 export class Chart extends PureComponent<ChartProps> {

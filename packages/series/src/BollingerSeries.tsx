@@ -38,9 +38,9 @@ export class BollingerSeries extends React.Component<BollingerSeriesProps> {
 
         return (
             <g className={className}>
-                <LineSeries yAccessor={this.yAccessorForTop} strokeStyle={strokeStyle.top} fill="none" />
-                <LineSeries yAccessor={this.yAccessorForMiddle} strokeStyle={strokeStyle.middle} fill="none" />
-                <LineSeries yAccessor={this.yAccessorForBottom} strokeStyle={strokeStyle.bottom} fill="none" />
+                <LineSeries yAccessor={this.yAccessorForTop} strokeStyle={strokeStyle.top} />
+                <LineSeries yAccessor={this.yAccessorForMiddle} strokeStyle={strokeStyle.middle} />
+                <LineSeries yAccessor={this.yAccessorForBottom} strokeStyle={strokeStyle.bottom} />
                 <AreaOnlySeries
                     className={areaClassName}
                     yAccessor={this.yAccessorForTop}

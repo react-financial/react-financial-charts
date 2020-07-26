@@ -142,8 +142,7 @@ export class EachInteractiveYCoordinate extends React.Component<
                     fontWeight={fontWeight}
                     fontSize={fontSize}
                     textBox={textBox}
-                    stroke={stroke}
-                    strokeOpacity={strokeOpacity}
+                    strokeStyle={stroke}
                     onHover={this.handleCloseIconHover}
                     onUnHover={this.handleCloseIconHover}
                     onClick={this.handleDelete}

@@ -42,6 +42,7 @@
     "react-dom": "^16.0.0"
   },
   "dependencies": {
+    "@types/d3-scale": "2.0.0",
     "@react-financial-charts/core": "file:../core",
     "prop-types": "^15.7.2"
   }

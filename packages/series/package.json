@@ -38,6 +38,7 @@
     "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
   },
   "dependencies": {
+    "@types/d3-scale": "2.0.0",
     "@react-financial-charts/core": "file:../core",
     "d3-array": "2.4.0",
     "d3-scale": "3.2.1",

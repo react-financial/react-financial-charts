@@ -24,8 +24,7 @@ interface XAxisProps {
     readonly showGridLines?: boolean;
     readonly showTicks?: boolean;
     readonly showTickLabel?: boolean;
-    readonly stroke?: string;
-    readonly strokeOpacity?: number;
+    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly strokeWidth?: number;
     readonly tickFormat?: (data: any) => string;
     readonly tickPadding?: number;
@@ -54,7 +53,6 @@ export class XAxis extends React.Component<XAxisProps> {
         getMouseDelta: (startXY: [number, number], mouseXY: [number, number]) => startXY[0] - mouseXY[0],
         gridLinesStroke: "#E2E4EC",
         gridLinesStrokeWidth: 1,
-        opacity: 1,
         orient: "bottom",
         outerTickSize: 0,
         innerTickSize: 4,
@@ -62,9 +60,8 @@ export class XAxis extends React.Component<XAxisProps> {
         showGridLines: false,
         showTicks: true,
         showTickLabel: true,
-        stroke: "#000000",
+        strokeStyle: "#000000",
         strokeWidth: 1,
-        strokeOpacity: 1,
         tickPadding: 4,
         tickLabelFill: "#000000",
         tickStroke: "#000000",
@@ -84,13 +81,13 @@ export class XAxis extends React.Component<XAxisProps> {
             getMouseDelta = XAxis.defaultProps.getMouseDelta,
             outerTickSize = XAxis.defaultProps.outerTickSize,
             showTicks,
-            stroke = XAxis.defaultProps.stroke,
+            strokeStyle = XAxis.defaultProps.strokeStyle,
             strokeWidth = XAxis.defaultProps.strokeWidth,
             zoomEnabled,
             ...rest
         } = this.props;
 
-        const { ...moreProps } = this.helper(this.props, this.context);
+        const { ...moreProps } = this.helper();
 
         return (
             <Axis
@@ -99,7 +96,7 @@ export class XAxis extends React.Component<XAxisProps> {
                 getMouseDelta={getMouseDelta}
                 outerTickSize={outerTickSize}
                 showTicks={showTicks}
-                stroke={stroke}
+                strokeStyle={strokeStyle}
                 strokeWidth={strokeWidth}
                 zoomEnabled={zoomEnabled && showTicks}
                 axisZoomCallback={this.axisZoomCallback}
@@ -113,11 +110,11 @@ export class XAxis extends React.Component<XAxisProps> {
         xAxisZoom(newXDomain);
     };
 
-    private readonly helper = (props: XAxisProps, context) => {
-        const { axisAt, xZoomHeight = XAxis.defaultProps.xZoomHeight, orient, ticks } = props;
+    private readonly helper = () => {
+        const { axisAt, xZoomHeight = XAxis.defaultProps.xZoomHeight, orient, ticks } = this.props;
         const {
             chartConfig: { width, height },
-        } = context;
+        } = this.context;
 
         let axisLocation;
         const x = 0;

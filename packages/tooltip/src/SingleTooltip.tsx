@@ -8,7 +8,7 @@ interface SingleTooltipProps {
     readonly origin: [number, number];
     readonly yLabel: string;
     readonly yValue: string;
-    readonly onClick?: (event: React.MouseEvent, details: unknown) => void;
+    readonly onClick?: (event: React.MouseEvent, details: any) => void;
     readonly fontFamily?: string;
     readonly labelFill: string;
     readonly valueFill: string;

@@ -24,8 +24,7 @@ interface YAxisProps {
     readonly showGridLines?: boolean;
     readonly showTicks?: boolean;
     readonly showTickLabel?: boolean;
-    readonly stroke?: string;
-    readonly strokeOpacity?: number;
+    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly strokeWidth?: number;
     readonly tickFormat?: (data: any) => string;
     readonly tickPadding?: number;
@@ -56,15 +55,13 @@ export class YAxis extends React.Component<YAxisProps> {
         gridLinesStrokeWidth: 1,
         innerTickSize: 4,
         outerTickSize: 0,
-        opacity: 1,
         orient: "right",
         showDomain: true,
         showGridLines: false,
         showTicks: true,
         showTickLabel: true,
-        stroke: "#000000",
+        strokeStyle: "#000000",
         strokeWidth: 1,
-        strokeOpacity: 1,
         tickPadding: 4,
         tickLabelFill: "#000000",
         tickStroke: "#000000",
@@ -84,12 +81,12 @@ export class YAxis extends React.Component<YAxisProps> {
         const {
             getMouseDelta = YAxis.defaultProps.getMouseDelta,
             outerTickSize = YAxis.defaultProps.outerTickSize,
-            stroke = YAxis.defaultProps.stroke,
+            strokeStyle = YAxis.defaultProps.strokeStyle,
             strokeWidth = YAxis.defaultProps.strokeWidth,
             ...rest
         } = this.props;
 
-        const { zoomEnabled, ...moreProps } = this.helper(this.props, this.context);
+        const { zoomEnabled, ...moreProps } = this.helper();
 
         return (
             <Axis
@@ -98,7 +95,7 @@ export class YAxis extends React.Component<YAxisProps> {
                 edgeClip
                 getMouseDelta={getMouseDelta}
                 outerTickSize={outerTickSize}
-                stroke={stroke}
+                strokeStyle={strokeStyle}
                 strokeWidth={strokeWidth}
                 zoomEnabled={this.props.zoomEnabled && zoomEnabled}
                 axisZoomCallback={this.axisZoomCallback}
@@ -111,11 +108,11 @@ export class YAxis extends React.Component<YAxisProps> {
         yAxisZoom(chartId, newYDomain);
     };
 
-    private readonly helper = (props: YAxisProps, context) => {
-        const { axisAt, ticks, yZoomWidth = YAxis.defaultProps.yZoomWidth, orient } = props;
+    private readonly helper = () => {
+        const { axisAt, ticks, yZoomWidth = YAxis.defaultProps.yZoomWidth, orient } = this.props;
         const {
             chartConfig: { width, height },
-        } = context;
+        } = this.context;
 
         let axisLocation;
         const y = 0;
@@ -144,7 +141,7 @@ export class YAxis extends React.Component<YAxisProps> {
             getScale: this.getYScale,
             bg: { x, y, h, w },
             ticks: ticks ?? this.getYTicks(height),
-            zoomEnabled: context.chartConfig.yPan,
+            zoomEnabled: this.context.chartConfig.yPan,
         };
     };
 

@@ -1,23 +1,31 @@
-import * as React from "react";
 import { functor } from "@react-financial-charts/core";
+import { ScaleContinuousNumeric } from "d3-scale";
+import * as React from "react";
 
 interface LabelAnnotationProps {
     readonly className?: string;
-    readonly datum?: unknown;
-    readonly fill?: string | ((datum: unknown) => string);
+    readonly datum?: any;
+    readonly fill?: string | ((datum: any) => string);
     readonly fontFamily?: string;
     readonly fontSize?: number;
-    readonly onClick?: (e: React.MouseEvent, data: { xScale: any; yScale: any; datum: unknown }) => void;
+    readonly onClick?: (
+        e: React.MouseEvent,
+        data: {
+            xScale?: ScaleContinuousNumeric<number, number>;
+            yScale?: ScaleContinuousNumeric<number, number>;
+            datum: any;
+        },
+    ) => void;
     readonly opacity?: number;
-    readonly plotData: unknown[];
+    readonly plotData: any[];
     readonly rotate?: number;
-    readonly text?: string | ((datum: unknown) => string);
+    readonly text?: string | ((datum: any) => string);
     readonly textAnchor?: string;
-    readonly tooltip?: string | ((datum: unknown) => string);
+    readonly tooltip?: string | ((datum: any) => string);
     readonly xAccessor?: any; // func
-    readonly xScale?: any; // func
+    readonly xScale?: ScaleContinuousNumeric<number, number>;
     readonly x?: number | any; // func
-    readonly yScale?: any; // func
+    readonly yScale?: ScaleContinuousNumeric<number, number>;
     readonly y?: number | any; // func
 }
 

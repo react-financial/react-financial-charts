@@ -5,8 +5,8 @@ import { drawOnCanvas } from "./EdgeCoordinateV3";
 
 interface MouseCoordinateXProps {
     readonly at?: "bottom" | "top";
-    readonly customX: any; // func
-    readonly displayFormat: any; // func
+    readonly customX: (props: MouseCoordinateXProps, moreProps: any) => { x: number; coordinate: string };
+    readonly displayFormat: (item: any) => string;
     readonly fill?: string;
     readonly fitToText?: boolean;
     readonly fontFamily?: string;
@@ -75,8 +75,9 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
     };
 
     private readonly helper = (props: MouseCoordinateXProps, moreProps) => {
-        const { show, currentItem } = moreProps;
         const {
+            show,
+            currentItem,
             chartConfig: { height },
         } = moreProps;
 
@@ -84,9 +85,7 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
             return null;
         }
 
-        const { customX, orient, at } = props;
-        const { stroke, strokeOpacity, strokeWidth } = props;
-        const { rectRadius, rectWidth, rectHeight } = props;
+        const { customX, orient, at, rectRadius, rectWidth, rectHeight, stroke, strokeOpacity, strokeWidth } = props;
         const { fill, opacity, fitToText, fontFamily, fontSize, textFill } = props;
 
         const edgeAt = at === "bottom" ? height : 0;
@@ -123,6 +122,7 @@ export class MouseCoordinateX extends React.Component<MouseCoordinateXProps> {
             y1,
             y2,
         };
+
         return coordinateProps;
     };
 }

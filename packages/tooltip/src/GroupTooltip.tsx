@@ -11,7 +11,6 @@ interface GroupTooltipProps {
     readonly displayFormat: (value: number) => string;
     readonly displayInit?: string;
     readonly displayValuesFor: (props: GroupTooltipProps, moreProps: any) => any;
-    readonly labelFill?: string;
     readonly layout: layouts;
     readonly onClick?: (event: React.MouseEvent, details: any) => void;
     readonly options: {
@@ -22,11 +21,9 @@ interface GroupTooltipProps {
         withShape?: boolean;
     }[];
     readonly origin: [number, number];
-    readonly position: "topRight" | "bottomLeft" | "bottomRight";
-    readonly valueFill?: string;
+    readonly position?: "topRight" | "bottomLeft" | "bottomRight";
     readonly verticalSize?: number; // "verticalSize" only be used, if layout is "vertical", "verticalRows".
     readonly width?: number; // "width" only be used, if layout is "horizontal" or "horizontalRows".
-    readonly withShape: boolean; // "withShape" is ignored, if layout is "horizontalInline" or "vertical".
 }
 
 export class GroupTooltip extends React.Component<GroupTooltipProps> {
@@ -34,7 +31,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         className: "react-financial-charts-tooltip react-financial-charts-group-tooltip",
         layout: "horizontal",
         displayFormat: format(".2f"),
-        displayInit: "n/a",
+        displayInit: "",
         displayValuesFor: (_, props) => props.currentItem,
         origin: [0, 0],
         width: 60,

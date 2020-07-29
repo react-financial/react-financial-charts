@@ -39,9 +39,9 @@
   },
   "dependencies": {
     "@react-financial-charts/core": "file:../core",
-    "d3-array": "2.4.0",
-    "d3-scale": "3.2.1",
-    "d3-time-format": "2.2.3"
+    "d3-array": "^2.4.0",
+    "d3-scale": "^3.2.1",
+    "d3-time-format": "^2.2.3"
   },
   "peerDependencies": {
     "react": "^16.0.0",

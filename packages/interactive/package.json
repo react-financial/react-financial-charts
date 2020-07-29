@@ -40,11 +40,11 @@
   "dependencies": {
     "@react-financial-charts/coordinates": "file:../coordinates",
     "@react-financial-charts/core": "file:../core",
-    "d3-array": "2.4.0",
-    "d3-format": "1.4.4",
-    "d3-interpolate": "1.4.0",
-    "d3-path": "1.0.9",
-    "prop-types": "15.7.2"
+    "d3-array": "^2.4.0",
+    "d3-format": "^1.4.4",
+    "d3-interpolate": "^1.4.0",
+    "d3-path": "^1.0.9",
+    "prop-types": "^15.7.2"
   },
   "peerDependencies": {
     "react": "^16.0.0",

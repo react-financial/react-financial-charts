@@ -40,7 +40,7 @@
   "dependencies": {
     "@react-financial-charts/core": "file:../core",
     "@types/d3-scale": "^2.2.0",
-    "d3-array": "^2.4.0",
+    "d3-array": "^2.5.0",
     "d3-force": "^2.0.1",
     "d3-scale": "^3.2.1",
     "d3-selection": "^1.4.2"

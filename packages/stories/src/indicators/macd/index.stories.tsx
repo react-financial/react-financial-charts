@@ -1,6 +1,6 @@
 import * as React from "react";
 import { MACDSeries } from "@react-financial-charts/series";
-import MACDIndicator from "./macdIndicator";
+import MACDIndicator from "./MacdIndicator";
 
 export default {
     title: "Visualization/Indicator/MACD",

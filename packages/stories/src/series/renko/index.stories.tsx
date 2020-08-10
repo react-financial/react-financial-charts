@@ -1,5 +1,5 @@
 import * as React from "react";
-import { RenkoSeries } from "@react-financial-charts/series";
+import { RenkoSeries } from "../../../../series/src/RenkoSeries";
 import { Daily, Intraday } from "./basicRenkoSeries";
 
 export default {

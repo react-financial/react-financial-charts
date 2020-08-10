@@ -1,9 +1,14 @@
 import * as React from "react";
-import { Chart, ChartCanvas } from "@react-financial-charts/core";
-import { XAxis, YAxis } from "@react-financial-charts/axes";
-import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
-import { LineSeries } from "@react-financial-charts/series";
-import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
+import {
+    Chart,
+    ChartCanvas,
+    XAxis,
+    YAxis,
+    discontinuousTimeScaleProviderBuilder,
+    LineSeries,
+    withDeviceRatio,
+    withSize,
+} from "react-financial-charts";
 import { IOHLCData } from "../data";
 
 interface ChartProps {

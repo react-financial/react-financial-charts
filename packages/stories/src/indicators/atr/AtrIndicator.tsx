@@ -1,12 +1,17 @@
 import { format } from "d3-format";
 import * as React from "react";
-import { Chart, ChartCanvas } from "@react-financial-charts/core";
-import { XAxis, YAxis } from "@react-financial-charts/axes";
-import { atr } from "@react-financial-charts/indicators";
-import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
-import { LineSeries } from "@react-financial-charts/series";
-import { SingleValueTooltip } from "@react-financial-charts/tooltip";
-import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
+import {
+    atr,
+    discontinuousTimeScaleProviderBuilder,
+    Chart,
+    ChartCanvas,
+    LineSeries,
+    SingleValueTooltip,
+    XAxis,
+    YAxis,
+    withDeviceRatio,
+    withSize,
+} from "react-financial-charts";
 import { IOHLCData, withOHLCData } from "../../data";
 
 interface ChartProps {

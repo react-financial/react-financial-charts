@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScatterSeries } from "@react-financial-charts/series";
+import { ScatterSeries } from "../../../../series/src/ScatterSeries";
 import BasicScatterSeries from "./basicScatterSeries";
 
 export default {

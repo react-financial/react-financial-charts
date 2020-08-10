@@ -21,7 +21,7 @@ interface AreaSeriesProps {
 }
 
 /**
- * `AreaSeries` component
+ * `AreaSeries` component.
  */
 export class AreaSeries extends Component<AreaSeriesProps> {
     public static defaultProps: Partial<AreaSeriesProps> = {

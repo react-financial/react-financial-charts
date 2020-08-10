@@ -7,3 +7,4 @@ export * from "@react-financial-charts/interactive";
 export * from "@react-financial-charts/scales";
 export * from "@react-financial-charts/series";
 export * from "@react-financial-charts/tooltip";
+export * from "@react-financial-charts/utils";

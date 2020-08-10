@@ -90,6 +90,8 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
                 </g>
             );
         }
+
+        return null;
     };
 
     private readonly getBgHeight = () => {

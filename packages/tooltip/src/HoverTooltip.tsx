@@ -222,7 +222,7 @@ export class HoverTooltip extends React.Component<HoverTooltipProps> {
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const pointer = this.helper(ctx, moreProps);
         if (pointer === undefined) {
-            return null;
+            return;
         }
 
         const { height } = moreProps;

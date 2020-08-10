@@ -11,7 +11,7 @@ interface StraightLineProps {
     readonly type?: "vertical" | "horizontal";
     readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly lineWidth?: number;
-    readonly lineDash?: strokeDashTypes | Iterable<number> | number[];
+    readonly lineDash?: strokeDashTypes | number[];
     readonly yValue?: number;
     readonly xValue?: number;
 }

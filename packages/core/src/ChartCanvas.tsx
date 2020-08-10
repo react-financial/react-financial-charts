@@ -429,14 +429,12 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     };
 
     public getCanvasContexts = () => {
-        const current = this.canvasContainerRef.current;
-        if (current !== null) {
-            return current.getCanvasContexts();
-        }
+        return this.canvasContainerRef.current?.getCanvasContexts();
     };
 
     public generateSubscriptionId = () => {
         this.lastSubscriptionId++;
+
         return this.lastSubscriptionId;
     };
 

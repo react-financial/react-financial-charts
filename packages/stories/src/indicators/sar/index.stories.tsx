@@ -1,6 +1,6 @@
 import * as React from "react";
 import { SARSeries } from "@react-financial-charts/series";
-import SARIndicator from "./sarIndicator";
+import SARIndicator from "./SarIndicator";
 
 export default {
     title: "Visualization/Indicator/SAR",

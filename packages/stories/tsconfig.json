@@ -1,34 +1,33 @@
 {
-    "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "forceConsistentCasingInFileNames": true,
-        "jsx": "react",
-        "lib": [
-            "es5",
-            "es6",
-            "es7",
-            "es2017",
-            "dom"
-        ],
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noImplicitAny": false,
-        "noUnusedLocals": true,
-        "outDir": "lib",
-        "sourceMap": true,
-        "strict": true,
-        "strictNullChecks": true,
-        "target": "es5"
-    },
-    "include": [
-        "src"
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "lib": [
+      "es6",
+      "esnext",
+      "dom",
     ],
-    "exclude": [
-        "node_modules",
-        "lib"
-    ]
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "noResolve": false,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "es6"
+  },
+  "include": [
+    "src",
+    "../series/src"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib"
+  ]
 }

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { BollingerSeries } from "@react-financial-charts/series";
-import BollingerIndicator from "./bollingerIndicator";
+import BollingerIndicator from "./BollingerIndicator";
 
 export default {
     title: "Visualization/Indicator/Bollinger Band",

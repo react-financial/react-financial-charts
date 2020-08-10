@@ -1,7 +1,17 @@
+const path = require("path");
+
 module.exports = {
     addons: [
-        "@storybook/addon-docs",
+        {
+            name: "@storybook/addon-docs",
+            options: {
+                configureJSX: true,
+            },
+        },
         "@storybook/addon-essentials",
+        "@storybook/addon-actions/register",
+        "@storybook/addon-knobs/register",
+        "@storybook/addon-notes/register",
     ],
     stories: ["../src/**/*.stories.(js|jsx|ts|tsx|mdx)"],
     webpackFinal: async config => {
@@ -22,6 +32,11 @@ module.exports = {
                 },
                 {
                     loader: require.resolve("react-docgen-typescript-loader"),
+                    options: {
+                        // Provide the path to your tsconfig.json so that your stories can
+                        // display types from outside each individual story.
+                        tsconfigPath: path.resolve(__dirname, "../tsconfig.json"),
+                      },
                 },
             ],
         });

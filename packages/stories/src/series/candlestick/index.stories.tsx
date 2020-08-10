@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CandlestickSeries } from "@react-financial-charts/series";
+import { CandlestickSeries } from "../../../../series/src/CandlestickSeries";
 import { Daily, Intraday } from "./basicCandlestick";
 
 export default {

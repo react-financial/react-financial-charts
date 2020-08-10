@@ -1,5 +1,5 @@
 import * as React from "react";
-import { KagiSeries } from "@react-financial-charts/series";
+import { KagiSeries } from "../../../../series/src/KagiSeries";
 import { Daily, Intraday } from "./basicKagiSeries";
 
 export default {

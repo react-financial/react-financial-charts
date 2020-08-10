@@ -1,6 +1,6 @@
 import * as React from "react";
 import { LineSeries } from "@react-financial-charts/series";
-import EMAIndicator from "./emaIndicator";
+import EMAIndicator from "./EmaIndicator";
 
 export default {
     title: "Visualization/Indicator/EMA",

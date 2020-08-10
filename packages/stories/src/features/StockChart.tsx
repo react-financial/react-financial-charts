@@ -1,20 +1,30 @@
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 import * as React from "react";
-import { Chart, ChartCanvas, lastVisibleItemBasedZoomAnchor } from "@react-financial-charts/core";
-import { XAxis, YAxis } from "@react-financial-charts/axes";
 import {
+    elderRay,
+    ema,
+    discontinuousTimeScaleProviderBuilder,
+    Chart,
+    ChartCanvas,
+    BarSeries,
+    CandlestickSeries,
+    ElderRaySeries,
+    LineSeries,
+    MovingAverageTooltip,
+    OHLCTooltip,
+    SingleValueTooltip,
+    lastVisibleItemBasedZoomAnchor,
+    XAxis,
+    YAxis,
     CrossHairCursor,
     EdgeIndicator,
     MouseCoordinateX,
     MouseCoordinateY,
-} from "@react-financial-charts/coordinates";
-import { elderRay, ema } from "@react-financial-charts/indicators";
-import { ZoomButtons } from "@react-financial-charts/interactive";
-import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
-import { BarSeries, CandlestickSeries, ElderRaySeries, LineSeries } from "@react-financial-charts/series";
-import { MovingAverageTooltip, OHLCTooltip, SingleValueTooltip } from "@react-financial-charts/tooltip";
-import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
+    ZoomButtons,
+    withDeviceRatio,
+    withSize,
+} from "react-financial-charts";
 import { IOHLCData, withOHLCData } from "../data";
 
 interface StockChartProps {

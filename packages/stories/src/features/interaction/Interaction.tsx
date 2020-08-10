@@ -1,10 +1,15 @@
 import * as React from "react";
-import { Chart, ChartCanvas } from "@react-financial-charts/core";
-import { XAxis, YAxis } from "@react-financial-charts/axes";
-import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
-import { CandlestickSeries } from "@react-financial-charts/series";
+import {
+    discontinuousTimeScaleProviderBuilder,
+    CandlestickSeries,
+    Chart,
+    ChartCanvas,
+    XAxis,
+    YAxis,
+    withDeviceRatio,
+    withSize,
+} from "react-financial-charts";
 import { IOHLCData, withOHLCData } from "../../data";
-import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
 
 interface ChartProps {
     readonly clamp?: boolean;

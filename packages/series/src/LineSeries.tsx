@@ -30,6 +30,9 @@ interface LineSeriesProps {
     readonly yAccessor: (data: any) => number;
 }
 
+/**
+ * `LineSeries` component.
+ */
 export class LineSeries extends React.Component<LineSeriesProps> {
     public static defaultProps = {
         className: "line",

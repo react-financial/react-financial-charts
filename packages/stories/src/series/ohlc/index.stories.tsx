@@ -1,5 +1,5 @@
 import * as React from "react";
-import { OHLCSeries } from "@react-financial-charts/series";
+import { OHLCSeries } from "../../../../series/src/OHLCSeries";
 import { Daily, Intraday } from "./basicOHLCSeries";
 
 export default {

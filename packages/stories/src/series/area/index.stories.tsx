@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AreaSeries } from "@react-financial-charts/series";
+import { AreaSeries } from "../../../../series/src/AreaSeries";
 import { Daily, Intraday } from "./basicAreaSeries";
 
 export default {

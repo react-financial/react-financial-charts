@@ -1,6 +1,6 @@
 import * as React from "react";
 import { forceIndex } from "@react-financial-charts/indicators";
-import ElderRayIndicator from "./elderRayIndicator";
+import ElderRayIndicator from "./ElderRayIndicator";
 
 export default {
     title: "Visualization/Indicator/Elder Ray",

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BarSeries } from "@react-financial-charts/series";
+import { BarSeries } from "../../../../series/src/BarSeries";
 import { Daily, Intraday } from "./basicBarSeries";
 
 export default {

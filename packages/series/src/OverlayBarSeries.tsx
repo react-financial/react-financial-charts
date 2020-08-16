@@ -12,7 +12,7 @@ import {
 } from "@react-financial-charts/core";
 import { drawOnCanvas2 } from "./StackedBarSeries";
 
-interface OverlayBarSeriesProps {
+export interface OverlayBarSeriesProps {
     readonly baseAt?: number | any; // func
     readonly direction?: "up" | "down";
     readonly stroke?: boolean;

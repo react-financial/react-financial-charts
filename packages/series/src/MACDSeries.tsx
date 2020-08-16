@@ -4,7 +4,7 @@ import { BarSeries } from "./BarSeries";
 import { LineSeries } from "./LineSeries";
 import { StraightLine } from "./StraightLine";
 
-interface MACDSeriesProps {
+export interface MACDSeriesProps {
     readonly className?: string;
     readonly clip?: boolean;
     readonly divergenceStroke?: boolean;

@@ -6,7 +6,7 @@ import {
     strokeDashTypes,
 } from "@react-financial-charts/core";
 
-interface StraightLineProps {
+export interface StraightLineProps {
     readonly className?: string;
     readonly type?: "vertical" | "horizontal";
     readonly strokeStyle?: string | CanvasGradient | CanvasPattern;

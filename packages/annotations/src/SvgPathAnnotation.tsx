@@ -2,7 +2,7 @@ import { functor } from "@react-financial-charts/core";
 import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
 
-interface SvgPathAnnotationProps {
+export interface SvgPathAnnotationProps {
     readonly className?: string;
     readonly datum?: any;
     readonly fill?: string | ((datum: any) => string);

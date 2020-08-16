@@ -3,11 +3,10 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Axis } from "./Axis";
 
-interface XAxisProps {
+export interface XAxisProps {
     readonly axisAt?: number | "top" | "bottom" | "middle";
     readonly className?: string;
     readonly domainClassName?: string;
-    readonly fill?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fontWeight?: number;
@@ -46,7 +45,6 @@ export class XAxis extends React.Component<XAxisProps> {
         axisAt: "bottom",
         className: "react-financial-charts-x-axis",
         domainClassName: "react-financial-charts-axis-domain",
-        fill: "none",
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
         fontWeight: 400,

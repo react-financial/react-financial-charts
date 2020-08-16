@@ -4,7 +4,7 @@ import { strokeDashTypes } from "@react-financial-charts/core";
 import { OverlayBarSeries } from "./OverlayBarSeries";
 import { StraightLine } from "./StraightLine";
 
-interface ElderRaySeriesProps {
+export interface ElderRaySeriesProps {
     readonly fillStyle?: {
         bearPower: string | CanvasGradient | CanvasPattern;
         bullPower: string | CanvasGradient | CanvasPattern;

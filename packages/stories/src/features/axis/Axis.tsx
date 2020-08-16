@@ -6,12 +6,13 @@ import {
     ChartCanvas,
     XAxis,
     YAxis,
+    YAxisProps,
     withDeviceRatio,
     withSize,
 } from "react-financial-charts";
 import { IOHLCData, withOHLCData } from "../../data";
 
-interface ChartProps {
+interface ChartProps extends Partial<YAxisProps> {
     readonly axisAt?: "left" | "right";
     readonly data: IOHLCData[];
     readonly height: number;
@@ -25,7 +26,7 @@ class AxisExample extends React.Component<ChartProps> {
     );
 
     public render() {
-        const { axisAt = "right", data: initialData, height, ratio, width } = this.props;
+        const { axisAt = "right", data: initialData, height, ratio, width, ...rest } = this.props;
 
         const margin = {
             bottom: 24,
@@ -56,7 +57,7 @@ class AxisExample extends React.Component<ChartProps> {
                 <Chart id={1} yExtents={this.yExtents}>
                     <CandlestickSeries />
                     <XAxis />
-                    <YAxis axisAt={axisAt} orient={axisAt} />
+                    <YAxis axisAt={axisAt} orient={axisAt} {...rest} />
                 </Chart>
             </ChartCanvas>
         );

@@ -14,7 +14,7 @@ const defaultCustomX = (props: CrossHairCursorProps, moreProps) => {
     return x;
 };
 
-interface CrossHairCursorProps {
+export interface CrossHairCursorProps {
     readonly className?: string;
     readonly customX?: (props: CrossHairCursorProps, moreProps: any) => number;
     readonly snapX?: boolean;

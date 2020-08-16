@@ -2,7 +2,7 @@ import { functor } from "@react-financial-charts/core";
 import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
 
-interface BarAnnotationProps {
+export interface BarAnnotationProps {
     readonly className?: string;
     readonly path?: any; // func
     readonly onClick?: (

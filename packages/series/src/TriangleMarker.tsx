@@ -1,7 +1,7 @@
 import * as React from "react";
 import { functor } from "@react-financial-charts/core";
 
-interface TriangleProps {
+export interface TriangleProps {
     readonly className?: string;
     readonly direction?: "top" | "bottom" | "left" | "right" | "hide" | ((datum: any) => any);
     readonly fillStyle?: string | ((datum: any) => string);

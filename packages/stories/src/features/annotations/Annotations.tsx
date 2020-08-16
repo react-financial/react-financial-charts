@@ -5,6 +5,7 @@ import {
     Chart,
     ChartCanvas,
     Label,
+    LabelProps,
     LineSeries,
     XAxis,
     YAxis,
@@ -13,7 +14,7 @@ import {
 } from "react-financial-charts";
 import { IOHLCData, withOHLCData } from "../../data";
 
-interface ChartProps {
+interface ChartProps extends Partial<LabelProps> {
     readonly data: IOHLCData[];
     readonly height: number;
     readonly ratio: number;
@@ -27,7 +28,7 @@ class Annotations extends React.Component<ChartProps> {
     );
 
     public render() {
-        const { data: initialData, height, ratio, width } = this.props;
+        const { data: initialData, height, ratio, width, ...rest } = this.props;
 
         const ema12 = ema()
             .id(1)
@@ -63,6 +64,7 @@ class Annotations extends React.Component<ChartProps> {
                     <YAxis showGridLines />
                     <Label
                         text="MSFT"
+                        {...rest}
                         x={(width - this.margin.left - this.margin.right) / 2}
                         y={(height - this.margin.top - this.margin.bottom) / 2}
                     />

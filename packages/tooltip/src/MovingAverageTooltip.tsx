@@ -4,7 +4,7 @@ import * as React from "react";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
-interface SingleMAToolTipProps {
+export interface SingleMAToolTipProps {
     readonly color: string;
     readonly displayName: string;
     readonly fontFamily?: string;

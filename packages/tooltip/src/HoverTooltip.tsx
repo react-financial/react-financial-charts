@@ -168,7 +168,8 @@ const defaultOrigin = (props: HoverTooltipProps, moreProps, bgSize, pointWidth) 
 
     return [x, y];
 };
-interface HoverTooltipProps {
+
+export interface HoverTooltipProps {
     readonly background?: {
         fillStyle?: string | CanvasGradient | CanvasPattern;
         height?: number;

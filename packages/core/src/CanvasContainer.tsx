@@ -1,6 +1,6 @@
 import * as React from "react";
 
-interface CanvasContainerProps {
+export interface CanvasContainerProps {
     readonly height: number;
     readonly ratio: number;
     readonly style?: React.CSSProperties;

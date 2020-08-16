@@ -1,7 +1,7 @@
 import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import * as React from "react";
 
-interface CurrentCoordinateProps {
+export interface CurrentCoordinateProps {
     readonly className?: string;
     readonly fill?: string | ((dataItem: any) => string);
     readonly r: number;

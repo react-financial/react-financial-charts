@@ -1,33 +1,54 @@
 import { strokeDashTypes } from "@react-financial-charts/core";
+import { ScaleContinuousNumeric } from "d3-scale";
+import { CurveFactory } from "d3-shape";
 import * as React from "react";
-
 import { AreaSeries } from "./AreaSeries";
 import { SVGComponent } from "./SVGComponent";
-import { CurveFactory } from "d3-shape";
 
-interface AlternatingFillAreaSeriesProps {
+export interface AlternatingFillAreaSeriesProps {
     readonly baseAt: number;
     readonly className?: string;
+    /**
+     * Color, gradient, or pattern to use for fill.
+     */
     readonly fillStyle?: {
         top: string | CanvasGradient | CanvasPattern;
         bottom: string | CanvasGradient | CanvasPattern;
     };
+    /**
+     * A factory for a curve generator for the area and line.
+     */
     readonly interpolation?: CurveFactory;
+    /**
+     * Color, gradient, or pattern to use for the stroke.
+     */
     readonly strokeStyle?: {
         top: string | CanvasGradient | CanvasPattern;
         bottom: string | CanvasGradient | CanvasPattern;
     };
-    readonly strokeWidth?: {
-        top: number;
-        bottom: number;
-    };
+    /**
+     * Stroke dash.
+     */
     readonly strokeDasharray?: {
         top: strokeDashTypes;
         bottom: strokeDashTypes;
     };
+    /**
+     * Stroke width.
+     */
+    readonly strokeWidth?: {
+        top: number;
+        bottom: number;
+    };
+    /**
+     * Selector for data to plot.
+     */
     readonly yAccessor: (data: any) => number;
 }
 
+/**
+ * `AlternatingFillAreaSeries` component is similar to a `AreaSeries` but with different colors above and below the base.
+ */
 export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAreaSeriesProps> {
     public static defaultProps = {
         className: "react-financial-charts-alternating-area",
@@ -63,14 +84,10 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
             fillStyle = AlternatingFillAreaSeries.defaultProps.fillStyle,
         } = this.props;
 
-        const style1 = { clipPath: `url(#${this.clipPathId1})` };
-        const style2 = { clipPath: `url(#${this.clipPathId2})` };
-
         return (
             <g className={className}>
                 <SVGComponent>{this.renderClip}</SVGComponent>
                 <AreaSeries
-                    style={style1}
                     canvasClip={this.topClip}
                     yAccessor={yAccessor}
                     interpolation={interpolation}
@@ -81,7 +98,6 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
                     strokeWidth={strokeWidth.top}
                 />
                 <AreaSeries
-                    style={style2}
                     canvasClip={this.bottomClip}
                     yAccessor={yAccessor}
                     interpolation={interpolation}
@@ -95,7 +111,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         );
     }
 
-    private readonly baseAt = (yScale) => {
+    private readonly baseAt = (yScale: ScaleContinuousNumeric<number, number>) => {
         return yScale(this.props.baseAt);
     };
 

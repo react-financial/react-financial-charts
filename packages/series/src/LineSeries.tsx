@@ -9,24 +9,37 @@ import {
 import { line as d3Line, CurveFactoryLineOnly, CurveFactory } from "d3-shape";
 import * as React from "react";
 
-interface LineSeriesProps {
+export interface LineSeriesProps {
     readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
-    readonly className?: string;
     readonly connectNulls?: boolean;
-    readonly defined?: any; // func
+    readonly defined?: (d: number) => boolean;
     readonly highlightOnHover?: boolean;
     readonly hoverStrokeWidth?: number;
     readonly hoverTolerance?: number;
+    /**
+     * A factory for a curve generator for the line.
+     */
     readonly interpolation?: CurveFactory | CurveFactoryLineOnly;
     readonly onClick?: any; // func
     readonly onDoubleClick?: any; // func
     readonly onHover?: any; // func
     readonly onUnHover?: any; // func
     readonly onContextMenu?: any; // func
+    /**
+     * Color, gradient, or pattern to use for the stroke.
+     */
     readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
+    /**
+     * Stroke dash.
+     */
     readonly strokeDasharray?: strokeDashTypes;
+    /**
+     * Stroke width.
+     */
     readonly strokeWidth?: number;
-    readonly style?: React.CSSProperties;
+    /**
+     * Selector for data to plot.
+     */
     readonly yAccessor: (data: any) => number;
 }
 
@@ -35,12 +48,11 @@ interface LineSeriesProps {
  */
 export class LineSeries extends React.Component<LineSeriesProps> {
     public static defaultProps = {
-        className: "line",
         strokeStyle: "#2196f3",
         strokeWidth: 1,
         hoverStrokeWidth: 4,
         strokeDasharray: "Solid",
-        defined: (d) => !isNaN(d),
+        defined: (d: number) => !isNaN(d),
         hoverTolerance: 6,
         highlightOnHover: false,
         connectNulls: false,
@@ -80,7 +92,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
             strokeStyle,
             strokeWidth = LineSeries.defaultProps.strokeWidth,
             hoverStrokeWidth = LineSeries.defaultProps.hoverStrokeWidth,
-            defined,
+            defined = LineSeries.defaultProps.defined,
             strokeDasharray,
             interpolation,
             canvasClip,

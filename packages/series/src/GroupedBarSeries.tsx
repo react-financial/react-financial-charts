@@ -2,7 +2,7 @@ import * as React from "react";
 import { getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { drawOnCanvasHelper, identityStack, StackedBarSeries } from "./StackedBarSeries";
 
-interface GroupedBarSeriesProps {
+export interface GroupedBarSeriesProps {
     readonly baseAt: number | any; // func
     readonly className: string | any; // func
     readonly direction: "up" | "down";

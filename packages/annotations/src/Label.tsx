@@ -3,7 +3,7 @@ import { ScaleContinuousNumeric } from "d3-scale";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
-interface LabelProps {
+export interface LabelProps {
     readonly className?: string;
     readonly datum?: any;
     readonly fillStyle?:

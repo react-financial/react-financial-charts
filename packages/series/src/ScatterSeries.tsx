@@ -2,7 +2,7 @@ import { group } from "d3-array";
 import * as React from "react";
 import { functor, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
-interface ScatterSeriesProps {
+export interface ScatterSeriesProps {
     readonly className?: string;
     readonly yAccessor: (data: any) => number;
     readonly marker?: any; // func

@@ -12,7 +12,7 @@ const displayTextsDefault = {
     na: "n/a",
 };
 
-interface OHLCTooltipProps {
+export interface OHLCTooltipProps {
     readonly accessor?: (data: any) => any;
     readonly className?: string;
     readonly changeFormat?: (n: number | { valueOf(): number }) => string;

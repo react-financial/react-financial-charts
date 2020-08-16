@@ -1,4 +1,5 @@
 import { group, merge } from "d3-array";
+import { ScaleContinuousNumeric } from "d3-scale";
 import { stack as d3Stack } from "d3-shape";
 import * as React from "react";
 import {
@@ -10,8 +11,10 @@ import {
     plotDataLengthBarWidth,
 } from "@react-financial-charts/core";
 
-interface StackedBarSeriesProps {
-    readonly baseAt?: number | any; // func
+export interface StackedBarSeriesProps {
+    readonly baseAt?:
+        | number
+        | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
     readonly className?: string | any; // func
     readonly clip?: boolean;
     readonly direction?: "up" | "down";

@@ -1,7 +1,7 @@
 import { functor } from "@react-financial-charts/core";
 import * as React from "react";
 
-interface CircleMarkerProps {
+export interface CircleMarkerProps {
     readonly className?: string;
     readonly fillStyle?: string;
     readonly opacity?: number;

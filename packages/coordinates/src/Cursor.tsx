@@ -11,7 +11,7 @@ import {
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
-interface CursorProps {
+export interface CursorProps {
     readonly className?: string;
     readonly disableYCursor?: boolean;
     readonly opacity?: number;

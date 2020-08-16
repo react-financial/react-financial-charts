@@ -1,7 +1,7 @@
 import * as React from "react";
 import { isDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
-interface RenkoSeriesProps {
+export interface RenkoSeriesProps {
     readonly classNames?: {
         up: string;
         down: string;

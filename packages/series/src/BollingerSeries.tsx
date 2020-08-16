@@ -3,7 +3,7 @@ import * as React from "react";
 import { AreaOnlySeries } from "./AreaOnlySeries";
 import { LineSeries } from "./LineSeries";
 
-interface BollingerSeriesProps {
+export interface BollingerSeriesProps {
     readonly areaClassName?: string;
     readonly className?: string;
     readonly fillStyle?: string | CanvasGradient | CanvasPattern;
@@ -18,7 +18,6 @@ interface BollingerSeriesProps {
 export class BollingerSeries extends React.Component<BollingerSeriesProps> {
     public static defaultProps = {
         areaClassName: "react-financial-charts-bollinger-band-series-area",
-        className: "react-financial-charts-bollinger-band-series",
         fillStyle: "rgba(38, 166, 153, 0.05)",
         strokeStyle: {
             top: "#26a69a",
@@ -29,12 +28,7 @@ export class BollingerSeries extends React.Component<BollingerSeriesProps> {
     };
 
     public render() {
-        const {
-            areaClassName,
-            className,
-            strokeStyle = BollingerSeries.defaultProps.strokeStyle,
-            fillStyle,
-        } = this.props;
+        const { className, strokeStyle = BollingerSeries.defaultProps.strokeStyle, fillStyle } = this.props;
 
         return (
             <g className={className}>
@@ -42,7 +36,6 @@ export class BollingerSeries extends React.Component<BollingerSeriesProps> {
                 <LineSeries yAccessor={this.yAccessorForMiddle} strokeStyle={strokeStyle.middle} />
                 <LineSeries yAccessor={this.yAccessorForBottom} strokeStyle={strokeStyle.bottom} />
                 <AreaOnlySeries
-                    className={areaClassName}
                     yAccessor={this.yAccessorForTop}
                     base={this.yAccessorForScalledBottom}
                     fillStyle={fillStyle}

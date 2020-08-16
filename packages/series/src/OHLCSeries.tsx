@@ -2,7 +2,7 @@ import { group } from "d3-array";
 import * as React from "react";
 import { functor, isDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
-interface OHLCSeriesProps {
+export interface OHLCSeriesProps {
     readonly className?: string;
     readonly classNames?: string | any; // func
     readonly clip?: boolean;

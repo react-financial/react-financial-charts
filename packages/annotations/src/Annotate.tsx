@@ -1,7 +1,7 @@
 import * as React from "react";
 import { GenericChartComponent } from "@react-financial-charts/core";
 
-interface AnnotateProps {
+export interface AnnotateProps {
     readonly className?: string;
     readonly with: React.ElementType;
     readonly when: (value: any, index: number, array: any[]) => boolean;

@@ -8,7 +8,7 @@ import {
     last,
 } from "@react-financial-charts/core";
 
-interface SARSeriesProps {
+export interface SARSeriesProps {
     readonly className?: string;
     readonly fill?: {
         falling: string;

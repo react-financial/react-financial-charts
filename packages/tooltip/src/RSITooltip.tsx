@@ -4,7 +4,7 @@ import * as React from "react";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
-interface RSITooltipProps {
+export interface RSITooltipProps {
     readonly className?: string;
     readonly displayFormat: any; // func
     readonly displayInit?: string;

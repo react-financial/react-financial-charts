@@ -4,7 +4,7 @@ import * as React from "react";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
-interface SingleValueTooltipProps {
+export interface SingleValueTooltipProps {
     readonly xDisplayFormat?: (value: number) => string;
     readonly yDisplayFormat?: (value: number) => string;
     readonly xInitDisplay?: string;

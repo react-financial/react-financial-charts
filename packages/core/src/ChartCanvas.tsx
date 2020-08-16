@@ -264,7 +264,7 @@ function isInteractionEnabled(xScale, xAccessor, data) {
     return interaction;
 }
 
-interface ChartCanvasProps {
+export interface ChartCanvasProps {
     readonly clamp?:
         | boolean
         | ("left" | "right" | "both")

@@ -5,23 +5,40 @@ import React, { Component } from "react";
 import { AreaOnlySeries } from "./AreaOnlySeries";
 import { LineSeries } from "./LineSeries";
 
-interface AreaSeriesProps {
+export interface AreaSeriesProps {
     readonly baseAt?:
         | number
         | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
     readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
     readonly className?: string;
+    /**
+     * Color, gradient, or pattern to use for fill.
+     */
     readonly fillStyle?: string | CanvasGradient | CanvasPattern;
+    /**
+     * A factory for a curve generator for the area and line.
+     */
     readonly interpolation?: CurveFactory;
+    /**
+     * Color, gradient, or pattern to use for the stroke.
+     */
     readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
+    /**
+     * Stroke dash.
+     */
     readonly strokeDasharray?: strokeDashTypes;
+    /**
+     * Stroke width.
+     */
     readonly strokeWidth?: number;
-    readonly style?: React.CSSProperties;
+    /**
+     * Selector for data to plot.
+     */
     readonly yAccessor: (data: any) => number;
 }
 
 /**
- * `AreaSeries` component.
+ * `AreaSeries` component is similar to a `LineSeries` but with the area between the line and base filled.
  */
 export class AreaSeries extends Component<AreaSeriesProps> {
     public static defaultProps: Partial<AreaSeriesProps> = {
@@ -41,7 +58,6 @@ export class AreaSeries extends Component<AreaSeriesProps> {
             strokeDasharray,
             fillStyle,
             interpolation,
-            style,
             canvasClip,
             yAccessor,
         } = this.props;
@@ -53,7 +69,6 @@ export class AreaSeries extends Component<AreaSeriesProps> {
                     interpolation={interpolation}
                     base={baseAt}
                     fillStyle={fillStyle}
-                    style={style}
                     canvasClip={canvasClip}
                 />
                 <LineSeries
@@ -62,7 +77,6 @@ export class AreaSeries extends Component<AreaSeriesProps> {
                     strokeWidth={strokeWidth}
                     strokeDasharray={strokeDasharray}
                     interpolation={interpolation}
-                    style={style}
                     canvasClip={canvasClip}
                     highlightOnHover={false}
                 />

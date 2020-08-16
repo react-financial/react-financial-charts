@@ -2,11 +2,11 @@ import * as React from "react";
 import { Chart, ChartCanvas } from "@react-financial-charts/core";
 import { XAxis, YAxis } from "@react-financial-charts/axes";
 import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
-import { AreaSeries } from "@react-financial-charts/series";
+import { AreaSeries, AreaSeriesProps } from "@react-financial-charts/series";
 import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
 import { IOHLCData, withOHLCData } from "../../data";
 
-interface ChartProps {
+interface ChartProps extends Partial<AreaSeriesProps> {
     readonly data: IOHLCData[];
     readonly height: number;
     readonly ratio: number;
@@ -14,13 +14,13 @@ interface ChartProps {
 }
 
 class BasicAreaSeries extends React.Component<ChartProps> {
-    private readonly margin = { left: 0, right: 40, top: 0, bottom: 24 };
+    private readonly margin = { left: 0, right: 40, top: 24, bottom: 24 };
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
         (d: IOHLCData) => d.date,
     );
 
     public render() {
-        const { data: initialData, height, ratio, width } = this.props;
+        const { data: initialData, height, ratio, width, ...rest } = this.props;
 
         const { data, xScale, xAccessor, displayXAccessor } = this.xScaleProvider(initialData);
 
@@ -42,7 +42,7 @@ class BasicAreaSeries extends React.Component<ChartProps> {
                 xExtents={xExtents}
             >
                 <Chart id={1} yExtents={this.yExtents}>
-                    <AreaSeries yAccessor={this.yAccessor} />
+                    <AreaSeries yAccessor={this.yAccessor} {...rest} />
                     <XAxis />
                     <YAxis />
                 </Chart>

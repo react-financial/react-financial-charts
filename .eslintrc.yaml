@@ -20,6 +20,9 @@ rules:
     "@typescript-eslint/no-non-null-assertion": off
     "@typescript-eslint/ban-ts-comment": off
     "@typescript-eslint/ban-types": off
+    "@typescript-eslint/no-unused-vars":
+    - error
+    - ignoreRestSiblings: true
     "react/display-name": off
     "react/prop-types": off
     "arrow-spacing": error

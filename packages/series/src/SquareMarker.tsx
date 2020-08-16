@@ -1,7 +1,7 @@
 import * as React from "react";
 import { functor } from "@react-financial-charts/core";
 
-interface SquareProps {
+export interface SquareProps {
     readonly className?: string;
     readonly fillStyle?: string;
     readonly opacity: number;

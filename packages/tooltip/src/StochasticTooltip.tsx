@@ -4,7 +4,7 @@ import * as React from "react";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
-interface StochasticTooltipProps {
+export interface StochasticTooltipProps {
     readonly origin: number[] | ((width: number, height: number) => [number, number]);
     readonly className?: string;
     readonly fontFamily?: string;

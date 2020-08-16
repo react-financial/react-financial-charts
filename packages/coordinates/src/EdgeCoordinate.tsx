@@ -70,7 +70,7 @@ const helper = (props) => {
     };
 };
 
-interface EdgeCoordinateProps {
+export interface EdgeCoordinateProps {
     readonly className?: string;
     readonly type: "vertical" | "horizontal";
     readonly coordinate: any;

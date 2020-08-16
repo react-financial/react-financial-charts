@@ -12,7 +12,7 @@ import {
 } from "@react-financial-charts/core";
 import { drawOnCanvas } from "./EdgeCoordinateV3";
 
-interface EdgeIndicatorProps {
+export interface EdgeIndicatorProps {
     readonly arrowWidth?: number;
     readonly className?: string;
     readonly displayFormat?: any; // func

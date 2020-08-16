@@ -12,7 +12,7 @@ import {
     last,
 } from "@react-financial-charts/core";
 
-interface VolumeProfileSeriesProps {
+export interface VolumeProfileSeriesProps {
     readonly className?: string;
     readonly opacity?: number;
     readonly showSessionBackground?: boolean;

@@ -2,7 +2,7 @@ import * as React from "react";
 import { getMouseCanvas, GenericChartComponent, isNotDefined } from "@react-financial-charts/core";
 import { drawOnCanvas } from "./EdgeCoordinateV3";
 
-interface MouseCoordinateYProps {
+export interface MouseCoordinateYProps {
     readonly arrowWidth?: number;
     readonly at?: "left" | "right";
     readonly displayFormat: any; // func

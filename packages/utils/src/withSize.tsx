@@ -1,7 +1,7 @@
 import * as React from "react";
 import AutoSizer, { AutoSizerProps } from "react-virtualized-auto-sizer";
 
-interface WithSizeProps {
+export interface WithSizeProps {
     readonly width: number;
     readonly height: number;
 }

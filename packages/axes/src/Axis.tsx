@@ -25,7 +25,6 @@ interface AxisProps {
     readonly className?: string;
     readonly domainClassName?: string;
     readonly edgeClip: boolean;
-    readonly fill?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fontWeight?: number;

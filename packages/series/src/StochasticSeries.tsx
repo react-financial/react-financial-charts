@@ -3,7 +3,7 @@ import * as React from "react";
 import { LineSeries } from "./LineSeries";
 import { StraightLine } from "./StraightLine";
 
-interface StochasticSeriesProps {
+export interface StochasticSeriesProps {
     readonly className?: string;
     readonly overBought?: number;
     readonly overSold?: number;

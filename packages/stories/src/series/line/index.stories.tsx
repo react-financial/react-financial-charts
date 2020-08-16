@@ -1,12 +1,20 @@
+import { Story } from "@storybook/react";
 import * as React from "react";
-import { LineSeries } from "../../../../series/src/LineSeries";
+import { LineSeries, LineSeriesProps } from "../../../../series/src/LineSeries";
 import { Daily, Intraday } from "./basicLineSeries";
 
 export default {
     component: LineSeries,
     title: "Visualization/Series/Line",
+    argTypes: {
+        strokeStyle: { control: "color" },
+    },
 };
 
-export const daily = () => <Daily />;
+const Template: Story<LineSeriesProps> = (args) => <Daily {...args} />;
 
-export const intraday = () => <Intraday />;
+export const daily = Template.bind({});
+
+const IntradayTemplate: Story<LineSeriesProps> = (args) => <Intraday {...args} />;
+
+export const intraday = IntradayTemplate.bind({});

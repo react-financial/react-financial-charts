@@ -3,24 +3,32 @@ import { area as d3Area, CurveFactory } from "d3-shape";
 import * as React from "react";
 import { ScaleContinuousNumeric } from "d3-scale";
 
-interface AreaOnlySeriesProps {
+export interface AreaOnlySeriesProps {
     readonly base?:
         | number
         | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
     readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
-    readonly className?: string;
-    readonly defined?: any; // func
+    /**
+     * The default accessor for defined returns not NaN, thus assumes that the input data is always a number.
+     */
+    readonly defined?: (data: number) => boolean;
+    /**
+     * Color, gradient, or pattern to use for fill.
+     */
     readonly fillStyle?: string | CanvasGradient | CanvasPattern;
+    /**
+     * A factory for a curve generator for the area.
+     */
     readonly interpolation?: CurveFactory;
-    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
-    readonly style?: React.CSSProperties;
+    /**
+     * Selector for data to plot.
+     */
     readonly yAccessor: (data: any) => number;
 }
 
 export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
     public static defaultProps = {
-        className: "line",
-        defined: (d) => !isNaN(d),
+        defined: (d: number) => !isNaN(d),
         base: (yScale) => first(yScale.range()),
     };
 
@@ -29,7 +37,14 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const { fillStyle, strokeStyle, interpolation, canvasClip, yAccessor, defined, base } = this.props;
+        const {
+            fillStyle,
+            interpolation,
+            canvasClip,
+            yAccessor,
+            defined = AreaOnlySeries.defaultProps.defined,
+            base,
+        } = this.props;
 
         const {
             xScale,
@@ -45,10 +60,6 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
 
         if (fillStyle !== undefined) {
             ctx.fillStyle = fillStyle;
-        }
-
-        if (strokeStyle !== undefined) {
-            ctx.strokeStyle = strokeStyle;
         }
 
         ctx.beginPath();

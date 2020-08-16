@@ -2,11 +2,11 @@ import * as React from "react";
 import { Chart, ChartCanvas } from "@react-financial-charts/core";
 import { XAxis, YAxis } from "@react-financial-charts/axes";
 import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
-import { BarSeries } from "@react-financial-charts/series";
+import { BarSeries, BarSeriesProps } from "@react-financial-charts/series";
 import { IOHLCData, withOHLCData } from "../../data";
 import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
 
-interface ChartProps {
+interface ChartProps extends Partial<BarSeriesProps> {
     readonly data: IOHLCData[];
     readonly height: number;
     readonly width: number;
@@ -20,7 +20,7 @@ class BasicBarSeries extends React.Component<ChartProps> {
     );
 
     public render() {
-        const { data: initialData, height, ratio, width } = this.props;
+        const { baseAt, data: initialData, height, ratio, width, ...rest } = this.props;
 
         const { data, xScale, xAccessor, displayXAccessor } = this.xScaleProvider(initialData);
 
@@ -42,7 +42,7 @@ class BasicBarSeries extends React.Component<ChartProps> {
                 xExtents={xExtents}
             >
                 <Chart id={1} yExtents={this.yExtents}>
-                    <BarSeries yAccessor={this.yAccessor} />
+                    <BarSeries yAccessor={this.yAccessor} {...rest} />
                     <XAxis />
                     <YAxis />
                 </Chart>

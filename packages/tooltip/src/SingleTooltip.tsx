@@ -4,7 +4,7 @@ import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
 export type layouts = "horizontal" | "horizontalRows" | "horizontalInline" | "vertical" | "verticalRows";
 
-interface SingleTooltipProps {
+export interface SingleTooltipProps {
     readonly origin: [number, number];
     readonly yLabel: string;
     readonly yValue: string;

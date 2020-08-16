@@ -1,12 +1,20 @@
+import { Story } from "@storybook/react";
 import * as React from "react";
-import { BarSeries } from "../../../../series/src/BarSeries";
+import { BarSeries, BarSeriesProps } from "../../../../series/src/BarSeries";
 import { Daily, Intraday } from "./basicBarSeries";
 
 export default {
     component: BarSeries,
     title: "Visualization/Series/Bar",
+    argTypes: {
+        fillStyle: { control: "color" },
+    },
 };
 
-export const daily = () => <Daily />;
+const Template: Story<BarSeriesProps> = (args) => <Daily {...args} />;
 
-export const intraday = () => <Intraday />;
+export const daily = Template.bind({});
+
+const IntradayTemplate: Story<BarSeriesProps> = (args) => <Intraday {...args} />;
+
+export const intraday = IntradayTemplate.bind({});

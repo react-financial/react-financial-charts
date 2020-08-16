@@ -4,7 +4,7 @@ import * as React from "react";
 import { layouts, SingleTooltip } from "./SingleTooltip";
 import { ToolTipText } from "./ToolTipText";
 
-interface GroupTooltipProps {
+export interface GroupTooltipProps {
     readonly className?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;

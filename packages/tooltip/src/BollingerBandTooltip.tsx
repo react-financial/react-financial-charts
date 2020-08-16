@@ -4,7 +4,7 @@ import * as React from "react";
 import { ToolTipText } from "./ToolTipText";
 import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
 
-interface BollingerBandTooltipProps {
+export interface BollingerBandTooltipProps {
     readonly className?: string;
     readonly displayFormat: (value: number) => string;
     readonly displayInit?: string;

@@ -4,7 +4,7 @@ import { LineSeries } from "./LineSeries";
 import { StraightLine } from "./StraightLine";
 import { SVGComponent } from "./SVGComponent";
 
-interface RSISeriesProps {
+export interface RSISeriesProps {
     readonly className?: string;
     readonly yAccessor: (data: any) => any;
     readonly strokeStyle?: {
@@ -75,9 +75,6 @@ export class RSISeries extends React.Component<RSISeriesProps> {
         const { yAccessor } = this.props;
         const { overSold, middle, overBought } = this.props;
 
-        const style1 = { clipPath: `url(#${this.clipPathId1})` };
-        const style2 = { clipPath: `url(#${this.clipPathId2})` };
-
         return (
             <g className={className}>
                 <SVGComponent>{this.renderClip}</SVGComponent>
@@ -100,18 +97,14 @@ export class RSISeries extends React.Component<RSISeriesProps> {
                     lineWidth={strokeWidth.bottom}
                 />
                 <LineSeries
-                    style={style1}
                     canvasClip={this.topAndBottomClip}
-                    className={className}
                     yAccessor={yAccessor}
                     strokeStyle={strokeStyle.insideThreshold || strokeStyle.line}
                     strokeWidth={strokeWidth.insideThreshold}
                     strokeDasharray={strokeDasharray.line}
                 />
                 <LineSeries
-                    style={style2}
                     canvasClip={this.mainClip}
-                    className={className}
                     yAccessor={yAccessor}
                     strokeStyle={strokeStyle.outsideThreshold || strokeStyle.line}
                     strokeWidth={strokeWidth.outsideThreshold}

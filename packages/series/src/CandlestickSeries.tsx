@@ -3,7 +3,7 @@ import { group } from "d3-array";
 import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
 
-interface ICandle {
+export interface ICandle {
     readonly x: number;
     readonly y: number;
     readonly height: number;
@@ -22,7 +22,7 @@ interface ICandle {
     };
 }
 
-interface CandlestickSeriesProps {
+export interface CandlestickSeriesProps {
     readonly candleClassName?: string;
     readonly candleStrokeWidth?: number;
     readonly className?: string;

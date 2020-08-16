@@ -1,7 +1,7 @@
 import * as React from "react";
 import { isDefined, isNotDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
-interface PointAndFigureSeriesProps {
+export interface PointAndFigureSeriesProps {
     readonly className?: string;
     readonly clip?: boolean;
     readonly fill?: {

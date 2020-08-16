@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { PureComponent } from "./utils";
 
-interface ChartProps {
+export interface ChartProps {
     readonly flipYScale?: boolean;
     readonly height?: number;
     readonly id: number | string;

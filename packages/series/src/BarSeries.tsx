@@ -1,9 +1,12 @@
+import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
 import { functor, isDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { drawOnCanvas2, drawOnCanvasHelper, identityStack, StackedBarSeries } from "./StackedBarSeries";
 
-interface BarSeriesProps {
-    readonly baseAt?: number | any; // func
+export interface BarSeriesProps {
+    readonly baseAt?:
+        | number
+        | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
     readonly className?: number | any; // func
     readonly clip?: boolean;
     readonly fillStyle?:

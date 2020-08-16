@@ -1,7 +1,7 @@
 import * as React from "react";
 import { isDefined, isNotDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
-interface KagiSeriesProps {
+export interface KagiSeriesProps {
     readonly className?: string;
     readonly fill?: {
         yang: string;

@@ -1,12 +1,25 @@
+import { Story } from "@storybook/react";
 import * as React from "react";
-import { Axis } from "@react-financial-charts/axes";
+import { YAxis, YAxisProps } from "../../../../axes/src/YAxis";
 import AxisExample from "./Axis";
 
 export default {
-    component: Axis,
+    component: YAxis,
     title: "Features/Axis",
+    argTypes: {
+        axisAt: {
+            control: {
+                type: "select",
+                options: ["left", "right", "middle"],
+            },
+        },
+        gridLinesStroke: { control: "color" },
+        strokeStyle: { control: "color" },
+        tickLabelFill: { control: "color" },
+        tickStroke: { control: "color" },
+    },
 };
 
-export const right = () => <AxisExample />;
+const Template: Story<YAxisProps> = (args) => <AxisExample {...args} />;
 
-export const left = () => <AxisExample axisAt="left" />;
+export const yAxis = Template.bind({});

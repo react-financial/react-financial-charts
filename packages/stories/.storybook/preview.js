@@ -1,13 +1,8 @@
-import { addParameters } from '@storybook/react';
-
-addParameters({
+export const parameters = {
+    controls: { hideNoControlsWarning: true },
     options: {
         storySort: {
             order: ['Intro', 'Features', 'Visualization'],
         },
     },
-});
-
-export const parameters = {
-    controls: { hideNoControlsWarning: true },
 };

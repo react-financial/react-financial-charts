@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { colorToRGBA, getStrokeDasharray, getStrokeDasharrayCanvas, isDefined } from "@react-financial-charts/core";
 
-export function renderSVG(props) {
+export const renderSVG = (props) => {
     const { className } = props;
 
     const edge = helper(props);
@@ -88,9 +88,9 @@ export function renderSVG(props) {
             {coordinate}
         </g>
     );
-}
+};
 
-function helper(props) {
+const helper = (props) => {
     const {
         coordinate: displayCoordinate,
         show,
@@ -190,16 +190,16 @@ function helper(props) {
         line,
         orient,
     };
-}
+};
 
-export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
-    const { coordinate, fontSize, fontFamily } = props;
+export const drawOnCanvas = (ctx: CanvasRenderingContext2D, props) => {
+    const { coordinate, fitToText, fontSize, fontFamily, rectWidth } = props;
 
     ctx.font = `${fontSize}px ${fontFamily}`;
     ctx.textBaseline = "middle";
 
-    let width = props.rectWidth;
-    if (props.fitToText) {
+    let width = rectWidth;
+    if (fitToText) {
         width = Math.round(ctx.measureText(coordinate).width + 10);
     }
 
@@ -266,9 +266,16 @@ export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
         ctx.textAlign = edge.coordinate.textAnchor === "middle" ? "center" : edge.coordinate.textAnchor;
         ctx.fillText(edge.coordinate.displayCoordinate, edge.coordinate.edgeXText, edge.coordinate.edgeYText);
     }
-}
+};
 
-function roundRect(ctx, x, y, width, height, radius) {
+const roundRect = (
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number,
+) => {
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
     ctx.lineTo(x + width - radius, y);
@@ -280,4 +287,4 @@ function roundRect(ctx, x, y, width, height, radius) {
     ctx.lineTo(x, y + radius);
     ctx.quadraticCurveTo(x, y, x + radius, y);
     ctx.closePath();
-}
+};

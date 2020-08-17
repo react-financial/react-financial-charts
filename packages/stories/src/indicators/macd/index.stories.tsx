@@ -1,14 +1,10 @@
 import * as React from "react";
-import { MACDSeries } from "@react-financial-charts/series";
+import { MACDSeries } from "../../../../series/src/MACDSeries";
 import MACDIndicator from "./MacdIndicator";
 
 export default {
     title: "Visualization/Indicator/MACD",
     component: MACDSeries,
-    parameters: {
-        componentSubtitle:
-            "The MACD turns two trend-following indicators, moving averages, into a momentum oscillator by subtracting the longer moving average from the shorter one.",
-    },
 };
 
 export const basic = () => <MACDIndicator />;

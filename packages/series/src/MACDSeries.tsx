@@ -23,6 +23,9 @@ export interface MACDSeriesProps {
     readonly zeroLineOpacity?: number;
 }
 
+/**
+ * The MACD turns two trend-following indicators, moving averages, into a momentum oscillator by subtracting the longer moving average from the shorter one.
+ */
 export class MACDSeries extends React.Component<MACDSeriesProps> {
     public static defaultProps = {
         className: "react-financial-charts-macd-series",
@@ -55,7 +58,6 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
             <g className={className}>
                 <BarSeries
                     baseAt={this.yAccessorForDivergenceBase}
-                    className="macd-divergence"
                     width={width}
                     widthRatio={widthRatio}
                     stroke={divergenceStroke}

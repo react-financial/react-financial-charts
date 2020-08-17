@@ -7,22 +7,20 @@ import {
 } from "@react-financial-charts/core";
 
 export interface StraightLineProps {
-    readonly className?: string;
-    readonly type?: "vertical" | "horizontal";
-    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
-    readonly lineWidth?: number;
     readonly lineDash?: strokeDashTypes | number[];
+    readonly lineWidth?: number;
+    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly type?: "vertical" | "horizontal";
     readonly yValue?: number;
     readonly xValue?: number;
 }
 
 export class StraightLine extends React.Component<StraightLineProps> {
     public static defaultProps = {
-        className: "line",
-        type: "horizontal",
-        strokeStyle: "rgba(0, 0, 0, 0.5)",
         lineWidth: 1,
         lineDash: "Solid",
+        strokeStyle: "rgba(0, 0, 0, 0.5)",
+        type: "horizontal",
     };
 
     public render() {

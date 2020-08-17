@@ -2,7 +2,7 @@ import { extent as d3Extent, max, min } from "d3-array";
 import { ScaleContinuousNumeric } from "d3-scale";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { clearCanvas, functor, head, identity, isDefined, isNotDefined, last, noop, shallowEqual } from "./utils";
+import { clearCanvas, functor, head, identity, isDefined, isNotDefined, last, shallowEqual } from "./utils";
 import { mouseBasedZoomAnchor, IZoomAnchorOptions } from "./zoom/zoomBehavior";
 import {
     getChartConfigWithUpdatedYScales,
@@ -332,7 +332,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         margin: { top: 0, right: 40, bottom: 40, left: 0 },
         minPointsPerPxThreshold: 1 / 100,
         mouseMoveEvent: true,
-        onLoadMore: noop,
         postCalculator: identity,
         padding: 0,
         panEvent: true,
@@ -1010,7 +1009,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         });
     };
 
-    public handleClick = (mousePosition, e) => {
+    public handleClick = (mousePosition: number[], e: React.MouseEvent) => {
         this.triggerEvent("click", this.mutableState, e);
 
         requestAnimationFrame(() => {
@@ -1019,7 +1018,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         });
     };
 
-    public handleDoubleClick = (mousePosition, e) => {
+    public handleDoubleClick = (mousePosition: number[], e: React.MouseEvent) => {
         this.triggerEvent("dblclick", {}, e);
     };
 

@@ -29,8 +29,14 @@ import { max, mean, min, zip } from "d3-array";
 import { last, slidingWindow } from "@react-financial-charts/core";
 import { FullStochasticOscillator as defaultOptions } from "./defaultOptionsForComputation";
 
+export interface STOOptions {
+    readonly windowSize: number;
+    readonly kWindowSize: number;
+    readonly dWindowSize: number;
+}
+
 export default function () {
-    let options = defaultOptions;
+    let options: STOOptions = defaultOptions;
 
     let source = (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close });
 

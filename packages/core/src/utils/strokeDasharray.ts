@@ -21,6 +21,7 @@ export const getStrokeDasharrayCanvas = (type?: strokeDashTypes) => {
 
     return a.map((d) => Number(d));
 };
+
 export const getStrokeDasharray = (type?: strokeDashTypes) => {
     switch (type) {
         default:

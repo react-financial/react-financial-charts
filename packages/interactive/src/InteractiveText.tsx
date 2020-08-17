@@ -115,8 +115,6 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
                 })}
                 <GenericChartComponent
                     onClick={this.handleDraw}
-                    svgDraw={noop}
-                    canvasDraw={noop}
                     canvasToDraw={getMouseCanvas}
                     drawOn={["mousemove", "pan"]}
                 />

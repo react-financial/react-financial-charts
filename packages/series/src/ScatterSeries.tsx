@@ -1,20 +1,15 @@
+import { functor, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { group } from "d3-array";
 import * as React from "react";
-import { functor, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
 export interface ScatterSeriesProps {
-    readonly className?: string;
-    readonly yAccessor: (data: any) => number;
     readonly marker?: any; // func
     readonly markerProvider?: any; // func
     readonly markerProps?: object;
+    readonly yAccessor: (data: any) => number;
 }
 
 export class ScatterSeries extends React.Component<ScatterSeriesProps> {
-    public static defaultProps = {
-        className: "react-financial-charts-scatter",
-    };
-
     public render() {
         return <GenericChartComponent canvasDraw={this.drawOnCanvas} canvasToDraw={getAxisCanvas} drawOn={["pan"]} />;
     }

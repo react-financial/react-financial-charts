@@ -18,6 +18,9 @@ export interface StochasticSeriesProps {
     readonly yAccessor: (data: any) => { K: number; D: number };
 }
 
+/**
+ * The Stochastic Oscillator is a momentum indicator that shows the location of the close relative to the high-low range over a set number of periods.
+ */
 export class StochasticSeries extends React.Component<StochasticSeriesProps> {
     public static defaultProps = {
         className: "react-financial-charts-stochastic-series",

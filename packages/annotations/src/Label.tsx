@@ -4,7 +4,6 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 
 export interface LabelProps {
-    readonly className?: string;
     readonly datum?: any;
     readonly fillStyle?:
         | string
@@ -18,10 +17,12 @@ export interface LabelProps {
     readonly selectCanvas?: (canvases: any) => any;
     readonly text?: string | ((datum: any) => string);
     readonly textAlign?: CanvasTextAlign;
-    readonly x: number | any; // func
-    readonly xAccessor?: (datym: any) => any;
+    readonly x:
+        | number
+        | ((xScale: ScaleContinuousNumeric<number, number>, xAccessor: any, datum: any, plotData: any[]) => number);
+    readonly xAccessor?: (datum: any) => any;
     readonly xScale?: ScaleContinuousNumeric<number, number>;
-    readonly y: number | any; // func
+    readonly y: number | ((yScale: ScaleContinuousNumeric<number, number>, datum: any, plotData: any[]) => number);
     readonly yScale?: ScaleContinuousNumeric<number, number>;
 }
 

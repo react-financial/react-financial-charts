@@ -1,5 +1,5 @@
 import * as React from "react";
-import { noop, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
+import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
 interface ClickCallbackProps {
     readonly disablePan: boolean;
@@ -29,8 +29,6 @@ export class ClickCallback extends React.Component<ClickCallbackProps> {
                 onMouseMove={onMouseMove}
                 onPan={onPan}
                 onPanEnd={onPanEnd}
-                svgDraw={noop}
-                canvasDraw={noop}
                 canvasToDraw={getMouseCanvas}
                 drawOn={["mousemove", "pan"]}
             />

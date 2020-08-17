@@ -10,14 +10,15 @@ const parseData = () => {
         let date = parseDate(d.date);
         if (date === null) {
             date = new Date(Number(d.date));
+        } else {
+            d.date = new Date(date);
         }
 
-        d.date = new Date(date);
-        d.open = +d.open;
-        d.high = +d.high;
-        d.low = +d.low;
-        d.close = +d.close;
-        d.volume = +d.volume;
+        for (const key in d) {
+            if (key !== "date" && Object.prototype.hasOwnProperty.call(d, key)) {
+                d[key] = +d[key];
+            }
+        }
 
         return d as IOHLCData;
     };
@@ -39,7 +40,7 @@ export function withOHLCData(dataSet = "MSFT") {
                 super(props);
 
                 this.state = {
-                    message: "Loading data...",
+                    message: `Loading ${dataSet} data...`,
                 };
             }
 

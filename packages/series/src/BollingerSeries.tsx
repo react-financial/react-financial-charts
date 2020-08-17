@@ -1,5 +1,5 @@
+import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
-
 import { AreaOnlySeries } from "./AreaOnlySeries";
 import { LineSeries } from "./LineSeries";
 
@@ -12,7 +12,7 @@ export interface BollingerSeriesProps {
         middle: string | CanvasGradient | CanvasPattern;
         bottom: string | CanvasGradient | CanvasPattern;
     };
-    readonly yAccessor?: any; // func
+    readonly yAccessor?: (data: any) => any;
 }
 
 export class BollingerSeries extends React.Component<BollingerSeriesProps> {
@@ -37,30 +37,34 @@ export class BollingerSeries extends React.Component<BollingerSeriesProps> {
                 <LineSeries yAccessor={this.yAccessorForBottom} strokeStyle={strokeStyle.bottom} />
                 <AreaOnlySeries
                     yAccessor={this.yAccessorForTop}
-                    base={this.yAccessorForScalledBottom}
+                    base={this.yAccessorForScaledBottom}
                     fillStyle={fillStyle}
                 />
             </g>
         );
     }
 
-    private readonly yAccessorForScalledBottom = (scale, d) => {
-        const { yAccessor } = this.props;
+    private readonly yAccessorForScaledBottom = (scale: ScaleContinuousNumeric<number, number>, d) => {
+        const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
+
         return scale(yAccessor(d) && yAccessor(d).bottom);
     };
 
     private readonly yAccessorForBottom = (d) => {
-        const { yAccessor } = this.props;
+        const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
+
         return yAccessor(d) && yAccessor(d).bottom;
     };
 
     private readonly yAccessorForMiddle = (d) => {
-        const { yAccessor } = this.props;
+        const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
+
         return yAccessor(d) && yAccessor(d).middle;
     };
 
     private readonly yAccessorForTop = (d) => {
-        const { yAccessor } = this.props;
+        const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
+
         return yAccessor(d) && yAccessor(d).top;
     };
 }

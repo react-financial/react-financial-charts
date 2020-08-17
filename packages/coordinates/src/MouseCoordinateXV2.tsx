@@ -8,17 +8,17 @@ interface MouseCoordinateXV2Props {
     readonly at?: "bottom" | "top";
     readonly orient?: "bottom" | "top";
     readonly text?: {
-        fontStyle: string;
-        fontWeight: string;
-        fontFamily: string;
-        fontSize: number;
-        fill: string | any; // func
+        readonly fontStyle: string;
+        readonly fontWeight: string;
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fill: string | any; // func
     };
     readonly bg: {
-        fill: string | any; // func
-        stroke: string;
-        strokeWidth: number;
-        padding: {
+        readonly fill: string | any; // func
+        readonly stroke: string;
+        readonly strokeWidth: number;
+        readonly padding: {
             left: number;
             right: number;
             top: number;

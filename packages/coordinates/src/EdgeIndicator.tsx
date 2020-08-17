@@ -14,8 +14,7 @@ import { drawOnCanvas } from "./EdgeCoordinateV3";
 
 export interface EdgeIndicatorProps {
     readonly arrowWidth?: number;
-    readonly className?: string;
-    readonly displayFormat?: any; // func
+    readonly displayFormat?: (n: number) => string;
     readonly edgeAt?: "left" | "right";
     readonly fill?: string | any; // func
     readonly fitToText?: boolean;
@@ -32,7 +31,6 @@ export interface EdgeIndicatorProps {
 
 export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
     public static defaultProps = {
-        className: "react-financial-charts-edgeindicator",
         type: "horizontal",
         fitToText: false,
         orient: "right",
@@ -75,6 +73,7 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
             ...this.props,
             ...edge,
         };
+
         drawOnCanvas(ctx, props);
     };
 

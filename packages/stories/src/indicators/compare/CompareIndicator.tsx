@@ -70,7 +70,7 @@ class CompareIndicator extends React.Component<ChartProps> {
             >
                 <Chart id={1} yExtents={this.yExtents}>
                     <XAxis />
-                    <YAxis />
+                    <YAxis tickFormat={this.percentFormat} />
                     <MouseCoordinateX displayFormat={this.timeDisplayFormat} />
                     <MouseCoordinateY rectWidth={this.margin.right} displayFormat={this.percentFormat} />
 

@@ -1,13 +1,20 @@
+import {
+    functor,
+    head,
+    isDefined,
+    getAxisCanvas,
+    GenericChartComponent,
+    plotDataLengthBarWidth,
+} from "@react-financial-charts/core";
+import { group } from "d3-array";
 import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
-import { functor, isDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
-import { drawOnCanvas2, drawOnCanvasHelper, identityStack, StackedBarSeries } from "./StackedBarSeries";
+import { drawOnCanvasHelper, identityStack } from "./StackedBarSeries";
 
 export interface BarSeriesProps {
     readonly baseAt?:
         | number
         | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
-    readonly className?: number | any; // func
     readonly clip?: boolean;
     readonly fillStyle?:
         | string
@@ -16,13 +23,26 @@ export interface BarSeriesProps {
         | ((data: any) => string | CanvasGradient | CanvasPattern);
     readonly opacity?: number;
     readonly stroke?: boolean;
+    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly swapScales?: boolean;
     readonly width?: number | any; // func
     readonly yAccessor: any; // func
 }
 
+/**
+ * A `BarSeries` component.
+ */
 export class BarSeries extends React.Component<BarSeriesProps> {
-    public static defaultProps = StackedBarSeries.defaultProps;
+    public static defaultProps = {
+        baseAt: (xScale, yScale /* , d*/) => head(yScale.range()),
+        clip: true,
+        direction: "up",
+        fillStyle: "rgba(70, 130, 180, 0.5)",
+        stroke: false,
+        swapScales: false,
+        width: plotDataLengthBarWidth,
+        widthRatio: 0.8,
+    };
 
     public render() {
         const { clip } = this.props;
@@ -43,24 +63,37 @@ export class BarSeries extends React.Component<BarSeriesProps> {
 
             drawOnCanvasHelper(ctx, this.props, moreProps, xAccessor, identityStack);
         } else {
-            const bars = this.getBars(this.props, moreProps);
+            const bars = this.getBars(moreProps);
 
-            drawOnCanvas2(this.props, ctx, bars);
+            const { stroke, strokeStyle } = this.props;
+
+            const nest = group(bars, (d: any) => d.fillStyle);
+
+            nest.forEach((values, key) => {
+                if (head(values).width > 1) {
+                    if (strokeStyle !== undefined) {
+                        ctx.strokeStyle = strokeStyle;
+                    }
+                }
+                ctx.fillStyle = key;
+
+                values.forEach((d) => {
+                    if (d.width <= 1) {
+                        ctx.fillRect(d.x - 0.5, d.y, 1, d.height);
+                    } else {
+                        ctx.fillRect(d.x + 0.5, d.y + 0.5, d.width, d.height);
+                        if (stroke) {
+                            ctx.strokeRect(d.x, d.y, d.width, d.height);
+                        }
+                    }
+                });
+            });
         }
     };
 
-    /*
-        Initially, this program was using StackedBarSeries.getBars
-        to benefit from code reuse and having a single place that
-        contains the logic for drawing all types of bar charts
-        simple, grouped, horizontal, but turnes out
-        making it highly cuztimizable also made it slow for the
-        most simple case, a regular bar chart.
-        This function contains just the necessary logic
-        to create bars
-    */
-    private readonly getBars = (props: BarSeriesProps, moreProps) => {
-        const { baseAt, fillStyle, stroke, yAccessor } = props;
+    private readonly getBars = (moreProps) => {
+        const { baseAt, fillStyle, width, yAccessor } = this.props;
+
         const {
             xScale,
             xAccessor,
@@ -70,42 +103,38 @@ export class BarSeries extends React.Component<BarSeriesProps> {
 
         const getFill = functor(fillStyle);
         const getBase = functor(baseAt);
+        const getWidth = functor(width);
 
-        const widthFunctor = functor(props.width);
-
-        const width = widthFunctor(props, {
+        const barWidth = getWidth(this.props, {
             xScale,
             xAccessor,
             plotData,
         });
 
-        const offset = Math.floor(0.5 * width);
+        const offset = Math.floor(0.5 * barWidth);
 
-        const bars = plotData
+        return plotData
             .filter((d) => isDefined(yAccessor(d)))
             .map((d) => {
+                const xValue = xAccessor(d);
                 const yValue = yAccessor(d);
                 let y = yScale(yValue);
 
-                const x = Math.round(xScale(xAccessor(d))) - offset;
-                let h = getBase(xScale, yScale, d) - yScale(yValue);
+                const x = Math.round(xScale(xValue)) - offset;
 
+                let h = getBase(xScale, yScale, d) - yScale(yValue);
                 if (h < 0) {
                     y = y + h;
                     h = -h;
                 }
 
                 return {
-                    // type: "line"
                     x,
                     y: Math.round(y),
                     height: Math.round(h),
                     width: offset * 2,
-                    fillStyle: getFill(d, 0),
-                    stroke: stroke ? getFill(d, 0) : "none",
+                    fillStyle: getFill(d),
                 };
             });
-
-        return bars;
     };
 }

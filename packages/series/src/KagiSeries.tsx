@@ -2,7 +2,7 @@ import * as React from "react";
 import { isDefined, isNotDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
 export interface KagiSeriesProps {
-    readonly className?: string;
+    readonly currentValueStroke?: string | CanvasGradient | CanvasPattern;
     readonly fill?: {
         yang: string;
         yin: string;
@@ -11,22 +11,27 @@ export interface KagiSeriesProps {
         yang: string;
         yin: string;
     };
+    /**
+     * Stroke width.
+     */
     readonly strokeWidth?: number;
 }
 
+/**
+ * `KagiSeries` tracks price movement mostly independantly of time.
+ */
 export class KagiSeries extends React.Component<KagiSeriesProps> {
     public static defaultProps = {
-        className: "react-financial-charts-kagi",
-        strokeWidth: 2,
-        stroke: {
-            yang: "#26a69a",
-            yin: "#ef5350",
-        },
+        currentValueStroke: "#000000",
         fill: {
             yang: "none",
             yin: "none",
         },
-        currentValueStroke: "#000000",
+        stroke: {
+            yang: "#26a69a",
+            yin: "#ef5350",
+        },
+        strokeWidth: 2,
     };
 
     public render() {
@@ -34,63 +39,63 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
-        const { xAccessor } = moreProps;
+        const { stroke = KagiSeries.defaultProps.stroke, strokeWidth, currentValueStroke } = this.props;
+        const {
+            xAccessor,
+            xScale,
+            chartConfig: { yScale },
+            plotData,
+        } = moreProps;
 
-        drawOnCanvas(ctx, this.props, moreProps, xAccessor);
+        const paths = helper(plotData, xAccessor);
+
+        let begin = true;
+
+        paths.forEach((each) => {
+            ctx.strokeStyle = stroke[each.type];
+            if (strokeWidth !== undefined) {
+                ctx.lineWidth = strokeWidth;
+            }
+
+            ctx.beginPath();
+            let prevX;
+            each.plot.forEach((d) => {
+                const [x1, y] = [xScale(d[0]), yScale(d[1])];
+                if (begin) {
+                    ctx.moveTo(x1, y);
+                    begin = false;
+                } else {
+                    if (isDefined(prevX)) {
+                        ctx.lineTo(prevX, y);
+                    }
+                    ctx.lineTo(x1, y);
+                }
+                prevX = x1;
+            });
+            ctx.stroke();
+        });
+
+        const lastPlot = paths[paths.length - 1].plot;
+        const last = lastPlot[lastPlot.length - 1];
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+
+        const [x, y1, y2] = [xScale(last[0]), yScale(last[2]), yScale(last[3])];
+        ctx.moveTo(x, y1);
+        ctx.lineTo(x + 10, y1);
+        ctx.stroke();
+
+        ctx.beginPath();
+        if (currentValueStroke !== undefined) {
+            ctx.strokeStyle = currentValueStroke;
+        }
+        ctx.moveTo(x - 10, y2);
+        ctx.lineTo(x, y2);
+        ctx.stroke();
     };
 }
 
-function drawOnCanvas(ctx: CanvasRenderingContext2D, props, moreProps, xAccessor) {
-    const { stroke, strokeWidth, currentValueStroke } = props;
-    const {
-        xScale,
-        chartConfig: { yScale },
-        plotData,
-    } = moreProps;
-
-    const paths = helper(plotData, xAccessor);
-
-    let begin = true;
-
-    paths.forEach((each) => {
-        ctx.strokeStyle = stroke[each.type];
-        ctx.lineWidth = strokeWidth;
-
-        ctx.beginPath();
-        let prevX;
-        each.plot.forEach((d) => {
-            const [x1, y] = [xScale(d[0]), yScale(d[1])];
-            if (begin) {
-                ctx.moveTo(x1, y);
-                begin = false;
-            } else {
-                if (isDefined(prevX)) {
-                    ctx.lineTo(prevX, y);
-                }
-                ctx.lineTo(x1, y);
-            }
-            prevX = x1;
-        });
-        ctx.stroke();
-    });
-    const lastPlot = paths[paths.length - 1].plot;
-    const last = lastPlot[lastPlot.length - 1];
-    ctx.beginPath();
-    ctx.lineWidth = 1;
-
-    const [x, y1, y2] = [xScale(last[0]), yScale(last[2]), yScale(last[3])];
-    ctx.moveTo(x, y1);
-    ctx.lineTo(x + 10, y1);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.strokeStyle = currentValueStroke;
-    ctx.moveTo(x - 10, y2);
-    ctx.lineTo(x, y2);
-    ctx.stroke();
-}
-
-function helper(plotData, xAccessor) {
+const helper = (plotData: any[], xAccessor) => {
     const kagiLine: any[] = [];
     let kagi: {
         added?: boolean;
@@ -137,4 +142,4 @@ function helper(plotData, xAccessor) {
     }
 
     return kagiLine;
-}
+};

@@ -115,7 +115,7 @@ function convertToArray(item) {
     return Array.isArray(item) ? item : [item];
 }
 
-function doStuff(
+const doStuff = (
     props: StackedBarSeriesProps,
     xAccessor,
     plotData,
@@ -124,7 +124,7 @@ function doStuff(
     stackFn,
     postRotateAction,
     defaultPostAction,
-) {
+) => {
     const { yAccessor, swapScales } = props;
 
     const modifiedYAccessor = swapScales ? convertToArray(xAccessor) : convertToArray(yAccessor);
@@ -147,7 +147,7 @@ function doStuff(
     );
 
     return bars;
-}
+};
 
 export const rotateXY = (array) =>
     array.map((each) => {
@@ -160,7 +160,7 @@ export const rotateXY = (array) =>
         };
     });
 
-export function drawOnCanvas2(props: StackedBarSeriesProps, ctx: CanvasRenderingContext2D, bars) {
+export const drawOnCanvas2 = (props: StackedBarSeriesProps, ctx: CanvasRenderingContext2D, bars) => {
     const { stroke } = props;
 
     const nest = group(bars, (d: any) => d.fillStyle);
@@ -182,7 +182,7 @@ export function drawOnCanvas2(props: StackedBarSeriesProps, ctx: CanvasRendering
             }
         });
     });
-}
+};
 
 export function getBars(
     props: StackedBarSeriesProps,

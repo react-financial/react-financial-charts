@@ -15,7 +15,6 @@ const defaultCustomX = (props: CrossHairCursorProps, moreProps) => {
 };
 
 export interface CrossHairCursorProps {
-    readonly className?: string;
     readonly customX?: (props: CrossHairCursorProps, moreProps: any) => number;
     readonly snapX?: boolean;
     readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
@@ -25,7 +24,6 @@ export interface CrossHairCursorProps {
 
 export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
     public static defaultProps = {
-        className: "react-financial-charts-crosshair",
         customX: defaultCustomX,
         snapX: true,
         strokeStyle: "rgba(55, 71, 79, 0.8)",

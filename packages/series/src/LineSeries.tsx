@@ -48,14 +48,14 @@ export interface LineSeriesProps {
  */
 export class LineSeries extends React.Component<LineSeriesProps> {
     public static defaultProps = {
-        strokeStyle: "#2196f3",
-        strokeWidth: 1,
-        hoverStrokeWidth: 4,
-        strokeDasharray: "Solid",
+        connectNulls: false,
         defined: (d: number) => !isNaN(d),
+        hoverStrokeWidth: 4,
         hoverTolerance: 6,
         highlightOnHover: false,
-        connectNulls: false,
+        strokeDasharray: "Solid",
+        strokeStyle: "#2196f3",
+        strokeWidth: 1,
     };
 
     public render() {

@@ -1,10 +1,30 @@
 import { merge, rebind } from "@react-financial-charts/core";
 
 import { sto } from "../calculator";
-
+import { STOOptions } from "../calculator/sto";
 import baseIndicator from "./baseIndicator";
 
 const ALGORITHM_TYPE = "STO";
+
+interface StochasticOscillatorIndicator {
+    (data: any[], options?: { merge: boolean }): any;
+    id(): number;
+    id(x: number): StochasticOscillatorIndicator;
+    accessor(): any;
+    accessor(x: any): StochasticOscillatorIndicator;
+    stroke(): string | any;
+    stroke(x: string | any): StochasticOscillatorIndicator;
+    fill(): string | any;
+    fill(x: string | any): StochasticOscillatorIndicator;
+    echo(): any;
+    echo(x: any): StochasticOscillatorIndicator;
+    type(): string;
+    type(x: string): StochasticOscillatorIndicator;
+    merge(): any;
+    merge(newMerge: any): StochasticOscillatorIndicator;
+    options(): STOOptions;
+    options(newOptions: STOOptions): StochasticOscillatorIndicator;
+}
 
 export default function () {
     const base = baseIndicator().type(ALGORITHM_TYPE);
@@ -33,5 +53,5 @@ export default function () {
     rebind(indicator, underlyingAlgorithm, "options", "undefinedLength");
     rebind(indicator, mergedAlgorithm, "merge", "skipUndefined");
 
-    return indicator;
+    return indicator as StochasticOscillatorIndicator;
 }

@@ -64,9 +64,9 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
     };
 
     private readonly helper = (props, moreProps) => {
-        const { width } = moreProps;
         const {
             chartConfig: { yScale },
+            width,
         } = moreProps;
         const [lowerYValue, upperYValue] = yScale.domain();
 

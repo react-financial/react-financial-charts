@@ -1,5 +1,11 @@
 import * as React from "react";
 
+export interface ICanvasContexts {
+    readonly bg?: CanvasRenderingContext2D;
+    readonly axes?: CanvasRenderingContext2D;
+    readonly mouseCoord?: CanvasRenderingContext2D;
+}
+
 export interface CanvasContainerProps {
     readonly height: number;
     readonly ratio: number;
@@ -12,11 +18,11 @@ export class CanvasContainer extends React.PureComponent<CanvasContainerProps> {
     private readonly axesRef = React.createRef<HTMLCanvasElement>();
     private readonly mouseRef = React.createRef<HTMLCanvasElement>();
 
-    public getCanvasContexts() {
+    public getCanvasContexts(): ICanvasContexts {
         return {
-            bg: this.bgRef.current?.getContext("2d"),
-            axes: this.axesRef.current?.getContext("2d"),
-            mouseCoord: this.mouseRef.current?.getContext("2d"),
+            bg: this.bgRef.current?.getContext("2d") ?? undefined,
+            axes: this.axesRef.current?.getContext("2d") ?? undefined,
+            mouseCoord: this.mouseRef.current?.getContext("2d") ?? undefined,
         };
     }
 

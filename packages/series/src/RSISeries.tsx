@@ -33,6 +33,9 @@ export interface RSISeriesProps {
     readonly overBought?: number;
 }
 
+/**
+ * The Relative Strength Index (RSI) is a momentum oscillator that measures the speed and change of price movements.
+ */
 export class RSISeries extends React.Component<RSISeriesProps> {
     public static defaultProps = {
         className: "react-financial-charts-rsi-series",

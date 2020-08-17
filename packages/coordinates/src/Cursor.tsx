@@ -12,7 +12,6 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 
 export interface CursorProps {
-    readonly className?: string;
     readonly disableYCursor?: boolean;
     readonly opacity?: number;
     readonly snapX?: boolean;
@@ -32,7 +31,7 @@ const defaultCustomSnapX = (props: CursorProps, moreProps) => {
     return x;
 };
 
-class Cursor extends React.Component<CursorProps> {
+export class Cursor extends React.Component<CursorProps> {
     public static defaultProps = {
         stroke: "#000000",
         opacity: 0.3,
@@ -173,5 +172,3 @@ class Cursor extends React.Component<CursorProps> {
         }
     };
 }
-
-export default Cursor;

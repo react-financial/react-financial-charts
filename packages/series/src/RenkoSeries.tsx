@@ -2,40 +2,32 @@ import * as React from "react";
 import { isDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
 export interface RenkoSeriesProps {
-    readonly classNames?: {
-        up: string;
-        down: string;
+    readonly clip?: boolean;
+    readonly fill?: {
+        up: string | CanvasGradient | CanvasPattern;
+        down: string | CanvasGradient | CanvasPattern;
+        partial: string | CanvasGradient | CanvasPattern;
     };
     readonly stroke?: {
-        up: string;
-        down: string;
+        up: string | CanvasGradient | CanvasPattern;
+        down: string | CanvasGradient | CanvasPattern;
     };
-    readonly fill?: {
-        up: string;
-        down: string;
-        partial: string;
-    };
-    readonly yAccessor?: any; // func
-    readonly clip?: boolean;
+    readonly yAccessor?: (data: any) => any;
 }
 
 export class RenkoSeries extends React.Component<RenkoSeriesProps> {
     public static defaultProps = {
-        classNames: {
-            up: "up",
-            down: "down",
-        },
-        stroke: {
-            up: "none",
-            down: "none",
-        },
+        clip: true,
         fill: {
             up: "#26a69a",
             down: "#ef5350",
             partial: "#4682B4",
         },
+        stroke: {
+            up: "none",
+            down: "none",
+        },
         yAccessor: (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
-        clip: true,
     };
 
     public render() {
@@ -62,10 +54,15 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
         const renko = this.getRenko(plotData, xScale, xAccessor, yScale);
 
         renko.forEach((d) => {
+            const { fillStyle, strokeStyle } = d;
             ctx.beginPath();
 
-            ctx.strokeStyle = d.stroke;
-            ctx.fillStyle = d.fill;
+            if (strokeStyle !== undefined) {
+                ctx.strokeStyle = strokeStyle;
+            }
+            if (fillStyle !== undefined) {
+                ctx.fillStyle = fillStyle;
+            }
 
             ctx.rect(d.x, d.y, d.width, d.height);
             ctx.closePath();
@@ -73,31 +70,32 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
         });
     };
 
-    private readonly getRenko = (plotData, xScale, xAccessor, yScale) => {
-        const { classNames, fill, yAccessor } = this.props;
+    private readonly getRenko = (plotData: any[], xScale, xAccessor, yScale) => {
+        const { fill, stroke, yAccessor = RenkoSeries.defaultProps.yAccessor } = this.props;
+
         const width = xScale(xAccessor(plotData[plotData.length - 1])) - xScale(xAccessor(plotData[0]));
 
         const candleWidth = width / (plotData.length - 1);
-        const candles = plotData
+
+        return plotData
             .filter((d) => isDefined(yAccessor(d).close))
             .map((d) => {
                 const ohlc = yAccessor(d);
                 const x = xScale(xAccessor(d)) - 0.5 * candleWidth;
                 const y = yScale(Math.max(ohlc.open, ohlc.close));
                 const height = Math.abs(yScale(ohlc.open) - yScale(ohlc.close));
-                const className = ohlc.open <= ohlc.close ? classNames?.up : classNames?.down;
 
-                const svgfill = d.fullyFormed ? (ohlc.open <= ohlc.close ? fill?.up : fill?.down) : fill?.partial;
+                const fillStyle = d.fullyFormed ? (ohlc.open <= ohlc.close ? fill?.up : fill?.down) : fill?.partial;
+                const strokeStyle = d.fullyFormed ? (ohlc.open <= ohlc.close ? stroke?.up : stroke?.down) : undefined;
 
                 return {
-                    className,
-                    fill: svgfill,
+                    fillStyle,
+                    height,
+                    strokeStyle,
+                    width: candleWidth,
                     x,
                     y,
-                    height,
-                    width: candleWidth,
                 };
             });
-        return candles;
     };
 }

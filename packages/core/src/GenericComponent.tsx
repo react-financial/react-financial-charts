@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as PropTypes from "prop-types";
 import * as React from "react";
-
-import { functor, identity, noop } from "./utils";
+import { functor, identity } from "./utils";
+import { ICanvasContexts } from "./CanvasContainer";
 
 const aliases = {
     mouseleave: "mousemove", // to draw interactive after mouse exit
@@ -18,34 +18,33 @@ const aliases = {
 };
 
 interface GenericComponentProps {
-    readonly svgDraw: any; // func
-    readonly canvasDraw?: any; // func
-    readonly drawOn: any[];
+    readonly svgDraw?: (moreProps: any) => React.ReactNode;
+    readonly canvasDraw?: (ctx: CanvasRenderingContext2D, moreProps: any) => void;
     readonly clip?: boolean;
-    readonly edgeClip?: boolean;
-    readonly interactiveCursorClass?: string;
-    readonly selected?: boolean;
-    readonly enableDragOnHover?: boolean;
     readonly disablePan?: boolean;
-    readonly canvasToDraw?: any; // func
-    readonly isHover?: any; // func
-    readonly onClick?: any; // func
-    readonly onClickWhenHover?: any; // func
-    readonly onClickOutside?: any; // func
-    readonly onPan?: any; // func
-    readonly onPanEnd?: any; // func
-    readonly onDragStart?: any; // func
-    readonly onDrag?: any; // func
-    readonly onDragComplete?: any; // func
-    readonly onDoubleClick?: any; // func
-    readonly onDoubleClickWhenHover?: any; // func
-    readonly onContextMenu?: any; // func
-    readonly onContextMenuWhenHover?: any; // func
-    readonly onMouseMove?: any; // func
-    readonly onMouseDown?: any; // func
-    readonly onHover?: any; // func
-    readonly onUnHover?: any; // func
-    readonly debug?: any; // func
+    readonly drawOn: string[];
+    readonly edgeClip?: boolean;
+    readonly enableDragOnHover?: boolean;
+    readonly interactiveCursorClass?: string;
+    readonly canvasToDraw?: (contexts: ICanvasContexts) => CanvasRenderingContext2D | undefined;
+    readonly isHover?: (moreProps, e: React.MouseEvent) => boolean;
+    readonly onClick?: (e: React.MouseEvent, moreProps) => void;
+    readonly onClickWhenHover?: (e: React.MouseEvent, moreProps) => void;
+    readonly onClickOutside?: (e: React.MouseEvent, moreProps) => void;
+    readonly onPan?: (e: React.MouseEvent, moreProps) => void;
+    readonly onPanEnd?: (e: React.MouseEvent, moreProps) => void;
+    readonly onDragStart?: (e: React.MouseEvent, moreProps) => void;
+    readonly onDrag?: (e: React.MouseEvent, moreProps) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps) => void;
+    readonly onDoubleClick?: (e: React.MouseEvent, moreProps) => void;
+    readonly onDoubleClickWhenHover?: (e: React.MouseEvent, moreProps) => void;
+    readonly onContextMenu?: (e: React.MouseEvent, moreProps) => void;
+    readonly onContextMenuWhenHover?: (e: React.MouseEvent, moreProps) => void;
+    readonly onMouseMove?: (e: React.MouseEvent, moreProps) => void;
+    readonly onMouseDown?: (e: React.MouseEvent, moreProps) => void;
+    readonly onHover?: (e: React.MouseEvent, moreProps) => void;
+    readonly onUnHover?: (e: React.MouseEvent, moreProps) => void;
+    readonly selected?: boolean;
 }
 
 interface GenericComponentState {
@@ -56,18 +55,12 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     public static defaultProps = {
         svgDraw: functor(null),
         draw: [],
-        canvasToDraw: (contexts) => contexts.mouseCoord,
+        canvasToDraw: (contexts: ICanvasContexts) => contexts.mouseCoord,
         clip: true,
         edgeClip: false,
         selected: false,
         disablePan: false,
         enableDragOnHover: false,
-        onClickWhenHover: noop,
-        onClickOutside: noop,
-        onDragStart: noop,
-        onMouseMove: noop,
-        onMouseDown: noop,
-        debug: noop,
     };
 
     public static contextTypes = {
@@ -147,7 +140,6 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     public evaluateType(type, e) {
         const newType = aliases[type] || type;
         const proceed = this.props.drawOn.indexOf(newType) > -1;
-
         if (!proceed) {
             return;
         }
@@ -188,14 +180,16 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
                 break;
             }
             case "click": {
+                const { onClick, onClickOutside, onClickWhenHover } = this.props;
                 const moreProps = this.getMoreProps();
-                if (this.moreProps.hovering) {
-                    this.props.onClickWhenHover(e, moreProps);
-                } else {
-                    this.props.onClickOutside(e, moreProps);
+                if (moreProps.hovering && onClickWhenHover !== undefined) {
+                    onClickWhenHover(e, moreProps);
+                } else if (onClickOutside !== undefined) {
+                    onClickOutside(e, moreProps);
                 }
-                if (this.props.onClick) {
-                    this.props.onClick(e, moreProps);
+
+                if (onClick !== undefined) {
+                    onClick(e, moreProps);
                 }
                 break;
             }
@@ -268,7 +262,9 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
                     const { amIOnTop } = this.context;
                     if (amIOnTop(this.suscriberId)) {
                         this.dragInProgress = true;
-                        this.props.onDragStart(e, this.getMoreProps());
+                        if (this.props.onDragStart !== undefined) {
+                            this.props.onDragStart(e, this.getMoreProps());
+                        }
                     }
                 }
                 break;
@@ -318,7 +314,6 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
 
         if (proceed || this.props.selected /* this is to draw as soon as you select */ || force) {
             const { canvasDraw } = this.props;
-
             if (canvasDraw === undefined) {
                 const { updateCount } = this.state;
                 this.setState({
@@ -380,7 +375,6 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     public UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
         const { xScale, plotData, chartConfig, getMutableState } = nextContext;
 
-        this.props.debug(nextContext);
         this.moreProps = {
             ...this.moreProps,
             ...getMutableState(),
@@ -436,7 +430,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
 
     public drawOnCanvas() {
         const { canvasDraw, canvasToDraw } = this.props;
-        if (canvasDraw === undefined) {
+        if (canvasDraw === undefined || canvasToDraw === undefined) {
             return;
         }
 
@@ -456,7 +450,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
 
     public render() {
         const { canvasDraw, clip, svgDraw } = this.props;
-        if (canvasDraw !== undefined) {
+        if (canvasDraw !== undefined || svgDraw === undefined) {
             return null;
         }
 

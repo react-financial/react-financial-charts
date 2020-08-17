@@ -22,7 +22,7 @@ interface ChartProps {
     readonly width: number;
 }
 
-class ElderRayIndicator extends React.Component<ChartProps> {
+export class ElderRayIndicatorChart extends React.Component<ChartProps> {
     private readonly margin = { left: 0, right: 48, top: 8, bottom: 24 };
     private readonly xScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
         (d: IOHLCData) => d.date,
@@ -74,4 +74,4 @@ class ElderRayIndicator extends React.Component<ChartProps> {
     }
 }
 
-export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(ElderRayIndicator)));
+export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(ElderRayIndicatorChart)));

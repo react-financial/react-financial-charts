@@ -11,7 +11,6 @@ import {
     MOUSEMOVE,
     mousePosition,
     MOUSEUP,
-    noop,
     TOUCHEND,
     TOUCHMOVE,
     touchPosition,
@@ -36,10 +35,16 @@ interface EventCaptureProps {
     readonly onMouseEnter?: (event: any) => void;
     readonly onMouseLeave?: (event: React.MouseEvent) => void;
     readonly onZoom?: (zoomDir: 1 | -1, mouseXY: number[], event: React.WheelEvent) => void;
-    readonly onPinchZoom?: any; // func
-    readonly onPinchZoomEnd: any; // func
-    readonly onPan?: any; // func
-    readonly onPanEnd?: any; // func
+    readonly onPinchZoom?: (initialPinch, { touch1Pos, touch2Pos, xScale }, e) => void;
+    readonly onPinchZoomEnd?: (initialPinch, e) => void;
+    readonly onPan?: (
+        mouseXY: number[],
+        panStartXScale,
+        dxdy: { dx: number; dy: number },
+        chartsToPan: any[],
+        e: React.MouseEvent,
+    ) => void;
+    readonly onPanEnd?: (mouseXY: number[], panStartXScale, panOrigin, chartsToPan: any[], e) => void;
     readonly onDragStart?: (details: { startPos: number[] }, event: React.MouseEvent) => void;
     readonly onDrag?: (details: { startPos: number[]; mouseXY: number[] }, event: React.MouseEvent) => void;
     readonly onDragComplete?: (details: { mouseXY: number[] }, event: React.MouseEvent) => void;
@@ -65,7 +70,6 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         pan: false,
         panSpeedMultiplier: 1,
         focus: false,
-        onDragComplete: noop,
         disableInteraction: false,
     };
 
@@ -182,7 +186,9 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 this.dy += e.deltaY;
                 const dxdy = { dx: this.dx, dy: this.dy };
 
-                this.props.onPan(mouseXY, panStartXScale, dxdy, chartsToPan, e);
+                if (this.props.onPan !== undefined) {
+                    this.props.onPan(mouseXY, panStartXScale, dxdy, chartsToPan, e);
+                }
             } else {
                 const { xScale, chartConfig } = this.props;
                 const currentCharts = getCurrentCharts(chartConfig, mouseXY);
@@ -254,7 +260,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
         if (isDefined(this.state.panStart)) {
             const { panStartXScale, panOrigin, chartsToPan } = this.state.panStart;
-            if (this.panHappened) {
+            if (this.panHappened && onPanEnd !== undefined) {
                 onPanEnd(mouseXY, panStartXScale, panOrigin, chartsToPan, e);
             }
             const win = d3Window(this.ref.current);
@@ -429,7 +435,9 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
             this.dx = dx;
             this.dy = dy;
 
-            this.props.onPan(mouseXY, panStartXScale, { dx, dy }, chartsToPan, e);
+            if (this.props.onPan !== undefined) {
+                this.props.onPan(mouseXY, panStartXScale, { dx, dy }, chartsToPan, e);
+            }
         }
     };
 

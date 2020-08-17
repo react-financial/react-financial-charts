@@ -22,6 +22,12 @@ export interface SARSeriesProps {
     readonly highlightOnHover?: boolean;
 }
 
+/**
+ * SAR stands for 'stop and reverse'.
+ * The indicator is below prices as they're rising and above
+ * prices as they're falling. In this regard, the indicator
+ * stops and reverses when the price trend reverses and breaks above or below the indicator.
+ */
 export class SARSeries extends React.Component<SARSeriesProps> {
     public static defaultProps = {
         className: "react-financial-charts-sar",

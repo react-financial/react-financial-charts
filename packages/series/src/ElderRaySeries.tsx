@@ -1,6 +1,5 @@
-import * as React from "react";
-
 import { strokeDashTypes } from "@react-financial-charts/core";
+import * as React from "react";
 import { OverlayBarSeries } from "./OverlayBarSeries";
 import { StraightLine } from "./StraightLine";
 
@@ -18,6 +17,12 @@ export interface ElderRaySeriesProps {
     readonly yAccessor: (data: any) => { bearPower: number; bullPower: number };
 }
 
+/**
+ * This indicator consists of three separate indicators
+ * known as "bull power" and "bear power", which are derived from a 13-period
+ * exponential moving average (EMA). The three indicator help traders determine
+ * the trend direction and isolate spots to enter and exit trades.
+ */
 export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
     public static defaultProps = {
         fillStyle: {
@@ -58,12 +63,7 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
                         this.yAccessorBearBottom,
                     ]}
                 />
-                <StraightLine
-                    className="react-financial-charts-elderray-straight-line"
-                    yValue={0}
-                    strokeStyle={straightLineStrokeStyle}
-                    lineDash={straightLineStrokeDasharray}
-                />
+                <StraightLine yValue={0} strokeStyle={straightLineStrokeStyle} lineDash={straightLineStrokeDasharray} />
             </g>
         );
     }

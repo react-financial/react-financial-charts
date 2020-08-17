@@ -2,6 +2,7 @@ import * as React from "react";
 import {
     bollingerBand,
     BollingerSeries,
+    BollingerSeriesProps,
     BollingerBandTooltip,
     CandlestickSeries,
     discontinuousTimeScaleProviderBuilder,
@@ -14,7 +15,7 @@ import {
 } from "react-financial-charts";
 import { IOHLCData, withOHLCData } from "../../data";
 
-interface ChartProps {
+interface ChartProps extends Pick<BollingerSeriesProps, "fillStyle"> {
     readonly data: IOHLCData[];
     readonly height: number;
     readonly ratio: number;
@@ -28,7 +29,7 @@ class BollingerIndicator extends React.Component<ChartProps> {
     );
 
     public render() {
-        const { data: initialData, height, ratio, width } = this.props;
+        const { data: initialData, height, ratio, width, ...rest } = this.props;
 
         const calculator = bollingerBand()
             .merge((d: any, c: any) => {
@@ -62,7 +63,7 @@ class BollingerIndicator extends React.Component<ChartProps> {
                     <YAxis />
 
                     <CandlestickSeries />
-                    <BollingerSeries />
+                    <BollingerSeries {...rest} />
 
                     <BollingerBandTooltip options={calculator.options()} />
                 </Chart>

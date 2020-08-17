@@ -9,17 +9,17 @@ export interface IZoomAnchorOptions<T> {
     readonly xScale: ScaleContinuousNumeric<number, number>;
 }
 
-export function mouseBasedZoomAnchor<T>({ xScale, xAccessor, mouseXY, plotData }: IZoomAnchorOptions<T>) {
+export const mouseBasedZoomAnchor = <T>({ xScale, xAccessor, mouseXY, plotData }: IZoomAnchorOptions<T>) => {
     const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
     return xAccessor(currentItem);
-}
+};
 
-export function lastVisibleItemBasedZoomAnchor<T>({ xAccessor, plotData }: IZoomAnchorOptions<T>) {
+export const lastVisibleItemBasedZoomAnchor = <T>({ xAccessor, plotData }: IZoomAnchorOptions<T>) => {
     const lastItem = last(plotData);
     return xAccessor(lastItem);
-}
+};
 
-export function rightDomainBasedZoomAnchor<T>({ xScale }: IZoomAnchorOptions<T>) {
+export const rightDomainBasedZoomAnchor = <T>({ xScale }: IZoomAnchorOptions<T>) => {
     const [, end] = xScale.domain();
     return end;
-}
+};

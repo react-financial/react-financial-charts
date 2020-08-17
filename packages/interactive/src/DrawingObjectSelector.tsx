@@ -1,11 +1,11 @@
 import * as React from "react";
-import { head, isDefined, mapObject, noop, GenericComponent, getMouseCanvas } from "@react-financial-charts/core";
+import { head, isDefined, mapObject, GenericComponent, getMouseCanvas } from "@react-financial-charts/core";
 import { getMorePropsForChart, getSelected } from "./utils";
 
 interface DrawingObjectSelectorProps {
-    readonly getInteractiveNodes: any; // func
-    readonly onSelect: any; // func
-    readonly onDoubleClick: any; // func
+    readonly getInteractiveNodes: () => any[];
+    readonly onSelect?: (interactives, moreProps) => void;
+    readonly onDoubleClick?: (item, moreProps) => void;
     readonly drawingObjectMap: object;
     readonly enabled: boolean;
 }
@@ -13,15 +13,12 @@ interface DrawingObjectSelectorProps {
 export class DrawingObjectSelector extends React.Component<DrawingObjectSelectorProps> {
     public static defaultProps = {
         enabled: true,
-        onDoubleClick: noop,
     };
 
     public render() {
         return (
             <GenericComponent
-                svgDraw={noop}
                 canvasToDraw={getMouseCanvas}
-                canvasDraw={noop}
                 onMouseDown={this.handleClick}
                 onDoubleClick={this.handleDoubleClick}
                 drawOn={["mousemove", "pan", "drag"]}
@@ -68,8 +65,9 @@ export class DrawingObjectSelector extends React.Component<DrawingObjectSelector
         }
 
         const interactives = this.getInteraction(moreProps);
-
-        onSelect(interactives, moreProps);
+        if (onSelect !== undefined) {
+            onSelect(interactives, moreProps);
+        }
     };
 
     private readonly handleDoubleClick = (moreProps, e) => {
@@ -91,7 +89,9 @@ export class DrawingObjectSelector extends React.Component<DrawingObjectSelector
                 object: head(selected.objects),
             };
             const morePropsForChart = getMorePropsForChart(moreProps, selected.chartId);
-            onDoubleClick(item, morePropsForChart);
+            if (onDoubleClick !== undefined) {
+                onDoubleClick(item, morePropsForChart);
+            }
         }
     };
 }

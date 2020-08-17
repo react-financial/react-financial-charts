@@ -38,13 +38,13 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
     private calculateTextWidth = true;
     private textWidth;
 
-    public UNSAFE_componentWillReceiveProps(nextProps) {
+    public componentDidUpdate(previousProps: InteractiveTextProps) {
         this.calculateTextWidth =
-            nextProps.text !== this.props.text ||
-            nextProps.fontStyle !== this.props.fontStyle ||
-            nextProps.fontWeight !== this.props.fontWeight ||
-            nextProps.fontSize !== this.props.fontSize ||
-            nextProps.fontFamily !== this.props.fontFamily;
+            previousProps.text !== this.props.text ||
+            previousProps.fontStyle !== this.props.fontStyle ||
+            previousProps.fontWeight !== this.props.fontWeight ||
+            previousProps.fontSize !== this.props.fontSize ||
+            previousProps.fontFamily !== this.props.fontFamily;
     }
 
     public render() {

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.8](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2020-08-17)
+
+
+### Bug Fixes
+
+* removing explict returns ([999b5ac](https://github.com/reactivemarkets/react-financial-charts/commit/999b5acb8d1669406e3d8be813d831e20151c87f))
+* **tooltip:** fixing group tooltip props ([ba43c36](https://github.com/reactivemarkets/react-financial-charts/commit/ba43c369d9d73dceb70c05f1fce9bbb2c45044a1))
+
+
+### Features
+
+* exporting props from components for docs ([fbdaea5](https://github.com/reactivemarkets/react-financial-charts/commit/fbdaea506730b091f4f8f6da52fc030b44d1a6e1))
+
+
+
+
+
 # [1.0.0-alpha.7](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2020-07-26)
 
 

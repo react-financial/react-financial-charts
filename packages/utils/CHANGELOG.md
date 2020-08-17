@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.8](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2020-08-17)
+
+
+### Features
+
+* exporting props from components for docs ([fbdaea5](https://github.com/reactivemarkets/react-financial-charts/commit/fbdaea506730b091f4f8f6da52fc030b44d1a6e1))
+
+
+
+
+
 # [1.0.0-alpha.4](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2020-07-19)
 
 

@@ -7,9 +7,9 @@ const parseDate = timeParse("%Y-%m-%d");
 
 const parseData = () => {
     return (d: any) => {
-        let date = parseDate(d.date);
+        const date = parseDate(d.date);
         if (date === null) {
-            date = new Date(Number(d.date));
+            d.date = new Date(Number(d.date));
         } else {
             d.date = new Date(date);
         }

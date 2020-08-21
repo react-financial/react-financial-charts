@@ -41,7 +41,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@babel/core": "^7.11.1",
+    "@babel/core": "^7.11.4",
     "@storybook/addon-actions": "^6.0.10",
     "@storybook/addon-docs": "^6.0.10",
     "@storybook/addon-essentials": "^6.0.10",

@@ -11,7 +11,7 @@ export interface YAxisProps {
     readonly fontSize?: number;
     readonly fontWeight?: number;
     readonly getMouseDelta?: (startXY: [number, number], mouseXY: [number, number]) => number;
-    readonly gridLinesStroke?: string;
+    readonly gridLinesStrokeStyle?: string;
     readonly gridLinesStrokeWidth?: number;
     readonly gridLinesStrokeDasharray?: strokeDashTypes;
     readonly innerTickSize?: number;
@@ -30,8 +30,7 @@ export interface YAxisProps {
     readonly tickSize?: number;
     readonly tickLabelFill?: string;
     readonly ticks?: number;
-    readonly tickStroke?: string;
-    readonly tickStrokeOpacity?: number;
+    readonly tickStrokeStyle?: string;
     readonly tickStrokeWidth?: number;
     readonly tickStrokeDasharray?: strokeDashTypes;
     readonly tickValues?: number[];
@@ -49,7 +48,7 @@ export class YAxis extends React.Component<YAxisProps> {
         fontSize: 12,
         fontWeight: 400,
         getMouseDelta: (startXY, mouseXY) => startXY[1] - mouseXY[1],
-        gridLinesStroke: "#E2E4EC",
+        gridLinesStrokeStyle: "#E2E4EC",
         gridLinesStrokeWidth: 1,
         innerTickSize: 4,
         outerTickSize: 0,
@@ -62,8 +61,7 @@ export class YAxis extends React.Component<YAxisProps> {
         strokeWidth: 1,
         tickPadding: 4,
         tickLabelFill: "#000000",
-        tickStroke: "#000000",
-        tickStrokeOpacity: 1,
+        tickStrokeStyle: "#000000",
         yZoomWidth: 40,
         zoomEnabled: true,
         zoomCursorClassName: "react-financial-charts-ns-resize-cursor",
@@ -101,8 +99,9 @@ export class YAxis extends React.Component<YAxisProps> {
         );
     }
 
-    private readonly axisZoomCallback = (newYDomain) => {
+    private readonly axisZoomCallback = (newYDomain: number[]) => {
         const { chartId, yAxisZoom } = this.context;
+
         yAxisZoom(chartId, newYDomain);
     };
 

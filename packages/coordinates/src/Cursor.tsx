@@ -1,10 +1,8 @@
 import {
-    colorToRGBA,
     first,
     getStrokeDasharrayCanvas,
     GenericComponent,
     getMouseCanvas,
-    isNotDefined,
     last,
     strokeDashTypes,
 } from "@react-financial-charts/core";
@@ -12,16 +10,23 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 
 export interface CursorProps {
+    readonly customX?: (props: CursorProps, moreProps: any) => number;
     readonly disableYCursor?: boolean;
-    readonly opacity?: number;
     readonly snapX?: boolean;
-    readonly stroke?: string;
     readonly strokeDasharray?: strokeDashTypes;
+    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly useXCursorShape?: boolean;
-    readonly xCursorShapeFill?: string | any; // func
-    readonly xCursorShapeStroke: string | any; // func
+    readonly xCursorShapeFillStyle?:
+        | string
+        | CanvasGradient
+        | CanvasPattern
+        | ((currentItem: any) => string | CanvasGradient | CanvasPattern);
+    readonly xCursorShapeStrokeStyle?:
+        | string
+        | CanvasGradient
+        | CanvasPattern
+        | ((currentItem: any) => string | CanvasGradient | CanvasPattern);
     readonly xCursorShapeStrokeDasharray?: strokeDashTypes;
-    readonly xCursorShapeOpacity?: number;
 }
 
 const defaultCustomSnapX = (props: CursorProps, moreProps) => {
@@ -33,15 +38,13 @@ const defaultCustomSnapX = (props: CursorProps, moreProps) => {
 
 export class Cursor extends React.Component<CursorProps> {
     public static defaultProps = {
-        stroke: "#000000",
-        opacity: 0.3,
+        strokeStyle: "rgba(55, 71, 79, 0.8)",
         strokeDasharray: "ShortDash",
         snapX: true,
-        customSnapX: defaultCustomSnapX,
+        customX: defaultCustomSnapX,
         disableYCursor: false,
         useXCursorShape: false,
-        xCursorShapeStroke: "#000000",
-        xCursorShapeOpacity: 0.5,
+        xCursorShapeStrokeStyle: "rgba(0, 0, 0, 0.5)",
     };
 
     public static contextTypes = {
@@ -60,16 +63,18 @@ export class Cursor extends React.Component<CursorProps> {
         );
     }
 
-    private getXCursorShapeStroke(moreProps) {
-        const { xCursorShapeStroke } = this.props;
-        const { currentItem } = moreProps;
-        return xCursorShapeStroke instanceof Function ? xCursorShapeStroke(currentItem) : xCursorShapeStroke;
+    private getXCursorShapeStroke({ currentItem }): string | CanvasGradient | CanvasPattern | undefined {
+        const { xCursorShapeStrokeStyle } = this.props;
+
+        return xCursorShapeStrokeStyle instanceof Function
+            ? xCursorShapeStrokeStyle(currentItem)
+            : xCursorShapeStrokeStyle;
     }
 
-    private getXCursorShapeFill(moreProps) {
-        const { xCursorShapeFill } = this.props;
-        const { currentItem } = moreProps;
-        return xCursorShapeFill instanceof Function ? xCursorShapeFill(currentItem) : xCursorShapeFill;
+    private getXCursorShapeFill({ currentItem }): string | CanvasGradient | CanvasPattern | undefined {
+        const { xCursorShapeFillStyle } = this.props;
+
+        return xCursorShapeFillStyle instanceof Function ? xCursorShapeFillStyle(currentItem) : xCursorShapeFillStyle;
     }
 
     private getXCursorShape(moreProps /* , ctx */) {
@@ -84,35 +89,35 @@ export class Cursor extends React.Component<CursorProps> {
         return { height, xPos, shapeWidth };
     }
 
-    private getXYCursor(props, moreProps) {
+    private getXYCursor(props: CursorProps, moreProps) {
         const { mouseXY, currentItem, show, height, width } = moreProps;
-        const { customSnapX, stroke, opacity, strokeDasharray, disableYCursor } = props;
 
-        if (!show || isNotDefined(currentItem)) {
+        const { customX = Cursor.defaultProps.customX, strokeStyle, strokeDasharray, disableYCursor } = props;
+
+        if (!show || currentItem === undefined) {
             return undefined;
         }
 
         const yCursor = {
             x1: 0,
             x2: width,
-            y1: mouseXY[1],
-            y2: mouseXY[1],
-            stroke,
+            y1: mouseXY[1] + 0.5,
+            y2: mouseXY[1] + 0.5,
+            strokeStyle,
             strokeDasharray,
-            opacity,
-            id: "yCursor",
+            isXCursor: false,
         };
-        const x = customSnapX(props, moreProps);
+
+        const x = customX(props, moreProps);
 
         const xCursor = {
             x1: x,
             x2: x,
             y1: 0,
             y2: height,
-            stroke,
+            strokeStyle,
             strokeDasharray,
-            opacity,
-            id: "xCursor",
+            isXCursor: true,
         };
 
         return disableYCursor ? [xCursor] : [yCursor, xCursor];
@@ -120,55 +125,61 @@ export class Cursor extends React.Component<CursorProps> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
         const cursors = this.getXYCursor(this.props, moreProps);
+        if (cursors === undefined) {
+            return;
+        }
 
-        if (cursors !== undefined) {
-            const { useXCursorShape } = this.props;
+        const { useXCursorShape } = this.props;
 
-            const { margin, ratio } = this.context;
-            const originX = 0.5 * ratio + margin.left;
-            const originY = 0.5 * ratio + margin.top;
+        const { margin, ratio } = this.context;
 
-            ctx.save();
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-            ctx.scale(ratio, ratio);
+        const originX = 0.5 * ratio + margin.left;
+        const originY = 0.5 * ratio + margin.top;
 
-            ctx.translate(originX, originY);
+        ctx.save();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(ratio, ratio);
+        ctx.translate(originX, originY);
 
-            cursors.forEach((line) => {
-                const dashArray = getStrokeDasharrayCanvas(line.strokeDasharray);
-                const xShapeFill = this.getXCursorShapeFill(moreProps);
-
-                if (useXCursorShape && line.id === "xCursor") {
-                    const { xCursorShapeOpacity, xCursorShapeStrokeDasharray } = this.props;
-                    const xShape = this.getXCursorShape(moreProps);
-
-                    if (xCursorShapeStrokeDasharray != null) {
-                        const xShapeStroke = this.getXCursorShapeStroke(moreProps);
-                        ctx.strokeStyle = colorToRGBA(xShapeStroke, xCursorShapeOpacity);
-                        ctx.setLineDash(getStrokeDasharrayCanvas(xCursorShapeStrokeDasharray));
+        cursors.forEach((line) => {
+            if (useXCursorShape && line.isXCursor) {
+                const { xCursorShapeStrokeDasharray } = this.props;
+                if (xCursorShapeStrokeDasharray !== undefined) {
+                    const xShapeStrokeStyle = this.getXCursorShapeStroke(moreProps);
+                    if (xShapeStrokeStyle !== undefined) {
+                        ctx.strokeStyle = xShapeStrokeStyle;
                     }
-
-                    ctx.beginPath();
-                    ctx.fillStyle =
-                        xShapeFill != null ? colorToRGBA(xShapeFill, xCursorShapeOpacity) : "rgba(0, 0, 0, 0)"; // ="transparent"
-
-                    ctx.beginPath();
-                    xCursorShapeStrokeDasharray == null
-                        ? ctx.fillRect(xShape.xPos, 0, xShape.shapeWidth, xShape.height)
-                        : ctx.rect(xShape.xPos, 0, xShape.shapeWidth, xShape.height);
-                    ctx.fill();
-                } else {
-                    ctx.strokeStyle = colorToRGBA(line.stroke, line.opacity);
-                    ctx.setLineDash(dashArray);
-                    ctx.beginPath();
-                    ctx.moveTo(line.x1, line.y1);
-                    ctx.lineTo(line.x2, line.y2);
+                    ctx.setLineDash(getStrokeDasharrayCanvas(xCursorShapeStrokeDasharray));
                 }
 
-                ctx.stroke();
-            });
+                ctx.beginPath();
+                const xShapeFillStyle = this.getXCursorShapeFill(moreProps);
+                if (xShapeFillStyle !== undefined) {
+                    ctx.fillStyle = xShapeFillStyle;
+                }
 
-            ctx.restore();
-        }
+                ctx.beginPath();
+
+                const xShape = this.getXCursorShape(moreProps);
+                xCursorShapeStrokeDasharray === undefined
+                    ? ctx.fillRect(xShape.xPos, 0, xShape.shapeWidth, xShape.height)
+                    : ctx.rect(xShape.xPos, 0, xShape.shapeWidth, xShape.height);
+                ctx.fill();
+            } else {
+                if (line.strokeStyle !== undefined) {
+                    ctx.strokeStyle = line.strokeStyle;
+                }
+
+                const dashArray = getStrokeDasharrayCanvas(line.strokeDasharray);
+                ctx.setLineDash(dashArray);
+                ctx.beginPath();
+                ctx.moveTo(line.x1, line.y1);
+                ctx.lineTo(line.x2, line.y2);
+            }
+
+            ctx.stroke();
+        });
+
+        ctx.restore();
     };
 }

@@ -1,13 +1,12 @@
-import { head, isDefined, isNotDefined, last } from "@react-financial-charts/core";
+import { head, isDefined, last } from "@react-financial-charts/core";
 import { ascending } from "d3-array";
 import { scaleLinear } from "d3-scale";
-
 import { levelDefinition } from "./levels";
 
 const MAX_LEVEL = levelDefinition.length - 1;
 
 export default function financeDiscontinuousScale(index, backingLinearScale = scaleLinear()) {
-    if (isNotDefined(index)) {
+    if (index === undefined) {
         throw new Error("Use the discontinuousTimeScaleProvider to create financeDiscontinuousScale");
     }
 
@@ -51,7 +50,7 @@ export default function financeDiscontinuousScale(index, backingLinearScale = sc
     };
     scale.ticks = function (m) {
         const backingTicks = backingLinearScale.ticks(m);
-        const ticksMap = new Map<number, any>();
+        const ticksMap = new Map<number, any[]>();
 
         const [domainStart, domainEnd] = backingLinearScale.domain();
 
@@ -64,7 +63,7 @@ export default function financeDiscontinuousScale(index, backingLinearScale = sc
 
         for (let i = MAX_LEVEL; i >= 0; i--) {
             const ticksAtLevel = ticksMap.get(i);
-            const temp = isNotDefined(ticksAtLevel) ? [] : ticksAtLevel.slice();
+            const temp = ticksAtLevel === undefined ? [] : ticksAtLevel.slice();
 
             for (let j = start; j <= end; j++) {
                 if (index[j].level === i) {
@@ -75,12 +74,13 @@ export default function financeDiscontinuousScale(index, backingLinearScale = sc
             ticksMap.set(i, temp);
         }
 
-        let unsortedTicks = [];
+        let unsortedTicks: number[] = [];
         for (let i = MAX_LEVEL; i >= 0; i--) {
-            if (ticksMap.get(i).length + unsortedTicks.length > desiredTickCount * 1.5) {
+            const ticksAtLevel = ticksMap.get(i) ?? [];
+            if (ticksAtLevel.length + unsortedTicks.length > desiredTickCount * 1.5) {
                 break;
             }
-            unsortedTicks = unsortedTicks.concat(ticksMap.get(i).map((d) => d.index));
+            unsortedTicks = unsortedTicks.concat(ticksAtLevel.map((d) => d.index));
         }
 
         const ticks = unsortedTicks.sort(ascending);
@@ -104,6 +104,7 @@ export default function financeDiscontinuousScale(index, backingLinearScale = sc
                 }
             }
 
+            // @ts-ignore
             const tickValues = [...ticksSet.values()].map((i) => parseInt(i, 10));
 
             return tickValues;

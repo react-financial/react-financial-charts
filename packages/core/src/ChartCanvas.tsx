@@ -192,19 +192,8 @@ function updateChart(newState, initialXScale, props, lastItemWasVisible, initial
 function calculateState(props) {
     const { xAccessor: inputXAccesor, xExtents: xExtentsProp, data, padding, flipXScale } = props;
 
-    if (process.env.NODE_ENV !== "production" && isDefined(props.xScale.invert)) {
-        for (let i = 1; i < data.length; i++) {
-            const prev = data[i - 1];
-            const curr = data[i];
-            if (inputXAccesor(prev) > inputXAccesor(curr)) {
-                throw new Error(
-                    "'data' is not sorted on 'xAccessor', send 'data' sorted in ascending order of 'xAccessor'",
-                );
-            }
-        }
-    }
-
     const direction = getXScaleDirection(flipXScale);
+
     const dimensions = getDimensions(props);
 
     const extent =
@@ -213,6 +202,7 @@ function calculateState(props) {
             : d3Extent(xExtentsProp.map((d) => functor(d)).map((each) => each(data, inputXAccesor)));
 
     const { xAccessor, displayXAccessor, xScale, fullData, filterData } = calculateFullData(props);
+
     const updatedXScale = setXRange(xScale, dimensions, padding, direction);
 
     const { plotData, domain } = filterData(fullData, extent, inputXAccesor, updatedXScale);
@@ -273,6 +263,8 @@ export interface ChartCanvasProps {
     readonly data: any[];
     readonly defaultFocus?: boolean;
     readonly disableInteraction?: boolean;
+    readonly disablePan?: boolean;
+    readonly disableZoom?: boolean;
     readonly displayXAccessor: any; // func
     readonly flipXScale?: boolean;
     readonly height: number;
@@ -296,7 +288,6 @@ export interface ChartCanvasProps {
               right: number;
               top: number;
           };
-    readonly panEvent?: boolean;
     readonly pointsPerPxThreshold?: number;
     readonly postCalculator?: (plotData: any[]) => any[];
     readonly ratio: number;
@@ -308,7 +299,6 @@ export interface ChartCanvasProps {
     readonly xScale: ScaleContinuousNumeric<number, number>;
     readonly zIndex?: number;
     readonly zoomAnchor?: (options: IZoomAnchorOptions<any>) => number;
-    readonly zoomEvent?: boolean;
     readonly zoomMultiplier?: number;
 }
 
@@ -318,7 +308,7 @@ interface ChartCanvasState {
     filterData?: any;
     chartConfig?: any;
     plotData?: any;
-    xScale?: ScaleContinuousNumeric<number, number>;
+    xScale: ScaleContinuousNumeric<number, number>;
 }
 
 export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasState> {
@@ -326,7 +316,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         clamp: false,
         className: "react-financial-charts",
         defaultFocus: true,
+        disablePan: false,
         disableInteraction: false,
+        disableZoom: false,
         flipXScale: false,
         maintainPointsPerPixelOnResize: true,
         margin: { top: 0, right: 40, bottom: 40, left: 0 },
@@ -334,14 +326,12 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         mouseMoveEvent: true,
         postCalculator: identity,
         padding: 0,
-        panEvent: true,
         pointsPerPxThreshold: 2,
         useCrossHairStyleCursor: true,
         xAccessor: identity,
         xExtents: [min, max] as any[],
         zIndex: 1,
         zoomAnchor: mouseBasedZoomAnchor,
-        zoomEvent: true,
         zoomMultiplier: 1.1,
     };
 
@@ -392,11 +382,11 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     private readonly canvasContainerRef = React.createRef<CanvasContainer>();
     private readonly eventCaptureRef = React.createRef<EventCapture>();
     private finalPinch?: boolean;
-    private fullData;
+    private fullData: any[];
     private lastSubscriptionId = 0;
     private mutableState = {};
     private panInProgress = false;
-    private prevMouseXY;
+    private prevMouseXY?: number[];
     private subscriptions: any[] = [];
     private waitingForPinchZoomAnimationFrame?: boolean;
     private waitingForPanAnimationFrame?: boolean;
@@ -458,13 +448,14 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         }
     }
 
-    public subscribe = (id, rest) => {
+    public subscribe = (id: string, rest) => {
         const {
             getPanConditions = functor({
                 draggable: false,
                 panEnabled: true,
             }),
         } = rest;
+
         this.subscriptions = this.subscriptions.concat({
             id,
             ...rest,
@@ -472,7 +463,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         });
     };
 
-    public unsubscribe = (id) => {
+    public unsubscribe = (id: string) => {
         this.subscriptions = this.subscriptions.filter((each) => each.id !== id);
     };
 
@@ -797,17 +788,15 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         this.draw({ force: true });
     };
 
-    public panHelper = (mouseXY, initialXScale, { dx, dy }, chartsToPan) => {
+    public panHelper = (
+        mouseXY: number[],
+        initialXScale: ScaleContinuousNumeric<number, number>,
+        { dx, dy }: { dx: number; dy: number },
+        chartsToPan: string[],
+    ) => {
         const { xAccessor, displayXAccessor, chartConfig: initialChartConfig, filterData } = this.state;
         const { fullData } = this;
         const { postCalculator = ChartCanvas.defaultProps.postCalculator } = this.props;
-
-        if (isNotDefined(initialXScale.invert)) {
-            throw new Error(
-                "xScale provided does not have an invert() method." +
-                    "You are likely using an ordinal scale. This scale does not support zoom, pan",
-            );
-        }
 
         const newDomain = initialXScale
             .range()
@@ -842,7 +831,13 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         };
     };
 
-    public handlePan = (mousePosition, panStartXScale, dxdy, chartsToPan, e) => {
+    public handlePan = (
+        mousePosition: number[],
+        panStartXScale: ScaleContinuousNumeric<number, number>,
+        dxdy: { dx: number; dy: number },
+        chartsToPan: string[],
+        e: React.MouseEvent,
+    ) => {
         if (!this.waitingForPanAnimationFrame) {
             this.waitingForPanAnimationFrame = true;
 
@@ -873,7 +868,13 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         }
     };
 
-    public handlePanEnd = (mousePosition, panStartXScale, dxdy, chartsToPan, e) => {
+    public handlePanEnd = (
+        mousePosition: number[],
+        panStartXScale: ScaleContinuousNumeric<number, number>,
+        dxdy: { dx: number; dy: number },
+        chartsToPan: string[],
+        e: React.MouseEvent | React.TouchEvent,
+    ) => {
         const state = this.panHelper(mousePosition, panStartXScale, dxdy, chartsToPan);
         this.hackyWayToStopPanBeyondBounds__plotData = null;
         this.hackyWayToStopPanBeyondBounds__domain = null;
@@ -913,11 +914,11 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         });
     };
 
-    public handleMouseDown = (mousePosition, currentCharts, e) => {
+    public handleMouseDown = (_: number[], __: string[], e: React.MouseEvent) => {
         this.triggerEvent("mousedown", this.mutableState, e);
     };
 
-    public handleMouseEnter = (e) => {
+    public handleMouseEnter = (e: React.MouseEvent) => {
         this.triggerEvent(
             "mouseenter",
             {
@@ -927,7 +928,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         );
     };
 
-    public handleMouseMove = (mouseXY, inputType, e) => {
+    public handleMouseMove = (mouseXY: number[], _: string, e) => {
         if (!this.waitingForMouseMoveAnimationFrame) {
             this.waitingForMouseMoveAnimationFrame = true;
 
@@ -972,7 +973,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         this.triggerEvent("dragstart", { startPos }, e);
     };
 
-    public handleDrag = ({ startPos, mouseXY }, e) => {
+    public handleDrag = ({ startPos, mouseXY }: { startPos: number[]; mouseXY: number[] }, e: React.MouseEvent) => {
         const { chartConfig, plotData, xScale, xAccessor } = this.state;
         const currentCharts = getCurrentCharts(chartConfig, mouseXY);
         const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
@@ -1000,7 +1001,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         });
     };
 
-    public handleDragEnd = ({ mouseXY }, e) => {
+    public handleDragEnd = ({ mouseXY }: { mouseXY: number[] }, e: React.MouseEvent) => {
         this.triggerEvent("dragend", { mouseXY }, e);
 
         requestAnimationFrame(() => {
@@ -1009,7 +1010,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         });
     };
 
-    public handleClick = (mousePosition: number[], e: React.MouseEvent) => {
+    public handleClick = (_: number[], e: React.MouseEvent) => {
         this.triggerEvent("click", this.mutableState, e);
 
         requestAnimationFrame(() => {
@@ -1018,7 +1019,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         });
     };
 
-    public handleDoubleClick = (mousePosition: number[], e: React.MouseEvent) => {
+    public handleDoubleClick = (_: number[], e: React.MouseEvent) => {
         this.triggerEvent("dblclick", {}, e);
     };
 
@@ -1118,6 +1119,9 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
     public render() {
         const {
+            disableInteraction,
+            disablePan,
+            disableZoom,
             useCrossHairStyleCursor,
             onClick,
             onDoubleClick,
@@ -1129,9 +1133,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             defaultFocus,
             ratio,
             mouseMoveEvent,
-            panEvent,
-            zoomEvent,
-            disableInteraction,
         } = this.props;
 
         const { plotData, xScale, xAccessor, chartConfig } = this.state;
@@ -1180,8 +1181,8 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                             ref={this.eventCaptureRef}
                             useCrossHairStyleCursor={cursorStyle}
                             mouseMove={mouseMoveEvent && interaction}
-                            zoom={zoomEvent && interaction}
-                            pan={panEvent && interaction}
+                            zoom={!disableZoom && interaction}
+                            pan={!disablePan && interaction}
                             width={dimensions.width}
                             height={dimensions.height}
                             chartConfig={chartConfig}

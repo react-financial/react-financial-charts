@@ -1,5 +1,4 @@
 import {
-    colorToRGBA,
     first,
     getAxisCanvas,
     GenericChartComponent,
@@ -15,7 +14,7 @@ import * as React from "react";
 import { AxisZoomCapture } from "./AxisZoomCapture";
 
 interface AxisProps {
-    readonly axisZoomCallback?: (domain: any) => void;
+    readonly axisZoomCallback?: (domain: number[]) => void;
     readonly bg: {
         h: number;
         x: number;
@@ -47,13 +46,12 @@ interface AxisProps {
     readonly tickSize?: number;
     readonly ticks?: number;
     readonly tickLabelFill?: string;
-    readonly tickStroke?: string;
-    readonly tickStrokeOpacity?: number;
+    readonly tickStrokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly tickStrokeWidth?: number;
     readonly tickStrokeDasharray?: strokeDashTypes;
-    readonly tickValues?: number[] | any; // func
+    readonly tickValues?: number[] | ((domain: number[]) => number[]);
     readonly tickInterval?: number;
-    readonly tickIntervalFunction?: any; // func
+    readonly tickIntervalFunction?: (min: number, max: number, tickInterval: number) => number[];
     readonly transform: number[];
     readonly zoomEnabled?: boolean;
     readonly zoomCursorClassName?: string;
@@ -118,7 +116,7 @@ export class Axis extends React.Component<AxisProps> {
         return this.chartRef.current!.getMoreProps();
     };
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { showDomain, showTicks, transform, range, getScale } = this.props;
 
         ctx.save();
@@ -154,14 +152,13 @@ const tickHelper = (props: AxisProps, scale: ScaleContinuousNumeric<number, numb
         showTickLabel,
         ticks: tickArguments,
         tickValues: tickValuesProp,
-        tickStroke,
-        tickStrokeOpacity,
+        tickStrokeStyle,
         tickInterval,
         tickIntervalFunction,
         ...rest
     } = props;
 
-    let tickValues;
+    let tickValues: number[];
     if (tickValuesProp !== undefined) {
         if (typeof tickValuesProp === "function") {
             tickValues = tickValuesProp(scale.domain());
@@ -264,9 +261,8 @@ const tickHelper = (props: AxisProps, scale: ScaleContinuousNumeric<number, numb
         orient,
         ticks,
         scale,
-        tickStroke,
-        tickLabelFill: tickLabelFill || tickStroke,
-        tickStrokeOpacity,
+        tickStrokeStyle,
+        tickLabelFill: tickLabelFill || tickStrokeStyle,
         tickStrokeWidth,
         tickStrokeDasharray,
         dy,
@@ -311,11 +307,13 @@ const drawAxisLine = (ctx: CanvasRenderingContext2D, props: AxisProps, range) =>
 };
 
 const drawTicks = (ctx: CanvasRenderingContext2D, result, moreProps) => {
-    const { showGridLines, tickStroke, tickStrokeOpacity, tickLabelFill } = result;
+    const { showGridLines, tickStrokeStyle, tickLabelFill } = result;
     const { textAnchor, fontSize, fontFamily, fontWeight, ticks, showTickLabel } = result;
 
-    ctx.strokeStyle = colorToRGBA(tickStroke, tickStrokeOpacity);
-    ctx.fillStyle = tickStroke;
+    if (tickStrokeStyle !== undefined) {
+        ctx.strokeStyle = tickStrokeStyle;
+        ctx.fillStyle = tickStrokeStyle;
+    }
 
     ticks.forEach((tick) => {
         drawEachTick(ctx, tick, result);
@@ -339,13 +337,15 @@ const drawTicks = (ctx: CanvasRenderingContext2D, result, moreProps) => {
 };
 
 const drawGridLine = (ctx: CanvasRenderingContext2D, tick, result, moreProps) => {
-    const { orient, gridLinesStrokeWidth, gridLinesStroke, gridLinesStrokeDasharray } = result;
+    const { orient, gridLinesStrokeWidth, gridLinesStrokeStyle, gridLinesStrokeDasharray } = result;
 
     const { chartConfig } = moreProps;
 
     const { height, width } = chartConfig;
 
-    ctx.strokeStyle = colorToRGBA(gridLinesStroke);
+    if (gridLinesStrokeStyle !== undefined) {
+        ctx.strokeStyle = gridLinesStrokeStyle;
+    }
     ctx.beginPath();
 
     const sign = orient === "top" || orient === "left" ? 1 : -1;

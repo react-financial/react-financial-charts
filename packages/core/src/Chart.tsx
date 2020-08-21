@@ -8,8 +8,8 @@ export interface ChartProps {
     readonly flipYScale?: boolean;
     readonly height?: number;
     readonly id: number | string;
-    readonly onContextMenu?: (event: React.MouseEvent, props: any) => void;
-    readonly onDoubleClick?: (event: React.MouseEvent, props: any) => void;
+    readonly onContextMenu?: (event: React.MouseEvent, moreProps: any) => void;
+    readonly onDoubleClick?: (event: React.MouseEvent, moreProps: any) => void;
     readonly origin?: number[] | ((width: number, height: number) => number[]);
     readonly padding?: number | { top: number; bottom: number };
     readonly yExtents?: number[] | ((data: any) => number) | ((data: any) => number[]);

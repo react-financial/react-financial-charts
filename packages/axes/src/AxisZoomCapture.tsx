@@ -16,8 +16,8 @@ import { ScaleContinuousNumeric } from "d3-scale";
 import { event as d3Event, mouse, select, touches } from "d3-selection";
 import * as React from "react";
 
-interface AxisZoomCaptureProps {
-    readonly axisZoomCallback?: (domain: any) => void;
+export interface AxisZoomCaptureProps {
+    readonly axisZoomCallback?: (domain: number[]) => void;
     readonly bg: {
         h: number;
         x: number;
@@ -35,7 +35,7 @@ interface AxisZoomCaptureProps {
     readonly outerTickSize?: number;
     readonly showDomain?: boolean;
     readonly showTicks?: boolean;
-    readonly tickFormat?: any; // func
+    readonly tickFormat?: (datum: number) => string;
     readonly tickPadding?: number;
     readonly tickSize?: number;
     readonly ticks?: number;

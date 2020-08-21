@@ -157,10 +157,9 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
                 break;
             case "mouseleave": {
                 this.moreProps.hovering = false;
-                const moreProps = this.getMoreProps();
 
                 if (this.props.onUnHover) {
-                    this.props.onUnHover(e, moreProps);
+                    this.props.onUnHover(e, this.getMoreProps());
                 }
                 break;
             }
@@ -464,10 +463,10 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     }
 }
 
-export function getAxisCanvas(contexts) {
+export const getAxisCanvas = (contexts: ICanvasContexts) => {
     return contexts.axes;
-}
+};
 
-export function getMouseCanvas(contexts) {
+export const getMouseCanvas = (contexts: ICanvasContexts) => {
     return contexts.mouseCoord;
-}
+};

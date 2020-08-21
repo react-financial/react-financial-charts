@@ -1,4 +1,5 @@
 import { extent } from "d3-array";
+import { ScaleContinuousNumeric } from "d3-scale";
 import flattenDeep from "lodash.flattendeep";
 import * as React from "react";
 
@@ -120,7 +121,7 @@ export function getNewChartConfig(innerDimension, children, existingChartConfig:
         return undefined;
     }).filter((each) => isDefined(each));
 }
-export function getCurrentCharts(chartConfig, mouseXY) {
+export function getCurrentCharts(chartConfig, mouseXY: number[]) {
     const currentCharts = chartConfig
         .filter((eachConfig) => {
             const top = eachConfig.origin[1];
@@ -166,7 +167,7 @@ export function getChartConfigWithUpdatedYScales(
     { plotData, xAccessor, displayXAccessor, fullData },
     xDomain,
     dy?: number,
-    chartsToPan?: any,
+    chartsToPan?: string[],
 ) {
     const yDomains = chartConfig.map(({ yExtentsCalculator, yExtents, yScale }) => {
         const realYDomain = isDefined(yExtentsCalculator)
@@ -190,7 +191,7 @@ export function getChartConfigWithUpdatedYScales(
     const combine = zipper().combine((config, { realYDomain, yDomainDY, prevYDomain }) => {
         const { id, padding, height, yScale, yPan, flipYScale, yPanEnabled = false } = config;
 
-        const another = isDefined(chartsToPan) ? chartsToPan.indexOf(id) > -1 : true;
+        const another = chartsToPan !== undefined ? chartsToPan.indexOf(id) > -1 : true;
         const domain = yPan && yPanEnabled ? (another ? yDomainDY : prevYDomain) : realYDomain;
 
         const newYScale = setRange(yScale.copy().domain(domain), height, padding, flipYScale);
@@ -208,7 +209,7 @@ export function getChartConfigWithUpdatedYScales(
     return updatedChartConfig;
 }
 
-export function getCurrentItem(xScale, xAccessor, mouseXY, plotData) {
+export function getCurrentItem(xScale: ScaleContinuousNumeric<number, number>, xAccessor, mouseXY, plotData) {
     let xValue;
     let item;
     if (xScale.invert) {

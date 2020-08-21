@@ -5,7 +5,6 @@ import * as React from "react";
 import {
     d3Window,
     getTouchProps,
-    isDefined,
     MOUSEENTER,
     MOUSELEAVE,
     MOUSEMOVE,
@@ -31,36 +30,73 @@ interface EventCaptureProps {
     readonly xScale: ScaleContinuousNumeric<number, number>;
     readonly disableInteraction: boolean;
     readonly getAllPanConditions: () => { panEnabled: boolean; draggable: boolean }[];
-    readonly onMouseMove?: (touchXY: number[], eventType: string, event: React.TouchEvent) => void;
-    readonly onMouseEnter?: (event: any) => void;
-    readonly onMouseLeave?: (event: React.MouseEvent) => void;
-    readonly onZoom?: (zoomDir: 1 | -1, mouseXY: number[], event: React.WheelEvent) => void;
-    readonly onPinchZoom?: (initialPinch, { touch1Pos, touch2Pos, xScale }, e) => void;
-    readonly onPinchZoomEnd?: (initialPinch, e) => void;
-    readonly onPan?: (
-        mouseXY: number[],
-        panStartXScale,
-        dxdy: { dx: number; dy: number },
-        chartsToPan: any[],
-        e: React.MouseEvent,
-    ) => void;
-    readonly onPanEnd?: (mouseXY: number[], panStartXScale, panOrigin, chartsToPan: any[], e) => void;
+    readonly onClick?: (mouseXY: number[], event: React.MouseEvent) => void;
+    readonly onContextMenu?: (mouseXY: number[], event: React.MouseEvent) => void;
+    readonly onDoubleClick?: (mouseXY: number[], event: React.MouseEvent) => void;
     readonly onDragStart?: (details: { startPos: number[] }, event: React.MouseEvent) => void;
     readonly onDrag?: (details: { startPos: number[]; mouseXY: number[] }, event: React.MouseEvent) => void;
     readonly onDragComplete?: (details: { mouseXY: number[] }, event: React.MouseEvent) => void;
-    readonly onClick?: (mouseXY: number[], event: React.MouseEvent) => void;
-    readonly onDoubleClick?: (mouseXY: number[], event: React.MouseEvent) => void;
-    readonly onContextMenu?: (mouseXY: number[], event: React.MouseEvent) => void;
-    readonly onMouseDown?: (mouseXY: number[], currentCharts: any, event: React.MouseEvent) => void;
+    readonly onMouseDown?: (mouseXY: number[], currentCharts: string[], event: React.MouseEvent) => void;
+    readonly onMouseMove?: (touchXY: number[], eventType: string, event: React.MouseEvent | React.TouchEvent) => void;
+    readonly onMouseEnter?: (event: React.MouseEvent) => void;
+    readonly onMouseLeave?: (event: React.MouseEvent) => void;
+    readonly onPinchZoom?: (
+        initialPinch: {
+            xScale: ScaleContinuousNumeric<number, number>;
+            touch1Pos: [number, number];
+            touch2Pos: [number, number];
+            range: number[];
+        },
+        currentPinch: {
+            xScale: ScaleContinuousNumeric<number, number>;
+            touch1Pos: [number, number];
+            touch2Pos: [number, number];
+        },
+        e: React.TouchEvent,
+    ) => void;
+    readonly onPinchZoomEnd?: (
+        initialPinch: {
+            xScale: ScaleContinuousNumeric<number, number>;
+            touch1Pos: [number, number];
+            touch2Pos: [number, number];
+            range: number[];
+        },
+        e: React.TouchEvent,
+    ) => void;
+    readonly onPan?: (
+        mouseXY: number[],
+        panStartXScale: ScaleContinuousNumeric<number, number>,
+        panOrigin: { dx: number; dy: number },
+        chartsToPan: string[],
+        e: React.MouseEvent,
+    ) => void;
+    readonly onPanEnd?: (
+        mouseXY: number[],
+        panStartXScale: ScaleContinuousNumeric<number, number>,
+        panOrigin: { dx: number; dy: number },
+        chartsToPan: string[],
+        e: React.MouseEvent | React.TouchEvent,
+    ) => void;
+    readonly onZoom?: (zoomDir: 1 | -1, mouseXY: number[], event: React.WheelEvent) => void;
 }
 
 interface EventCaptureState {
     cursorOverrideClass?: string;
     dragInProgress?: boolean;
-    dragStartPosition?: any;
+    dragStartPosition?: number[];
     panInProgress: boolean;
-    panStart?: any;
-    pinchZoomStart?: any;
+    panStart?: {
+        panStartXScale: ScaleContinuousNumeric<number, number>;
+        panOrigin: number[];
+        chartsToPan: string[];
+    };
+    pinchZoomStart?: {
+        xScale: ScaleContinuousNumeric<number, number>;
+        touch1Pos: [number, number];
+        touch2Pos: [number, number];
+        range: number[];
+        chartsToPan: string[];
+    };
 }
 
 export class EventCapture extends React.Component<EventCaptureProps, EventCaptureState> {
@@ -81,7 +117,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     private lastNewPos?;
     private mouseInside = false;
     private mouseInteraction = true;
-    private panEndTimeout?;
+    private panEndTimeout?: number;
     private panHappened?: boolean;
     private readonly ref = React.createRef<SVGRectElement>();
 
@@ -176,7 +212,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 onZoom(zoomDir, mouseXY, e);
             }
         } else if (this.focus) {
-            if (this.shouldPan()) {
+            if (this.shouldPan() && this.state.panStart !== undefined) {
                 // pan already in progress
                 const { panStartXScale, chartsToPan } = this.state.panStart;
                 this.lastNewPos = mouseXY;
@@ -216,10 +252,10 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     };
 
     public queuePanEnd() {
-        if (isDefined(this.panEndTimeout)) {
-            clearTimeout(this.panEndTimeout);
+        if (this.panEndTimeout !== undefined) {
+            window.clearTimeout(this.panEndTimeout);
         }
-        this.panEndTimeout = setTimeout(() => {
+        this.panEndTimeout = window.setTimeout(() => {
             this.handlePanEnd();
         }, 100);
     }
@@ -265,17 +301,22 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
         const mouseXY = mousePosition(e, this.ref.current!.getBoundingClientRect());
 
-        if (isDefined(this.state.panStart)) {
-            const { panStartXScale, panOrigin, chartsToPan } = this.state.panStart;
+        if (this.state.panStart !== undefined) {
+            const {
+                panStartXScale,
+                panOrigin: [dx, dy],
+                chartsToPan,
+            } = this.state.panStart;
+
             if (this.panHappened && onPanEnd !== undefined) {
-                onPanEnd(mouseXY, panStartXScale, panOrigin, chartsToPan, e);
+                onPanEnd(mouseXY, panStartXScale, { dx, dy }, chartsToPan, e);
             }
             const win = d3Window(this.ref.current);
             select(win).on(MOUSEMOVE, null).on(MOUSEUP, null);
 
             this.setState({
                 panInProgress: false,
-                panStart: null,
+                panStart: undefined,
             });
         }
 
@@ -285,18 +326,27 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     };
 
     public handleDrag = () => {
-        const e = d3Event;
-        if (this.props.onDrag) {
-            this.dragHappened = true;
-            const mouseXY = mouse(this.ref.current!);
-            this.props.onDrag(
-                {
-                    startPos: this.state.dragStartPosition,
-                    mouseXY,
-                },
-                e,
-            );
+        if (this.props.onDrag === undefined) {
+            return;
         }
+
+        this.dragHappened = true;
+
+        const { dragStartPosition } = this.state;
+        if (dragStartPosition === undefined) {
+            return;
+        }
+
+        const e = d3Event;
+        const mouseXY = mouse(this.ref.current!);
+
+        this.props.onDrag(
+            {
+                startPos: dragStartPosition,
+                mouseXY,
+            },
+            e,
+        );
     };
 
     public cancelDrag() {
@@ -390,7 +440,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 this.setState({
                     panInProgress: false,
                     dragInProgress: true,
-                    panStart: null,
+                    panStart: undefined,
                     dragStartPosition: mouseXY,
                 });
 
@@ -413,13 +463,13 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
     public shouldPan = () => {
         const { pan: panEnabled, onPan } = this.props;
-        return panEnabled && onPan && isDefined(this.state.panStart);
+        return panEnabled && onPan && this.state.panStart !== undefined;
     };
 
     public handlePan = () => {
         const e = d3Event;
 
-        if (this.shouldPan()) {
+        if (this.shouldPan() && this.state.panStart !== undefined) {
             this.panHappened = true;
 
             const { panStartXScale, panOrigin, chartsToPan } = this.state.panStart;
@@ -452,7 +502,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         const e = d3Event;
         const { pan: panEnabled, onPanEnd } = this.props;
 
-        if (isDefined(this.state.panStart)) {
+        if (this.state.panStart !== undefined) {
             const { panStartXScale, chartsToPan } = this.state.panStart;
 
             const win = d3Window(this.ref.current);
@@ -464,7 +514,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 .on(TOUCHEND, null);
 
             if (this.panHappened && panEnabled && onPanEnd) {
-                const { dx, dy } = this;
+                const { dx = 0, dy = 0 } = this;
 
                 delete this.dx;
                 delete this.dy;
@@ -473,7 +523,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
             this.setState({
                 panInProgress: false,
-                panStart: null,
+                panStart: undefined,
             });
         }
     };
@@ -521,8 +571,12 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
             // do nothing pinch zoom is handled in handleTouchMove
             const { panInProgress, panStart } = this.state;
 
-            if (panInProgress && panEnabled && onPanEnd) {
-                const { panStartXScale, panOrigin, chartsToPan } = panStart;
+            if (panInProgress && panEnabled && onPanEnd && panStart !== undefined) {
+                const {
+                    panStartXScale,
+                    panOrigin: [dx, dy],
+                    chartsToPan,
+                } = panStart;
 
                 const win = d3Window(this.ref.current);
                 select(win)
@@ -536,7 +590,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 const touch2Pos = touchPosition(getTouchProps(e.touches[1]), e);
 
                 if (this.panHappened && panEnabled && onPanEnd) {
-                    onPanEnd(this.lastNewPos, panStartXScale, panOrigin, chartsToPan, e);
+                    onPanEnd(this.lastNewPos, panStartXScale, { dx, dy }, chartsToPan, e);
                 }
 
                 this.setState({
@@ -558,7 +612,12 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         const [touch1Pos, touch2Pos] = touches(this.ref.current!);
         const { xScale, zoom: zoomEnabled, onPinchZoom } = this.props;
 
-        const { chartsToPan, ...initialPinch } = this.state.pinchZoomStart;
+        const { pinchZoomStart } = this.state;
+        if (pinchZoomStart === undefined) {
+            return;
+        }
+
+        const { chartsToPan, ...initialPinch } = pinchZoomStart;
 
         if (zoomEnabled && onPinchZoom) {
             onPinchZoom(
@@ -581,7 +640,12 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
         const { zoom: zoomEnabled, onPinchZoomEnd } = this.props;
 
-        const { chartsToPan, ...initialPinch } = this.state.pinchZoomStart;
+        const { pinchZoomStart } = this.state;
+        if (pinchZoomStart === undefined) {
+            return;
+        }
+
+        const { chartsToPan, ...initialPinch } = pinchZoomStart;
 
         if (zoomEnabled && onPinchZoomEnd) {
             onPinchZoomEnd(initialPinch, e);

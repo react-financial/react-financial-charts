@@ -2,17 +2,38 @@ import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/c
 import * as React from "react";
 
 export interface CurrentCoordinateProps {
+    /**
+     * Fill style for the circle.
+     */
     readonly fillStyle?:
         | string
         | CanvasGradient
         | CanvasPattern
         | ((datum: any) => string | CanvasGradient | CanvasPattern);
+    /**
+     * The radius to draw the circle
+     */
     readonly r: number;
+    /**
+     * Stroke of the circle
+     */
+    readonly strokeStyle?:
+        | string
+        | CanvasGradient
+        | CanvasPattern
+        | ((datum: any) => string | CanvasGradient | CanvasPattern);
+    /**
+     * Y accessor to use for the circle.
+     */
     readonly yAccessor: (item: any) => number;
 }
 
+/**
+ * Draws a circle at the current x location of radius `r`.
+ */
 export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
     public static defaultProps = {
+        fillStyle: "#2196f3",
         r: 3,
     };
 
@@ -32,15 +53,24 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
             return;
         }
 
-        const { fillStyle, r } = this.props;
+        const { fillStyle, r, strokeStyle } = this.props;
 
         const fillColor = fillStyle instanceof Function ? fillStyle(moreProps.currentItem) : fillStyle;
         if (fillColor !== undefined) {
             ctx.fillStyle = fillColor;
         }
+
+        const strokeColor = strokeStyle instanceof Function ? strokeStyle(moreProps.currentItem) : strokeStyle;
+        if (strokeColor !== undefined) {
+            ctx.strokeStyle = strokeColor;
+        }
+
         ctx.beginPath();
         ctx.arc(circle.x, circle.y, r, 0, 2 * Math.PI, false);
         ctx.fill();
+        if (strokeColor !== undefined) {
+            ctx.stroke();
+        }
     };
 
     private readonly getCircle = (moreProps) => {

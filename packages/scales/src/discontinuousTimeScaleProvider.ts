@@ -1,16 +1,16 @@
-import { identity, isNotDefined, slidingWindow, zipper } from "@react-financial-charts/core";
+import { identity, slidingWindow, zipper } from "@react-financial-charts/core";
 import { timeFormat, timeFormatDefaultLocale } from "d3-time-format";
 import financeDiscontinuousScale from "./financeDiscontinuousScale";
 import { defaultFormatters, levelDefinition } from "./levels";
 
-const evaluateLevel = (d, date, i, formatters) => {
+const evaluateLevel = (row, date: Date, i, formatters) => {
     return levelDefinition
         .map((eachLevel, idx) => {
             return {
                 level: levelDefinition.length - idx - 1,
 
                 // @ts-ignore
-                format: formatters[eachLevel(d, date, i)],
+                format: formatters[eachLevel(row, date, i)],
             };
         })
         .find((level) => !!level.format);
@@ -18,7 +18,7 @@ const evaluateLevel = (d, date, i, formatters) => {
 
 const discontinuousIndexCalculator = slidingWindow()
     .windowSize(2)
-    .undefinedValue((d, idx, { initialIndex, formatters }) => {
+    .undefinedValue((d: Date, idx, { initialIndex, formatters }) => {
         const i = initialIndex;
         const row = {
             date: d.getTime(),
@@ -44,7 +44,7 @@ const discontinuousIndexCalculator = slidingWindow()
     });
 
 const discontinuousIndexCalculatorLocalTime = discontinuousIndexCalculator.accumulator(
-    ([prevDate, nowDate], i, idx, { initialIndex, formatters }) => {
+    ([prevDate, nowDate], i: number, idx, { initialIndex, formatters }) => {
         const startOf30Seconds = nowDate.getSeconds() % 30 === 0;
 
         const startOfMinute = nowDate.getMinutes() !== prevDate.getMinutes();
@@ -87,6 +87,7 @@ const discontinuousIndexCalculatorLocalTime = discontinuousIndexCalculator.accum
             startOfQuarter,
             startOfYear,
         };
+
         const level = evaluateLevel(row, nowDate, i, formatters);
 
         return { ...row, index: i + initialIndex, ...level };
@@ -126,7 +127,7 @@ export function discontinuousTimeScaleProviderBuilder() {
     const discontinuousTimeScaleProvider = function (data) {
         let index = withIndex;
 
-        if (isNotDefined(index)) {
+        if (index === undefined) {
             const response = doStuff(realDateAccessor, inputDateAccessor, initialIndex, currentFormatters)(data);
 
             index = response.index;

@@ -11,7 +11,7 @@ export interface XAxisProps {
     readonly fontSize?: number;
     readonly fontWeight?: number;
     readonly getMouseDelta?: (startXY: [number, number], mouseXY: [number, number]) => number;
-    readonly gridLinesStroke?: string;
+    readonly gridLinesStrokeStyle?: string;
     readonly gridLinesStrokeWidth?: number;
     readonly gridLinesStrokeDasharray?: strokeDashTypes;
     readonly innerTickSize?: number;
@@ -30,8 +30,7 @@ export interface XAxisProps {
     readonly tickSize?: number;
     readonly tickLabelFill?: string;
     readonly ticks?: number;
-    readonly tickStroke?: string;
-    readonly tickStrokeOpacity?: number;
+    readonly tickStrokeStyle?: string;
     readonly tickStrokeWidth?: number;
     readonly tickStrokeDasharray?: strokeDashTypes;
     readonly tickValues?: number[];
@@ -49,7 +48,7 @@ export class XAxis extends React.Component<XAxisProps> {
         fontSize: 12,
         fontWeight: 400,
         getMouseDelta: (startXY: [number, number], mouseXY: [number, number]) => startXY[0] - mouseXY[0],
-        gridLinesStroke: "#E2E4EC",
+        gridLinesStrokeStyle: "#E2E4EC",
         gridLinesStrokeWidth: 1,
         orient: "bottom",
         outerTickSize: 0,
@@ -62,8 +61,7 @@ export class XAxis extends React.Component<XAxisProps> {
         strokeWidth: 1,
         tickPadding: 4,
         tickLabelFill: "#000000",
-        tickStroke: "#000000",
-        tickStrokeOpacity: 1,
+        tickStrokeStyle: "#000000",
         xZoomHeight: 25,
         zoomEnabled: true,
         zoomCursorClassName: "react-financial-charts-ew-resize-cursor",
@@ -102,7 +100,7 @@ export class XAxis extends React.Component<XAxisProps> {
         );
     }
 
-    private readonly axisZoomCallback = (newXDomain) => {
+    private readonly axisZoomCallback = (newXDomain: number[]) => {
         const { xAxisZoom } = this.context;
 
         xAxisZoom(newXDomain);

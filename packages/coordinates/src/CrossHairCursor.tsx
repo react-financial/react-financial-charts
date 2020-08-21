@@ -54,6 +54,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
         }
 
         const { margin, ratio } = this.context;
+
         const originX = 0.5 * ratio + margin.left;
         const originY = 0.5 * ratio + margin.top;
 

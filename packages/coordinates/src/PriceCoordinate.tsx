@@ -1,32 +1,34 @@
+import { format } from "d3-format";
 import * as React from "react";
 import { getAxisCanvas, GenericChartComponent, functor, strokeDashTypes } from "@react-financial-charts/core";
 import { drawOnCanvas } from "./EdgeCoordinateV3";
 
 interface PriceCoordinateProps {
-    readonly displayFormat: any; // func
-    readonly yAxisPad?: number;
-    readonly rectWidth?: number;
-    readonly rectHeight?: number;
-    readonly orient?: "bottom" | "top" | "left" | "right";
-    readonly at?: "bottom" | "top" | "left" | "right";
-    readonly price?: number;
-    readonly dx?: number;
     readonly arrowWidth?: number;
-    readonly opacity?: number;
-    readonly lineOpacity?: number;
-    readonly lineStroke?: string;
+    readonly at?: "bottom" | "top" | "left" | "right";
+    readonly displayFormat: (n: number) => string;
+    readonly dx?: number;
     readonly fontFamily?: string;
     readonly fontSize?: number;
-    readonly fill?: string | any; // func
+    readonly fill?: string | ((price: number) => string);
+    readonly lineOpacity?: number;
+    readonly lineStroke?: string;
+    readonly opacity?: number;
+    readonly orient?: "bottom" | "top" | "left" | "right";
+    readonly price: number;
+    readonly rectWidth?: number;
+    readonly rectHeight?: number;
     readonly strokeDasharray?: strokeDashTypes;
     readonly stroke?: string;
     readonly strokeOpacity?: number;
     readonly strokeWidth?: number;
-    readonly textFill?: string | any; // func
+    readonly textFill?: string | ((price: number) => string);
+    readonly yAxisPad?: number;
 }
 
 export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
     public static defaultProps = {
+        displayFormat: format(".2f"),
         yAxisPad: 0,
         rectWidth: 50,
         rectHeight: 20,
@@ -63,7 +65,7 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
         drawOnCanvas(ctx, props);
     };
 
-    private readonly helper = (props, moreProps) => {
+    private readonly helper = (props: PriceCoordinateProps, moreProps) => {
         const {
             chartConfig: { yScale },
             width,

@@ -74,8 +74,8 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     };
 
     private clicked?: boolean;
-    private dx = 0;
-    private dy = 0;
+    private dx?: number = 0;
+    private dy?: number = 0;
     private dragHappened?: boolean;
     private focus?: boolean;
     private lastNewPos?;
@@ -181,6 +181,13 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 const { panStartXScale, chartsToPan } = this.state.panStart;
                 this.lastNewPos = mouseXY;
                 this.panHappened = true;
+
+                if (this.dx === undefined) {
+                    this.dx = 0;
+                }
+                if (this.dy === undefined) {
+                    this.dy = 0;
+                }
 
                 this.dx -= e.deltaX;
                 this.dy += e.deltaY;

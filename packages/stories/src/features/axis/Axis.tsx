@@ -13,7 +13,6 @@ import {
 import { IOHLCData, withOHLCData } from "../../data";
 
 interface ChartProps extends Partial<YAxisProps> {
-    readonly axisAt?: "left" | "right";
     readonly data: IOHLCData[];
     readonly height: number;
     readonly ratio: number;

@@ -13,7 +13,7 @@ export default {
                 options: ["left", "right", "middle"],
             },
         },
-        gridLinesStroke: { control: "color" },
+        gridLinesStrokeStyle: { control: "color" },
         strokeStyle: { control: "color" },
         tickLabelFill: { control: "color" },
         tickStroke: { control: "color" },

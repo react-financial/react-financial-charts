@@ -18,9 +18,9 @@ interface ClickableShapeProps {
     readonly hovering?: boolean;
     readonly interactiveCursorClass?: string;
     readonly show?: boolean;
-    readonly onHover?: any; // func
-    readonly onUnHover?: any; // func
-    readonly onClick?: any; // func
+    readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onClick?: (e: React.MouseEvent, moreProps: any) => void;
     readonly yValue: number;
 }
 
@@ -33,9 +33,7 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
     private closeIcon;
 
     public render() {
-        const { interactiveCursorClass } = this.props;
-        const { show } = this.props;
-        const { onHover, onUnHover, onClick } = this.props;
+        const { interactiveCursorClass, onHover, onUnHover, onClick, show } = this.props;
 
         if (!show) {
             return null;
@@ -55,7 +53,7 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { strokeStyle, strokeWidth, hovering, textBox } = this.props;
 
         const [x, y] = this.helper(this.props, moreProps, ctx);
@@ -73,7 +71,7 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
         ctx.stroke();
     };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = (moreProps: any) => {
         const { mouseXY } = moreProps;
         if (this.closeIcon) {
             const { textBox } = this.props;
@@ -92,7 +90,7 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
         return false;
     };
 
-    private readonly helper = (props: ClickableShapeProps, moreProps, ctx) => {
+    private readonly helper = (props: ClickableShapeProps, moreProps: any, ctx: CanvasRenderingContext2D) => {
         const { yValue, text, textBox } = props;
         const { fontFamily, fontStyle, fontWeight, fontSize } = props;
         ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;

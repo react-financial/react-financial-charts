@@ -1,9 +1,6 @@
 import * as React from "react";
-
-import { noop } from "@react-financial-charts/core";
 import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
 import { isHover, saveNodeType } from "../utils";
-
 import { HoverTextNearMouse } from "../components/HoverTextNearMouse";
 import { InteractiveText } from "../components/InteractiveText";
 
@@ -21,8 +18,8 @@ interface EachTextProps {
     fontSize: number;
     text: string;
     selected: boolean;
-    onDrag: any; // func
-    onDragComplete: any; // func
+    onDrag?: (e: React.MouseEvent, index: number | undefined, xyValue: number[]) => void;
+    onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
     hoverText: {
         enable: boolean;
         fontFamily: string;
@@ -43,8 +40,6 @@ interface EachTextState {
 
 export class EachText extends React.Component<EachTextProps, EachTextState> {
     public static defaultProps = {
-        onDrag: noop,
-        onDragComplete: noop,
         bgOpacity: 1,
         bgStrokeWidth: 1,
         selected: false,
@@ -63,7 +58,7 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
     private isHover;
     private saveNodeType;
 
-    constructor(props) {
+    public constructor(props) {
         super(props);
 
         this.handleHover = this.handleHover.bind(this);
@@ -141,7 +136,7 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
         );
     }
 
-    private readonly handleHover = (moreProps) => {
+    private readonly handleHover = (_: React.MouseEvent, moreProps: any) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
@@ -149,8 +144,12 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
         }
     };
 
-    private readonly handleDrag = (moreProps) => {
+    private readonly handleDrag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
+        if (onDrag === undefined) {
+            return;
+        }
+
         const {
             mouseXY: [, mouseY],
             chartConfig: { yScale },
@@ -165,10 +164,10 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
         // xScale.invert(xScale(xAccessor(currentItem)) - dx);
         const xyValue = [xValue, yScale.invert(mouseY - dy)];
 
-        onDrag(index, xyValue);
+        onDrag(e, index, xyValue);
     };
 
-    private readonly handleDragStart = (moreProps) => {
+    private readonly handleDragStart = (_: React.MouseEvent, moreProps: any) => {
         const { position } = this.props;
         const { mouseXY } = moreProps;
         const {

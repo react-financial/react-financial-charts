@@ -28,7 +28,7 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
     public static defaultProps = {
         className: "react-financial-charts-tooltip react-financial-charts-bollingerband-tooltip",
         displayFormat: format(".2f"),
-        displayValuesFor: (_, props) => props.currentItem,
+        displayValuesFor: (_: any, props: any) => props.currentItem,
         displayInit: "n/a",
         origin: [8, 8],
         yAccessor: (data: any) => data.bb,
@@ -38,7 +38,7 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = (moreProps: any) => {
         const {
             onClick,
             displayFormat,

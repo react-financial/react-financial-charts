@@ -1,14 +1,13 @@
 import { interpolateNumber } from "d3-interpolate";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-
-import { last, noop } from "@react-financial-charts/core";
+import { last } from "@react-financial-charts/core";
 
 interface ZoomButtonsProps {
     readonly fill: string;
     readonly fillOpacity: number;
     readonly heightFromBase: number;
-    readonly onReset: () => void;
+    readonly onReset?: () => void;
     readonly r: number;
     readonly stroke: string;
     readonly strokeWidth: number;
@@ -26,7 +25,6 @@ export class ZoomButtons extends React.Component<ZoomButtonsProps> {
         strokeWidth: 1,
         textFill: "#000000",
         zoomMultiplier: 1.5,
-        onReset: noop,
     };
 
     public static contextTypes = {

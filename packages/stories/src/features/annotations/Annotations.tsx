@@ -28,7 +28,7 @@ class Annotations extends React.Component<ChartProps> {
     );
 
     public render() {
-        const { data: initialData, height, ratio, width, ...rest } = this.props;
+        const { data: initialData, height, ratio, width, selectCanvas, ...rest } = this.props;
 
         const ema12 = ema()
             .id(1)

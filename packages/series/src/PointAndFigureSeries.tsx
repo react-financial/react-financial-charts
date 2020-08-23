@@ -1,3 +1,4 @@
+import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
 import { isDefined, isNotDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
@@ -43,7 +44,7 @@ export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesPr
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const {
             xAccessor,
             xScale,
@@ -56,7 +57,12 @@ export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesPr
         this.drawOnCanvasPrivate(ctx, this.props, columns);
     };
 
-    private readonly getColumns = (xScale, xAccessor, yScale, plotData) => {
+    private readonly getColumns = (
+        xScale: ScaleContinuousNumeric<number, number>,
+        xAccessor: any,
+        yScale: ScaleContinuousNumeric<number, number>,
+        plotData: any[],
+    ) => {
         const width = xScale(xAccessor(plotData[plotData.length - 1])) - xScale(xAccessor(plotData[0]));
 
         const columnWidth = width / (plotData.length - 1);
@@ -77,7 +83,7 @@ export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesPr
         const columns = plotData
             .filter((d) => isDefined(d.close))
             .map((d) => {
-                const boxes = d.boxes.map((box) => ({
+                const boxes = d.boxes.map((box: any) => ({
                     columnWidth,
                     boxHeight,
                     open: yScale(box.open),
@@ -94,14 +100,14 @@ export class PointAndFigureSeries extends React.Component<PointAndFigureSeriesPr
         return columns;
     };
 
-    private readonly drawOnCanvasPrivate = (ctx: CanvasRenderingContext2D, props, columns) => {
+    private readonly drawOnCanvasPrivate = (ctx: CanvasRenderingContext2D, props: any, columns: any[]) => {
         const { stroke, fill, strokeWidth } = props;
 
         ctx.lineWidth = strokeWidth;
 
         columns.forEach((col) => {
             const [offsetX, offsetY] = col.offset;
-            col.boxes.forEach((box) => {
+            col.boxes.forEach((box: any) => {
                 if (col.direction > 0) {
                     ctx.fillStyle = fill.up;
                     ctx.strokeStyle = stroke.up;

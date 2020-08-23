@@ -1,5 +1,5 @@
+import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
-
 import { BarSeries } from "./BarSeries";
 import { LineSeries } from "./LineSeries";
 import { StraightLine } from "./StraightLine";
@@ -72,21 +72,24 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
         );
     }
 
-    private readonly yAccessorForDivergenceBase = (xScale, yScale) => {
+    private readonly yAccessorForDivergenceBase = (
+        xScale: ScaleContinuousNumeric<number, number>,
+        yScale: ScaleContinuousNumeric<number, number>,
+    ) => {
         return yScale(0);
     };
 
-    private readonly yAccessorForDivergence = (d) => {
+    private readonly yAccessorForDivergence = (d: any) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && yAccessor(d).divergence;
     };
 
-    private readonly yAccessorForSignal = (d) => {
+    private readonly yAccessorForSignal = (d: any) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && yAccessor(d).signal;
     };
 
-    private readonly yAccessorForMACD = (d) => {
+    private readonly yAccessorForMACD = (d: any) => {
         const { yAccessor } = this.props;
         return yAccessor(d) && yAccessor(d).macd;
     };

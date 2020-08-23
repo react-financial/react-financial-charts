@@ -25,7 +25,7 @@ export class RSITooltip extends React.Component<RSITooltipProps> {
     public static defaultProps = {
         displayFormat: format(".2f"),
         displayInit: "n/a",
-        displayValuesFor: (_, props) => props.currentItem,
+        displayValuesFor: (_: any, props: any) => props.currentItem,
         origin: [0, 0],
         className: "react-financial-charts-tooltip",
     };
@@ -34,7 +34,7 @@ export class RSITooltip extends React.Component<RSITooltipProps> {
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = (moreProps: any) => {
         const { onClick, displayInit, fontFamily, fontSize, yAccessor, displayFormat, className } = this.props;
         const { options, labelFill, textFill, displayValuesFor } = this.props;
 

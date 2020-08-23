@@ -2,18 +2,7 @@ import * as React from "react";
 import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
 interface MouseCoordinateXV2Props {
-    readonly xPosition?: any; // func
-    readonly drawCoordinate?: any; // func
-    readonly displayFormat: any; // func
     readonly at?: "bottom" | "top";
-    readonly orient?: "bottom" | "top";
-    readonly text?: {
-        readonly fontStyle: string;
-        readonly fontWeight: string;
-        readonly fontFamily: string;
-        readonly fontSize: number;
-        readonly fill: string | any; // func
-    };
     readonly bg: {
         readonly fill: string | any; // func
         readonly stroke: string;
@@ -25,8 +14,19 @@ interface MouseCoordinateXV2Props {
             bottom: number;
         };
     };
+    readonly drawCoordinate?: any; // func
+    readonly displayFormat: any; // func
     readonly dx?: number;
     readonly dy?: number;
+    readonly orient?: "bottom" | "top";
+    readonly text?: {
+        readonly fontStyle: string;
+        readonly fontWeight: string;
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fill: string | any; // func
+    };
+    readonly xPosition?: any; // func
 }
 
 export class MouseCoordinateXV2 extends React.Component<MouseCoordinateXV2Props> {
@@ -68,7 +68,7 @@ export class MouseCoordinateXV2 extends React.Component<MouseCoordinateXV2Props>
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { show, currentItem } = moreProps;
         const { drawCoordinate } = this.props;
 
@@ -79,12 +79,13 @@ export class MouseCoordinateXV2 extends React.Component<MouseCoordinateXV2Props>
     };
 }
 
-function defaultXPosition(props, moreProps) {
+function defaultXPosition(props: MouseCoordinateXV2Props, moreProps: any) {
     const { currentItem, xAccessor } = moreProps;
+
     return xAccessor(currentItem);
 }
 
-function getXCoordinateInfo(ctx: CanvasRenderingContext2D, props, moreProps) {
+function getXCoordinateInfo(ctx: CanvasRenderingContext2D, props: any, moreProps: any) {
     const { xPosition } = props;
     const xValue = xPosition(props, moreProps);
     const { at, displayFormat } = props;
@@ -109,7 +110,7 @@ function getXCoordinateInfo(ctx: CanvasRenderingContext2D, props, moreProps) {
     };
 }
 
-function defaultDrawCoordinate(ctx: CanvasRenderingContext2D, shape, props, moreProps) {
+function defaultDrawCoordinate(ctx: CanvasRenderingContext2D, shape: any, props: any, moreProps: any) {
     const { x, y, textWidth, text } = shape;
     const { orient, dx, dy } = props;
 

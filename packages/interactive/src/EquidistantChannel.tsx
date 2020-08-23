@@ -8,8 +8,8 @@ import { EachEquidistantChannel } from "./wrapper/EachEquidistantChannel";
 
 interface EquidistantChannelProps {
     readonly enabled: boolean;
-    readonly onStart: any; // func
-    readonly onComplete: any; // func
+    readonly onStart: () => void;
+    readonly onComplete: (e: React.MouseEvent, newChannels: any[], moreProps: any) => void;
     readonly onSelect: any; // func
     readonly currentPositionStroke?: string;
     readonly currentPositionStrokeWidth?: number;
@@ -39,8 +39,6 @@ interface EquidistantChannelState {
 
 export class EquidistantChannel extends React.Component<EquidistantChannelProps, EquidistantChannelState> {
     public static defaultProps = {
-        onStart: noop,
-        onComplete: noop,
         onSelect: noop,
         currentPositionStroke: "#000000",
         currentPositionOpacity: 1,
@@ -149,7 +147,7 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
         );
     }
 
-    private readonly handleDragChannel = (index, newXYValue) => {
+    private readonly handleDragChannel = (_: React.MouseEvent, index: any, newXYValue: any) => {
         this.setState({
             override: {
                 index,
@@ -158,7 +156,7 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
         });
     };
 
-    private readonly handleDragChannelComplete = (moreProps) => {
+    private readonly handleDragChannelComplete = (e: React.MouseEvent, moreProps: any) => {
         const { override } = this.state;
         const { channels } = this.props;
 
@@ -173,13 +171,16 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
                     override: null,
                 },
                 () => {
-                    this.props.onComplete(newChannels, moreProps);
+                    const { onComplete } = this.props;
+                    if (onComplete !== undefined) {
+                        onComplete(e, newChannels, moreProps);
+                    }
                 },
             );
         }
     };
 
-    private readonly handleStart = (xyValue) => {
+    private readonly handleStart = (_: React.MouseEvent, xyValue: any) => {
         const { current } = this.state;
 
         if (isNotDefined(current) || isNotDefined(current.startXY)) {
@@ -192,13 +193,16 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
                     },
                 },
                 () => {
-                    this.props.onStart();
+                    const { onStart } = this.props;
+                    if (onStart !== undefined) {
+                        onStart();
+                    }
                 },
             );
         }
     };
 
-    private readonly handleEnd = (xyValue, moreProps, e) => {
+    private readonly handleEnd = (e: React.MouseEvent, _: any, moreProps: any) => {
         const { current } = this.state;
         const { channels, appearance } = this.props;
 
@@ -225,14 +229,17 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
                         current: null,
                     },
                     () => {
-                        this.props.onComplete(newChannels, moreProps, e);
+                        const { onComplete } = this.props;
+                        if (onComplete !== undefined) {
+                            onComplete(e, newChannels, moreProps);
+                        }
                     },
                 );
             }
         }
     };
 
-    private readonly handleDrawChannel = (xyValue) => {
+    private readonly handleDrawChannel = (_: React.MouseEvent, xyValue: any) => {
         const { current } = this.state;
 
         if (isDefined(current) && isDefined(current.startXY)) {

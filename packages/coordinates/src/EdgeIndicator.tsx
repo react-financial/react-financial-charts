@@ -16,17 +16,22 @@ export interface EdgeIndicatorProps {
     readonly arrowWidth?: number;
     readonly displayFormat?: (n: number) => string;
     readonly edgeAt?: "left" | "right";
-    readonly fill?: string | any; // func
+    readonly fill?: string | ((datum: any) => string);
     readonly fitToText?: boolean;
+    readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly fullWidth?: boolean;
     readonly itemType: "first" | "last";
-    readonly lineStroke?: string | any; // func
+    readonly lineStroke?: string | ((datum: any) => string);
     readonly lineStrokeDasharray?: strokeDashTypes;
     readonly orient?: "left" | "right";
     readonly rectHeight?: number;
     readonly rectWidth?: number;
-    readonly textFill?: string | any; // func
+    readonly stroke?: string | ((datum: any) => string);
+    readonly textFill?: string | ((datum: any) => string);
     readonly type?: "horizontal";
     readonly yAccessor?: any; // func
+    readonly yAxisPad?: number;
 }
 
 export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
@@ -67,8 +72,12 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const edge = this.helper(this.props, moreProps);
+        if (edge === null) {
+            return;
+        }
+
         const props = {
             ...this.props,
             ...edge,
@@ -77,7 +86,7 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         drawOnCanvas(ctx, props);
     };
 
-    private readonly helper = (props, moreProps) => {
+    private readonly helper = (props: EdgeIndicatorProps, moreProps: any) => {
         const { itemType, yAccessor } = props;
         const { plotData } = moreProps;
 
@@ -88,12 +97,19 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         return edge;
     };
 
-    private readonly getEdge = (props, moreProps, item) => {
-        const { type: edgeType, displayFormat, edgeAt, yAxisPad, orient, lineStroke } = props;
+    private readonly getEdge = (props: EdgeIndicatorProps, moreProps: any, item: any) => {
+        const {
+            fontFamily,
+            fontSize,
+            type: edgeType,
+            displayFormat = EdgeIndicator.defaultProps.displayFormat,
+            edgeAt,
+            yAxisPad = EdgeIndicator.defaultProps.yAxisPad,
+            orient,
+            lineStroke,
+        } = props;
 
-        const { yAccessor, fill, textFill, rectHeight, rectWidth, arrowWidth } = props;
-        const { fontFamily, fontSize } = props;
-        const { stroke } = props;
+        const { yAccessor, fill, fullWidth, textFill, rectHeight, rectWidth, arrowWidth, stroke } = props;
 
         const {
             xScale,
@@ -105,7 +121,7 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         const yValue = yAccessor(item);
         const xValue = xAccessor(item);
 
-        const x1 = Math.round(xScale(xValue));
+        const x1 = fullWidth ? 0 : Math.round(xScale(xValue));
         const y1 = Math.round(yScale(yValue));
 
         const [left, right] = [0, width];

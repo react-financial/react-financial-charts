@@ -1,54 +1,54 @@
 import { head, isDefined, last } from "@react-financial-charts/core";
 import { ascending } from "d3-array";
-import { scaleLinear } from "d3-scale";
+import { scaleLinear, InterpolatorFactory } from "d3-scale";
 import { levelDefinition } from "./levels";
 
 const MAX_LEVEL = levelDefinition.length - 1;
 
-export default function financeDiscontinuousScale(index, backingLinearScale = scaleLinear()) {
+export default function financeDiscontinuousScale(index: any[], backingLinearScale = scaleLinear()) {
     if (index === undefined) {
         throw new Error("Use the discontinuousTimeScaleProvider to create financeDiscontinuousScale");
     }
 
-    function scale(x) {
+    function scale(x: number) {
         return backingLinearScale(x);
     }
-    scale.invert = function (x) {
+    scale.invert = function (x: number) {
         const inverted = backingLinearScale.invert(x);
         return Math.round(inverted * 10000) / 10000;
     };
-    scale.domain = function (x) {
+    scale.domain = function (domain: number[]) {
         if (!arguments.length) {
             return backingLinearScale.domain();
         }
-        backingLinearScale.domain(x);
+        backingLinearScale.domain(domain);
         return scale;
     };
-    scale.range = function (x) {
+    scale.range = function (range: number[]) {
         if (!arguments.length) {
             return backingLinearScale.range();
         }
-        backingLinearScale.range(x);
+        backingLinearScale.range(range);
         return scale;
     };
-    scale.rangeRound = function (x) {
-        return backingLinearScale.range(x);
+    scale.rangeRound = function (range: number[]) {
+        return backingLinearScale.range(range);
     };
-    scale.clamp = function (x) {
+    scale.clamp = function (clamp: boolean) {
         if (!arguments.length) {
             return backingLinearScale.clamp();
         }
-        backingLinearScale.clamp(x);
+        backingLinearScale.clamp(clamp);
         return scale;
     };
-    scale.interpolate = function (x) {
+    scale.interpolate = function (interpolate: InterpolatorFactory<number, number>) {
         if (!arguments.length) {
             return backingLinearScale.interpolate();
         }
-        backingLinearScale.interpolate(x);
+        backingLinearScale.interpolate(interpolate);
         return scale;
     };
-    scale.ticks = function (m) {
+    scale.ticks = function (m?: number) {
         const backingTicks = backingLinearScale.ticks(m);
         const ticksMap = new Map<number, any[]>();
 
@@ -113,24 +113,24 @@ export default function financeDiscontinuousScale(index, backingLinearScale = sc
         return ticks;
     };
     scale.tickFormat = function () {
-        return function (x) {
+        return function (x: any) {
             const d = Math.abs(head(index).index);
             const { format, date } = index[Math.floor(x + d)];
             return format(date);
         };
     };
-    scale.value = function (x) {
+    scale.value = function (x: any) {
         const d = Math.abs(head(index).index);
         if (isDefined(index[Math.floor(x + d)])) {
             const { date } = index[Math.floor(x + d)];
             return date;
         }
     };
-    scale.nice = function (m) {
-        backingLinearScale.nice(m);
+    scale.nice = function (count?: number) {
+        backingLinearScale.nice(count);
         return scale;
     };
-    scale.index = function (x) {
+    scale.index = function (x: any) {
         if (!arguments.length) {
             return index;
         }

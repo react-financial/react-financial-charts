@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { colorToRGBA, isDefined } from "@react-financial-charts/core";
 
-export function renderSVG(props) {
+export function renderSVG(props: any) {
     const { className } = props;
 
     const edge = helper(props);
@@ -27,7 +27,7 @@ export function renderSVG(props) {
         );
     }
 
-    if (isDefined(edge.coordinateBase)) {
+    if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
         const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
 
         const path =
@@ -87,7 +87,7 @@ export function renderSVG(props) {
     );
 }
 
-function helper(props) {
+function helper(props: any) {
     const { coordinate: displayCoordinate, show, type, orient, edgeAt, hideLine } = props;
     const { fill, opacity, fontFamily, fontSize, textFill, lineStroke, lineOpacity, arrowWidth } = props;
     const { rectWidth, rectHeight } = props;
@@ -156,14 +156,14 @@ function helper(props) {
     };
 }
 
-export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
+export function drawOnCanvas(ctx: CanvasRenderingContext2D, props: any) {
     const edge = helper(props);
 
     if (edge === null) {
         return;
     }
 
-    if (isDefined(edge.coordinateBase)) {
+    if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
         const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
 
         ctx.fillStyle = colorToRGBA(edge.coordinateBase.fill, edge.coordinateBase.opacity);
@@ -194,7 +194,8 @@ export function drawOnCanvas(ctx: CanvasRenderingContext2D, props) {
 
         ctx.font = `${edge.coordinate.fontSize}px ${edge.coordinate.fontFamily}`;
         ctx.fillStyle = edge.coordinate.textFill;
-        ctx.textAlign = edge.coordinate.textAnchor === "middle" ? "center" : edge.coordinate.textAnchor;
+        ctx.textAlign =
+            edge.coordinate.textAnchor === "middle" ? "center" : (edge.coordinate.textAnchor as CanvasTextAlign);
         ctx.textBaseline = "middle";
 
         ctx.fillText(edge.coordinate.displayCoordinate, edge.coordinate.edgeXText, edge.coordinate.edgeYText);

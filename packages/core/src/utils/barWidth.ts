@@ -1,4 +1,4 @@
-import { ScaleContinuousNumeric } from "d3-scale";
+import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import { head } from ".";
 
 /**
@@ -10,7 +10,7 @@ import { head } from ".";
  */
 export const plotDataLengthBarWidth = (
     props: { widthRatio: number },
-    moreProps: { xScale: ScaleContinuousNumeric<number, number> },
+    moreProps: { xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>; plotData: any[] },
 ): number => {
     const { widthRatio } = props;
     const { xScale } = moreProps;
@@ -20,12 +20,18 @@ export const plotDataLengthBarWidth = (
     const totalWidth = Math.abs(r - l);
     if (xScale.invert != null) {
         const [dl, dr] = xScale.domain();
-        const width = totalWidth / Math.abs(dl - dr);
-        return width * widthRatio;
-    } else {
-        const width = totalWidth / xScale.domain().length;
-        return width * widthRatio;
+        if (typeof dl === "number" && typeof dr === "number") {
+            const width = totalWidth / Math.abs(dl - dr);
+
+            return width * widthRatio;
+        }
+
+        return 1;
     }
+
+    const width = totalWidth / xScale.domain().length;
+
+    return width * widthRatio;
 };
 
 /**
@@ -33,7 +39,7 @@ export const plotDataLengthBarWidth = (
  * @param interval a d3-time time interval.
  * @return {Function} the width function.
  */
-export const timeIntervalBarWidth = (interval) => {
+export const timeIntervalBarWidth = (interval: any) => {
     return function (
         props: { widthRatio: number },
         moreProps: { xScale: ScaleContinuousNumeric<number, number>; xAccessor: any; plotData: any[] },

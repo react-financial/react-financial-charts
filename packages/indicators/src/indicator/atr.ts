@@ -24,6 +24,8 @@ interface ATRIndicator {
     merge(newMerge: any): ATRIndicator;
     options(): ATROptions;
     options(newOptions: ATROptions): ATRIndicator;
+    skipUndefined(): boolean;
+    skipUndefined(newSkipUndefined: boolean): ATRIndicator;
 }
 
 export default function () {

@@ -1,9 +1,7 @@
 import * as PropTypes from "prop-types";
 import * as React from "react";
-
 import { format } from "d3-format";
-import { isDefined, noop, strokeDashTypes } from "@react-financial-charts/core";
-
+import { isDefined, strokeDashTypes } from "@react-financial-charts/core";
 import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
 import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
 import { EachInteractiveYCoordinate } from "./wrapper/EachInteractiveYCoordinate";
@@ -61,19 +59,13 @@ interface InteractiveYCoordinateState {
 
 export class InteractiveYCoordinate extends React.Component<InteractiveYCoordinateProps, InteractiveYCoordinateState> {
     public static defaultProps = {
-        onChoosePosition: noop,
-        onDragComplete: noop,
-        onSelect: noop,
-        onDelete: noop,
         defaultPriceCoordinate: {
             bgFill: "#FFFFFF",
             bgOpacity: 1,
-
             stroke: "#6574CD",
             strokeOpacity: 1,
             strokeDasharray: "ShortDash2",
             strokeWidth: 1,
-
             textFill: "#6574CD",
             fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
             fontSize: 12,
@@ -93,7 +85,6 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
                 stroke: "#6574CD",
                 strokeOpacity: 1,
                 strokeWidth: 1,
-
                 fill: "#FFFFFF",
                 fillOpacity: 1,
                 orient: "right",
@@ -129,11 +120,10 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
     // @ts-ignore
     private terminate;
 
-    constructor(props) {
+    public constructor(props: InteractiveYCoordinateProps) {
         super(props);
 
         this.terminate = terminate.bind(this);
-
         this.saveNodeType = saveNodeType.bind(this);
         this.getSelectionState = isHoverForInteractiveType("yCoordinateList").bind(this);
 
@@ -166,13 +156,14 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         );
     }
 
-    private readonly handleDelete = (index, moreProps) => {
+    private readonly handleDelete = (e: React.MouseEvent, index, moreProps) => {
         const { onDelete, yCoordinateList } = this.props;
-
-        onDelete(yCoordinateList[index], moreProps);
+        if (onDelete !== undefined) {
+            onDelete(e, yCoordinateList[index], moreProps);
+        }
     };
 
-    private readonly handleDragComplete = (moreProps) => {
+    private readonly handleDragComplete = (e: React.MouseEvent, moreProps) => {
         const { override } = this.state;
         if (isDefined(override)) {
             const { yCoordinateList } = this.props;
@@ -195,13 +186,16 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
                     override: null,
                 },
                 () => {
-                    this.props.onDragComplete(newAlertList, moreProps, draggedAlert);
+                    const { onDragComplete } = this.props;
+                    if (onDragComplete !== undefined) {
+                        onDragComplete(e, newAlertList, moreProps, draggedAlert);
+                    }
                 },
             );
         }
     };
 
-    private readonly handleDrag = (index, yValue) => {
+    private readonly handleDrag = (_: React.MouseEvent, index, yValue) => {
         this.setState({
             override: {
                 index,

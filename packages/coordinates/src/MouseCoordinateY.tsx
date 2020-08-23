@@ -5,7 +5,7 @@ import { drawOnCanvas } from "./EdgeCoordinateV3";
 export interface MouseCoordinateYProps {
     readonly arrowWidth?: number;
     readonly at?: "left" | "right";
-    readonly displayFormat: any; // func
+    readonly displayFormat: (value: number) => string;
     readonly dx?: number;
     readonly fontFamily?: string;
     readonly fontSize?: number;
@@ -15,6 +15,7 @@ export interface MouseCoordinateYProps {
     readonly orient?: "left" | "right";
     readonly rectWidth?: number;
     readonly rectHeight?: number;
+    readonly stroke?: string;
     readonly strokeOpacity?: number;
     readonly strokeWidth?: number;
     readonly textFill?: string;
@@ -51,34 +52,38 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const props = this.helper(this.props, moreProps);
-        if (isNotDefined(props)) {
+        if (props === undefined) {
             return;
         }
 
         drawOnCanvas(ctx, props);
     };
 
-    private readonly helper = (props: MouseCoordinateYProps, moreProps) => {
-        const { chartId, currentCharts, mouseXY, show } = moreProps;
+    private readonly helper = (props: MouseCoordinateYProps, moreProps: any) => {
+        const {
+            chartConfig: { yScale },
+            chartId,
+            currentCharts,
+            mouseXY,
+            show,
+        } = moreProps;
 
         if (!show) {
-            return null;
+            return undefined;
         }
 
         if (isNotDefined(mouseXY)) {
-            return null;
+            return undefined;
         }
 
         if (currentCharts.indexOf(chartId) < 0) {
-            return null;
+            return undefined;
         }
 
         const y = mouseXY[1];
-        const {
-            chartConfig: { yScale },
-        } = moreProps;
+
         const { displayFormat } = props;
 
         const coordinate = displayFormat(yScale.invert(y));
@@ -87,12 +92,11 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
     };
 }
 
-export function getYCoordinate(y, displayValue, props, moreProps) {
+export function getYCoordinate(y: number, coordinate: string, props: any, moreProps: any) {
     const { width } = moreProps;
 
-    const { orient, at, rectWidth, rectHeight, dx } = props;
+    const { orient, at, rectWidth, rectHeight, dx, stroke, strokeOpacity, strokeWidth } = props;
     const { fill, opacity, fitToText, fontFamily, fontSize, textFill, arrowWidth } = props;
-    const { stroke, strokeOpacity, strokeWidth } = props;
 
     const x1 = 0;
     const x2 = width;
@@ -102,7 +106,7 @@ export function getYCoordinate(y, displayValue, props, moreProps) {
     const hideLine = true;
 
     const coordinateProps = {
-        coordinate: displayValue,
+        coordinate,
         show: true,
         fitToText,
         type,

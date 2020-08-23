@@ -38,7 +38,7 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
         return <GenericChartComponent canvasToDraw={getAxisCanvas} canvasDraw={this.drawOnCanvas} drawOn={["pan"]} />;
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { stroke = KagiSeries.defaultProps.stroke, strokeWidth, currentValueStroke } = this.props;
         const {
             xAccessor,
@@ -52,14 +52,15 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
         let begin = true;
 
         paths.forEach((each) => {
+            // @ts-ignore
             ctx.strokeStyle = stroke[each.type];
             if (strokeWidth !== undefined) {
                 ctx.lineWidth = strokeWidth;
             }
 
             ctx.beginPath();
-            let prevX;
-            each.plot.forEach((d) => {
+            let prevX: any;
+            each.plot.forEach((d: any) => {
                 const [x1, y] = [xScale(d[0]), yScale(d[1])];
                 if (begin) {
                     ctx.moveTo(x1, y);
@@ -95,7 +96,7 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
     };
 }
 
-const helper = (plotData: any[], xAccessor) => {
+const helper = (plotData: any[], xAccessor: any) => {
     const kagiLine: any[] = [];
     let kagi: {
         added?: boolean;

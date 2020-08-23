@@ -26,9 +26,23 @@ THE SOFTWARE.
 
 */
 
-import identity from "./identity";
+import { identity } from "./identity";
 import { functor } from "./index";
-import noop from "./noop";
+import { noop } from "./noop";
+
+interface AccumulatingWindow {
+    (data: any[]): any[];
+    accumulateTill(): any;
+    accumulateTill(x: any): AccumulatingWindow;
+    accumulator(): any;
+    accumulator(x: any): AccumulatingWindow;
+    value(): any;
+    value(x: any): AccumulatingWindow;
+    discardTillStart(): boolean;
+    discardTillStart(x: boolean): AccumulatingWindow;
+    discardTillEnd(): boolean;
+    discardTillEnd(x: boolean): AccumulatingWindow;
+}
 
 export default function () {
     let accumulateTill = functor(false);
@@ -37,7 +51,7 @@ export default function () {
     let discardTillStart = false;
     let discardTillEnd = false;
 
-    const accumulatingWindow = function (data) {
+    const accumulatingWindow = function (data: any[]) {
         let accumulatedWindow: any[] | undefined = discardTillStart ? undefined : [];
         const response: any[] = [];
         let accumulatorIdx = 0;
@@ -64,40 +78,41 @@ export default function () {
         return response;
     };
 
-    accumulatingWindow.accumulateTill = function (x) {
+    accumulatingWindow.accumulateTill = function (x: any) {
         if (!arguments.length) {
             return accumulateTill;
         }
         accumulateTill = functor(x);
         return accumulatingWindow;
     };
-    accumulatingWindow.accumulator = function (x) {
+    accumulatingWindow.accumulator = function (x: any) {
         if (!arguments.length) {
             return accumulator;
         }
         accumulator = x;
         return accumulatingWindow;
     };
-    accumulatingWindow.value = function (x) {
+    accumulatingWindow.value = function (x: any) {
         if (!arguments.length) {
             return value;
         }
         value = x;
         return accumulatingWindow;
     };
-    accumulatingWindow.discardTillStart = function (x) {
+    accumulatingWindow.discardTillStart = function (x: any) {
         if (!arguments.length) {
             return discardTillStart;
         }
         discardTillStart = x;
         return accumulatingWindow;
     };
-    accumulatingWindow.discardTillEnd = function (x) {
+    accumulatingWindow.discardTillEnd = function (x: any) {
         if (!arguments.length) {
             return discardTillEnd;
         }
         discardTillEnd = x;
         return accumulatingWindow;
     };
-    return accumulatingWindow;
+
+    return accumulatingWindow as AccumulatingWindow;
 }

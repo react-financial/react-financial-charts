@@ -5,10 +5,10 @@ import { MouseLocationIndicator } from "./components/MouseLocationIndicator";
 import { isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
 import { EachGannFan } from "./wrapper/EachGannFan";
 
-interface GannFanProps {
+export interface GannFanProps {
     readonly enabled: boolean;
-    readonly onStart: any; // func
-    readonly onComplete: any; // func
+    readonly onStart?: () => void;
+    readonly onComplete: (e: React.MouseEvent, newfans: any[], moreProps: any) => void;
     readonly onSelect?: any; // func
     readonly currentPositionStroke?: string;
     readonly currentPositionStrokeWidth?: number;
@@ -53,8 +53,6 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
             fontSize: 12,
             fontFill: "#000000",
         },
-        onStart: noop,
-        onComplete: noop,
         onSelect: noop,
         currentPositionStroke: "#000000",
         currentPositionOpacity: 1,
@@ -146,7 +144,7 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
         );
     }
 
-    private readonly handleEnd = (xyValyue, moreProps, e) => {
+    private readonly handleEnd = (e: React.MouseEvent, _: any, moreProps: any) => {
         const { current } = this.state;
         const { fans, appearance } = this.props;
 
@@ -160,13 +158,16 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
                     current: null,
                 },
                 () => {
-                    this.props.onComplete(newfans, moreProps, e);
+                    const { onComplete } = this.props;
+                    if (onComplete !== undefined) {
+                        onComplete(e, newfans, moreProps);
+                    }
                 },
             );
         }
     };
 
-    private readonly handleStart = (xyValue) => {
+    private readonly handleStart = (_: React.MouseEvent, xyValue: any) => {
         const { current } = this.state;
 
         if (isNotDefined(current) || isNotDefined(current.startXY)) {
@@ -180,13 +181,16 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
                     },
                 },
                 () => {
-                    this.props.onStart();
+                    const { onStart } = this.props;
+                    if (onStart !== undefined) {
+                        onStart();
+                    }
                 },
             );
         }
     };
 
-    private readonly handleDrawFan = (xyValue) => {
+    private readonly handleDrawFan = (_: React.MouseEvent, xyValue: any) => {
         const { current } = this.state;
 
         if (isDefined(current) && isDefined(current.startXY)) {
@@ -201,7 +205,7 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
         }
     };
 
-    private readonly handleDragFanComplete = (moreProps) => {
+    private readonly handleDragFanComplete = (e: React.MouseEvent, moreProps: any) => {
         const { override } = this.state;
         const { fans } = this.props;
 
@@ -213,13 +217,13 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
                     override: null,
                 },
                 () => {
-                    this.props.onComplete(newfans, moreProps);
+                    this.props.onComplete(e, newfans, moreProps);
                 },
             );
         }
     };
 
-    private readonly handleDragFan = (index, newXYValue) => {
+    private readonly handleDragFan = (_: React.MouseEvent, index: number | undefined, newXYValue: any) => {
         this.setState({
             override: {
                 index,

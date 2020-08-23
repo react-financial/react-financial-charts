@@ -44,25 +44,25 @@ export class BollingerSeries extends React.Component<BollingerSeriesProps> {
         );
     }
 
-    private readonly yAccessorForScaledBottom = (scale: ScaleContinuousNumeric<number, number>, d) => {
+    private readonly yAccessorForScaledBottom = (scale: ScaleContinuousNumeric<number, number>, d: any) => {
         const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
 
         return scale(yAccessor(d) && yAccessor(d).bottom);
     };
 
-    private readonly yAccessorForBottom = (d) => {
+    private readonly yAccessorForBottom = (d: any) => {
         const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
 
         return yAccessor(d) && yAccessor(d).bottom;
     };
 
-    private readonly yAccessorForMiddle = (d) => {
+    private readonly yAccessorForMiddle = (d: any) => {
         const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
 
         return yAccessor(d) && yAccessor(d).middle;
     };
 
-    private readonly yAccessorForTop = (d) => {
+    private readonly yAccessorForTop = (d: any) => {
         const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
 
         return yAccessor(d) && yAccessor(d).top;

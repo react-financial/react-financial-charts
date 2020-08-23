@@ -34,7 +34,8 @@ export interface OverlayBarSeriesProps {
 
 export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
     public static defaultProps = {
-        baseAt: (xScale, yScale /* , d*/) => first(yScale.range()),
+        baseAt: (xScale: ScaleContinuousNumeric<number, number>, yScale: ScaleContinuousNumeric<number, number>) =>
+            first(yScale.range()),
         direction: "up",
         className: "bar",
         stroke: false,
@@ -57,7 +58,7 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { yAccessor } = this.props;
 
         const bars = this.getBars(moreProps, yAccessor);
@@ -65,7 +66,7 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
         drawOnCanvas2(this.props, ctx, bars);
     };
 
-    private readonly getBars = (moreProps, yAccessor) => {
+    private readonly getBars = (moreProps: any, yAccessor: any) => {
         const {
             xScale,
             xAccessor,
@@ -82,9 +83,9 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
         const width = widthFunctor(this.props, moreProps);
         const offset = Math.floor(0.5 * width);
 
-        const bars = plotData.map((d) => {
+        const bars = plotData.map((d: any) => {
             const innerBars = yAccessor
-                .map((eachYAccessor, i) => {
+                .map((eachYAccessor: any, i: number) => {
                     const yValue = eachYAccessor(d);
                     if (isNotDefined(yValue)) {
                         return undefined;
@@ -103,7 +104,7 @@ export class OverlayBarSeries extends React.Component<OverlayBarSeriesProps> {
                         i,
                     };
                 })
-                .filter((yValue) => isDefined(yValue));
+                .filter((yValue: any) => isDefined(yValue));
 
             let b = getBase(xScale, yScale, d);
             let h;

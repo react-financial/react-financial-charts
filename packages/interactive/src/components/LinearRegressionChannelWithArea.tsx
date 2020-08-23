@@ -5,8 +5,6 @@ import {
     getClosestItemIndexes,
     getMouseCanvas,
     GenericChartComponent,
-    isDefined,
-    noop,
 } from "@react-financial-charts/core";
 import { isHovering2 } from "./StraightLine";
 
@@ -22,11 +20,11 @@ interface LinearRegressionChannelWithAreaProps {
     readonly fill: string;
     readonly fillOpacity: number;
     readonly strokeOpacity: number;
-    readonly onDragStart: any; // func
-    readonly onDrag: any; // func
-    readonly onDragComplete: any; // func
-    readonly onHover?: any; // func
-    readonly onUnHover?: any; // func
+    readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
     readonly defaultClassName?: string;
     readonly tolerance: number;
     readonly selected: boolean;
@@ -34,9 +32,6 @@ interface LinearRegressionChannelWithAreaProps {
 
 export class LinearRegressionChannelWithArea extends React.Component<LinearRegressionChannelWithAreaProps> {
     public static defaultProps = {
-        onDragStart: noop,
-        onDrag: noop,
-        onDragComplete: noop,
         type: "SD", // standard dev
         strokeWidth: 1,
         tolerance: 4,
@@ -45,7 +40,7 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
 
     public render() {
         const { selected, interactiveCursorClass } = this.props;
-        const { onHover, onUnHover } = this.props;
+        const { onDragStart, onDrag, onDragComplete, onHover, onUnHover } = this.props;
 
         return (
             <GenericChartComponent
@@ -54,6 +49,9 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
                 canvasDraw={this.drawOnCanvas}
                 interactiveCursorClass={interactiveCursorClass}
                 selected={selected}
+                onDragStart={onDragStart}
+                onDrag={onDrag}
+                onDragComplete={onDragComplete}
                 onHover={onHover}
                 onUnHover={onUnHover}
                 drawOn={["mousemove", "mouseleave", "pan", "drag"]}
@@ -61,7 +59,7 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;
         const { x1, y1, x2, y2, dy } = helper(this.props, moreProps);
 
@@ -93,10 +91,10 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
         ctx.stroke();
     };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = (moreProps: any) => {
         const { tolerance, onHover } = this.props;
 
-        if (isDefined(onHover)) {
+        if (onHover !== undefined) {
             const { mouseXY } = moreProps;
 
             const { x1, y1, x2, y2, dy } = helper(this.props, moreProps);
@@ -112,21 +110,21 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
     };
 }
 
-export function edge1Provider(props) {
-    return function (moreProps) {
+export function edge1Provider(props: any) {
+    return function (moreProps: any) {
         const { x1, y1 } = helper(props, moreProps);
         return [x1, y1];
     };
 }
 
-export function edge2Provider(props) {
-    return function (moreProps) {
+export function edge2Provider(props: any) {
+    return function (moreProps: any) {
         const { x2, y2 } = helper(props, moreProps);
         return [x2, y2];
     };
 }
 
-function helper(props, moreProps) {
+function helper(props: any, moreProps: any) {
     const { x1Value, x2Value, type } = props;
 
     const {

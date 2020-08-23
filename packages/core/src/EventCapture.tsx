@@ -114,14 +114,14 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     private dy?: number = 0;
     private dragHappened?: boolean;
     private focus?: boolean;
-    private lastNewPos?;
+    private lastNewPos?: number[];
     private mouseInside = false;
     private mouseInteraction = true;
     private panEndTimeout?: number;
     private panHappened?: boolean;
     private readonly ref = React.createRef<SVGRectElement>();
 
-    constructor(props: EventCaptureProps) {
+    public constructor(props: EventCaptureProps) {
         super(props);
 
         this.focus = props.focus;
@@ -139,6 +139,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         }
 
         if (!disableInteraction) {
+            // @ts-ignore
             select(current).on(MOUSEENTER, this.handleEnter).on(MOUSELEAVE, this.handleLeave);
 
             // @ts-ignore
@@ -183,7 +184,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         onMouseEnter(e);
     };
 
-    public handleLeave = (e) => {
+    public handleLeave = (e: React.MouseEvent) => {
         const { onMouseLeave } = this.props;
         if (onMouseLeave === undefined) {
             return;
@@ -518,7 +519,9 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
                 delete this.dx;
                 delete this.dy;
-                onPanEnd(this.lastNewPos, panStartXScale, { dx, dy }, chartsToPan, e);
+                if (this.lastNewPos !== undefined) {
+                    onPanEnd(this.lastNewPos, panStartXScale, { dx, dy }, chartsToPan, e);
+                }
             }
 
             this.setState({
@@ -589,7 +592,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 const touch1Pos = touchPosition(getTouchProps(e.touches[0]), e);
                 const touch2Pos = touchPosition(getTouchProps(e.touches[1]), e);
 
-                if (this.panHappened && panEnabled && onPanEnd) {
+                if (this.panHappened && panEnabled && onPanEnd && this.lastNewPos !== undefined) {
                     onPanEnd(this.lastNewPos, panStartXScale, { dx, dy }, chartsToPan, e);
                 }
 
@@ -656,7 +659,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         });
     };
 
-    public setCursorClass = (cursorOverrideClass) => {
+    public setCursorClass = (cursorOverrideClass: string) => {
         if (cursorOverrideClass !== this.state.cursorOverrideClass) {
             this.setState({
                 cursorOverrideClass,

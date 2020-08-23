@@ -222,6 +222,7 @@ const tickHelper = (props: AxisProps, scale: ScaleContinuousNumeric<number, numb
                 simulation.tick();
             }
 
+            // @ts-ignore
             ticks = zip(ticks, nodes).map((d) => {
                 const a: any = d[0];
                 const b: any = d[1];
@@ -277,7 +278,7 @@ const tickHelper = (props: AxisProps, scale: ScaleContinuousNumeric<number, numb
     };
 };
 
-const drawAxisLine = (ctx: CanvasRenderingContext2D, props: AxisProps, range) => {
+const drawAxisLine = (ctx: CanvasRenderingContext2D, props: AxisProps, range: any) => {
     const { orient, outerTickSize, strokeStyle, strokeWidth } = props;
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
@@ -306,7 +307,7 @@ const drawAxisLine = (ctx: CanvasRenderingContext2D, props: AxisProps, range) =>
     ctx.stroke();
 };
 
-const drawTicks = (ctx: CanvasRenderingContext2D, result, moreProps) => {
+const drawTicks = (ctx: CanvasRenderingContext2D, result: any, moreProps: any) => {
     const { showGridLines, tickStrokeStyle, tickLabelFill } = result;
     const { textAnchor, fontSize, fontFamily, fontWeight, ticks, showTickLabel } = result;
 
@@ -315,12 +316,12 @@ const drawTicks = (ctx: CanvasRenderingContext2D, result, moreProps) => {
         ctx.fillStyle = tickStrokeStyle;
     }
 
-    ticks.forEach((tick) => {
+    ticks.forEach((tick: any) => {
         drawEachTick(ctx, tick, result);
     });
 
     if (showGridLines) {
-        ticks.forEach((tick) => {
+        ticks.forEach((tick: any) => {
             drawGridLine(ctx, tick, result, moreProps);
         });
     }
@@ -330,13 +331,13 @@ const drawTicks = (ctx: CanvasRenderingContext2D, result, moreProps) => {
     ctx.textAlign = textAnchor === "middle" ? "center" : textAnchor;
 
     if (showTickLabel) {
-        ticks.forEach((tick) => {
+        ticks.forEach((tick: any) => {
             drawEachTickLabel(ctx, tick, result);
         });
     }
 };
 
-const drawGridLine = (ctx: CanvasRenderingContext2D, tick, result, moreProps) => {
+const drawGridLine = (ctx: CanvasRenderingContext2D, tick: any, result: any, moreProps: any) => {
     const { orient, gridLinesStrokeWidth, gridLinesStrokeStyle, gridLinesStrokeDasharray } = result;
 
     const { chartConfig } = moreProps;
@@ -369,7 +370,7 @@ const drawGridLine = (ctx: CanvasRenderingContext2D, tick, result, moreProps) =>
     ctx.stroke();
 };
 
-const drawEachTick = (ctx: CanvasRenderingContext2D, tick, result) => {
+const drawEachTick = (ctx: CanvasRenderingContext2D, tick: any, result: any) => {
     const { tickStrokeWidth, tickStrokeDasharray } = result;
 
     ctx.beginPath();
@@ -384,7 +385,7 @@ const drawEachTick = (ctx: CanvasRenderingContext2D, tick, result) => {
     ctx.stroke();
 };
 
-const drawEachTickLabel = (ctx: CanvasRenderingContext2D, tick, result) => {
+const drawEachTickLabel = (ctx: CanvasRenderingContext2D, tick: any, result: any) => {
     const { canvas_dy, format } = result;
 
     const text = format(tick.value);

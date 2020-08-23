@@ -32,7 +32,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         layout: "horizontal",
         displayFormat: format(".2f"),
         displayInit: "",
-        displayValuesFor: (_, props) => props.currentItem,
+        displayValuesFor: (_: any, props: any) => props.currentItem,
         origin: [0, 0],
         width: 60,
         verticalSize: 13,
@@ -42,7 +42,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly getPosition = (moreProps) => {
+    private readonly getPosition = (moreProps: any) => {
         const { position } = this.props;
         const { height, width } = moreProps.chartConfig;
 
@@ -74,7 +74,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         return { xyPos, textAnchor };
     };
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = (moreProps: any) => {
         const { chartId, fullData } = moreProps;
 
         const {

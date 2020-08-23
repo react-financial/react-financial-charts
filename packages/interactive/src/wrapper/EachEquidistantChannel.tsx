@@ -36,8 +36,8 @@ interface EachEquidistantChannelProps {
         r: number;
     };
     readonly index?: number;
-    readonly onDrag: any; // func
-    readonly onDragComplete: any; // func
+    readonly onDrag: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
 }
 
 interface EachEquidistantChannelState {
@@ -50,7 +50,6 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         interactive: true,
         selected: false,
         onDrag: noop,
-        onDragComplete: noop,
         hoverText: {
             enable: false,
         },
@@ -61,7 +60,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
     private isHover;
     private saveNodeType;
 
-    constructor(props: EachEquidistantChannelProps) {
+    public constructor(props: EachEquidistantChannelProps) {
         super(props);
 
         this.isHover = isHover.bind(this);
@@ -171,7 +170,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         );
     };
 
-    private readonly handleChannelHeightChange = (moreProps) => {
+    private readonly handleChannelHeightChange = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
 
         const { startXY, endXY } = this.dragStart;
@@ -189,14 +188,14 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
 
         const newDy = newY2Value - endXY[1] + this.dragStart.dy;
 
-        onDrag(index, {
+        onDrag(e, index, {
             startXY,
             endXY,
             dy: newDy,
         });
     };
 
-    private readonly handleLine1Edge2Drag = (moreProps) => {
+    private readonly handleLine1Edge2Drag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
         const { endXY } = this.dragStart;
 
@@ -218,14 +217,14 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         const newX1Value = getXValue(xScale, xAccessor, [x1 - dx, y1 - dy], fullData);
         const newY1Value = yScale.invert(y1 - dy);
 
-        onDrag(index, {
+        onDrag(e, index, {
             startXY: this.dragStart.startXY,
             endXY: [newX1Value, newY1Value],
             dy: this.dragStart.dy,
         });
     };
 
-    private readonly handleLine1Edge1Drag = (moreProps) => {
+    private readonly handleLine1Edge1Drag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
         const { startXY } = this.dragStart;
 
@@ -247,14 +246,14 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         const newX1Value = getXValue(xScale, xAccessor, [x1 - dx, y1 - dy], fullData);
         const newY1Value = yScale.invert(y1 - dy);
 
-        onDrag(index, {
+        onDrag(e, index, {
             startXY: [newX1Value, newY1Value],
             endXY: this.dragStart.endXY,
             dy: this.dragStart.dy,
         });
     };
 
-    private readonly handleChannelDrag = (moreProps) => {
+    private readonly handleChannelDrag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
 
         const { startXY, endXY } = this.dragStart;
@@ -280,9 +279,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         const newX2Value = getXValue(xScale, xAccessor, [x2 - dx, y2 - dy], fullData);
         const newY2Value = yScale.invert(y2 - dy);
 
-        // const newDy = newY2Value - endXY[1] + this.dragStart.dy;
-
-        onDrag(index, {
+        onDrag(e, index, {
             startXY: [newX1Value, newY1Value],
             endXY: [newX2Value, newY2Value],
             dy: this.dragStart.dy,
@@ -299,7 +296,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         };
     };
 
-    private readonly handleHover = (moreProps) => {
+    private readonly handleHover = (_: React.MouseEvent, moreProps) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,

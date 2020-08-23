@@ -50,15 +50,15 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         candleClassName: "react-financial-charts-candlestick-candle",
         candleStrokeWidth: 0.5,
         className: "react-financial-charts-candlestick",
-        classNames: (d) => (d.close > d.open ? "up" : "down"),
+        classNames: (d: any) => (d.close > d.open ? "up" : "down"),
         clip: true,
-        fill: (d) => (d.close > d.open ? "#26a69a" : "#ef5350"),
-        stroke: (d) => (d.close > d.open ? "#26a69a" : "#ef5350"),
+        fill: (d: any) => (d.close > d.open ? "#26a69a" : "#ef5350"),
+        stroke: (d: any) => (d.close > d.open ? "#26a69a" : "#ef5350"),
         wickClassName: "react-financial-charts-candlestick-wick",
-        wickStroke: (d) => (d.close > d.open ? "#26a69a" : "#ef5350"),
+        wickStroke: (d: any) => (d.close > d.open ? "#26a69a" : "#ef5350"),
         width: plotDataLengthBarWidth,
         widthRatio: 0.8,
-        yAccessor: (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
+        yAccessor: (d: any) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
     };
 
     public render() {
@@ -74,7 +74,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { candleStrokeWidth = CandlestickSeries.defaultProps.candleStrokeWidth } = this.props;
         const {
             xScale,

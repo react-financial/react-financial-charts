@@ -14,7 +14,12 @@ import {
 export interface StackedBarSeriesProps {
     readonly baseAt?:
         | number
-        | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
+        | ((
+              xScale: ScaleContinuousNumeric<number, number>,
+              yScale: ScaleContinuousNumeric<number, number>,
+              d: [number, number],
+              moreProps: any,
+          ) => number);
     readonly className?: string | any; // func
     readonly clip?: boolean;
     readonly direction?: "up" | "down";
@@ -33,7 +38,8 @@ export interface StackedBarSeriesProps {
 
 export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
     public static defaultProps = {
-        baseAt: (xScale, yScale /* , d*/) => head(yScale.range()),
+        baseAt: (xScale: ScaleContinuousNumeric<number, number>, yScale: ScaleContinuousNumeric<number, number>) =>
+            head(yScale.range()),
         direction: "up",
         className: "bar",
         stroke: false,
@@ -57,7 +63,7 @@ export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { xAccessor } = moreProps;
 
         drawOnCanvasHelper(ctx, this.props, moreProps, xAccessor, d3Stack);
@@ -65,10 +71,10 @@ export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
 }
 
 export function identityStack() {
-    let keys = [];
-    function stack(data) {
+    let keys: any[] = [];
+    function stack(data: any) {
         const response = keys.map((key, i) => {
-            const arrays = data.map((d) => {
+            const arrays = data.map((d: any) => {
                 const array = [0, d[key]];
 
                 // @ts-ignore
@@ -81,7 +87,7 @@ export function identityStack() {
         });
         return response;
     }
-    stack.keys = function (x) {
+    stack.keys = function (x: any) {
         if (!arguments.length) {
             return keys;
         }
@@ -94,9 +100,9 @@ export function identityStack() {
 export function drawOnCanvasHelper(
     ctx: CanvasRenderingContext2D,
     props: StackedBarSeriesProps,
-    moreProps,
-    xAccessor,
-    stackFn,
+    moreProps: any,
+    xAccessor: any,
+    stackFn: any,
     defaultPostAction = identity,
     postRotateAction = rotateXY,
 ) {
@@ -111,19 +117,19 @@ export function drawOnCanvasHelper(
     drawOnCanvas2(props, ctx, bars);
 }
 
-function convertToArray(item) {
+function convertToArray(item: any) {
     return Array.isArray(item) ? item : [item];
 }
 
 const doStuff = (
     props: StackedBarSeriesProps,
-    xAccessor,
-    plotData,
-    xScale,
-    yScale,
-    stackFn,
-    postRotateAction,
-    defaultPostAction,
+    xAccessor: any,
+    plotData: any[],
+    xScale: any,
+    yScale: any,
+    stackFn: any,
+    postRotateAction: any,
+    defaultPostAction: any,
 ) => {
     const { yAccessor, swapScales } = props;
 
@@ -149,7 +155,7 @@ const doStuff = (
     return bars;
 };
 
-export const rotateXY = (array) =>
+export const rotateXY = (array: any[]) =>
     array.map((each) => {
         return {
             ...each,
@@ -160,7 +166,7 @@ export const rotateXY = (array) =>
         };
     });
 
-export const drawOnCanvas2 = (props: StackedBarSeriesProps, ctx: CanvasRenderingContext2D, bars) => {
+export const drawOnCanvas2 = (props: StackedBarSeriesProps, ctx: CanvasRenderingContext2D, bars: any) => {
     const { stroke } = props;
 
     const nest = group(bars, (d: any) => d.fillStyle);
@@ -186,11 +192,11 @@ export const drawOnCanvas2 = (props: StackedBarSeriesProps, ctx: CanvasRendering
 
 export function getBars(
     props: StackedBarSeriesProps,
-    xAccessor,
-    yAccessor,
-    xScale,
-    yScale,
-    plotData,
+    xAccessor: any,
+    yAccessor: any,
+    xScale: any,
+    yScale: any,
+    plotData: any[],
     stack = identityStack,
     after = identity,
 ) {
@@ -218,27 +224,29 @@ export function getBars(
             appearance: {},
             x: xAccessor(each),
         };
-        yAccessor.forEach((eachYAccessor, i) => {
+        yAccessor.forEach((eachYAccessor: any, i: number) => {
             const key = `y${i}`;
+            // @ts-ignore
             d[key] = eachYAccessor(each);
             const appearance = {
                 className: getClassName(each, i),
                 stroke: stroke ? getFill(each, i) : "none",
                 fillStyle: getFill(each, i),
             };
+            // @ts-ignore
             d.appearance[key] = appearance;
         });
         return d;
     });
 
-    const keys = yAccessor.map((_, i) => `y${i}`);
+    const keys = yAccessor.map((_: any, i: number) => `y${i}`);
 
     // @ts-ignore
     const data = stack().keys(keys)(ds);
 
-    const newData = data.map((each, i) => {
+    const newData = data.map((each: any, i: number) => {
         const key = each.key;
-        return each.map((d) => {
+        return each.map((d: any) => {
             const array = [d[0], d[1]];
 
             // @ts-ignore

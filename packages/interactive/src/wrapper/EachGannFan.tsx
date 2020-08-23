@@ -41,8 +41,8 @@ interface EachGannFanProps {
         selectedText: string;
     };
     index?: number;
-    onDrag: any; // func
-    onDragComplete: any; // func
+    onDrag: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
+    onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
 }
 
 interface EachGannFanState {
@@ -69,7 +69,6 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
             fontFill: "#000000",
         },
         onDrag: noop,
-        onDragComplete: noop,
         hoverText: {
             ...HoverTextNearMouse.defaultProps,
             enable: true,
@@ -84,7 +83,7 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
     private dragStart;
     private saveNodeType;
 
-    constructor(props) {
+    public constructor(props) {
         super(props);
 
         this.isHover = isHover.bind(this);
@@ -178,7 +177,7 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
         );
     };
 
-    private readonly handleLine1Edge2Drag = (moreProps) => {
+    private readonly handleLine1Edge2Drag = (e: React.MouseEvent, moreProps) => {
         const { index, onDrag } = this.props;
         const { endXY } = this.dragStart;
 
@@ -200,14 +199,14 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
         const newX1Value = getXValue(xScale, xAccessor, [x1 - dx, y1 - dy], fullData);
         const newY1Value = yScale.invert(y1 - dy);
 
-        onDrag(index, {
+        onDrag(e, index, {
             startXY: this.dragStart.startXY,
             endXY: [newX1Value, newY1Value],
             dy: this.dragStart.dy,
         });
     };
 
-    private readonly handleLine1Edge1Drag = (moreProps) => {
+    private readonly handleLine1Edge1Drag = (e: React.MouseEvent, moreProps) => {
         const { index, onDrag } = this.props;
         const { startXY } = this.dragStart;
 
@@ -229,14 +228,14 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
         const newX1Value = getXValue(xScale, xAccessor, [x1 - dx, y1 - dy], fullData);
         const newY1Value = yScale.invert(y1 - dy);
 
-        onDrag(index, {
+        onDrag(e, index, {
             startXY: [newX1Value, newY1Value],
             endXY: this.dragStart.endXY,
             dy: this.dragStart.dy,
         });
     };
 
-    private readonly handleFanDrag = (moreProps) => {
+    private readonly handleFanDrag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
 
         const { startXY, endXY } = this.dragStart;
@@ -264,7 +263,7 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
 
         // const newDy = newY2Value - endXY[1] + this.dragStart.dy;
 
-        onDrag(index, {
+        onDrag(e, index, {
             startXY: [newX1Value, newY1Value],
             endXY: [newX2Value, newY2Value],
             dy: this.dragStart.dy,

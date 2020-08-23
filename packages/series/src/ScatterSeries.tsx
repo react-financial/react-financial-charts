@@ -14,7 +14,7 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
         return <GenericChartComponent canvasDraw={this.drawOnCanvas} canvasToDraw={getAxisCanvas} drawOn={["pan"]} />;
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const points = this.getMarkers(moreProps);
 
         const { markerProps } = this.props;
@@ -43,7 +43,7 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
         });
     };
 
-    private readonly getMarkers = (moreProps) => {
+    private readonly getMarkers = (moreProps: any) => {
         const { yAccessor, markerProvider, markerProps } = this.props;
 
         const {
@@ -58,7 +58,7 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
             throw new Error("required prop, either marker or markerProvider missing");
         }
 
-        return plotData.map((d) => {
+        return plotData.map((d: any) => {
             if (markerProvider) {
                 Marker = markerProvider(d);
             }

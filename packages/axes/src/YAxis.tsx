@@ -47,7 +47,7 @@ export class YAxis extends React.Component<YAxisProps> {
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 12,
         fontWeight: 400,
-        getMouseDelta: (startXY, mouseXY) => startXY[1] - mouseXY[1],
+        getMouseDelta: (startXY: [number, number], mouseXY: [number, number]) => startXY[1] - mouseXY[1],
         gridLinesStrokeStyle: "#E2E4EC",
         gridLinesStrokeWidth: 1,
         innerTickSize: 4,
@@ -154,7 +154,7 @@ export class YAxis extends React.Component<YAxisProps> {
         return 8;
     };
 
-    private readonly getYScale = (moreProps) => {
+    private readonly getYScale = (moreProps: any) => {
         const { yScale: scale, flipYScale, height } = moreProps.chartConfig;
         if (scale.invert) {
             const trueRange = flipYScale ? [0, height] : [height, 0];

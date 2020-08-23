@@ -64,7 +64,7 @@ export class SARSeries extends React.Component<SARSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { yAccessor, fill = SARSeries.defaultProps.fill, opacity } = this.props;
         const {
             xAccessor,
@@ -79,7 +79,7 @@ export class SARSeries extends React.Component<SARSeriesProps> {
         const d = ((width / plotData.length) * 0.5) / 2;
         const radius = Math.min(2, Math.max(0.5, d)) + (hovering ? 2 : 0);
 
-        plotData.forEach((each) => {
+        plotData.forEach((each: any) => {
             const centerX = xScale(xAccessor(each));
             const centerY = yScale(yAccessor(each));
             const color = yAccessor(each) > each.close ? fill.falling : fill.rising;
@@ -95,7 +95,7 @@ export class SARSeries extends React.Component<SARSeriesProps> {
         });
     };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = (moreProps: any) => {
         const {
             mouseXY,
             currentItem,

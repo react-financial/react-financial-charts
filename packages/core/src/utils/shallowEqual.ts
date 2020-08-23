@@ -1,4 +1,4 @@
-export const shallowEqual = (a, b) => {
+export const shallowEqual = (a: any, b: any) => {
     if (a === b) {
         return true;
     }

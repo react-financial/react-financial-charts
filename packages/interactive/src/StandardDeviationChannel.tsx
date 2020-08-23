@@ -1,18 +1,15 @@
 import * as React from "react";
-
-import { isDefined, isNotDefined, noop } from "@react-financial-charts/core";
-
+import { isDefined, isNotDefined } from "@react-financial-charts/core";
 import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-
 import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
 import { MouseLocationIndicator } from "./components/MouseLocationIndicator";
 import { EachLinearRegressionChannel } from "./wrapper/EachLinearRegressionChannel";
 
-interface StandardDeviationChannelProps {
+export interface StandardDeviationChannelProps {
     readonly enabled: boolean;
     readonly snapTo?: any; // func
-    readonly onStart?: any; // func
-    readonly onComplete: any; // func
+    readonly onStart?: () => void;
+    readonly onComplete?: (e: React.MouseEvent, newChannels: any, moreProps: any) => void;
     readonly onSelect?: any; // func
     readonly currentPositionStroke?: string;
     readonly currentPositionStrokeWidth?: number;
@@ -43,7 +40,7 @@ export class StandardDeviationChannel extends React.Component<
     StandardDeviationChannelState
 > {
     public static defaultProps = {
-        snapTo: (d) => d.close,
+        snapTo: (d: any) => d.close,
         appearance: {
             stroke: "#000000",
             fillOpacity: 0.2,
@@ -55,9 +52,6 @@ export class StandardDeviationChannel extends React.Component<
             edgeFill: "#FFFFFF",
             r: 5,
         },
-        onStart: noop,
-        onComplete: noop,
-        onSelect: noop,
         currentPositionStroke: "#000000",
         currentPositionOpacity: 1,
         currentPositionStrokeWidth: 3,
@@ -81,12 +75,11 @@ export class StandardDeviationChannel extends React.Component<
     // @ts-ignore
     private terminate;
 
-    public constructor(props) {
+    public constructor(props: StandardDeviationChannelProps) {
         super(props);
 
         this.terminate = terminate.bind(this);
         this.saveNodeType = saveNodeType.bind(this);
-
         this.getSelectionState = isHoverForInteractiveType("channels").bind(this);
 
         this.state = {};
@@ -172,7 +165,7 @@ export class StandardDeviationChannel extends React.Component<
         );
     }
 
-    private handleEnd = (xyValue, moreProps, e) => {
+    private handleEnd = (e: React.MouseEvent, xyValue: any, moreProps: any) => {
         const { current } = this.state;
         const { appearance, channels } = this.props;
 
@@ -192,13 +185,16 @@ export class StandardDeviationChannel extends React.Component<
                     current: null,
                 },
                 () => {
-                    this.props.onComplete(newChannels, moreProps, e);
+                    const { onComplete } = this.props;
+                    if (onComplete !== undefined) {
+                        onComplete(e, newChannels, moreProps);
+                    }
                 },
             );
         }
     };
 
-    private readonly handleStart = (xyValue) => {
+    private readonly handleStart = (_: React.MouseEvent, xyValue: any) => {
         const { current } = this.state;
 
         if (isNotDefined(current) || isNotDefined(current.start)) {
@@ -212,13 +208,16 @@ export class StandardDeviationChannel extends React.Component<
                     },
                 },
                 () => {
-                    this.props.onStart();
+                    const { onStart } = this.props;
+                    if (onStart !== undefined) {
+                        onStart();
+                    }
                 },
             );
         }
     };
 
-    private readonly handleDrawLine = (xyValue) => {
+    private readonly handleDrawLine = (e: React.MouseEvent, xyValue: any) => {
         const { current } = this.state;
 
         if (isDefined(current) && isDefined(current.start)) {
@@ -232,7 +231,7 @@ export class StandardDeviationChannel extends React.Component<
         }
     };
 
-    private readonly handleDragLineComplete = (moreProps) => {
+    private readonly handleDragLineComplete = (e: React.MouseEvent, moreProps: any) => {
         const { override } = this.state;
         const { channels } = this.props;
         if (isDefined(override)) {
@@ -251,13 +250,16 @@ export class StandardDeviationChannel extends React.Component<
                     override: null,
                 },
                 () => {
-                    this.props.onComplete(newChannels, moreProps);
+                    const { onComplete } = this.props;
+                    if (onComplete !== undefined) {
+                        onComplete(e, newChannels, moreProps);
+                    }
                 },
             );
         }
     };
 
-    private readonly handleDragLine = (index, newXYValue) => {
+    private readonly handleDragLine = (e: React.MouseEvent, index: number | undefined, newXYValue: any) => {
         this.setState({
             override: {
                 index,

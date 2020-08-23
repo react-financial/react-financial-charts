@@ -1,7 +1,7 @@
 import * as React from "react";
 import { colorToRGBA, isDefined } from "@react-financial-charts/core";
 
-const helper = (props) => {
+const helper = (props: any) => {
     const { coordinate: displayCoordinate, show, type, orient, edgeAt, hideLine } = props;
     const { fill, opacity, fontFamily, fontSize, textFill, lineStroke, lineOpacity, arrowWidth } = props;
     const { rectWidth, rectHeight } = props;
@@ -102,7 +102,7 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
         arrowWidth: 10,
     };
 
-    public static drawOnCanvasStatic = (ctx: CanvasRenderingContext2D, props) => {
+    public static drawOnCanvasStatic = (ctx: CanvasRenderingContext2D, props: any) => {
         props = { ...EdgeCoordinate.defaultProps, ...props };
 
         const edge = helper(props);
@@ -111,7 +111,7 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
             return;
         }
 
-        if (isDefined(edge.coordinateBase)) {
+        if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
             const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
 
             ctx.fillStyle = colorToRGBA(edge.coordinateBase.fill, edge.coordinateBase.opacity);
@@ -142,7 +142,8 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
 
             ctx.font = `${edge.coordinate.fontSize}px ${edge.coordinate.fontFamily}`;
             ctx.fillStyle = edge.coordinate.textFill;
-            ctx.textAlign = edge.coordinate.textAnchor === "middle" ? "center" : edge.coordinate.textAnchor;
+            ctx.textAlign =
+                edge.coordinate.textAnchor === "middle" ? "center" : (edge.coordinate.textAnchor as CanvasTextAlign);
             ctx.textBaseline = "middle";
 
             ctx.fillText(edge.coordinate.displayCoordinate, edge.coordinate.edgeXText, edge.coordinate.edgeYText);
@@ -183,7 +184,7 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
             );
         }
 
-        if (isDefined(edge.coordinateBase)) {
+        if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
             const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
 
             const path =

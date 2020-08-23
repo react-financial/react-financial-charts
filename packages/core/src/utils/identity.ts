@@ -1,1 +1,1 @@
-export default (d) => d;
+export const identity = (d: any) => d;

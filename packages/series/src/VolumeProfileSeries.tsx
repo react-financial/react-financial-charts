@@ -26,16 +26,16 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         bins: 20,
         opacity: 0.5,
         maxProfileWidthPercent: 50,
-        fill: ({ type }) => (type === "up" ? "#6BA583" : "#FF0000"),
+        fill: ({ type }: any) => (type === "up" ? "#6BA583" : "#FF0000"),
         stroke: "#FFFFFF",
         showSessionBackground: false,
         sessionBackGround: "#4682B4",
         sessionBackGroundOpacity: 0.3,
-        source: (d) => d.close,
-        volume: (d) => d.volume,
-        absoluteChange: (d) => d.absoluteChange,
+        source: (d: any) => d.close,
+        volume: (d: any) => d.volume,
+        absoluteChange: (d: any) => d.absoluteChange,
         bySession: false,
-        sessionStart: ({ d, i, plotData }) => i > 0 && plotData[i - 1].date.getMonth() !== d.date.getMonth(),
+        sessionStart: ({ d, i, plotData }: any) => i > 0 && plotData[i - 1].date.getMonth() !== d.date.getMonth(),
         orient: "left",
         partialStartOK: true,
         partialEndOK: true,
@@ -45,20 +45,20 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         return <GenericChartComponent canvasDraw={this.drawOnCanvas} canvasToDraw={getAxisCanvas} drawOn={["pan"]} />;
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { xAccessor, width } = moreProps;
         const { rects, sessionBg } = this.helper(this.props, moreProps, xAccessor, width);
 
         this.drawOnCanvasContext(ctx, this.props, rects, sessionBg);
     };
 
-    private readonly drawOnCanvasContext = (ctx: CanvasRenderingContext2D, props, rects, sessionBg) => {
+    private readonly drawOnCanvasContext = (ctx: CanvasRenderingContext2D, props: any, rects: any, sessionBg: any) => {
         const { opacity, sessionBackGround, sessionBackGroundOpacity, showSessionBackground } = props;
 
         if (showSessionBackground) {
             ctx.fillStyle = colorToRGBA(sessionBackGround, sessionBackGroundOpacity);
 
-            sessionBg.forEach((each) => {
+            sessionBg.forEach((each: any) => {
                 const { x, y, height, width } = each;
 
                 ctx.beginPath();
@@ -68,7 +68,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
             });
         }
 
-        rects.forEach((each) => {
+        rects.forEach((each: any) => {
             const { x, y, height, w1, w2, stroke1, stroke2, fill1, fill2 } = each;
 
             if (w1 > 0) {
@@ -105,7 +105,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         });
     };
 
-    private readonly helper = (props, moreProps, xAccessor, width) => {
+    private readonly helper = (props: any, moreProps: any, xAccessor: any, width: number) => {
         const {
             xScale: realXScale,
             chartConfig: { yScale },
@@ -120,7 +120,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
             .discardTillStart(!partialStartOK)
             // @ts-ignore
             .discardTillEnd(!partialEndOK)
-            .accumulateTill((d, i) => {
+            .accumulateTill((d: any, i: any) => {
                 return sessionStart({ d, i, ...moreProps });
             })
             .accumulator(identity);
@@ -129,7 +129,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
 
         const sessions = bySession ? sessionBuilder(plotData) : [plotData];
 
-        const allRects = sessions.map((session) => {
+        const allRects = sessions.map((session: any) => {
             const begin = bySession ? realXScale(xAccessor(head(session))) : 0;
             const finish = bySession ? realXScale(xAccessor(last(session))) : width;
             const sessionWidth = finish - begin + dx;
@@ -162,7 +162,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
 
             const volumeValues = volumeInBins.map((each) => sum(each.map((d) => d[1])));
 
-            const base = (xScaleD) => head(xScaleD.range());
+            const base = (xScaleD: any) => head(xScaleD.range());
 
             const [start, end] =
                 orient === "right"
@@ -221,8 +221,8 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         });
 
         return {
-            rects: merge<any>(allRects.map((d) => d.rects)),
-            sessionBg: allRects.map((d) => d.sessionBg),
+            rects: merge<any>(allRects.map((d: any) => d.rects)),
+            sessionBg: allRects.map((d: any) => d.sessionBg),
         };
     };
 }

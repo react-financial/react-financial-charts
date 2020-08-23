@@ -7,12 +7,10 @@ import {
     getStrokeDasharrayCanvas,
     getMouseCanvas,
     GenericChartComponent,
-    isDefined,
-    noop,
     strokeDashTypes,
 } from "@react-financial-charts/core";
 
-interface InteractiveYCoordinateProps {
+export interface InteractiveYCoordinateProps {
     readonly bgFill: string;
     readonly bgOpacity: number;
     readonly stroke: string;
@@ -28,14 +26,16 @@ interface InteractiveYCoordinateProps {
     readonly edge: object;
     readonly textBox: {
         closeIcon: any;
+        left: number;
+        height: number;
         padding: any;
     };
     readonly yValue: number;
-    readonly onDragStart: any; // func
-    readonly onDrag: any; // func
-    readonly onDragComplete: any; // func
-    readonly onHover?: any; // func
-    readonly onUnHover?: any; // func
+    readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
     readonly defaultClassName?: string;
     readonly interactiveCursorClass?: string;
     readonly tolerance: number;
@@ -45,9 +45,6 @@ interface InteractiveYCoordinateProps {
 
 export class InteractiveYCoordinate extends React.Component<InteractiveYCoordinateProps> {
     public static defaultProps = {
-        onDragStart: noop,
-        onDrag: noop,
-        onDragComplete: noop,
         fontWeight: "normal", // standard dev
         strokeWidth: 1,
         tolerance: 4,
@@ -55,7 +52,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         hovering: false,
     };
 
-    private width;
+    private width = 0;
 
     public render() {
         const { interactiveCursorClass } = this.props;
@@ -80,15 +77,13 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const {
             bgFill,
             bgOpacity,
-
             textFill,
             fontFamily,
             fontSize,
-
             fontStyle,
             fontWeight,
             stroke,
@@ -98,11 +93,11 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
             text,
             textBox,
             edge,
+            selected,
+            hovering,
         } = this.props;
 
-        const { selected, hovering } = this.props;
-
-        const values = helper(this.props, moreProps);
+        const values = this.helper(moreProps);
         if (values == null) {
             return;
         }
@@ -162,11 +157,11 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         drawOnCanvas(ctx, yCoord);
     };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = (moreProps: any) => {
         const { onHover } = this.props;
 
-        if (isDefined(onHover)) {
-            const values = helper(this.props, moreProps);
+        if (onHover !== undefined) {
+            const values = this.helper(moreProps);
             if (values == null) {
                 return false;
             }
@@ -190,28 +185,28 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         }
         return false;
     };
-}
 
-function helper(props, moreProps) {
-    const { yValue, textBox } = props;
+    private readonly helper = (moreProps: any) => {
+        const { yValue, textBox } = this.props;
 
-    const {
-        chartConfig: { width, yScale, height },
-    } = moreProps;
+        const {
+            chartConfig: { width, yScale, height },
+        } = moreProps;
 
-    const y = Math.round(yScale(yValue));
+        const y = Math.round(yScale(yValue));
 
-    if (y >= 0 && y <= height) {
-        const rect = {
-            x: textBox.left,
-            y: y - textBox.height / 2,
-            height: textBox.height,
-        };
-        return {
-            x1: 0,
-            x2: width,
-            y,
-            rect,
-        };
-    }
+        if (y >= 0 && y <= height) {
+            const rect = {
+                x: textBox.left,
+                y: y - textBox.height / 2,
+                height: textBox.height,
+            };
+            return {
+                x1: 0,
+                x2: width,
+                y,
+                rect,
+            };
+        }
+    };
 }

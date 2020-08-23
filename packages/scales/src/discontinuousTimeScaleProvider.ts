@@ -3,7 +3,7 @@ import { timeFormat, timeFormatDefaultLocale } from "d3-time-format";
 import financeDiscontinuousScale from "./financeDiscontinuousScale";
 import { defaultFormatters, levelDefinition } from "./levels";
 
-const evaluateLevel = (row, date: Date, i, formatters) => {
+const evaluateLevel = (row: any, date: Date, i: number, formatters: any) => {
     return levelDefinition
         .map((eachLevel, idx) => {
             return {
@@ -18,7 +18,7 @@ const evaluateLevel = (row, date: Date, i, formatters) => {
 
 const discontinuousIndexCalculator = slidingWindow()
     .windowSize(2)
-    .undefinedValue((d: Date, idx, { initialIndex, formatters }) => {
+    .undefinedValue((d: Date, idx: number, { initialIndex, formatters }: any) => {
         const i = initialIndex;
         const row = {
             date: d.getTime(),
@@ -44,7 +44,7 @@ const discontinuousIndexCalculator = slidingWindow()
     });
 
 const discontinuousIndexCalculatorLocalTime = discontinuousIndexCalculator.accumulator(
-    ([prevDate, nowDate], i: number, idx, { initialIndex, formatters }) => {
+    ([prevDate, nowDate]: [Date, Date], i: number, idx: number, { initialIndex, formatters }: any) => {
         const startOf30Seconds = nowDate.getSeconds() % 30 === 0;
 
         const startOfMinute = nowDate.getMinutes() !== prevDate.getMinutes();
@@ -94,8 +94,8 @@ const discontinuousIndexCalculatorLocalTime = discontinuousIndexCalculator.accum
     },
 );
 
-function doStuff(realDateAccessor, inputDateAccessor, initialIndex, formatters) {
-    return function (data) {
+function doStuff(realDateAccessor: any, inputDateAccessor: any, initialIndex: any, formatters: any) {
+    return function (data: any[]) {
         const dateAccessor = realDateAccessor(inputDateAccessor);
         const calculate = discontinuousIndexCalculatorLocalTime.source(dateAccessor).misc({ initialIndex, formatters });
 
@@ -116,15 +116,15 @@ function doStuff(realDateAccessor, inputDateAccessor, initialIndex, formatters) 
 
 export function discontinuousTimeScaleProviderBuilder() {
     let initialIndex = 0;
-    let realDateAccessor = identity;
-    let inputDateAccessor = (d) => d.date;
-    let indexAccessor = (d) => d.idx;
-    let indexMutator = (d, idx) => ({ ...d, idx });
-    let withIndex;
+    let realDateAccessor = identity as (x: any) => any;
+    let inputDateAccessor = (d: any) => d.date;
+    let indexAccessor = (d: any) => d.idx;
+    let indexMutator = (d: any, idx: any) => ({ ...d, idx });
+    let withIndex: any;
 
     let currentFormatters = defaultFormatters;
 
-    const discontinuousTimeScaleProvider = function (data) {
+    const discontinuousTimeScaleProvider = function (data: any[]) {
         let index = withIndex;
 
         if (index === undefined) {
@@ -139,46 +139,45 @@ export function discontinuousTimeScaleProviderBuilder() {
 
         const mergedData = zipper().combine(indexMutator);
 
-        // @ts-ignore
         const finalData = mergedData(data, inputIndex);
 
         return {
             data: finalData,
             xScale,
-            xAccessor: (d) => d && indexAccessor(d).index,
+            xAccessor: (d: any) => d && indexAccessor(d).index,
             displayXAccessor: realDateAccessor(inputDateAccessor),
         };
     };
 
-    discontinuousTimeScaleProvider.initialIndex = function (x) {
+    discontinuousTimeScaleProvider.initialIndex = function (x: any) {
         if (!arguments.length) {
             return initialIndex;
         }
         initialIndex = x;
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.inputDateAccessor = function (x) {
+    discontinuousTimeScaleProvider.inputDateAccessor = function (x: any) {
         if (!arguments.length) {
             return inputDateAccessor;
         }
         inputDateAccessor = x;
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.indexAccessor = function (x) {
+    discontinuousTimeScaleProvider.indexAccessor = function (x: any) {
         if (!arguments.length) {
             return indexAccessor;
         }
         indexAccessor = x;
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.indexMutator = function (x) {
+    discontinuousTimeScaleProvider.indexMutator = function (x: any) {
         if (!arguments.length) {
             return indexMutator;
         }
         indexMutator = x;
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.withIndex = function (x) {
+    discontinuousTimeScaleProvider.withIndex = function (x: any) {
         if (!arguments.length) {
             return withIndex;
         }
@@ -186,7 +185,7 @@ export function discontinuousTimeScaleProviderBuilder() {
         return discontinuousTimeScaleProvider;
     };
     discontinuousTimeScaleProvider.utc = function () {
-        realDateAccessor = (dateAccessor) => (d) => {
+        realDateAccessor = (dateAccessor) => (d: any) => {
             const date = dateAccessor(d);
             // The getTimezoneOffset() method returns the time-zone offset from UTC, in minutes, for the current locale.
             const offsetInMillis = date.getTimezoneOffset() * 60 * 1000;
@@ -194,7 +193,7 @@ export function discontinuousTimeScaleProviderBuilder() {
         };
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.setLocale = function (locale, formatters = null) {
+    discontinuousTimeScaleProvider.setLocale = function (locale: any, formatters = null) {
         if (locale) {
             timeFormatDefaultLocale(locale);
         }

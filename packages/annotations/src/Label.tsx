@@ -33,8 +33,8 @@ export class Label extends React.Component<LabelProps> {
         fontWeight: "bold",
         fillStyle: "#dcdcdc",
         rotate: 0,
-        x: ({ xScale, xAccessor, datum }) => xScale(xAccessor(datum)),
-        selectCanvas: (canvases) => canvases.bg,
+        x: ({ xScale, xAccessor, datum }: any) => xScale(xAccessor(datum)),
+        selectCanvas: (canvases: any) => canvases.bg,
     };
 
     public static contextTypes = {
@@ -50,7 +50,7 @@ export class Label extends React.Component<LabelProps> {
         return <GenericComponent canvasToDraw={selectCanvas} canvasDraw={this.drawOnCanvas} drawOn={[]} />;
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         ctx.save();
 
         const { textAlign = "center", fontFamily, fontSize, fontWeight, rotate } = this.props;
@@ -96,8 +96,8 @@ export class Label extends React.Component<LabelProps> {
     };
 
     private readonly helper = (
-        moreProps,
-        xAccessor,
+        moreProps: any,
+        xAccessor: any,
         xScale: ScaleContinuousNumeric<number, number>,
         yScale: ScaleContinuousNumeric<number, number>,
     ) => {

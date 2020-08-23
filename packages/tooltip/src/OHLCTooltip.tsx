@@ -40,7 +40,7 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
         changeFormat: format("+.2f"),
         className: "react-financial-charts-tooltip-hover",
         displayTexts: displayTextsDefault,
-        displayValuesFor: (_, props) => props.currentItem,
+        displayValuesFor: (_: any, props: any) => props.currentItem,
         fontFamily: "-apple-system, system-ui, 'Helvetica Neue', Ubuntu, sans-serif",
         ohlcFormat: format(".2f"),
         origin: [0, 0],
@@ -51,7 +51,7 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = (moreProps: any) => {
         const {
             accessor,
             changeFormat = OHLCTooltip.defaultProps.changeFormat,

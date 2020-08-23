@@ -24,8 +24,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-import identity from "./identity";
-import noop from "./noop";
+import { identity } from "./identity";
+import { noop } from "./noop";
 import zipper from "./zipper";
 
 import { isNotDefined } from "./index";
@@ -48,7 +48,7 @@ export default function () {
     let merge = noop;
 
     const mergeCompute = (data: any[]) => {
-        const zip = zipper().combine((datum, indicator) => {
+        const zip = zipper().combine((datum: any, indicator: any) => {
             const result =
                 skipUndefined && isNotDefined(indicator)
                     ? datum

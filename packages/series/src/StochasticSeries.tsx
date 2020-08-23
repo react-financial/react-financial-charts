@@ -56,13 +56,13 @@ export class StochasticSeries extends React.Component<StochasticSeriesProps> {
         );
     }
 
-    private readonly yAccessorForK = (d) => {
+    private readonly yAccessorForK = (d: any) => {
         const { yAccessor } = this.props;
 
         return yAccessor(d) && yAccessor(d).K;
     };
 
-    private readonly yAccessorForD = (d) => {
+    private readonly yAccessorForD = (d: any) => {
         const { yAccessor } = this.props;
 
         return yAccessor(d) && yAccessor(d).D;

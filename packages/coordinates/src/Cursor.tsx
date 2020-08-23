@@ -29,7 +29,7 @@ export interface CursorProps {
     readonly xCursorShapeStrokeDasharray?: strokeDashTypes;
 }
 
-const defaultCustomSnapX = (props: CursorProps, moreProps) => {
+const defaultCustomSnapX = (props: CursorProps, moreProps: any) => {
     const { xScale, xAccessor, currentItem, mouseXY } = moreProps;
     const { snapX } = props;
     const x = snapX ? Math.round(xScale(xAccessor(currentItem))) : mouseXY[0];
@@ -63,7 +63,7 @@ export class Cursor extends React.Component<CursorProps> {
         );
     }
 
-    private getXCursorShapeStroke({ currentItem }): string | CanvasGradient | CanvasPattern | undefined {
+    private getXCursorShapeStroke({ currentItem }: any): string | CanvasGradient | CanvasPattern | undefined {
         const { xCursorShapeStrokeStyle } = this.props;
 
         return xCursorShapeStrokeStyle instanceof Function
@@ -71,13 +71,13 @@ export class Cursor extends React.Component<CursorProps> {
             : xCursorShapeStrokeStyle;
     }
 
-    private getXCursorShapeFill({ currentItem }): string | CanvasGradient | CanvasPattern | undefined {
+    private getXCursorShapeFill({ currentItem }: any): string | CanvasGradient | CanvasPattern | undefined {
         const { xCursorShapeFillStyle } = this.props;
 
         return xCursorShapeFillStyle instanceof Function ? xCursorShapeFillStyle(currentItem) : xCursorShapeFillStyle;
     }
 
-    private getXCursorShape(moreProps /* , ctx */) {
+    private getXCursorShape(moreProps: any) {
         const { height, xScale, currentItem, plotData } = moreProps;
         const { xAccessor } = moreProps;
         const xValue = xAccessor(currentItem);
@@ -89,7 +89,7 @@ export class Cursor extends React.Component<CursorProps> {
         return { height, xPos, shapeWidth };
     }
 
-    private getXYCursor(props: CursorProps, moreProps) {
+    private getXYCursor(props: CursorProps, moreProps: any) {
         const { mouseXY, currentItem, show, height, width } = moreProps;
 
         const { customX = Cursor.defaultProps.customX, strokeStyle, strokeDasharray, disableYCursor } = props;
@@ -123,7 +123,7 @@ export class Cursor extends React.Component<CursorProps> {
         return disableYCursor ? [xCursor] : [yCursor, xCursor];
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const cursors = this.getXYCursor(this.props, moreProps);
         if (cursors === undefined) {
             return;

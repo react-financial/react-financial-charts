@@ -18,7 +18,7 @@ export interface SingleValueTooltipProps {
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
-    readonly displayValuesFor?: (props: SingleValueTooltipProps, moreProps) => any;
+    readonly displayValuesFor?: (props: SingleValueTooltipProps, moreProps: any) => any;
     readonly xAccessor?: (d: any) => number;
     readonly yAccessor?: (d: any) => number;
 }
@@ -26,15 +26,15 @@ export interface SingleValueTooltipProps {
 export class SingleValueTooltip extends React.Component<SingleValueTooltipProps> {
     public static defaultProps = {
         className: "react-financial-charts-tooltip",
-        displayValuesFor: (_, props) => props.currentItem,
+        displayValuesFor: (_: any, props: any) => props.currentItem,
         labelFill: "#4682B4",
         origin: [0, 0],
         valueFill: "#000000",
         xAccessor: noop,
-        xDisplayFormat: identity,
+        xDisplayFormat: identity as (value: number) => string,
         xInitDisplay: "n/a",
-        yAccessor: identity,
-        yDisplayFormat: format(".2f"),
+        yAccessor: identity as (d: any) => number,
+        yDisplayFormat: format(".2f") as (value: number) => string,
         yInitDisplay: "n/a",
     };
 

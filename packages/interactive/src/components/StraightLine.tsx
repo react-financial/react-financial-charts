@@ -24,11 +24,11 @@ interface StraightLineProps {
         | "LINE"; // extends between the set bounds
     readonly onEdge1Drag?: any; // func
     readonly onEdge2Drag?: any; // func
-    readonly onDragStart?: any; // func
-    readonly onDrag?: any; // func
-    readonly onDragComplete?: any; // func
-    readonly onHover?: any; // func
-    readonly onUnHover?: any; // func
+    readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
     readonly defaultClassName?: string;
     readonly r?: number;
     readonly edgeFill?: string;
@@ -45,8 +45,6 @@ class StraightLine extends React.Component<StraightLineProps> {
         onEdge1Drag: noop,
         onEdge2Drag: noop,
         onDragStart: noop,
-        onDrag: noop,
-        onDragComplete: noop,
         edgeStrokeWidth: 3,
         edgeStroke: "#000000",
         edgeFill: "#FFFFFF",
@@ -80,7 +78,7 @@ class StraightLine extends React.Component<StraightLineProps> {
         );
     }
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = (moreProps: any) => {
         const { tolerance, onHover } = this.props;
 
         if (isDefined(onHover)) {
@@ -107,7 +105,7 @@ class StraightLine extends React.Component<StraightLineProps> {
         return false;
     };
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { strokeWidth = StraightLine.defaultProps.strokeWidth, strokeDasharray, strokeStyle } = this.props;
         const { x1, y1, x2, y2 } = helper(this.props, moreProps);
 
@@ -147,7 +145,7 @@ export function isHovering2(start, end, [mouseX, mouseY], tolerance) {
     }
 }
 
-export function isHovering({ x1Value, y1Value, x2Value, y2Value, mouseXY, type, tolerance, xScale, yScale }) {
+export function isHovering({ x1Value, y1Value, x2Value, y2Value, mouseXY, type, tolerance, xScale, yScale }: any) {
     const line = generateLine({
         type,
         start: [x1Value, y1Value],
@@ -182,7 +180,7 @@ export function isHovering({ x1Value, y1Value, x2Value, y2Value, mouseXY, type, 
     }
 }
 
-function helper(props, moreProps) {
+function helper(props: any, moreProps: any) {
     const { x1Value, x2Value, y1Value, y2Value, type } = props;
 
     const {
@@ -211,16 +209,16 @@ function helper(props, moreProps) {
     };
 }
 
-export function getSlope(start, end) {
+export function getSlope(start: any, end: any) {
     const m /* slope */ = end[0] === start[0] ? undefined : (end[1] - start[1]) / (end[0] - start[0]);
     return m;
 }
-export function getYIntercept(m, end) {
+export function getYIntercept(m: any, end: any) {
     const b /* y intercept */ = -1 * m * end[0] + end[1];
     return b;
 }
 
-export function generateLine({ type, start, end, xScale, yScale }) {
+export function generateLine({ type, start, end, xScale, yScale }: any) {
     const m /* slope */ = getSlope(start, end);
     const b /* y intercept */ = getYIntercept(m, start);
 
@@ -252,7 +250,7 @@ export function generateLine({ type, start, end, xScale, yScale }) {
     }
 }
 
-function getXLineCoordinates({ start, end, xScale, yScale, m, b }) {
+function getXLineCoordinates({ start, end, xScale, yScale, m, b }: any) {
     const [xBegin, xFinish] = xScale.domain();
     const [yBegin, yFinish] = yScale.domain();
 
@@ -274,7 +272,7 @@ function getXLineCoordinates({ start, end, xScale, yScale, m, b }) {
     };
 }
 
-function getRayCoordinates({ start, end, xScale, yScale, m, b }) {
+function getRayCoordinates({ start, end, xScale, yScale, m, b }: any) {
     const [xBegin, xFinish] = xScale.domain();
     const [yBegin, yFinish] = yScale.domain();
 
@@ -298,7 +296,7 @@ function getRayCoordinates({ start, end, xScale, yScale, m, b }) {
     };
 }
 
-function getLineCoordinates({ start, end }) {
+function getLineCoordinates({ start, end }: any) {
     const [x1, y1] = start;
     const [x2, y2] = end;
     if (end[0] === start[0]) {

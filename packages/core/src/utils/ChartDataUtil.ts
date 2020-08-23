@@ -19,10 +19,11 @@ import {
 
 export function getChartOrigin(origin, contextWidth, contextHeight) {
     const originCoordinates = typeof origin === "function" ? origin(contextWidth, contextHeight) : origin;
+
     return originCoordinates;
 }
 
-export function getDimensions({ width, height }, chartProps) {
+export function getDimensions({ width, height }: any, chartProps: any) {
     const chartHeight = chartProps.height || height;
 
     return {
@@ -157,6 +158,7 @@ function yDomainFromYExtents(yExtents, yScale, plotData) {
 
     const allYValues = flattenDeep(yValues);
 
+    // @ts-ignore
     const realYDomain = yScale.invert ? extent(allYValues) : [...new Set(allYValues).values()];
 
     return realYDomain;

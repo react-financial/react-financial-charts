@@ -93,7 +93,7 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
         );
     };
 
-    private readonly yAccessorForBarBase = (_, yScale, d) => {
+    private readonly yAccessorForBarBase = (_: any, yScale: any, d: any) => {
         const { yAccessor } = this.props;
         const y = yAccessor(d) && Math.min(yAccessor(d).bearPower, 0);
         return yScale(y);

@@ -15,14 +15,36 @@ export interface SvgPathAnnotationProps {
         },
     ) => void;
     readonly opacity?: number;
-    readonly path: any; // func
+    readonly path: ({ x, y }: { x: number; y: number }) => string;
     readonly plotData: any[];
     readonly stroke?: string;
     readonly tooltip?: string | ((datum: any) => string);
-    readonly xAccessor?: any; // func
-    readonly x?: number | any; // func
+    readonly xAccessor?: (datum: any) => any;
+    readonly x?:
+        | number
+        | (({
+              xScale,
+              xAccessor,
+              datum,
+              plotData,
+          }: {
+              xScale: ScaleContinuousNumeric<number, number>;
+              xAccessor: (datum: any) => any;
+              datum: any;
+              plotData: any[];
+          }) => number);
     readonly xScale?: ScaleContinuousNumeric<number, number>;
-    readonly y?: number | any; // func
+    readonly y?:
+        | number
+        | (({
+              yScale,
+              datum,
+              plotData,
+          }: {
+              yScale: ScaleContinuousNumeric<number, number>;
+              datum: any;
+              plotData: any[];
+          }) => number);
     readonly yScale?: ScaleContinuousNumeric<number, number>;
 }
 
@@ -30,7 +52,15 @@ export class SvgPathAnnotation extends React.Component<SvgPathAnnotationProps> {
     public static defaultProps = {
         className: "react-financial-charts-svg-path-annotation",
         opacity: 1,
-        x: ({ xScale, xAccessor, datum }) => xScale(xAccessor(datum)),
+        x: ({
+            xScale,
+            xAccessor,
+            datum,
+        }: {
+            xScale: ScaleContinuousNumeric<number, number>;
+            xAccessor: any;
+            datum: any;
+        }) => xScale(xAccessor(datum)),
     };
 
     public render() {

@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import { isDefined, noop, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
+import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
-interface ClickableCircleProps {
-    readonly onDragStart: any; // func
-    readonly onDrag: any; // func
-    readonly onDragComplete: any; // func
+export interface ClickableCircleProps {
+    readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
     readonly strokeWidth: number;
     readonly strokeStyle: string | CanvasGradient | CanvasPattern;
     readonly fillStyle: string | CanvasGradient | CanvasPattern;
@@ -15,23 +15,17 @@ interface ClickableCircleProps {
     readonly className: string;
     readonly show: boolean;
     readonly interactiveCursorClass?: string;
-    readonly xyProvider?: any; // func
+    readonly xyProvider?: (moreProps: any) => number[];
 }
 
 export class ClickableCircle extends React.Component<ClickableCircleProps> {
     public static defaultProps = {
         className: "react-financial-charts-interactive-line-edge",
-        onDragStart: noop,
-        onDrag: noop,
-        onDragComplete: noop,
-        onMove: noop,
         show: false,
     };
 
     public render() {
-        const { interactiveCursorClass } = this.props;
-        const { show } = this.props;
-        const { onDragStart, onDrag, onDragComplete } = this.props;
+        const { interactiveCursorClass, onDragStart, onDrag, onDragComplete, show } = this.props;
 
         if (!show) {
             return null;
@@ -52,7 +46,7 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { strokeStyle, strokeWidth, fillStyle, r } = this.props;
 
         ctx.lineWidth = strokeWidth;
@@ -67,7 +61,7 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
         ctx.stroke();
     };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = (moreProps: any) => {
         const { mouseXY } = moreProps;
         const r = this.props.r + 7;
         const [x, y] = this.helper(moreProps);
@@ -78,10 +72,10 @@ export class ClickableCircle extends React.Component<ClickableCircleProps> {
         return hover;
     };
 
-    private readonly helper = (moreProps) => {
+    private readonly helper = (moreProps: any) => {
         const { xyProvider, cx, cy } = this.props;
 
-        if (isDefined(xyProvider)) {
+        if (xyProvider !== undefined) {
             return xyProvider(moreProps);
         }
 

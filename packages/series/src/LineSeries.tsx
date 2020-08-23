@@ -85,7 +85,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const {
             connectNulls,
             yAccessor,
@@ -142,7 +142,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         }
     };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = (moreProps: any) => {
         const { highlightOnHover, yAccessor, hoverTolerance = LineSeries.defaultProps.hoverTolerance } = this.props;
         if (!highlightOnHover) {
             return false;

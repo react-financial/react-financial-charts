@@ -109,7 +109,7 @@ const getTrianglePoints = (width: number) => {
     };
 };
 
-const getRotationInDegrees = (props: TriangleProps, point) => {
+const getRotationInDegrees = (props: TriangleProps, point: any) => {
     const { direction = Triangle.defaultProps.direction } = props;
 
     const directionVal = functor(direction)(point.datum);

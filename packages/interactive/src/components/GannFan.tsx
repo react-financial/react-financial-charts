@@ -7,7 +7,6 @@ import {
     colorToRGBA,
     isDefined,
     isNotDefined,
-    noop,
     getMouseCanvas,
     GenericChartComponent,
 } from "@react-financial-charts/core";
@@ -24,11 +23,11 @@ interface GannFanProps {
     readonly fontFamily: string;
     readonly fontSize: number;
     readonly fontFill: string;
-    readonly onDragStart: any; // func
-    readonly onDrag: any; // func
-    readonly onDragComplete: any; // func
-    readonly onHover?: any; // func
-    readonly onUnHover?: any; // func
+    readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
     readonly defaultClassName?: string;
     readonly tolerance: number;
     readonly selected: boolean;
@@ -36,9 +35,6 @@ interface GannFanProps {
 
 export class GannFan extends React.Component<GannFanProps> {
     public static defaultProps = {
-        onDragStart: noop,
-        onDrag: noop,
-        onDragComplete: noop,
         strokeWidth: 1,
         tolerance: 4,
         selected: false,
@@ -65,7 +61,7 @@ export class GannFan extends React.Component<GannFanProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { stroke, strokeWidth, strokeOpacity, fill, fillOpacity, fontFamily, fontSize, fontFill } = this.props;
 
         const lines = this.helper(this.props, moreProps);
@@ -100,7 +96,7 @@ export class GannFan extends React.Component<GannFanProps> {
         });
     };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = (moreProps: any) => {
         const { tolerance, onHover } = this.props;
         const { mouseXY } = moreProps;
         const [mouseX, mouseY] = mouseXY;
@@ -131,7 +127,7 @@ export class GannFan extends React.Component<GannFanProps> {
         return hovering;
     };
 
-    private readonly getLineCoordinates = (start, endX, endY, text) => {
+    private readonly getLineCoordinates = (start: number[], endX: number, endY: number, text: string) => {
         const end = [endX, endY];
         return {
             start,
@@ -140,7 +136,7 @@ export class GannFan extends React.Component<GannFanProps> {
         };
     };
 
-    private readonly helper = (props: GannFanProps, moreProps) => {
+    private readonly helper = (props: GannFanProps, moreProps: any) => {
         const { startXY, endXY } = props;
 
         const {

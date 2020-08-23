@@ -3,14 +3,12 @@ import {
     getStrokeDasharrayCanvas,
     getMouseCanvas,
     GenericChartComponent,
-    noop,
     strokeDashTypes,
 } from "@react-financial-charts/core";
 
 interface BrushProps {
     readonly enabled: boolean;
-    readonly onStart: any; // func
-    readonly onBrush: any; // func
+    readonly onBrush: ({ start, end }: any, moreProps: any) => void;
     readonly type?: "1D" | "2D";
     readonly strokeStyle?: string;
     readonly fillStyle?: string;
@@ -31,14 +29,12 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         type: "2D",
         strokeStyle: "#000000",
         fillStyle: "#3h3h3h",
-        onBrush: noop,
-        onStart: noop,
         strokeDashArray: "ShortDash",
     };
 
     private zoomHappening?: boolean;
 
-    constructor(props: BrushProps, context) {
+    public constructor(props: BrushProps, context) {
         super(props, context);
 
         this.terminate = this.terminate.bind(this);
@@ -78,26 +74,28 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D) => {
         const { rect } = this.state;
-        if (rect !== null) {
-            const { x, y, height, width } = rect;
-            const {
-                strokeStyle = Brush.defaultProps.strokeStyle,
-                fillStyle = Brush.defaultProps.fillStyle,
-                strokeDashArray,
-            } = this.props;
-
-            const dashArray = getStrokeDasharrayCanvas(strokeDashArray);
-
-            ctx.strokeStyle = strokeStyle;
-            ctx.fillStyle = fillStyle;
-            ctx.setLineDash(dashArray);
-            ctx.beginPath();
-            ctx.fillRect(x, y, width, height);
-            ctx.strokeRect(x, y, width, height);
+        if (rect === null) {
+            return;
         }
+
+        const { x, y, height, width } = rect;
+        const {
+            strokeStyle = Brush.defaultProps.strokeStyle,
+            fillStyle = Brush.defaultProps.fillStyle,
+            strokeDashArray,
+        } = this.props;
+
+        const dashArray = getStrokeDasharrayCanvas(strokeDashArray);
+
+        ctx.strokeStyle = strokeStyle;
+        ctx.fillStyle = fillStyle;
+        ctx.setLineDash(dashArray);
+        ctx.beginPath();
+        ctx.fillRect(x, y, width, height);
+        ctx.strokeRect(x, y, width, height);
     };
 
-    private readonly handleZoomStart = (moreProps) => {
+    private readonly handleZoomStart = (_: React.MouseEvent, moreProps: any) => {
         this.zoomHappening = false;
         const {
             mouseXY: [, mouseY],
@@ -120,7 +118,7 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         });
     };
 
-    private readonly handleDrawSquare = (moreProps) => {
+    private readonly handleDrawSquare = (_: React.MouseEvent, moreProps: any) => {
         if (this.state.x1y1 == null) {
             return;
         }
@@ -162,12 +160,15 @@ export class Brush extends React.Component<BrushProps, BrushState> {
         });
     };
 
-    private readonly handleZoomComplete = (moreProps) => {
+    private readonly handleZoomComplete = (_: React.MouseEvent, moreProps: any) => {
         if (this.zoomHappening) {
             const { onBrush } = this.props;
-            const { start, end } = this.state;
-            onBrush({ start, end }, moreProps);
+            if (onBrush !== undefined) {
+                const { start, end } = this.state;
+                onBrush({ start, end }, moreProps);
+            }
         }
+
         this.setState({
             selected: false,
             rect: null,

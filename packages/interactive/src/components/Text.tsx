@@ -33,7 +33,7 @@ export class Text extends React.Component<TextProps> {
         return false;
     };
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { xyProvider, fontFamily, fontSize, fillStyle, children } = this.props;
 
         const [x, y] = xyProvider(moreProps);

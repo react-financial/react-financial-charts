@@ -29,6 +29,7 @@ const presetToRGB = (inputPreset: string, opacity: number) => {
         throw new Error(`preset color does not exist: ${inputPreset}`);
     }
 
+    // @ts-ignore
     const color = colorPresets[lowercasePreset];
 
     return hexToRGBA(color, opacity);

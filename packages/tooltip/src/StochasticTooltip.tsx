@@ -34,7 +34,7 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
         className: "react-financial-charts-tooltip",
         displayFormat: format(".2f"),
         displayInit: "n/a",
-        displayValuesFor: (_, props) => props.currentItem,
+        displayValuesFor: (_: any, props: any) => props.currentItem,
         label: "STO",
         origin: [0, 0],
     };
@@ -43,7 +43,7 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = (moreProps: any) => {
         const {
             onClick,
             fontFamily,

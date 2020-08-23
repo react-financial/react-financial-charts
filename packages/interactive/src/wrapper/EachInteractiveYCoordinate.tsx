@@ -1,8 +1,6 @@
 import * as React from "react";
-
-import { noop, strokeDashTypes } from "@react-financial-charts/core";
+import { strokeDashTypes } from "@react-financial-charts/core";
 import { isHover, saveNodeType } from "../utils";
-
 import { ClickableShape } from "../components/ClickableShape";
 import { InteractiveYCoordinate } from "../components/InteractiveYCoordinate";
 
@@ -27,11 +25,12 @@ interface EachInteractiveYCoordinateProps {
     readonly textBox: {
         closeIcon: any;
         left: number;
+        height: number;
         padding: any;
     };
-    readonly onDrag: any; // func
-    readonly onDragComplete: any; // func
-    readonly onDelete: any; // func
+    readonly onDrag?: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDelete?: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
 }
 
 interface EachInteractiveYCoordinateState {
@@ -44,8 +43,6 @@ export class EachInteractiveYCoordinate extends React.Component<
     EachInteractiveYCoordinateState
 > {
     public static defaultProps = {
-        onDrag: noop,
-        onDragComplete: noop,
         strokeWidth: 1,
         opacity: 1,
         selected: false,
@@ -151,7 +148,7 @@ export class EachInteractiveYCoordinate extends React.Component<
         );
     }
 
-    private readonly handleCloseIconHover = (moreProps) => {
+    private readonly handleCloseIconHover = (_: React.MouseEvent, moreProps: any) => {
         if (this.state.closeIconHover !== moreProps.hovering) {
             this.setState({
                 closeIconHover: moreProps.hovering,
@@ -159,7 +156,7 @@ export class EachInteractiveYCoordinate extends React.Component<
         }
     };
 
-    private readonly handleHover = (moreProps) => {
+    private readonly handleHover = (e: React.MouseEvent, moreProps: any) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
@@ -168,13 +165,19 @@ export class EachInteractiveYCoordinate extends React.Component<
         }
     };
 
-    private readonly handleDelete = (moreProps) => {
+    private readonly handleDelete = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDelete } = this.props;
-        onDelete(index, moreProps);
+        if (onDelete !== undefined) {
+            onDelete(e, index, moreProps);
+        }
     };
 
-    private readonly handleDrag = (moreProps) => {
+    private readonly handleDrag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
+        if (onDrag === undefined) {
+            return;
+        }
+
         const {
             mouseXY: [, mouseY],
             chartConfig: { yScale },
@@ -184,10 +187,10 @@ export class EachInteractiveYCoordinate extends React.Component<
 
         const newYValue = yScale.invert(mouseY - dy);
 
-        onDrag(index, newYValue);
+        onDrag(e, index, newYValue);
     };
 
-    private readonly handleDragStart = (moreProps) => {
+    private readonly handleDragStart = (_: React.MouseEvent, moreProps: any) => {
         const { yValue } = this.props;
         const { mouseXY } = moreProps;
         const {

@@ -60,7 +60,7 @@ export class Chart extends PureComponent<ChartProps> {
     public getChildContext() {
         const { id: chartId } = this.props;
 
-        const chartConfig = this.context.chartConfig.find((each) => each.id === chartId);
+        const chartConfig = this.context.chartConfig.find(({ id }: any) => id === chartId);
 
         return {
             chartId,
@@ -69,14 +69,14 @@ export class Chart extends PureComponent<ChartProps> {
     }
 
     public render() {
-        const { origin } = this.context.chartConfig.find((each) => each.id === this.props.id);
+        const { origin } = this.context.chartConfig.find(({ id }: any) => id === this.props.id);
 
         const [x, y] = origin;
 
         return <g transform={`translate(${x}, ${y})`}>{this.props.children}</g>;
     }
 
-    private readonly listener = (type: string, moreProps, state, e) => {
+    private readonly listener = (type: string, moreProps: any, _: any, e: React.MouseEvent) => {
         const { id, onContextMenu, onDoubleClick } = this.props;
 
         switch (type) {

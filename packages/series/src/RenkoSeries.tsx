@@ -1,3 +1,4 @@
+import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
 import { isDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
@@ -27,7 +28,7 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
             up: "none",
             down: "none",
         },
-        yAccessor: (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
+        yAccessor: (d: any) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
     };
 
     public render() {
@@ -43,7 +44,7 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const {
             xAccessor,
             xScale,
@@ -70,7 +71,12 @@ export class RenkoSeries extends React.Component<RenkoSeriesProps> {
         });
     };
 
-    private readonly getRenko = (plotData: any[], xScale, xAccessor, yScale) => {
+    private readonly getRenko = (
+        plotData: any[],
+        xScale: ScaleContinuousNumeric<number, number>,
+        xAccessor: any,
+        yScale: ScaleContinuousNumeric<number, number>,
+    ) => {
         const { fill, stroke, yAccessor = RenkoSeries.defaultProps.yAccessor } = this.props;
 
         const width = xScale(xAccessor(plotData[plotData.length - 1])) - xScale(xAccessor(plotData[0]));

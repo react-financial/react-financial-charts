@@ -72,7 +72,7 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
         className: "react-financial-charts-tooltip react-financial-charts-moving-average-tooltip",
         displayFormat: format(".2f"),
         displayInit: "n/a",
-        displayValuesFor: (_, props) => props.currentItem,
+        displayValuesFor: (_: any, props: any) => props.currentItem,
         origin: [0, 10],
         width: 65,
     };
@@ -81,7 +81,7 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = (moreProps: any) => {
         const {
             chartId,
             chartConfig,

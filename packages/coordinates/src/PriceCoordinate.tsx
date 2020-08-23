@@ -60,12 +60,13 @@ export class PriceCoordinate extends React.Component<PriceCoordinateProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const props = this.helper(this.props, moreProps);
+
         drawOnCanvas(ctx, props);
     };
 
-    private readonly helper = (props: PriceCoordinateProps, moreProps) => {
+    private readonly helper = (props: PriceCoordinateProps, moreProps: any) => {
         const {
             chartConfig: { yScale },
             width,

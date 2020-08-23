@@ -47,7 +47,7 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const circle = this.getCircle(moreProps);
         if (circle === undefined) {
             return;
@@ -73,7 +73,7 @@ export class CurrentCoordinate extends React.Component<CurrentCoordinateProps> {
         }
     };
 
-    private readonly getCircle = (moreProps) => {
+    private readonly getCircle = (moreProps: any) => {
         const {
             show,
             xScale,

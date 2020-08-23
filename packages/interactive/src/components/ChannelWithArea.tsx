@@ -1,5 +1,5 @@
 import * as React from "react";
-import { isDefined, isNotDefined, getMouseCanvas, GenericChartComponent, noop } from "@react-financial-charts/core";
+import { isDefined, isNotDefined, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { generateLine, isHovering } from "./StraightLine";
 
 interface ChannelWithAreaProps {
@@ -14,11 +14,11 @@ interface ChannelWithAreaProps {
         | "XLINE" // extends from -Infinity to +Infinity
         | "RAY" // extends to +/-Infinity in one direction
         | "LINE"; // extends between the set bounds
-    readonly onDragStart: any; // func
-    readonly onDrag: any; // func
-    readonly onDragComplete: any; // func
-    readonly onHover?: any; // func
-    readonly onUnHover?: any; // func
+    readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
     readonly defaultClassName?: string;
     readonly tolerance: number;
     readonly selected: boolean;
@@ -26,9 +26,6 @@ interface ChannelWithAreaProps {
 
 export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
     public static defaultProps = {
-        onDragStart: noop,
-        onDrag: noop,
-        onDragComplete: noop,
         type: "LINE",
         strokeWidth: 1,
         tolerance: 4,
@@ -96,7 +93,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
     private readonly isHover = (moreProps) => {
         const { tolerance, onHover } = this.props;
 
-        if (isDefined(onHover)) {
+        if (onHover !== undefined) {
             const { line1, line2 } = helper(this.props, moreProps);
 
             if (line1 !== undefined && line2 !== undefined) {
@@ -144,6 +141,7 @@ function getLines(props: ChannelWithAreaProps, moreProps) {
     if (isNotDefined(startXY) || isNotDefined(endXY)) {
         return {};
     }
+
     const line1 = generateLine({
         type,
         start: startXY,
@@ -151,6 +149,7 @@ function getLines(props: ChannelWithAreaProps, moreProps) {
         xScale,
         yScale: undefined,
     });
+
     const line2 = isDefined(dy)
         ? {
               ...line1,

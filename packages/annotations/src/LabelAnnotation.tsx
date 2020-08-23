@@ -22,11 +22,33 @@ export interface LabelAnnotationProps {
     readonly text?: string | ((datum: any) => string);
     readonly textAnchor?: string;
     readonly tooltip?: string | ((datum: any) => string);
-    readonly xAccessor?: any; // func
+    readonly xAccessor?: (datum: any) => any;
     readonly xScale?: ScaleContinuousNumeric<number, number>;
-    readonly x?: number | any; // func
+    readonly x?:
+        | number
+        | (({
+              xScale,
+              xAccessor,
+              datum,
+              plotData,
+          }: {
+              xScale: ScaleContinuousNumeric<number, number>;
+              xAccessor: (datum: any) => any;
+              datum: any;
+              plotData: any[];
+          }) => number);
     readonly yScale?: ScaleContinuousNumeric<number, number>;
-    readonly y?: number | any; // func
+    readonly y?:
+        | number
+        | (({
+              yScale,
+              datum,
+              plotData,
+          }: {
+              yScale: ScaleContinuousNumeric<number, number>;
+              datum: any;
+              plotData: any[];
+          }) => number);
 }
 
 export class LabelAnnotation extends React.Component<LabelAnnotationProps> {
@@ -38,7 +60,15 @@ export class LabelAnnotation extends React.Component<LabelAnnotationProps> {
         fill: "#000000",
         opacity: 1,
         rotate: 0,
-        x: ({ xScale, xAccessor, datum }) => xScale(xAccessor(datum)),
+        x: ({
+            xScale,
+            xAccessor,
+            datum,
+        }: {
+            xScale: ScaleContinuousNumeric<number, number>;
+            xAccessor: any;
+            datum: any;
+        }) => xScale(xAccessor(datum)),
     };
 
     public render() {

@@ -4,8 +4,8 @@ import { getMorePropsForChart, getSelected } from "./utils";
 
 interface DrawingObjectSelectorProps {
     readonly getInteractiveNodes: () => any[];
-    readonly onSelect?: (interactives, moreProps) => void;
-    readonly onDoubleClick?: (item, moreProps) => void;
+    readonly onSelect?: (e: React.MouseEvent, interactives: any[], moreProps: any) => void;
+    readonly onDoubleClick?: (e: React.MouseEvent, item: any, moreProps: any) => void;
     readonly drawingObjectMap: object;
     readonly enabled: boolean;
 }
@@ -26,7 +26,7 @@ export class DrawingObjectSelector extends React.Component<DrawingObjectSelector
         );
     }
 
-    private readonly getInteraction = (moreProps) => {
+    private readonly getInteraction = (moreProps: any) => {
         const { getInteractiveNodes, drawingObjectMap } = this.props;
         const interactiveNodes = getInteractiveNodes();
         const interactives = mapObject(interactiveNodes, (each) => {
@@ -56,7 +56,7 @@ export class DrawingObjectSelector extends React.Component<DrawingObjectSelector
         return interactives;
     };
 
-    private readonly handleClick = (moreProps, e) => {
+    private readonly handleClick = (e: React.MouseEvent, moreProps: any) => {
         e.preventDefault();
         const { onSelect } = this.props;
         const { enabled } = this.props;
@@ -66,11 +66,11 @@ export class DrawingObjectSelector extends React.Component<DrawingObjectSelector
 
         const interactives = this.getInteraction(moreProps);
         if (onSelect !== undefined) {
-            onSelect(interactives, moreProps);
+            onSelect(e, interactives, moreProps);
         }
     };
 
-    private readonly handleDoubleClick = (moreProps, e) => {
+    private readonly handleDoubleClick = (e: React.MouseEvent, moreProps: any) => {
         e.preventDefault();
         const { onDoubleClick } = this.props;
         const { enabled } = this.props;
@@ -90,7 +90,7 @@ export class DrawingObjectSelector extends React.Component<DrawingObjectSelector
             };
             const morePropsForChart = getMorePropsForChart(moreProps, selected.chartId);
             if (onDoubleClick !== undefined) {
-                onDoubleClick(item, morePropsForChart);
+                onDoubleClick(e, item, morePropsForChart);
             }
         }
     };

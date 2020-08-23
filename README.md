@@ -15,7 +15,7 @@ The aim with this project is create financial charts that work out of the box.
 ## Features
 
 - integrates multiple chart types
-- over 60 technical indicators and overlays
+- technical indicators and overlays
 - drawing objects
 
 ### Chart types

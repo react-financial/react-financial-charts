@@ -86,7 +86,7 @@ export class EachLinearRegressionChannel extends React.Component<
     private isHover;
     private saveNodeType;
 
-    constructor(props) {
+    public constructor(props) {
         super(props);
 
         this.isHover = isHover.bind(this);
@@ -177,7 +177,7 @@ export class EachLinearRegressionChannel extends React.Component<
         );
     }
 
-    private readonly handleHover = (moreProps) => {
+    private readonly handleHover = (_: React.MouseEvent, moreProps: any) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
@@ -185,32 +185,32 @@ export class EachLinearRegressionChannel extends React.Component<
         }
     };
 
-    private readonly handleEdge2Drag = (moreProps) => {
+    private readonly handleEdge2Drag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag, snapTo } = this.props;
         const { x1Value } = this.props;
 
         const [x2Value] = getNewXY(moreProps, snapTo);
 
-        onDrag(index, {
+        onDrag(e, index, {
             x1Value,
             x2Value,
         });
     };
 
-    private readonly handleEdge1Drag = (moreProps) => {
+    private readonly handleEdge1Drag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag, snapTo } = this.props;
         const { x2Value } = this.props;
 
         const [x1Value] = getNewXY(moreProps, snapTo);
 
-        onDrag(index, {
+        onDrag(e, index, {
             x1Value,
             x2Value,
         });
     };
 }
 
-export function getNewXY(moreProps, snapTo) {
+export function getNewXY(moreProps: any, snapTo: any) {
     const { xScale, xAccessor, plotData, mouseXY } = moreProps;
 
     const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);

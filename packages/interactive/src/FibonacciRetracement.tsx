@@ -8,8 +8,8 @@ import { EachFibRetracement } from "./wrapper/EachFibRetracement";
 interface FibonacciRetracementProps {
     readonly enabled: boolean;
     readonly width?: number;
-    readonly onStart?: any; // func
-    readonly onComplete?: any; // func
+    readonly onStart?: (moreProps: any) => void;
+    readonly onComplete?: (e: React.MouseEvent, newRetracements: any[], moreProps: any) => void;
     readonly onSelect?: any; // func
     readonly type:
         | "EXTEND" // extends from -Infinity to +Infinity
@@ -46,8 +46,6 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         enabled: true,
         type: "RAY",
         retracements: [],
-        onStart: noop,
-        onComplete: noop,
         onSelect: noop,
         hoverText: {
             ...HoverTextNearMouse.defaultProps,
@@ -84,7 +82,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
     // @ts-ignore
     private terminate;
 
-    constructor(props) {
+    public constructor(props) {
         super(props);
 
         this.handleEdge1Drag = this.handleEdge1Drag.bind(this);
@@ -169,7 +167,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         );
     }
 
-    private readonly handleDrawRetracement = (xyValue) => {
+    private readonly handleDrawRetracement = (_: React.MouseEvent, xyValue: any) => {
         const { current } = this.state;
         if (isDefined(current) && isDefined(current.x1)) {
             this.mouseMoved = true;
@@ -183,7 +181,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         }
     };
 
-    private readonly handleEdge1Drag = (echo, newXYValue, origXYValue) => {
+    private readonly handleEdge1Drag = (_: React.MouseEvent, echo, newXYValue, origXYValue) => {
         const { retracements } = this.props;
         const { index } = echo;
 
@@ -200,7 +198,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         });
     };
 
-    private readonly handleDrag = (index, xy) => {
+    private readonly handleDrag = (_: React.MouseEvent, index, xy) => {
         this.setState({
             override: {
                 index,
@@ -209,7 +207,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         });
     };
 
-    private readonly handleEdge2Drag = (echo, newXYValue, origXYValue) => {
+    private readonly handleEdge2Drag = (_: React.MouseEvent, echo, newXYValue, origXYValue) => {
         const { retracements } = this.props;
         const { index } = echo;
 
@@ -226,7 +224,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         });
     };
 
-    private readonly handleDragComplete = (moreProps) => {
+    private readonly handleDragComplete = (e: React.MouseEvent, moreProps: any) => {
         const { retracements } = this.props;
         const { override } = this.state;
         if (isDefined(override)) {
@@ -240,13 +238,16 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
                     override: null,
                 },
                 () => {
-                    this.props.onComplete(newRetracements, moreProps);
+                    const { onComplete } = this.props;
+                    if (onComplete !== undefined) {
+                        onComplete(e, newRetracements, moreProps);
+                    }
                 },
             );
         }
     };
 
-    private readonly handleStart = (xyValue, moreProps) => {
+    private readonly handleStart = (e: React.MouseEvent, xyValue: any, moreProps: any) => {
         const { current } = this.state;
         if (isNotDefined(current) || isNotDefined(current.x1)) {
             this.mouseMoved = false;
@@ -260,13 +261,16 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
                     },
                 },
                 () => {
-                    this.props.onStart(moreProps);
+                    const { onStart } = this.props;
+                    if (onStart !== undefined) {
+                        onStart(moreProps);
+                    }
                 },
             );
         }
     };
 
-    private readonly handleEnd = (xyValue, moreProps, e) => {
+    private readonly handleEnd = (e: React.MouseEvent, xyValue: any, moreProps: any) => {
         const { retracements, appearance, type } = this.props;
         const { current } = this.state;
 
@@ -285,7 +289,10 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
                     current: null,
                 },
                 () => {
-                    this.props.onComplete(newRetracements, moreProps, e);
+                    const { onComplete } = this.props;
+                    if (onComplete !== undefined) {
+                        onComplete(e, newRetracements, moreProps);
+                    }
                 },
             );
         }

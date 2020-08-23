@@ -7,7 +7,7 @@ import {
     getMouseCanvas,
 } from "@react-financial-charts/core";
 
-const defaultCustomX = (props: CrossHairCursorProps, moreProps) => {
+const defaultCustomX = (props: CrossHairCursorProps, moreProps: any) => {
     const { xScale, xAccessor, currentItem, mouseXY } = moreProps;
     const { snapX } = props;
     const x = snapX ? Math.round(xScale(xAccessor(currentItem))) : mouseXY[0];
@@ -47,7 +47,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const lines = this.getLines(this.props, moreProps);
         if (lines === undefined) {
             return;
@@ -78,7 +78,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
         ctx.restore();
     };
 
-    private readonly getLines = (props: CrossHairCursorProps, moreProps) => {
+    private readonly getLines = (props: CrossHairCursorProps, moreProps: any) => {
         const { mouseXY, currentItem, show, height, width } = moreProps;
 
         const {

@@ -1,3 +1,4 @@
+import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
 import {
     getAxisCanvas,
@@ -27,7 +28,7 @@ export class StraightLine extends React.Component<StraightLineProps> {
         return <GenericChartComponent canvasDraw={this.drawOnCanvas} canvasToDraw={getAxisCanvas} drawOn={["pan"]} />;
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { type, strokeStyle, lineWidth, lineDash, yValue, xValue } = this.props;
 
         const {
@@ -58,9 +59,17 @@ export class StraightLine extends React.Component<StraightLineProps> {
         ctx.stroke();
     };
 
-    private readonly getLineCoordinates = (type, xScale, yScale, xValue, yValue, width, height) => {
+    private readonly getLineCoordinates = (
+        type: "horizontal" | "vertical" | undefined,
+        xScale: ScaleContinuousNumeric<number, number>,
+        yScale: ScaleContinuousNumeric<number, number>,
+        xValue: number | undefined,
+        yValue: number | undefined,
+        width: number,
+        height: number,
+    ) => {
         return type === "horizontal"
-            ? { x1: 0, y1: Math.round(yScale(yValue)), x2: width, y2: Math.round(yScale(yValue)) }
-            : { x1: Math.round(xScale(xValue)), y1: 0, x2: Math.round(xScale(xValue)), y2: height };
+            ? { x1: 0, y1: Math.round(yScale(yValue!)), x2: width, y2: Math.round(yScale(yValue!)) }
+            : { x1: Math.round(xScale(xValue!)), y1: 0, x2: Math.round(xScale(xValue!)), y2: height };
     };
 }

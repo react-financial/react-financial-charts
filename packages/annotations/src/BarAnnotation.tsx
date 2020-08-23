@@ -4,7 +4,7 @@ import * as React from "react";
 
 export interface BarAnnotationProps {
     readonly className?: string;
-    readonly path?: any; // func
+    readonly path?: ({ x, y }: { x: number; y: number }) => string;
     readonly onClick?: (
         e: React.MouseEvent,
         data: {
@@ -13,13 +13,14 @@ export interface BarAnnotationProps {
             datum: any;
         },
     ) => void;
-    readonly xAccessor?: any; // func
+    readonly xAccessor?: (datum: any) => any;
     readonly xScale?: ScaleContinuousNumeric<number, number>;
     readonly yScale?: ScaleContinuousNumeric<number, number>;
     readonly datum?: object;
     readonly stroke?: string;
-    readonly fill?: string;
+    readonly fill?: string | ((datum: any) => string);
     readonly opacity?: number;
+    readonly plotData: any[];
     readonly text?: string;
     readonly textAnchor?: string;
     readonly fontFamily?: string;
@@ -37,6 +38,31 @@ export interface BarAnnotationProps {
     readonly textIconXOffset?: number;
     readonly textIconYOffset?: number;
     readonly textIconAnchor?: string;
+    readonly tooltip?: string | ((datum: any) => string);
+    readonly x?:
+        | number
+        | (({
+              xScale,
+              xAccessor,
+              datum,
+              plotData,
+          }: {
+              xScale: ScaleContinuousNumeric<number, number>;
+              xAccessor: (datum: any) => any;
+              datum: any;
+              plotData: any[];
+          }) => number);
+    readonly y?:
+        | number
+        | (({
+              yScale,
+              datum,
+              plotData,
+          }: {
+              yScale: ScaleContinuousNumeric<number, number>;
+              datum: any;
+              plotData: any[];
+          }) => number);
 }
 
 export class BarAnnotation extends React.Component<BarAnnotationProps> {
@@ -44,20 +70,33 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
         className: "react-financial-charts-bar-annotation",
         opacity: 1,
         fill: "#000000",
-        textAnchor: "middle",
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 10,
+        textAnchor: "middle",
         textFill: "#000000",
         textOpacity: 1,
         textIconFill: "#000000",
         textIconFontSize: 10,
-        x: ({ xScale, xAccessor, datum }) => xScale(xAccessor(datum)),
+        x: ({
+            xScale,
+            xAccessor,
+            datum,
+        }: {
+            xScale: ScaleContinuousNumeric<number, number>;
+            xAccessor: any;
+            datum: any;
+        }) => xScale(xAccessor(datum)),
     };
 
     public render() {
-        const { className, stroke, opacity } = this.props;
-        const { xAccessor, xScale, yScale, path } = this.props;
         const {
+            className,
+            stroke,
+            opacity,
+            xAccessor,
+            xScale,
+            yScale,
+            path,
             text,
             textXOffset,
             textYOffset,
@@ -67,11 +106,6 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
             textFill,
             textOpacity,
             textRotate,
-        } = this.props;
-
-        const { x, y, fill, tooltip } = this.helper(this.props, xAccessor, xScale, yScale);
-
-        const {
             textIcon,
             textIconFontSize,
             textIconFill,
@@ -81,10 +115,12 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
             textIconYOffset,
         } = this.props;
 
+        const { x, y, fill, tooltip } = this.helper(this.props, xAccessor, xScale, yScale);
+
         return (
             <g className={className} onClick={this.onClick}>
-                {tooltip != null ? <title>{tooltip}</title> : null}
-                {text != null ? (
+                {tooltip !== undefined ? <title>{tooltip}</title> : null}
+                {text !== undefined ? (
                     <text
                         x={x}
                         y={y}
@@ -94,13 +130,13 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
                         fontSize={fontSize}
                         fill={textFill}
                         opacity={textOpacity}
-                        transform={textRotate != null ? `rotate(${textRotate}, ${x}, ${y})` : undefined}
+                        transform={textRotate != undefined ? `rotate(${textRotate}, ${x}, ${y})` : undefined}
                         textAnchor={textAnchor}
                     >
                         {text}
                     </text>
                 ) : null}
-                {textIcon != null ? (
+                {textIcon !== undefined ? (
                     <text
                         x={x}
                         y={y}
@@ -109,13 +145,13 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
                         fontSize={textIconFontSize}
                         fill={textIconFill}
                         opacity={textIconOpacity}
-                        transform={textIconRotate != null ? `rotate(${textIconRotate}, ${x}, ${y})` : undefined}
+                        transform={textIconRotate != undefined ? `rotate(${textIconRotate}, ${x}, ${y})` : undefined}
                         textAnchor={textAnchor}
                     >
                         {textIcon}
                     </text>
                 ) : null}
-                {path != null ? <path d={path({ x, y })} stroke={stroke} fill={fill} opacity={opacity} /> : null}
+                {path !== undefined ? <path d={path({ x, y })} stroke={stroke} fill={fill} opacity={opacity} /> : null}
             </g>
         );
     }
@@ -127,7 +163,7 @@ export class BarAnnotation extends React.Component<BarAnnotationProps> {
         }
     };
 
-    private readonly helper = (props, xAccessor, xScale, yScale) => {
+    private readonly helper = (props: BarAnnotationProps, xAccessor: any, xScale: any, yScale: any) => {
         const { x, y, datum, fill, tooltip, plotData } = props;
 
         const xFunc = functor(x);

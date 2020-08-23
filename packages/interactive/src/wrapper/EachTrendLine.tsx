@@ -19,10 +19,10 @@ interface EachTrendLineProps {
         | "XLINE" // extends from -Infinity to +Infinity
         | "RAY" // extends to +/-Infinity in one direction
         | "LINE"; // extends between the set bounds
-    onDrag: any; // func
+    onDrag: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
     onEdge1Drag: any; // func
     onEdge2Drag: any; // func
-    onDragComplete: any; // func
+    onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
     onSelect: any; // func
     onUnSelect: any; // func
     r: number;
@@ -61,7 +61,6 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         onDrag: noop,
         onEdge1Drag: noop,
         onEdge2Drag: noop,
-        onDragComplete: noop,
         onSelect: noop,
         onUnSelect: noop,
         selected: false,
@@ -81,7 +80,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
     private isHover;
     private saveNodeType;
 
-    constructor(props) {
+    public constructor(props) {
         super(props);
 
         this.isHover = isHover.bind(this);
@@ -179,7 +178,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         );
     }
 
-    private readonly handleHover = (moreProps) => {
+    private readonly handleHover = (_: React.MouseEvent, moreProps: any) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,
@@ -187,13 +186,13 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         }
     };
 
-    private readonly handleEdge2Drag = (moreProps) => {
+    private readonly handleEdge2Drag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
         const { x1Value, y1Value } = this.props;
 
         const [x2Value, y2Value] = getNewXY(moreProps);
 
-        onDrag(index, {
+        onDrag(e, index, {
             x1Value,
             y1Value,
             x2Value,
@@ -201,13 +200,13 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         });
     };
 
-    private readonly handleEdge1Drag = (moreProps) => {
+    private readonly handleEdge1Drag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
         const { x2Value, y2Value } = this.props;
 
         const [x1Value, y1Value] = getNewXY(moreProps);
 
-        onDrag(index, {
+        onDrag(e, index, {
             x1Value,
             y1Value,
             x2Value,
@@ -215,11 +214,17 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         });
     };
 
-    private readonly handleDragComplete = (...rest) => {
+    private readonly handleDragComplete = (e: React.MouseEvent, moreProps: any) => {
         this.setState({
             anchor: undefined,
         });
-        this.props.onDragComplete(...rest);
+
+        const { onDragComplete } = this.props;
+        if (onDragComplete === undefined) {
+            return;
+        }
+
+        onDragComplete(e, moreProps);
     };
 
     private readonly handleEdge2DragStart = () => {
@@ -234,7 +239,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         });
     };
 
-    private readonly handleLineDrag = (moreProps) => {
+    private readonly handleLineDrag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
 
         const { x1Value, y1Value, x2Value, y2Value } = this.dragStart;
@@ -260,7 +265,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         const newX2Value = getXValue(xScale, xAccessor, [x2 - dx, y2 - dy], fullData);
         const newY2Value = yScale.invert(y2 - dy);
 
-        onDrag(index, {
+        onDrag(e, index, {
             x1Value: newX1Value,
             y1Value: newY1Value,
             x2Value: newX2Value,

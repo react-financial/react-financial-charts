@@ -1,34 +1,31 @@
 import * as React from "react";
-import { colorToRGBA, isDefined, noop, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
+import { colorToRGBA, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
-interface InteractiveTextProps {
+export interface InteractiveTextProps {
     readonly bgFill: string;
     readonly bgOpacity: number;
     readonly bgStrokeWidth: number;
     readonly bgStroke: string;
-    readonly textFill: string;
+    readonly defaultClassName?: string;
     readonly fontFamily: string;
     readonly fontSize: number;
     readonly fontWeight: number | string;
     readonly fontStyle: string;
-    readonly text: string;
-    readonly onDragStart: any; // func
-    readonly onDrag: any; // func
-    readonly onDragComplete: any; // func
-    readonly onHover?: any; // func
-    readonly onUnHover?: any; // func
+    readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
     readonly position?: any;
-    readonly defaultClassName?: string;
     readonly interactiveCursorClass?: string;
-    readonly tolerance: number;
     readonly selected: boolean;
+    readonly text: string;
+    readonly textFill: string;
+    readonly tolerance: number;
 }
 
 export class InteractiveText extends React.Component<InteractiveTextProps> {
     public static defaultProps = {
-        onDragStart: noop,
-        onDrag: noop,
-        onDragComplete: noop,
         type: "SD", // standard dev
         fontWeight: "normal", // standard dev
         tolerance: 4,
@@ -36,7 +33,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
     };
 
     private calculateTextWidth = true;
-    private textWidth;
+    private textWidth?: number;
 
     public componentDidUpdate(previousProps: InteractiveTextProps) {
         this.calculateTextWidth =
@@ -72,8 +69,8 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
     private readonly isHover = (moreProps) => {
         const { onHover } = this.props;
 
-        if (isDefined(onHover) && isDefined(this.textWidth) && !this.calculateTextWidth) {
-            const { rect } = this.helper(this.props, moreProps, this.textWidth);
+        if (onHover !== undefined && this.textWidth !== undefined && !this.calculateTextWidth) {
+            const { rect } = this.helper(moreProps, this.textWidth);
             const {
                 mouseXY: [x, y],
             } = moreProps;
@@ -85,7 +82,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
         return false;
     };
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const {
             bgFill,
             bgOpacity,
@@ -108,7 +105,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
 
         const { selected } = this.props;
 
-        const { x, y, rect } = this.helper(this.props, moreProps, this.textWidth);
+        const { x, y, rect } = this.helper(moreProps, this.textWidth ?? 0);
 
         ctx.fillStyle = colorToRGBA(bgFill, bgOpacity);
 
@@ -130,8 +127,8 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
         ctx.fillText(text, x, y);
     };
 
-    private readonly helper = (props, moreProps, textWidth) => {
-        const { position, fontSize } = props;
+    private readonly helper = (moreProps: any, textWidth: number) => {
+        const { position, fontSize } = this.props;
 
         const {
             xScale,

@@ -6,8 +6,8 @@ import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminat
 import { EachText } from "./wrapper/EachText";
 
 interface InteractiveTextProps {
-    readonly onChoosePosition: any; // func
-    readonly onDragComplete: any; // func
+    readonly onChoosePosition: (e: React.MouseEvent, newText: any, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, newTextList: any[], moreProps: any) => void;
     readonly onSelect?: any; // func
     readonly defaultText: {
         bgFill: string;
@@ -33,8 +33,6 @@ interface InteractiveTextState {
 
 export class InteractiveText extends React.Component<InteractiveTextProps, InteractiveTextState> {
     public static defaultProps = {
-        onChoosePosition: noop,
-        onDragComplete: noop,
         onSelect: noop,
         defaultText: {
             bgFill: "#D3D3D3",
@@ -72,11 +70,10 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
     // @ts-ignore
     private terminate;
 
-    constructor(props) {
+    public constructor(props) {
         super(props);
 
         this.terminate = terminate.bind(this);
-
         this.saveNodeType = saveNodeType.bind(this);
         this.getSelectionState = isHoverForInteractiveType("textList").bind(this);
 
@@ -123,7 +120,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
         );
     }
 
-    private readonly handleDraw = (moreProps, e) => {
+    private readonly handleDraw = (e: React.MouseEvent, moreProps: any) => {
         const { enabled } = this.props;
         if (enabled) {
             const {
@@ -133,19 +130,20 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
                 currentItem,
             } = moreProps;
 
-            const xyValue = [xAccessor(currentItem), yScale.invert(mouseY)];
-
             const { defaultText, onChoosePosition } = this.props;
 
-            const newText = {
-                ...defaultText,
-                position: xyValue,
-            };
-            onChoosePosition(newText, moreProps, e);
+            if (onChoosePosition !== undefined) {
+                const xyValue = [xAccessor(currentItem), yScale.invert(mouseY)];
+                const newText = {
+                    ...defaultText,
+                    position: xyValue,
+                };
+                onChoosePosition(e, newText, moreProps);
+            }
         }
     };
 
-    private readonly handleDragComplete = (moreProps) => {
+    private readonly handleDragComplete = (e: React.MouseEvent, moreProps: any) => {
         const { override } = this.state;
         if (isDefined(override)) {
             const { textList } = this.props;
@@ -167,13 +165,16 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
                     override: null,
                 },
                 () => {
-                    this.props.onDragComplete(newTextList, moreProps);
+                    const { onDragComplete } = this.props;
+                    if (onDragComplete !== undefined) {
+                        onDragComplete(e, newTextList, moreProps);
+                    }
                 },
             );
         }
     };
 
-    private readonly handleDrag = (index, position) => {
+    private readonly handleDrag = (_: React.MouseEvent, index, position) => {
         this.setState({
             override: {
                 index,

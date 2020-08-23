@@ -14,7 +14,12 @@ import { drawOnCanvasHelper, identityStack } from "./StackedBarSeries";
 export interface BarSeriesProps {
     readonly baseAt?:
         | number
-        | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
+        | ((
+              xScale: ScaleContinuousNumeric<number, number>,
+              yScale: ScaleContinuousNumeric<number, number>,
+              d: [number, number],
+              moreProps: any,
+          ) => number);
     readonly clip?: boolean;
     readonly fillStyle?:
         | string
@@ -34,7 +39,10 @@ export interface BarSeriesProps {
  */
 export class BarSeries extends React.Component<BarSeriesProps> {
     public static defaultProps = {
-        baseAt: (xScale, yScale /* , d*/) => head(yScale.range()),
+        baseAt: (
+            xScale: ScaleContinuousNumeric<number, number>,
+            yScale: ScaleContinuousNumeric<number, number> /* , d*/,
+        ) => head(yScale.range()),
         clip: true,
         direction: "up",
         fillStyle: "rgba(70, 130, 180, 0.5)",
@@ -57,7 +65,7 @@ export class BarSeries extends React.Component<BarSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         if (this.props.swapScales) {
             const { xAccessor } = moreProps;
 
@@ -91,7 +99,7 @@ export class BarSeries extends React.Component<BarSeriesProps> {
         }
     };
 
-    private readonly getBars = (moreProps) => {
+    private readonly getBars = (moreProps: any) => {
         const { baseAt, fillStyle, width, yAccessor } = this.props;
 
         const {
@@ -114,8 +122,8 @@ export class BarSeries extends React.Component<BarSeriesProps> {
         const offset = Math.floor(0.5 * barWidth);
 
         return plotData
-            .filter((d) => isDefined(yAccessor(d)))
-            .map((d) => {
+            .filter((d: any) => isDefined(yAccessor(d)))
+            .map((d: any) => {
                 const xValue = xAccessor(d);
                 const yValue = yAccessor(d);
                 let y = yScale(yValue);

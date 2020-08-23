@@ -7,6 +7,7 @@ import {
     discontinuousTimeScaleProviderBuilder,
     Chart,
     ChartCanvas,
+    CurrentCoordinate,
     BarSeries,
     CandlestickSeries,
     ElderRaySeries,
@@ -105,7 +106,9 @@ class StockChart extends React.Component<StockChartProps> {
                     <YAxis showGridLines tickFormat={this.pricesDisplayFormat} />
                     <CandlestickSeries />
                     <LineSeries yAccessor={ema26.accessor()} strokeStyle={ema26.stroke()} />
+                    <CurrentCoordinate yAccessor={ema26.accessor()} fillStyle={ema26.stroke()} />
                     <LineSeries yAccessor={ema12.accessor()} strokeStyle={ema12.stroke()} />
+                    <CurrentCoordinate yAccessor={ema12.accessor()} fillStyle={ema12.stroke()} />
                     <MouseCoordinateY rectWidth={margin.right} displayFormat={this.pricesDisplayFormat} />
                     <EdgeIndicator
                         itemType="last"
@@ -143,7 +146,7 @@ class StockChart extends React.Component<StockChartProps> {
                     origin={elderRayOrigin}
                     padding={{ top: 8, bottom: 8 }}
                 >
-                    <XAxis showGridLines gridLinesStroke="#e0e3eb" />
+                    <XAxis showGridLines gridLinesStrokeStyle="#e0e3eb" />
                     <YAxis ticks={4} tickFormat={this.pricesDisplayFormat} />
 
                     <MouseCoordinateX displayFormat={timeDisplayFormat} />
@@ -178,7 +181,7 @@ class StockChart extends React.Component<StockChartProps> {
     };
 
     private readonly volumeColor = (data: IOHLCData) => {
-        return data.close > data.open ? "rgba(38, 166, 154, 0.7)" : "rgba(239, 83, 80, 0.7)";
+        return data.close > data.open ? "rgba(38, 166, 154, 0.3)" : "rgba(239, 83, 80, 0.3)";
     };
 
     private readonly volumeSeries = (data: IOHLCData) => {

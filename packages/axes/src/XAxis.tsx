@@ -154,7 +154,7 @@ export class XAxis extends React.Component<XAxisProps> {
         return 8;
     };
 
-    private readonly getXScale = (moreProps) => {
+    private readonly getXScale = (moreProps: any) => {
         const { xScale: scale, width } = moreProps;
 
         if (scale.invert) {

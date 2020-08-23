@@ -2,7 +2,7 @@ import { getClosestItemIndexes, getLogger, head, isDefined, isNotDefined, last }
 
 const log = getLogger("evaluator");
 
-function getNewEnd(fallbackEnd, xAccessor, initialXScale, start) {
+function getNewEnd(fallbackEnd: any, xAccessor: any, initialXScale: any, start: any) {
     const { lastItem, lastItemX } = fallbackEnd;
     const lastItemXValue = xAccessor(lastItem);
     const [rangeStart, rangeEnd] = initialXScale.range();
@@ -11,12 +11,18 @@ function getNewEnd(fallbackEnd, xAccessor, initialXScale, start) {
     return newEnd;
 }
 
-function extentsWrapper(useWholeData, clamp, pointsPerPxThreshold, minPointsPerPxThreshold, flipXScale) {
+function extentsWrapper(
+    useWholeData: boolean,
+    clamp: any,
+    pointsPerPxThreshold: number,
+    minPointsPerPxThreshold: number,
+    flipXScale: boolean,
+) {
     function filterData(
-        data,
-        inputDomain,
-        xAccessor,
-        initialXScale,
+        data: any[],
+        inputDomain: any,
+        xAccessor: any,
+        initialXScale: any,
         // @ts-ignore
         { currentPlotData, currentDomain, fallbackStart, fallbackEnd } = {},
     ) {
@@ -115,23 +121,23 @@ function extentsWrapper(useWholeData, clamp, pointsPerPxThreshold, minPointsPerP
     return { filterData };
 }
 
-function canShowTheseManyPeriods(width, arrayLength, maxThreshold, minThreshold) {
+function canShowTheseManyPeriods(width: number, arrayLength: number, maxThreshold: number, minThreshold: number) {
     return arrayLength > showMinThreshold(width, minThreshold) && arrayLength < showMaxThreshold(width, maxThreshold);
 }
 
-function showMinThreshold(width, threshold) {
+function showMinThreshold(width: number, threshold: number) {
     return Math.max(1, Math.ceil(width * threshold));
 }
 
-function showMaxThreshold(width, threshold) {
+function showMaxThreshold(width: number, threshold: number) {
     return Math.floor(width * threshold);
 }
 
-function showMax(width, threshold) {
+function showMax(width: number, threshold: number) {
     return Math.floor(showMaxThreshold(width, threshold) * 0.97);
 }
 
-function getFilteredResponse(data, left, right, xAccessor) {
+function getFilteredResponse(data: any[], left: any, right: any, xAccessor: any) {
     const newLeftIndex = getClosestItemIndexes(data, left, xAccessor).right;
     const newRightIndex = getClosestItemIndexes(data, right, xAccessor).left;
 
@@ -140,7 +146,14 @@ function getFilteredResponse(data, left, right, xAccessor) {
     return filteredData;
 }
 
-export default function ({ xScale, useWholeData, clamp, pointsPerPxThreshold, minPointsPerPxThreshold, flipXScale }) {
+export default function ({
+    xScale,
+    useWholeData,
+    clamp,
+    pointsPerPxThreshold,
+    minPointsPerPxThreshold,
+    flipXScale,
+}: any) {
     return extentsWrapper(
         useWholeData || isNotDefined(xScale.invert),
         clamp,

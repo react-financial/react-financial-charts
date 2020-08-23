@@ -115,7 +115,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         return yScale(this.props.baseAt);
     };
 
-    private readonly renderClip = (moreProps) => {
+    private readonly renderClip = (moreProps: any) => {
         const { chartConfig } = moreProps;
         const { baseAt } = this.props;
         const { yScale, width, height } = chartConfig;
@@ -132,7 +132,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         );
     };
 
-    private readonly bottomClip = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly bottomClip = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { chartConfig } = moreProps;
         const { baseAt } = this.props;
         const { yScale, width, height } = chartConfig;
@@ -142,7 +142,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         ctx.clip();
     };
 
-    private readonly topClip = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly topClip = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { chartConfig } = moreProps;
         const { baseAt } = this.props;
         const { yScale, width } = chartConfig;

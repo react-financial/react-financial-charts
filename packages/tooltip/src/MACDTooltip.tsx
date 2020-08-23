@@ -36,7 +36,7 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
         className: "react-financial-charts-tooltip",
         displayFormat: format(".2f"),
         displayInit: "n/a",
-        displayValuesFor: (_, props) => props.currentItem,
+        displayValuesFor: (_: any, props: any) => props.currentItem,
         origin: [0, 0],
     };
 
@@ -44,7 +44,7 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps) => {
+    private readonly renderSVG = (moreProps: any) => {
         const {
             onClick,
             displayInit,

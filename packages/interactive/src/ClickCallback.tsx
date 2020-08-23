@@ -3,13 +3,13 @@ import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/c
 
 interface ClickCallbackProps {
     readonly disablePan: boolean;
-    readonly onMouseDown?: any; // func
-    readonly onClick?: any; // func
-    readonly onDoubleClick?: any; // func
-    readonly onContextMenu?: any; // func
-    readonly onMouseMove?: any; // func
-    readonly onPan?: any; // func
-    readonly onPanEnd?: any; // func
+    readonly onMouseDown?: (e: React.MouseEvent<Element, MouseEvent>, moreProps: any) => void;
+    readonly onClick?: (e: React.MouseEvent<Element, MouseEvent>, moreProps: any) => void;
+    readonly onDoubleClick?: (e: React.MouseEvent<Element, MouseEvent>, moreProps: any) => void;
+    readonly onContextMenu?: (e: React.MouseEvent<Element, MouseEvent>, moreProps: any) => void;
+    readonly onMouseMove?: (e: React.MouseEvent<Element, MouseEvent>, moreProps: any) => void;
+    readonly onPan?: (e: React.MouseEvent<Element, MouseEvent>, moreProps: any) => void;
+    readonly onPanEnd?: (e: React.MouseEvent<Element, MouseEvent>, moreProps: any) => void;
 }
 
 export class ClickCallback extends React.Component<ClickCallbackProps> {

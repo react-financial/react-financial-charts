@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { colorToRGBA, getStrokeDasharray, getStrokeDasharrayCanvas, isDefined } from "@react-financial-charts/core";
 
-export const renderSVG = (props) => {
+export const renderSVG = (props: any) => {
     const { className } = props;
 
     const edge = helper(props);
@@ -27,7 +27,7 @@ export const renderSVG = (props) => {
             />
         );
     }
-    if (isDefined(edge.coordinateBase)) {
+    if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
         const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
 
         const path =
@@ -90,7 +90,7 @@ export const renderSVG = (props) => {
     );
 };
 
-const helper = (props) => {
+const helper = (props: any) => {
     const {
         coordinate: displayCoordinate,
         show,
@@ -126,9 +126,8 @@ const helper = (props) => {
 
     let coordinateBase;
     let coordinate;
-    if (isDefined(displayCoordinate)) {
+    if (displayCoordinate !== undefined) {
         const textAnchor = "middle";
-        // TODO: Below it is necessary to implement logic for the possibility of alignment from the right or from the left.
 
         let edgeXRect;
         let edgeYRect;
@@ -192,7 +191,7 @@ const helper = (props) => {
     };
 };
 
-export const drawOnCanvas = (ctx: CanvasRenderingContext2D, props) => {
+export const drawOnCanvas = (ctx: CanvasRenderingContext2D, props: any) => {
     const { coordinate, fitToText, fontSize, fontFamily, rectWidth } = props;
 
     ctx.font = `${fontSize}px ${fontFamily}`;
@@ -220,7 +219,8 @@ export const drawOnCanvas = (ctx: CanvasRenderingContext2D, props) => {
     }
 
     ctx.setLineDash([]);
-    if (isDefined(edge.coordinateBase)) {
+
+    if (edge.coordinateBase !== undefined) {
         const { arrowWidth, rectWidth, rectHeight, rectRadius } = edge.coordinateBase;
 
         ctx.fillStyle = colorToRGBA(edge.coordinateBase.fill, edge.coordinateBase.opacity);
@@ -258,13 +258,16 @@ export const drawOnCanvas = (ctx: CanvasRenderingContext2D, props) => {
 
         ctx.fill();
 
-        if (isDefined(edge.coordinateBase.stroke)) {
+        if (edge.coordinateBase.stroke !== undefined) {
             ctx.stroke();
         }
 
-        ctx.fillStyle = edge.coordinate.textFill;
-        ctx.textAlign = edge.coordinate.textAnchor === "middle" ? "center" : edge.coordinate.textAnchor;
-        ctx.fillText(edge.coordinate.displayCoordinate, edge.coordinate.edgeXText, edge.coordinate.edgeYText);
+        if (edge.coordinate !== undefined) {
+            ctx.fillStyle = edge.coordinate.textFill;
+            ctx.textAlign =
+                edge.coordinate.textAnchor === "middle" ? "center" : (edge.coordinate.textAnchor as CanvasTextAlign);
+            ctx.fillText(edge.coordinate.displayCoordinate, edge.coordinate.edgeXText, edge.coordinate.edgeYText);
+        }
     }
 };
 

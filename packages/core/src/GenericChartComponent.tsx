@@ -32,7 +32,7 @@ export class GenericChartComponent extends GenericComponent {
         ratio: PropTypes.number.isRequired,
     };
 
-    public constructor(props, context) {
+    public constructor(props: any, context: any) {
         super(props, context);
 
         this.preCanvasDraw = this.preCanvasDraw.bind(this);
@@ -42,7 +42,7 @@ export class GenericChartComponent extends GenericComponent {
         this.updateMoreProps = this.updateMoreProps.bind(this);
     }
 
-    public preCanvasDraw(ctx: CanvasRenderingContext2D, moreProps) {
+    public preCanvasDraw(ctx: CanvasRenderingContext2D, moreProps: any) {
         super.preCanvasDraw(ctx, moreProps);
 
         ctx.save();
@@ -74,12 +74,12 @@ export class GenericChartComponent extends GenericComponent {
         }
     }
 
-    public postCanvasDraw(ctx: CanvasRenderingContext2D, moreProps) {
+    public postCanvasDraw(ctx: CanvasRenderingContext2D, moreProps: any) {
         super.postCanvasDraw(ctx, moreProps);
         ctx.restore();
     }
 
-    public updateMoreProps(moreProps) {
+    public updateMoreProps(moreProps: any) {
         super.updateMoreProps(moreProps);
         const { chartConfig: chartConfigList } = moreProps;
 
@@ -111,7 +111,7 @@ export class GenericChartComponent extends GenericComponent {
         ///
     }
 
-    public shouldTypeProceed(type, moreProps) {
+    public shouldTypeProceed(type: string, moreProps: any) {
         if ((type === "mousemove" || type === "click") && this.props.disablePan) {
             return true;
         }

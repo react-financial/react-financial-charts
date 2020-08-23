@@ -1,17 +1,15 @@
-import { bisector } from "d3-array";
-import identity from "./identity";
-import noop from "./noop";
+import { identity } from "./identity";
+import { noop } from "./noop";
 
 export { default as rebind } from "./rebind";
 export { default as zipper } from "./zipper";
 export { default as merge } from "./merge";
 export { default as slidingWindow } from "./slidingWindow";
-export { default as identity } from "./identity";
-export { default as noop } from "./noop";
+export * from "./identity";
+export * from "./noop";
 export * from "./shallowEqual";
 export { default as mappedSlidingWindow } from "./mappedSlidingWindow";
 export { default as accumulatingWindow } from "./accumulatingWindow";
-
 export * from "./barWidth";
 export * from "./colors";
 export * from "./strokeDasharray";
@@ -30,8 +28,6 @@ export function sign(x) {
     // @ts-ignore
     return (x > 0) - (x < 0);
 }
-
-export const yes = () => true;
 
 export function path(loc = []) {
     const key = Array.isArray(loc) ? loc : [loc];
@@ -54,36 +50,8 @@ export function functor(v) {
     return typeof v === "function" ? v : () => v;
 }
 
-export function createVerticalLinearGradient(stops) {
-    return function (moreProps, ctx) {
-        const {
-            chartConfig: { height },
-        } = moreProps;
-
-        const grd = ctx.createLinearGradient(0, height, 0, 0);
-        stops.forEach((each) => {
-            grd.addColorStop(each.stop, each.color);
-        });
-
-        return grd;
-    };
-}
-
-export function getClosestItemIndexes2(array, value, accessor) {
-    let left = bisector(accessor).left(array, value);
-    left = Math.max(left - 1, 0);
-    let right = Math.min(left + 1, array.length - 1);
-
-    const item = accessor(array[left]);
-    if (item >= value && item <= value) {
-        right = left;
-    }
-
-    return { left, right };
-}
-
 export function getClosestValue(inputValue, currentValue) {
-    const values = isArray(inputValue) ? inputValue : [inputValue];
+    const values = Array.isArray(inputValue) ? inputValue : [inputValue];
 
     const diff = values
         .map((each) => each - currentValue)
@@ -210,8 +178,6 @@ export function isObject(d) {
     return isDefined(d) && typeof d === "object" && !Array.isArray(d);
 }
 
-export const isArray = Array.isArray;
-
 export function touchPosition(touch, e: React.TouchEvent): [number, number] {
     const container = e.currentTarget;
     const rect = container.getBoundingClientRect();
@@ -236,35 +202,6 @@ export function clearCanvas(canvasList: CanvasRenderingContext2D[], ratio: numbe
     });
 }
 
-export function capitalizeFirst(str: string) {
-    return str.charAt(0).toUpperCase() + str.substring(1);
-}
-
-export function toObject<T>(array: T[], iteratee = identity) {
-    return array.reduce((returnObj, a) => {
-        const [key, value] = iteratee(a);
-        return {
-            ...returnObj,
-            [key]: value,
-        };
-    }, {});
-}
-
-// copied from https://github.com/lodash/lodash/blob/master/mapValue.js
-export function mapValue(object, iteratee) {
-    object = Object(object);
-    const result = {};
-
-    Object.keys(object).forEach((key) => {
-        const mappedValue = iteratee(object[key], key, object);
-
-        if (isDefined(mappedValue)) {
-            result[key] = mappedValue;
-        }
-    });
-    return result;
-}
-
 // copied from https://github.com/lodash/lodash/blob/master/mapObject.js
 export function mapObject(object = {}, iteratee = identity) {
     const props = Object.keys(object);
@@ -275,20 +212,4 @@ export function mapObject(object = {}, iteratee = identity) {
         result[index] = iteratee(object[key], key, object);
     });
     return result;
-}
-
-export function replaceAtIndex(array, index, value) {
-    if (isDefined(array) && array.length > index) {
-        return array
-            .slice(0, index)
-            .concat(value)
-            .concat(array.slice(index + 1));
-    }
-    return array;
-}
-
-// copied from https://github.com/lodash/lodash/blob/master/forOwn.js
-export function forOwn(obj, iteratee) {
-    const object = Object(obj);
-    Object.keys(object).forEach((key) => iteratee(object[key], key, object));
 }

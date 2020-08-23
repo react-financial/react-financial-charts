@@ -27,7 +27,7 @@ THE SOFTWARE.
 */
 
 import { functor, path } from "./index";
-import noop from "./noop";
+import { noop } from "./noop";
 
 interface SlidingWindow {
     (data: any[]): any[];
@@ -48,13 +48,13 @@ interface SlidingWindow {
 }
 
 export default function () {
-    let undefinedValue;
+    let undefinedValue: any;
     let windowSize = 10;
     let accumulator = noop;
-    let sourcePath;
-    let source;
+    let sourcePath: any;
+    let source: any;
     let skipInitial = 0;
-    let misc;
+    let misc: any;
 
     const slidingWindow = (data: any[]) => {
         const sourceFunction = source || path(sourcePath);
@@ -80,7 +80,7 @@ export default function () {
         });
     };
 
-    slidingWindow.undefinedValue = function (x) {
+    slidingWindow.undefinedValue = function (x: any) {
         if (!arguments.length) {
             return undefinedValue;
         }
@@ -88,7 +88,7 @@ export default function () {
         return slidingWindow;
     };
 
-    slidingWindow.windowSize = function (x) {
+    slidingWindow.windowSize = function (x: any) {
         if (!arguments.length) {
             return windowSize;
         }
@@ -96,7 +96,7 @@ export default function () {
         return slidingWindow;
     };
 
-    slidingWindow.misc = function (x) {
+    slidingWindow.misc = function (x: any) {
         if (!arguments.length) {
             return misc;
         }
@@ -104,7 +104,7 @@ export default function () {
         return slidingWindow;
     };
 
-    slidingWindow.accumulator = function (x) {
+    slidingWindow.accumulator = function (x: any) {
         if (!arguments.length) {
             return accumulator;
         }
@@ -112,7 +112,7 @@ export default function () {
         return slidingWindow;
     };
 
-    slidingWindow.skipInitial = function (x) {
+    slidingWindow.skipInitial = function (x: any) {
         if (!arguments.length) {
             return skipInitial;
         }
@@ -120,7 +120,7 @@ export default function () {
         return slidingWindow;
     };
 
-    slidingWindow.sourcePath = function (x) {
+    slidingWindow.sourcePath = function (x: any) {
         if (!arguments.length) {
             return sourcePath;
         }
@@ -128,7 +128,7 @@ export default function () {
         return slidingWindow;
     };
 
-    slidingWindow.source = function (x) {
+    slidingWindow.source = function (x: any) {
         if (!arguments.length) {
             return source;
         }

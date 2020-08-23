@@ -181,7 +181,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
         );
     }
 
-    private readonly handleEnd = (xyValue, moreProps, e) => {
+    private readonly handleEnd = (e: React.MouseEvent, xyValue: any, moreProps: any) => {
         const { current } = this.state;
         const { trends, appearance, type } = this.props;
 
@@ -202,13 +202,13 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                     trends: newTrends,
                 },
                 () => {
-                    this.props.onComplete(newTrends, moreProps, e);
+                    this.props.onComplete(e, newTrends, moreProps);
                 },
             );
         }
     };
 
-    private readonly handleStart = (xyValue, moreProps, e) => {
+    private readonly handleStart = (e: React.MouseEvent, xyValue: any, moreProps: any) => {
         const { current } = this.state;
 
         if (isNotDefined(current) || isNotDefined(current.start)) {
@@ -222,13 +222,13 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                     },
                 },
                 () => {
-                    this.props.onStart(moreProps, e);
+                    this.props.onStart(e, moreProps);
                 },
             );
         }
     };
 
-    private readonly handleDrawLine = (xyValue) => {
+    private readonly handleDrawLine = (_: React.MouseEvent, xyValue: any) => {
         const { current } = this.state;
         if (isDefined(current) && isDefined(current.start)) {
             this.mouseMoved = true;
@@ -241,7 +241,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
         }
     };
 
-    private readonly handleDragLineComplete = (moreProps) => {
+    private readonly handleDragLineComplete = (e: React.MouseEvent, moreProps: any) => {
         const { override } = this.state;
         if (isDefined(override)) {
             const { trends } = this.props;
@@ -264,13 +264,13 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                     override: null,
                 },
                 () => {
-                    this.props.onComplete(newTrends, moreProps);
+                    this.props.onComplete(e, newTrends, moreProps);
                 },
             );
         }
     };
 
-    private readonly handleDragLine = (index, newXYValue) => {
+    private readonly handleDragLine = (_: React.MouseEvent, index: number | undefined, newXYValue: any) => {
         this.setState({
             override: {
                 index,

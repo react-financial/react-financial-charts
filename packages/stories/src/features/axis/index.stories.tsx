@@ -16,7 +16,7 @@ export default {
         gridLinesStrokeStyle: { control: "color" },
         strokeStyle: { control: "color" },
         tickLabelFill: { control: "color" },
-        tickStroke: { control: "color" },
+        tickStrokeStyle: { control: "color" },
     },
 };
 

@@ -1,15 +1,29 @@
-import identity from "./identity";
+import { identity } from "./identity";
 import { functor } from "./index";
-import noop from "./noop";
+import { noop } from "./noop";
+
+interface MappedSlidingWindow {
+    (data: any[]): any;
+    accumulator(): any;
+    accumulator(x: any): MappedSlidingWindow;
+    skipInitial(): number;
+    skipInitial(x: number): MappedSlidingWindow;
+    source(): any;
+    source(x: any): MappedSlidingWindow;
+    undefinedValue(): any;
+    undefinedValue(x: any): MappedSlidingWindow;
+    windowSize(): number;
+    windowSize(x: number): MappedSlidingWindow;
+}
 
 export default function () {
-    let undefinedValue;
+    let undefinedValue: any;
     let windowSize = 10;
     let accumulator = noop;
     let source = identity;
     let skipInitial = 0;
 
-    const mappedSlidingWindow = function (data) {
+    const mappedSlidingWindow = function (data: any[]) {
         // @ts-ignore
         const size = functor(windowSize).apply(this, arguments);
         const windowData: any[] = [];
@@ -40,35 +54,35 @@ export default function () {
         return result;
     };
 
-    mappedSlidingWindow.undefinedValue = function (x) {
+    mappedSlidingWindow.undefinedValue = function (x: any) {
         if (!arguments.length) {
             return undefinedValue;
         }
         undefinedValue = x;
         return mappedSlidingWindow;
     };
-    mappedSlidingWindow.windowSize = function (x) {
+    mappedSlidingWindow.windowSize = function (x: number) {
         if (!arguments.length) {
             return windowSize;
         }
         windowSize = x;
         return mappedSlidingWindow;
     };
-    mappedSlidingWindow.accumulator = function (x) {
+    mappedSlidingWindow.accumulator = function (x: any) {
         if (!arguments.length) {
             return accumulator;
         }
         accumulator = x;
         return mappedSlidingWindow;
     };
-    mappedSlidingWindow.skipInitial = function (x) {
+    mappedSlidingWindow.skipInitial = function (x: number) {
         if (!arguments.length) {
             return skipInitial;
         }
         skipInitial = x;
         return mappedSlidingWindow;
     };
-    mappedSlidingWindow.source = function (x) {
+    mappedSlidingWindow.source = function (x: any) {
         if (!arguments.length) {
             return source;
         }
@@ -76,5 +90,5 @@ export default function () {
         return mappedSlidingWindow;
     };
 
-    return mappedSlidingWindow;
+    return mappedSlidingWindow as MappedSlidingWindow;
 }

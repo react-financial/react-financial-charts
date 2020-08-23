@@ -27,23 +27,23 @@ interface GenericComponentProps {
     readonly enableDragOnHover?: boolean;
     readonly interactiveCursorClass?: string;
     readonly canvasToDraw?: (contexts: ICanvasContexts) => CanvasRenderingContext2D | undefined;
-    readonly isHover?: (moreProps, e: React.MouseEvent) => boolean;
-    readonly onClick?: (e: React.MouseEvent, moreProps) => void;
-    readonly onClickWhenHover?: (e: React.MouseEvent, moreProps) => void;
-    readonly onClickOutside?: (e: React.MouseEvent, moreProps) => void;
-    readonly onPan?: (e: React.MouseEvent, moreProps) => void;
-    readonly onPanEnd?: (e: React.MouseEvent, moreProps) => void;
-    readonly onDragStart?: (e: React.MouseEvent, moreProps) => void;
-    readonly onDrag?: (e: React.MouseEvent, moreProps) => void;
-    readonly onDragComplete?: (e: React.MouseEvent, moreProps) => void;
-    readonly onDoubleClick?: (e: React.MouseEvent, moreProps) => void;
-    readonly onDoubleClickWhenHover?: (e: React.MouseEvent, moreProps) => void;
-    readonly onContextMenu?: (e: React.MouseEvent, moreProps) => void;
-    readonly onContextMenuWhenHover?: (e: React.MouseEvent, moreProps) => void;
-    readonly onMouseMove?: (e: React.MouseEvent, moreProps) => void;
-    readonly onMouseDown?: (e: React.MouseEvent, moreProps) => void;
-    readonly onHover?: (e: React.MouseEvent, moreProps) => void;
-    readonly onUnHover?: (e: React.MouseEvent, moreProps) => void;
+    readonly isHover?: (moreProps: any, e: React.MouseEvent) => boolean;
+    readonly onClick?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onClickWhenHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onClickOutside?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onPan?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onPanEnd?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDoubleClick?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDoubleClickWhenHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onContextMenu?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onContextMenuWhenHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onMouseMove?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onMouseDown?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
     readonly selected?: boolean;
 }
 
@@ -91,7 +91,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     private iSetTheCursorClass = false;
     private suscriberId: number;
 
-    public constructor(props: GenericComponentProps, context) {
+    public constructor(props: GenericComponentProps, context: any) {
         super(props, context);
         this.drawOnCanvas = this.drawOnCanvas.bind(this);
         this.getMoreProps = this.getMoreProps.bind(this);
@@ -114,21 +114,21 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         };
     }
 
-    public updateMoreProps(moreProps) {
+    public updateMoreProps(moreProps: any) {
         Object.keys(moreProps).forEach((key) => {
             this.moreProps[key] = moreProps[key];
         });
     }
 
-    public shouldTypeProceed(type, moreProps) {
+    public shouldTypeProceed(type: string, moreProps: any) {
         return true;
     }
 
-    public preEvaluate(type, moreProps, e) {
+    public preEvaluate(type: string, moreProps: any, e: any) {
         /// empty
     }
 
-    public listener = (type, moreProps, state, e) => {
+    public listener = (type: string, moreProps: any, state: any, e: any) => {
         if (moreProps !== undefined) {
             this.updateMoreProps(moreProps);
         }
@@ -137,7 +137,8 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         this.evaluationInProgress = false;
     };
 
-    public evaluateType(type, e) {
+    public evaluateType(type: string, e: any) {
+        // @ts-ignore
         const newType = aliases[type] || type;
         const proceed = this.props.drawOn.indexOf(newType) > -1;
         if (!proceed) {
@@ -291,7 +292,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         }
     }
 
-    public isHover(e) {
+    public isHover(e: React.MouseEvent) {
         return this.props.isHover !== undefined ? this.props.isHover(this.getMoreProps(), e) : false;
     }
 
@@ -308,6 +309,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
 
     // @ts-ignore
     public draw({ trigger, force }: { force: boolean; trigger: string } = { force: false }) {
+        // @ts-ignore
         const type = aliases[trigger] || trigger;
         const proceed = this.props.drawOn.indexOf(type) > -1;
 
@@ -352,7 +354,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         this.componentDidUpdate(this.props);
     }
 
-    public componentDidUpdate(prevProps) {
+    public componentDidUpdate(prevProps: GenericComponentProps) {
         const { canvasDraw, selected, interactiveCursorClass } = this.props;
 
         if (prevProps.selected !== selected) {
@@ -371,7 +373,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         }
     }
 
-    public UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
+    public UNSAFE_componentWillReceiveProps(nextProps: GenericComponentProps, nextContext: any) {
         const { xScale, plotData, chartConfig, getMutableState } = nextContext;
 
         this.moreProps = {
@@ -419,11 +421,11 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         return (morePropsDecorator || identity)(moreProps);
     }
 
-    public preCanvasDraw(ctx: CanvasRenderingContext2D, moreProps) {
+    public preCanvasDraw(ctx: CanvasRenderingContext2D, moreProps: any) {
         // do nothing
     }
 
-    public postCanvasDraw(ctx: CanvasRenderingContext2D, moreProps) {
+    public postCanvasDraw(ctx: CanvasRenderingContext2D, moreProps: any) {
         // empty
     }
 

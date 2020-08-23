@@ -1,22 +1,26 @@
 /* an extension to d3.zip so we call a function instead of an array */
 
 import { min } from "d3-array";
+import { identity } from "./identity";
 
-import identity from "./identity";
+interface Zip {
+    (...args: any[]): any[];
+    combine(): any;
+    combine(x: any): Zip;
+}
 
 export default function zipper() {
     let combine = identity;
 
     function zip() {
         const n = arguments.length;
-        if (!n) {
+        if (n === 0) {
             return [];
         }
-        const m = min(arguments, d3_zipLength);
+        const m = min(arguments, d3_zipLength) ?? 0;
 
-        let i;
         const zips = new Array(m);
-        for (i = -1; ++i < m; ) {
+        for (let i = -1; ++i < m; ) {
             // tslint:disable-next-line: no-shadowed-variable
             for (let j = -1, zip = (zips[i] = new Array(n)); ++j < n; ) {
                 zip[j] = arguments[j][i];
@@ -27,15 +31,15 @@ export default function zipper() {
         }
         return zips;
     }
-    function d3_zipLength(d) {
+    function d3_zipLength(d: any[]) {
         return d.length;
     }
-    zip.combine = function (x) {
+    zip.combine = function (x: any) {
         if (!arguments.length) {
             return combine;
         }
         combine = x;
         return zip;
     };
-    return zip;
+    return zip as Zip;
 }

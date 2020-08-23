@@ -15,9 +15,9 @@ interface MouseLocationIndicatorProps {
     readonly snap: boolean;
     readonly shouldDisableSnap: any; // func;
     readonly snapTo?: any; // func;
-    readonly onMouseMove: any; // func;
-    readonly onMouseDown: any; // func;
-    readonly onClick: any; // func;
+    readonly onMouseMove: (e: React.MouseEvent, xyValue: number[], moreProps: any) => void;
+    readonly onMouseDown: (e: React.MouseEvent, xyValue: number[], moreProps: any) => void;
+    readonly onClick: (e: React.MouseEvent, xyValue: number[], moreProps: any) => void;
     readonly r: number;
     readonly stroke: string;
     readonly strokeWidth: number;
@@ -56,7 +56,7 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
         );
     }
 
-    private readonly xy = (moreProps, e) => {
+    private readonly xy = (e: React.MouseEvent, moreProps: any) => {
         const { xAccessor, plotData } = moreProps;
         const {
             mouseXY,
@@ -83,36 +83,36 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
         }
     };
 
-    private readonly handleClick = (moreProps, e) => {
-        const pos = this.xy(moreProps, e);
+    private readonly handleClick = (e: React.MouseEvent, moreProps: any) => {
+        const pos = this.xy(e, moreProps);
         if (pos !== undefined && isDefined(pos)) {
             const { xValue, yValue, x, y } = pos;
             this.mutableState = { x, y };
-            this.props.onClick([xValue, yValue], moreProps, e);
+            this.props.onClick(e, [xValue, yValue], moreProps);
         }
     };
 
-    private readonly handleMouseDown = (moreProps, e) => {
-        const pos = this.xy(moreProps, e);
+    private readonly handleMouseDown = (e: React.MouseEvent, moreProps: any) => {
+        const pos = this.xy(e, moreProps);
         if (pos !== undefined && isDefined(pos)) {
             const { xValue, yValue, x, y } = pos;
             this.mutableState = { x, y };
-            this.props.onMouseDown([xValue, yValue], moreProps, e);
+            this.props.onMouseDown(e, [xValue, yValue], moreProps);
         }
     };
 
-    private readonly handleMousePosChange = (moreProps, e) => {
+    private readonly handleMousePosChange = (e: React.MouseEvent, moreProps: any) => {
         if (!shallowEqual(moreProps.mousXY, moreProps.prevMouseXY)) {
-            const pos = this.xy(moreProps, e);
+            const pos = this.xy(e, moreProps);
             if (pos !== undefined && isDefined(pos)) {
                 const { xValue, yValue, x, y } = pos;
                 this.mutableState = { x, y };
-                this.props.onMouseMove([xValue, yValue], e);
+                this.props.onMouseMove(e, [xValue, yValue], moreProps);
             }
         }
     };
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { enabled, r, stroke, strokeWidth } = this.props;
         const { x, y } = this.mutableState;
         const { show } = moreProps;

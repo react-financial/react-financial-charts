@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.9](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.8...v1.0.0-alpha.9) (2020-08-24)
+
+
+### Bug Fixes
+
+* **stories:** correcting props on Axis story ([dc48f12](https://github.com/markmcdowell/react-financial-charts/commit/dc48f128cc006f94087b1641bd3361dfdf174f77))
+* adding more prop types ([c3985d5](https://github.com/markmcdowell/react-financial-charts/commit/c3985d5ee96fcbd5ad5a922df595d31930d0cee5))
+* **interactive:** fixing undefined bug with interactive chart ([50b1ff7](https://github.com/markmcdowell/react-financial-charts/commit/50b1ff75908765b7450b26f46d27f605bdf06f24))
+* **stories:** correcting loading intraday data ([cd7e8bd](https://github.com/markmcdowell/react-financial-charts/commit/cd7e8bd4665f2e358dd89b7de5109929615f3093))
+
+
+### Features
+
+* **axes:** allowing tick labels without tick lines ([f0cf6b9](https://github.com/markmcdowell/react-financial-charts/commit/f0cf6b9d49a44a43e498d0d2a998cdb2956c7163))
+* adding more prop types across all components ([efefd4d](https://github.com/markmcdowell/react-financial-charts/commit/efefd4dc3000ffe5ad5e63380ab324ab1e232a67))
+
+
+
+
+
 # [1.0.0-alpha.8](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2020-08-17)
 
 

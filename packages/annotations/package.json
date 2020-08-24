@@ -1,6 +1,6 @@
 {
   "name": "@react-financial-charts/annotations",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.9",
   "description": "Annotations for react-financial-charts",
   "publishConfig": {
     "access": "public"

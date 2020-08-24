@@ -37,6 +37,7 @@ interface AxisProps {
     readonly outerTickSize: number;
     readonly range: number[];
     readonly showDomain?: boolean;
+    readonly showGridLines?: boolean;
     readonly showTicks?: boolean;
     readonly showTickLabel?: boolean;
     readonly strokeStyle: string | CanvasGradient | CanvasPattern;
@@ -117,15 +118,43 @@ export class Axis extends React.Component<AxisProps> {
     };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
-        const { showDomain, showTicks, transform, range, getScale } = this.props;
+        const {
+            showDomain,
+            showGridLines,
+            showTickLabel,
+            showTicks,
+            transform,
+            range,
+            getScale,
+            tickLabelFill,
+        } = this.props;
 
         ctx.save();
         ctx.translate(transform[0], transform[1]);
 
+        const scale = getScale(moreProps);
+        const tickProps = tickHelper(this.props, scale);
         if (showTicks) {
-            const scale = getScale(moreProps);
-            const tickProps = tickHelper(this.props, scale);
-            drawTicks(ctx, tickProps, moreProps);
+            drawTicks(ctx, tickProps);
+        }
+
+        if (showGridLines) {
+            tickProps.ticks.forEach((tick: any) => {
+                drawGridLine(ctx, tick, tickProps, moreProps);
+            });
+        }
+
+        if (showTickLabel) {
+            const { fontFamily, fontSize, fontWeight, textAnchor } = tickProps;
+
+            ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+            if (tickLabelFill !== undefined) {
+                ctx.fillStyle = tickLabelFill;
+            }
+            ctx.textAlign = textAnchor === "middle" ? "center" : (textAnchor as CanvasTextAlign);
+            tickProps.ticks.forEach((tick: any) => {
+                drawEachTickLabel(ctx, tick, tickProps);
+            });
         }
 
         if (showDomain) {
@@ -307,9 +336,8 @@ const drawAxisLine = (ctx: CanvasRenderingContext2D, props: AxisProps, range: an
     ctx.stroke();
 };
 
-const drawTicks = (ctx: CanvasRenderingContext2D, result: any, moreProps: any) => {
-    const { showGridLines, tickStrokeStyle, tickLabelFill } = result;
-    const { textAnchor, fontSize, fontFamily, fontWeight, ticks, showTickLabel } = result;
+const drawTicks = (ctx: CanvasRenderingContext2D, result: any) => {
+    const { ticks, tickStrokeStyle } = result;
 
     if (tickStrokeStyle !== undefined) {
         ctx.strokeStyle = tickStrokeStyle;
@@ -319,22 +347,6 @@ const drawTicks = (ctx: CanvasRenderingContext2D, result: any, moreProps: any) =
     ticks.forEach((tick: any) => {
         drawEachTick(ctx, tick, result);
     });
-
-    if (showGridLines) {
-        ticks.forEach((tick: any) => {
-            drawGridLine(ctx, tick, result, moreProps);
-        });
-    }
-
-    ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-    ctx.fillStyle = tickLabelFill;
-    ctx.textAlign = textAnchor === "middle" ? "center" : textAnchor;
-
-    if (showTickLabel) {
-        ticks.forEach((tick: any) => {
-            drawEachTickLabel(ctx, tick, result);
-        });
-    }
 };
 
 const drawGridLine = (ctx: CanvasRenderingContext2D, tick: any, result: any, moreProps: any) => {

@@ -9,7 +9,9 @@ export interface MACDTooltipProps {
     readonly className?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
+    readonly fontWeight?: number;
     readonly labelFill?: string;
+    readonly labelFontWeight?: number;
     readonly onClick?: (event: React.MouseEvent) => void;
     readonly options: {
         slow: number;
@@ -50,6 +52,7 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
             displayInit,
             fontFamily,
             fontSize,
+            fontWeight,
             displayValuesFor,
             displayFormat,
             className,
@@ -58,6 +61,7 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
             origin: originProp,
             appearance,
             labelFill,
+            labelFontWeight,
         } = this.props;
 
         const {
@@ -78,18 +82,32 @@ export class MACDTooltip extends React.Component<MACDTooltipProps> {
 
         return (
             <g className={className} transform={`translate(${x}, ${y})`} onClick={onClick}>
-                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
-                    <ToolTipTSpanLabel fill={labelFill}>MACD (</ToolTipTSpanLabel>
+                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize} fontWeight={fontWeight}>
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight}>
+                        MACD (
+                    </ToolTipTSpanLabel>
                     <tspan fill={appearance.strokeStyle.macd}>{options.slow}</tspan>
-                    <ToolTipTSpanLabel fill={labelFill}>, </ToolTipTSpanLabel>
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight}>
+                        ,{" "}
+                    </ToolTipTSpanLabel>
                     <tspan fill={appearance.strokeStyle.macd}>{options.fast}</tspan>
-                    <ToolTipTSpanLabel fill={labelFill}>): </ToolTipTSpanLabel>
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight}>
+                        ):{" "}
+                    </ToolTipTSpanLabel>
                     <tspan fill={appearance.strokeStyle.macd}>{macd}</tspan>
-                    <ToolTipTSpanLabel fill={labelFill}> Signal (</ToolTipTSpanLabel>
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight}>
+                        {" "}
+                        Signal (
+                    </ToolTipTSpanLabel>
                     <tspan fill={appearance.strokeStyle.signal}>{options.signal}</tspan>
-                    <ToolTipTSpanLabel fill={labelFill}>): </ToolTipTSpanLabel>
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight}>
+                        ):{" "}
+                    </ToolTipTSpanLabel>
                     <tspan fill={appearance.strokeStyle.signal}>{signal}</tspan>
-                    <ToolTipTSpanLabel fill={labelFill}> Divergence: </ToolTipTSpanLabel>
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight}>
+                        {" "}
+                        Divergence:{" "}
+                    </ToolTipTSpanLabel>
                     <tspan fill={appearance.fillStyle.divergence}>{divergence}</tspan>
                 </ToolTipText>
             </g>

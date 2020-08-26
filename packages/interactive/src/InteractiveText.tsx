@@ -8,7 +8,7 @@ import { EachText } from "./wrapper/EachText";
 interface InteractiveTextProps {
     readonly onChoosePosition: (e: React.MouseEvent, newText: any, moreProps: any) => void;
     readonly onDragComplete?: (e: React.MouseEvent, newTextList: any[], moreProps: any) => void;
-    readonly onSelect?: any; // func
+    readonly onSelect?: (e: React.MouseEvent, interactives: any[], moreProps: any) => void;
     readonly defaultText: {
         bgFill: string;
         bgOpacity: number;

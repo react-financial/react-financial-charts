@@ -1,9 +1,9 @@
 import { identity, slidingWindow, zipper } from "@react-financial-charts/core";
 import { timeFormat, timeFormatDefaultLocale } from "d3-time-format";
 import financeDiscontinuousScale from "./financeDiscontinuousScale";
-import { defaultFormatters, levelDefinition } from "./levels";
+import { defaultFormatters, levelDefinition, IFormatters } from "./levels";
 
-const evaluateLevel = (row: any, date: Date, i: number, formatters: any) => {
+const evaluateLevel = (row: any, date: Date, i: number, formatters: IFormatters) => {
     return levelDefinition
         .map((eachLevel, idx) => {
             return {
@@ -18,60 +18,82 @@ const evaluateLevel = (row: any, date: Date, i: number, formatters: any) => {
 
 const discontinuousIndexCalculator = slidingWindow()
     .windowSize(2)
-    .undefinedValue((d: Date, idx: number, { initialIndex, formatters }: any) => {
-        const i = initialIndex;
-        const row = {
-            date: d.getTime(),
-            startOf30Seconds: false,
-            startOfMinute: false,
-            startOf5Minutes: false,
-            startOf15Minutes: false,
-            startOf30Minutes: false,
-            startOfHour: false,
-            startOfEighthOfADay: false,
-            startOfQuarterDay: false,
-            startOfHalfDay: false,
-            startOfDay: true,
-            startOfWeek: false,
-            startOfMonth: false,
-            startOfQuarter: false,
-            startOfYear: false,
-        };
+    .undefinedValue(
+        (d: Date, idx: number, { initialIndex, formatters }: { initialIndex: number; formatters: IFormatters }) => {
+            const i = initialIndex;
+            const row = {
+                date: d.getTime(),
+                startOfSecond: false,
+                startOf5Seconds: false,
+                startOf15Seconds: false,
+                startOf30Seconds: false,
+                startOfMinute: false,
+                startOf5Minutes: false,
+                startOf15Minutes: false,
+                startOf30Minutes: false,
+                startOfHour: false,
+                startOfEighthOfADay: false,
+                startOfQuarterDay: false,
+                startOfHalfDay: false,
+                startOfDay: true,
+                startOfWeek: false,
+                startOfMonth: false,
+                startOfQuarter: false,
+                startOfYear: false,
+            };
 
-        const level = evaluateLevel(row, d, i, formatters);
+            const level = evaluateLevel(row, d, i, formatters);
 
-        return { ...row, index: i, ...level };
-    });
+            return { ...row, index: i, ...level };
+        },
+    );
 
 const discontinuousIndexCalculatorLocalTime = discontinuousIndexCalculator.accumulator(
-    ([prevDate, nowDate]: [Date, Date], i: number, idx: number, { initialIndex, formatters }: any) => {
-        const startOf30Seconds = nowDate.getSeconds() % 30 === 0;
+    (
+        [prevDate, nowDate]: [Date, Date],
+        i: number,
+        idx: number,
+        { initialIndex, formatters }: { initialIndex: number; formatters: IFormatters },
+    ) => {
+        const nowSeconds = nowDate.getSeconds();
+        const nowMinutes = nowDate.getMinutes();
+        const nowHours = nowDate.getHours();
+        const nowDay = nowDate.getDay();
+        const nowMonth = nowDate.getMonth();
 
-        const startOfMinute = nowDate.getMinutes() !== prevDate.getMinutes();
-        const startOf5Minutes = startOfMinute && nowDate.getMinutes() % 5 <= prevDate.getMinutes() % 5;
-        const startOf15Minutes = startOfMinute && nowDate.getMinutes() % 15 <= prevDate.getMinutes() % 15;
-        const startOf30Minutes = startOfMinute && nowDate.getMinutes() % 30 <= prevDate.getMinutes() % 30;
+        const startOfSecond = nowSeconds !== prevDate.getSeconds();
+        const startOf5Seconds = startOfSecond && nowSeconds % 5 === 0;
+        const startOf15Seconds = startOfSecond && nowSeconds % 15 === 0;
+        const startOf30Seconds = startOfSecond && nowSeconds % 30 === 0;
 
-        const startOfHour = nowDate.getHours() !== prevDate.getHours();
+        const startOfMinute = nowMinutes !== prevDate.getMinutes();
+        const startOf5Minutes = startOfMinute && nowMinutes % 5 <= prevDate.getMinutes() % 5;
+        const startOf15Minutes = startOfMinute && nowMinutes % 15 <= prevDate.getMinutes() % 15;
+        const startOf30Minutes = startOfMinute && nowMinutes % 30 <= prevDate.getMinutes() % 30;
 
-        const startOfEighthOfADay = startOfHour && nowDate.getHours() % 3 === 0;
-        const startOfQuarterDay = startOfHour && nowDate.getHours() % 6 === 0;
-        const startOfHalfDay = startOfHour && nowDate.getHours() % 12 === 0;
+        const startOfHour = nowHours !== prevDate.getHours();
 
-        const startOfDay = nowDate.getDay() !== prevDate.getDay();
+        const startOfEighthOfADay = startOfHour && nowHours % 3 === 0;
+        const startOfQuarterDay = startOfHour && nowHours % 6 === 0;
+        const startOfHalfDay = startOfHour && nowHours % 12 === 0;
+
+        const startOfDay = nowDay !== prevDate.getDay();
         // According to ISO calendar
         // Sunday = 0, Monday = 1, ... Saturday = 6
         // day of week of today < day of week of yesterday then today is start of week
-        const startOfWeek = nowDate.getDay() < prevDate.getDay();
+        const startOfWeek = nowDay < prevDate.getDay();
         // month of today != month of yesterday then today is start of month
-        const startOfMonth = nowDate.getMonth() !== prevDate.getMonth();
+        const startOfMonth = nowMonth !== prevDate.getMonth();
         // if start of month and month % 3 === 0 then it is start of quarter
-        const startOfQuarter = startOfMonth && nowDate.getMonth() % 3 <= prevDate.getMonth() % 3;
+        const startOfQuarter = startOfMonth && nowMonth % 3 <= prevDate.getMonth() % 3;
         // year of today != year of yesterday then today is start of year
         const startOfYear = nowDate.getFullYear() !== prevDate.getFullYear();
 
         const row = {
             date: nowDate.getTime(),
+            startOfSecond,
+            startOf5Seconds,
+            startOf15Seconds,
             startOf30Seconds,
             startOfMinute,
             startOf5Minutes,
@@ -94,15 +116,15 @@ const discontinuousIndexCalculatorLocalTime = discontinuousIndexCalculator.accum
     },
 );
 
-function doStuff(realDateAccessor: any, inputDateAccessor: any, initialIndex: any, formatters: any) {
+function doStuff(realDateAccessor: any, inputDateAccessor: any, initialIndex: number, formatters: IFormatters) {
     return function (data: any[]) {
         const dateAccessor = realDateAccessor(inputDateAccessor);
+
         const calculate = discontinuousIndexCalculatorLocalTime.source(dateAccessor).misc({ initialIndex, formatters });
 
         const index = calculate(data).map((each) => {
             const { format } = each;
             return {
-                // ...each,
                 index: each.index,
                 level: each.level,
                 date: new Date(each.date),
@@ -184,23 +206,24 @@ export function discontinuousTimeScaleProviderBuilder() {
         withIndex = x;
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.utc = function () {
+    discontinuousTimeScaleProvider.utc = () => {
         realDateAccessor = (dateAccessor) => (d: any) => {
             const date = dateAccessor(d);
             // The getTimezoneOffset() method returns the time-zone offset from UTC, in minutes, for the current locale.
             const offsetInMillis = date.getTimezoneOffset() * 60 * 1000;
             return new Date(date.getTime() + offsetInMillis);
         };
+
         return discontinuousTimeScaleProvider;
     };
-    discontinuousTimeScaleProvider.setLocale = function (locale: any, formatters = null) {
-        if (locale) {
+    discontinuousTimeScaleProvider.setLocale = (locale?: any, formatters?: IFormatters) => {
+        if (locale !== undefined) {
             timeFormatDefaultLocale(locale);
         }
-        if (formatters) {
-            // @ts-ignore
+        if (formatters !== undefined) {
             currentFormatters = formatters;
         }
+
         return discontinuousTimeScaleProvider;
     };
 

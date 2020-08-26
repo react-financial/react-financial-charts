@@ -13,7 +13,13 @@ export interface ChartProps {
     readonly origin?: number[] | ((width: number, height: number) => number[]);
     readonly padding?: number | { top: number; bottom: number };
     readonly yExtents?: number[] | ((data: any) => number) | ((data: any) => number[]);
-    readonly yExtentsCalculator?: any; // func
+    readonly yExtentsCalculator?: (options: {
+        plotData: any[];
+        xDomain: any;
+        xAccessor: any;
+        displayXAccessor: any;
+        fullData: any[];
+    }) => number[];
     readonly yPan?: boolean;
     readonly yPanEnabled?: boolean;
     readonly yScale?: ScaleContinuousNumeric<number, number>;

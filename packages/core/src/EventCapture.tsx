@@ -1,4 +1,4 @@
-import { ScaleContinuousNumeric } from "d3-scale";
+import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import { event as d3Event, mouse, select, touches } from "d3-selection";
 import * as React from "react";
 
@@ -27,7 +27,7 @@ interface EventCaptureProps {
     readonly height: number;
     readonly chartConfig: { origin: number[]; height: number }[];
     readonly xAccessor: any; // func
-    readonly xScale: ScaleContinuousNumeric<number, number>;
+    readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
     readonly disableInteraction: boolean;
     readonly getAllPanConditions: () => { panEnabled: boolean; draggable: boolean }[];
     readonly onClick?: (mouseXY: number[], event: React.MouseEvent) => void;
@@ -42,13 +42,13 @@ interface EventCaptureProps {
     readonly onMouseLeave?: (event: React.MouseEvent) => void;
     readonly onPinchZoom?: (
         initialPinch: {
-            xScale: ScaleContinuousNumeric<number, number>;
+            xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
             touch1Pos: [number, number];
             touch2Pos: [number, number];
             range: number[];
         },
         currentPinch: {
-            xScale: ScaleContinuousNumeric<number, number>;
+            xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
             touch1Pos: [number, number];
             touch2Pos: [number, number];
         },
@@ -56,7 +56,7 @@ interface EventCaptureProps {
     ) => void;
     readonly onPinchZoomEnd?: (
         initialPinch: {
-            xScale: ScaleContinuousNumeric<number, number>;
+            xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
             touch1Pos: [number, number];
             touch2Pos: [number, number];
             range: number[];
@@ -65,14 +65,14 @@ interface EventCaptureProps {
     ) => void;
     readonly onPan?: (
         mouseXY: number[],
-        panStartXScale: ScaleContinuousNumeric<number, number>,
+        panStartXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         panOrigin: { dx: number; dy: number },
         chartsToPan: string[],
         e: React.MouseEvent,
     ) => void;
     readonly onPanEnd?: (
         mouseXY: number[],
-        panStartXScale: ScaleContinuousNumeric<number, number>,
+        panStartXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         panOrigin: { dx: number; dy: number },
         chartsToPan: string[],
         e: React.MouseEvent | React.TouchEvent,
@@ -86,12 +86,12 @@ interface EventCaptureState {
     dragStartPosition?: number[];
     panInProgress: boolean;
     panStart?: {
-        panStartXScale: ScaleContinuousNumeric<number, number>;
+        panStartXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
         panOrigin: number[];
         chartsToPan: string[];
     };
     pinchZoomStart?: {
-        xScale: ScaleContinuousNumeric<number, number>;
+        xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
         touch1Pos: [number, number];
         touch2Pos: [number, number];
         range: number[];

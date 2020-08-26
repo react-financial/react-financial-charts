@@ -10,7 +10,7 @@ interface FibonacciRetracementProps {
     readonly width?: number;
     readonly onStart?: (moreProps: any) => void;
     readonly onComplete?: (e: React.MouseEvent, newRetracements: any[], moreProps: any) => void;
-    readonly onSelect?: any; // func
+    readonly onSelect?: (e: React.MouseEvent, interactives: any[], moreProps: any) => void;
     readonly type:
         | "EXTEND" // extends from -Infinity to +Infinity
         | "RAY" // extends to +/-Infinity in one direction

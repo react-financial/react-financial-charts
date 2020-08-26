@@ -11,7 +11,9 @@ export interface BollingerBandTooltipProps {
     readonly displayValuesFor?: (props: BollingerBandTooltipProps, moreProps: any) => any;
     readonly fontFamily?: string;
     readonly fontSize?: number;
+    readonly fontWeight?: number;
     readonly labelFill?: string;
+    readonly labelFontWeight?: number;
     readonly onClick?: (event: React.MouseEvent) => void;
     readonly options: {
         movingAverageType: string;
@@ -47,11 +49,13 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
             origin: originProp,
             textFill,
             labelFill,
+            labelFontWeight,
             className,
             displayValuesFor = BollingerBandTooltip.defaultProps.displayValuesFor,
             displayInit,
             fontFamily,
             fontSize,
+            fontWeight,
         } = this.props;
 
         const {
@@ -83,8 +87,10 @@ export class BollingerBandTooltip extends React.Component<BollingerBandTooltipPr
 
         return (
             <g transform={`translate(${x}, ${y})`} className={className} onClick={onClick}>
-                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
-                    <ToolTipTSpanLabel fill={labelFill}>{tooltipLabel}</ToolTipTSpanLabel>
+                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize} fontWeight={fontWeight}>
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight}>
+                        {tooltipLabel}
+                    </ToolTipTSpanLabel>
                     <tspan fill={textFill}>{tooltipValue}</tspan>
                 </ToolTipText>
             </g>

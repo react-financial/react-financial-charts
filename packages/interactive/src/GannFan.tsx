@@ -9,7 +9,7 @@ export interface GannFanProps {
     readonly enabled: boolean;
     readonly onStart?: () => void;
     readonly onComplete: (e: React.MouseEvent, newfans: any[], moreProps: any) => void;
-    readonly onSelect?: any; // func
+    readonly onSelect?: (e: React.MouseEvent, interactives: any[], moreProps: any) => void;
     readonly currentPositionStroke?: string;
     readonly currentPositionStrokeWidth?: number;
     readonly currentPositionOpacity?: number;

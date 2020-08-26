@@ -2,18 +2,22 @@ import { group } from "d3-array";
 import * as React from "react";
 import { functor, isDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
+interface IOHLC {
+    readonly close?: number;
+    readonly high?: number;
+    readonly low?: number;
+    readonly open?: number;
+}
+
 export interface OHLCSeriesProps {
-    readonly className?: string;
-    readonly classNames?: string | any; // func
     readonly clip?: boolean;
-    readonly stroke?: string | any; // func
+    readonly stroke?: string | ((datum: any) => string);
     readonly strokeWidth?: number;
-    readonly yAccessor?: any; // func
+    readonly yAccessor: (datum: any) => IOHLC;
 }
 
 export class OHLCSeries extends React.Component<OHLCSeriesProps> {
     public static defaultProps = {
-        className: "react-financial-charts-ohlc",
         yAccessor: (d: any) => ({ open: d.open, high: d.high, low: d.low, close: d.close }),
         classNames: (d: any) => (isDefined(d.absoluteChange) ? (d.absoluteChange > 0 ? "up" : "down") : "firstbar"),
         stroke: (d: any) => (isDefined(d.absoluteChange) ? (d.absoluteChange > 0 ? "#26a69a" : "#ef5350") : "#000000"),
@@ -35,15 +39,14 @@ export class OHLCSeries extends React.Component<OHLCSeriesProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
-        const { yAccessor } = this.props;
-        const { xAccessor } = moreProps;
         const {
+            xAccessor,
             xScale,
             chartConfig: { yScale },
             plotData,
         } = moreProps;
 
-        const barData = this.getOHLCBars(this.props, xAccessor, yAccessor, xScale, yScale, plotData);
+        const barData = this.getOHLCBars(this.props, xAccessor, xScale, yScale, plotData);
 
         this.drawBarDataOnCanvas(ctx, barData);
     };
@@ -51,15 +54,13 @@ export class OHLCSeries extends React.Component<OHLCSeriesProps> {
     private readonly getOHLCBars = (
         props: OHLCSeriesProps,
         xAccessor: any,
-        yAccessor: any,
         xScale: any,
         yScale: any,
         plotData: any,
     ) => {
-        const { classNames: classNamesProp, stroke: strokeProp, strokeWidth: strokeWidthProp = 1 } = props;
+        const { stroke: strokeProp, strokeWidth: strokeWidthProp = 1, yAccessor } = props;
 
         const strokeFunc = functor(strokeProp);
-        const classNameFunc = functor(classNamesProp);
 
         const width = xScale(xAccessor(plotData[plotData.length - 1])) - xScale(xAccessor(plotData[0]));
 
@@ -68,7 +69,7 @@ export class OHLCSeries extends React.Component<OHLCSeriesProps> {
         const strokeWidth = Math.min(barWidth, strokeWidthProp);
 
         const bars = plotData
-            .filter((d: any) => isDefined(yAccessor(d).close))
+            .filter((d: any) => yAccessor(d).close !== undefined)
             .map((d: any) => {
                 const ohlc = yAccessor(d);
                 const x = Math.round(xScale(xAccessor(d)));
@@ -80,10 +81,9 @@ export class OHLCSeries extends React.Component<OHLCSeriesProps> {
                 const closeX1 = x - strokeWidth / 2;
                 const closeX2 = x + barWidth;
                 const closeY = yScale(ohlc.close);
-                const className = classNameFunc(d);
                 const stroke = strokeFunc(d);
 
-                return { x, y1, y2, openX1, openX2, openY, closeX1, closeX2, closeY, stroke, className };
+                return { x, y1, y2, openX1, openX2, openY, closeX1, closeX2, closeY, stroke };
             });
 
         return { barWidth, strokeWidth, bars };

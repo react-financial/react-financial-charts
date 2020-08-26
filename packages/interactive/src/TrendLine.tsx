@@ -12,11 +12,11 @@ import { EachTrendLine } from "./wrapper/EachTrendLine";
 interface TrendLineProps {
     readonly snap: boolean;
     readonly enabled: boolean;
-    readonly snapTo?: any; // func
-    readonly shouldDisableSnap: any; // func
-    readonly onStart: any; // func
-    readonly onComplete: any; // func
-    readonly onSelect?: any; // func
+    readonly snapTo: (datum: any) => number;
+    readonly shouldDisableSnap?: (e: React.MouseEvent) => boolean;
+    readonly onStart: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onComplete?: (e: React.MouseEvent, newTrends: any[], moreProps: any) => void;
+    readonly onSelect?: (e: React.MouseEvent, interactives: any[], moreProps: any) => void;
     readonly currentPositionStroke?: string;
     readonly currentPositionStrokeWidth?: number;
     readonly currentPositionstrokeOpacity?: number;
@@ -48,7 +48,6 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
     public static defaultProps = {
         type: "XLINE",
         onStart: noop,
-        onComplete: noop,
         onSelect: noop,
         currentPositionStroke: "#000000",
         currentPositionstrokeOpacity: 1,
@@ -202,7 +201,10 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                     trends: newTrends,
                 },
                 () => {
-                    this.props.onComplete(e, newTrends, moreProps);
+                    const { onComplete } = this.props;
+                    if (onComplete !== undefined) {
+                        onComplete(e, newTrends, moreProps);
+                    }
                 },
             );
         }
@@ -222,7 +224,10 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                     },
                 },
                 () => {
-                    this.props.onStart(e, moreProps);
+                    const { onStart } = this.props;
+                    if (onStart !== undefined) {
+                        onStart(e, moreProps);
+                    }
                 },
             );
         }
@@ -264,7 +269,10 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                     override: null,
                 },
                 () => {
-                    this.props.onComplete(e, newTrends, moreProps);
+                    const { onComplete } = this.props;
+                    if (onComplete !== undefined) {
+                        onComplete(e, newTrends, moreProps);
+                    }
                 },
             );
         }

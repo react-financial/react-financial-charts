@@ -17,8 +17,8 @@ export interface MACDSeriesProps {
         zero: string | CanvasGradient | CanvasPattern;
     };
     readonly widthRatio?: number;
-    readonly width?: number | any; // func
-    readonly yAccessor?: any; // func
+    readonly width?: number | ((props: { widthRatio: number }, moreProps: any) => number);
+    readonly yAccessor: (data: any) => { divergence: number; signal: number; macd: number } | undefined;
     readonly zeroLineStroke?: string;
     readonly zeroLineOpacity?: number;
 }
@@ -81,16 +81,34 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
 
     private readonly yAccessorForDivergence = (d: any) => {
         const { yAccessor } = this.props;
-        return yAccessor(d) && yAccessor(d).divergence;
+
+        const dataItem = yAccessor(d);
+        if (dataItem !== undefined) {
+            return dataItem.divergence;
+        }
+
+        return undefined;
     };
 
     private readonly yAccessorForSignal = (d: any) => {
         const { yAccessor } = this.props;
-        return yAccessor(d) && yAccessor(d).signal;
+
+        const dataItem = yAccessor(d);
+        if (dataItem !== undefined) {
+            return dataItem.signal;
+        }
+
+        return undefined;
     };
 
     private readonly yAccessorForMACD = (d: any) => {
         const { yAccessor } = this.props;
-        return yAccessor(d) && yAccessor(d).macd;
+
+        const dataItem = yAccessor(d);
+        if (dataItem !== undefined) {
+            return dataItem.macd;
+        }
+
+        return undefined;
     };
 }

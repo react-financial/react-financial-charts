@@ -64,6 +64,6 @@ export const Daily = withOHLCData()(
     withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicPointAndFigureSeries)),
 );
 
-export const Intraday = withOHLCData("MSFT_INTRA_DAY")(
+export const Intraday = withOHLCData("MINUTES")(
     withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicPointAndFigureSeries)),
 );

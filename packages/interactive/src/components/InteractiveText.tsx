@@ -1,11 +1,10 @@
 import * as React from "react";
-import { colorToRGBA, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
+import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
 export interface InteractiveTextProps {
-    readonly bgFill: string;
-    readonly bgOpacity: number;
+    readonly bgFillStyle: string | CanvasGradient | CanvasPattern;
     readonly bgStrokeWidth: number;
-    readonly bgStroke: string;
+    readonly bgStroke: string | CanvasGradient | CanvasPattern;
     readonly defaultClassName?: string;
     readonly fontFamily: string;
     readonly fontSize: number;
@@ -20,7 +19,7 @@ export interface InteractiveTextProps {
     readonly interactiveCursorClass?: string;
     readonly selected: boolean;
     readonly text: string;
-    readonly textFill: string;
+    readonly textFill: string | CanvasGradient | CanvasPattern;
     readonly tolerance: number;
 }
 
@@ -84,8 +83,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const {
-            bgFill,
-            bgOpacity,
+            bgFillStyle,
             bgStrokeWidth,
             bgStroke,
             textFill,
@@ -107,7 +105,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
 
         const { x, y, rect } = this.helper(moreProps, this.textWidth ?? 0);
 
-        ctx.fillStyle = colorToRGBA(bgFill, bgOpacity);
+        ctx.fillStyle = bgFillStyle;
 
         ctx.beginPath();
         ctx.fillRect(rect.x, rect.y, rect.width, rect.height);

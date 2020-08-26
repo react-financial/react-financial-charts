@@ -67,6 +67,4 @@ class BasicScatterSeries extends React.Component<ChartProps> {
     };
 }
 
-export default withOHLCData("MSFT_INTRA_DAY")(
-    withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicScatterSeries)),
-);
+export default withOHLCData("MINUTES")(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicScatterSeries)));

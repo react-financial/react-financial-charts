@@ -1,9 +1,7 @@
 import * as React from "react";
-
 import { drawOnCanvas } from "@react-financial-charts/coordinates/lib/EdgeCoordinateV3";
 import { getYCoordinate } from "@react-financial-charts/coordinates/lib/MouseCoordinateY";
 import {
-    colorToRGBA,
     getStrokeDasharrayCanvas,
     getMouseCanvas,
     GenericChartComponent,
@@ -11,11 +9,9 @@ import {
 } from "@react-financial-charts/core";
 
 export interface InteractiveYCoordinateProps {
-    readonly bgFill: string;
-    readonly bgOpacity: number;
-    readonly stroke: string;
+    readonly bgFillStyle: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
     readonly strokeWidth: number;
-    readonly strokeOpacity: number;
     readonly strokeDasharray: strokeDashTypes;
     readonly textFill: string;
     readonly fontFamily: string;
@@ -79,16 +75,14 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const {
-            bgFill,
-            bgOpacity,
+            bgFillStyle,
             textFill,
             fontFamily,
             fontSize,
             fontStyle,
             fontWeight,
-            stroke,
+            strokeStyle,
             strokeWidth,
-            strokeOpacity,
             strokeDasharray,
             text,
             textBox,
@@ -104,7 +98,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
 
         const { x1, x2, y, rect } = values;
 
-        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
+        ctx.strokeStyle = strokeStyle;
 
         ctx.beginPath();
         if (selected || hovering) {
@@ -134,7 +128,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
 
         ctx.setLineDash([]);
 
-        ctx.fillStyle = colorToRGBA(bgFill, bgOpacity);
+        ctx.fillStyle = bgFillStyle;
 
         ctx.fillRect(rect.x, rect.y, this.width, rect.height);
         ctx.strokeRect(rect.x, rect.y, this.width, rect.height);
@@ -148,7 +142,6 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
             textFill,
             fontFamily,
             fontSize,
-            opacity: bgOpacity,
         };
 
         // @ts-ignore

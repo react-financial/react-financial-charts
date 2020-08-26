@@ -1,36 +1,26 @@
 import { pairs } from "d3-array";
 import * as React from "react";
-
 import { generateLine, isHovering2 } from "./StraightLine";
-
-import {
-    colorToRGBA,
-    isDefined,
-    isNotDefined,
-    getMouseCanvas,
-    GenericChartComponent,
-} from "@react-financial-charts/core";
+import { isDefined, isNotDefined, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
 interface GannFanProps {
     readonly startXY: number[];
+    readonly defaultClassName?: string;
     readonly endXY: number[];
-    readonly interactiveCursorClass?: string;
-    readonly stroke: string;
-    readonly strokeWidth: number;
-    readonly fill: string[];
-    readonly strokeOpacity: number;
-    readonly fillOpacity: number;
+    readonly fillStyle: Array<string | CanvasGradient | CanvasPattern>;
     readonly fontFamily: string;
     readonly fontSize: number;
     readonly fontFill: string;
+    readonly interactiveCursorClass?: string;
     readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
-    readonly defaultClassName?: string;
-    readonly tolerance: number;
     readonly selected: boolean;
+    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
+    readonly strokeWidth: number;
+    readonly tolerance: number;
 }
 
 export class GannFan extends React.Component<GannFanProps> {
@@ -62,13 +52,12 @@ export class GannFan extends React.Component<GannFanProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
-        const { stroke, strokeWidth, strokeOpacity, fill, fillOpacity, fontFamily, fontSize, fontFill } = this.props;
+        const { strokeStyle, strokeWidth, fillStyle, fontFamily, fontSize, fontFill } = this.props;
 
         const lines = this.helper(this.props, moreProps);
 
         ctx.lineWidth = strokeWidth;
-        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
-
+        ctx.strokeStyle = strokeStyle;
         ctx.font = `${fontSize}px ${fontFamily}`;
         ctx.fillStyle = fontFill;
 
@@ -85,7 +74,7 @@ export class GannFan extends React.Component<GannFanProps> {
         const pairsOfLines = pairs(lines);
 
         pairsOfLines.forEach(([line1, line2], idx) => {
-            ctx.fillStyle = colorToRGBA(fill[idx], fillOpacity);
+            ctx.fillStyle = fillStyle[idx];
 
             ctx.beginPath();
             ctx.moveTo(line1.x1, line1.y1);

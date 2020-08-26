@@ -1,12 +1,12 @@
-import { ScaleContinuousNumeric } from "d3-scale";
+import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import { getCurrentItem } from "../utils/ChartDataUtil";
 import { last } from "../utils/index";
 
 export interface IZoomAnchorOptions<T> {
     readonly plotData: T[];
     readonly mouseXY: number[];
-    readonly xAccessor: (data: T) => number;
-    readonly xScale: ScaleContinuousNumeric<number, number>;
+    readonly xAccessor: (data: T) => number | Date;
+    readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
 }
 
 export const mouseBasedZoomAnchor = <T>({ xScale, xAccessor, mouseXY, plotData }: IZoomAnchorOptions<T>) => {

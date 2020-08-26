@@ -1,7 +1,6 @@
 import {
     functor,
     head,
-    isDefined,
     getAxisCanvas,
     GenericChartComponent,
     plotDataLengthBarWidth,
@@ -30,8 +29,9 @@ export interface BarSeriesProps {
     readonly stroke?: boolean;
     readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly swapScales?: boolean;
-    readonly width?: number | any; // func
-    readonly yAccessor: any; // func
+    readonly width?: number | ((props: { widthRatio: number }, moreProps: any) => number);
+    readonly widthRatio?: number;
+    readonly yAccessor: (data: any) => number | undefined;
 }
 
 /**
@@ -122,7 +122,7 @@ export class BarSeries extends React.Component<BarSeriesProps> {
         const offset = Math.floor(0.5 * barWidth);
 
         return plotData
-            .filter((d: any) => isDefined(yAccessor(d)))
+            .filter((d: any) => yAccessor(d) !== undefined)
             .map((d: any) => {
                 const xValue = xAccessor(d);
                 const yValue = yAccessor(d);

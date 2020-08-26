@@ -75,12 +75,12 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
         }
 
         let unsortedTicks: number[] = [];
-        for (let i = MAX_LEVEL; i >= 0; i--) {
-            const ticksAtLevel = ticksMap.get(i) ?? [];
-            if (ticksAtLevel.length + unsortedTicks.length > desiredTickCount * 1.5) {
+        for (let k = MAX_LEVEL; k >= 0; k--) {
+            const selectedTicks = ticksMap.get(k) ?? [];
+            if (selectedTicks.length + unsortedTicks.length > desiredTickCount * 1.5) {
                 break;
             }
-            unsortedTicks = unsortedTicks.concat(ticksAtLevel.map((d) => d.index));
+            unsortedTicks = unsortedTicks.concat(selectedTicks.map((d) => d.index));
         }
 
         const ticks = unsortedTicks.sort(ascending);
@@ -121,8 +121,9 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
     };
     scale.value = function (x: any) {
         const d = Math.abs(head(index).index);
-        if (isDefined(index[Math.floor(x + d)])) {
-            const { date } = index[Math.floor(x + d)];
+        const row = index[Math.floor(x + d)];
+        if (isDefined(row)) {
+            const { date } = row;
             return date;
         }
     };

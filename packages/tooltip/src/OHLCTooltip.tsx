@@ -26,7 +26,9 @@ export interface OHLCTooltipProps {
     readonly displayValuesFor?: (props: OHLCTooltipProps, moreProps: any) => any;
     readonly fontFamily?: string;
     readonly fontSize?: number;
+    readonly fontWeight?: number;
     readonly labelFill?: string;
+    readonly labelFontWeight?: number;
     readonly ohlcFormat?: (n: number | { valueOf(): number }) => string;
     readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
     readonly origin?: [number, number] | ((width: number, height: number) => [number, number]);
@@ -60,7 +62,9 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
             displayValuesFor = OHLCTooltip.defaultProps.displayValuesFor,
             fontFamily,
             fontSize,
+            fontWeight,
             labelFill,
+            labelFontWeight,
             ohlcFormat = OHLCTooltip.defaultProps.ohlcFormat,
             onClick,
             percentFormat = OHLCTooltip.defaultProps.percentFormat,
@@ -99,26 +103,26 @@ export class OHLCTooltip extends React.Component<OHLCTooltipProps> {
 
         return (
             <g className={className} transform={`translate(${x}, ${y})`} onClick={onClick}>
-                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
-                    <ToolTipTSpanLabel fill={labelFill} key="label_O">
+                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize} fontWeight={fontWeight}>
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight} key="label_O">
                         {displayTexts.o}
                     </ToolTipTSpanLabel>
                     <tspan key="value_O" fill={valueFill}>
                         {open}
                     </tspan>
-                    <ToolTipTSpanLabel fill={labelFill} key="label_H">
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight} key="label_H">
                         {displayTexts.h}
                     </ToolTipTSpanLabel>
                     <tspan key="value_H" fill={valueFill}>
                         {high}
                     </tspan>
-                    <ToolTipTSpanLabel fill={labelFill} key="label_L">
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight} key="label_L">
                         {displayTexts.l}
                     </ToolTipTSpanLabel>
                     <tspan key="value_L" fill={valueFill}>
                         {low}
                     </tspan>
-                    <ToolTipTSpanLabel fill={labelFill} key="label_C">
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight} key="label_C">
                         {displayTexts.c}
                     </ToolTipTSpanLabel>
                     <tspan key="value_C" fill={valueFill}>

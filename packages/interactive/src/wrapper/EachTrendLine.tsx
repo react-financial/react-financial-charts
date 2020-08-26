@@ -10,44 +10,43 @@ import { HoverTextNearMouse } from "../components/HoverTextNearMouse";
 import StraightLine from "../components/StraightLine";
 
 interface EachTrendLineProps {
-    x1Value: any;
-    x2Value: any;
-    y1Value: any;
-    y2Value: any;
-    index?: number;
-    type:
+    readonly x1Value: any;
+    readonly x2Value: any;
+    readonly y1Value: any;
+    readonly y2Value: any;
+    readonly index?: number;
+    readonly type:
         | "XLINE" // extends from -Infinity to +Infinity
         | "RAY" // extends to +/-Infinity in one direction
         | "LINE"; // extends between the set bounds
-    onDrag: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
-    onEdge1Drag: any; // func
-    onEdge2Drag: any; // func
-    onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
-    onSelect: any; // func
-    onUnSelect: any; // func
-    r: number;
-    strokeOpacity: number;
-    defaultClassName?: string;
-    selected?: boolean;
-    strokeStyle: string;
-    strokeWidth: number;
-    strokeDasharray: strokeDashTypes;
-    edgeStrokeWidth: number;
-    edgeStroke: string;
-    edgeInteractiveCursor: string;
-    lineInteractiveCursor: string;
-    edgeFill: string;
-    hoverText: {
-        enable: boolean;
-        fontFamily: string;
-        fontSize: number;
-        fill: string;
-        text: string;
-        selectedText: string;
-        bgFill: string;
-        bgOpacity: number;
-        bgWidth: number | string;
-        bgHeight: number | string;
+    readonly onDrag: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
+    readonly onEdge1Drag: any; // func
+    readonly onEdge2Drag: any; // func
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onSelect: (e: React.MouseEvent, interactives: any[], moreProps: any) => void;
+    readonly r: number;
+    readonly strokeOpacity: number;
+    readonly defaultClassName?: string;
+    readonly selected?: boolean;
+    readonly strokeStyle: string;
+    readonly strokeWidth: number;
+    readonly strokeDasharray: strokeDashTypes;
+    readonly edgeStrokeWidth: number;
+    readonly edgeStroke: string;
+    readonly edgeInteractiveCursor: string;
+    readonly lineInteractiveCursor: string;
+    readonly edgeFill: string;
+    readonly hoverText: {
+        readonly enable: boolean;
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fill: string;
+        readonly text: string;
+        readonly selectedText: string;
+        readonly bgFill: string;
+        readonly bgOpacity: number;
+        readonly bgWidth: number | string;
+        readonly bgHeight: number | string;
     };
 }
 
@@ -62,7 +61,6 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         onEdge1Drag: noop,
         onEdge2Drag: noop,
         onSelect: noop,
-        onUnSelect: noop,
         selected: false,
         edgeStroke: "#000000",
         edgeFill: "#FFFFFF",
@@ -187,8 +185,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
     };
 
     private readonly handleEdge2Drag = (e: React.MouseEvent, moreProps: any) => {
-        const { index, onDrag } = this.props;
-        const { x1Value, y1Value } = this.props;
+        const { index, onDrag, x1Value, y1Value } = this.props;
 
         const [x2Value, y2Value] = getNewXY(moreProps);
 
@@ -201,8 +198,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
     };
 
     private readonly handleEdge1Drag = (e: React.MouseEvent, moreProps: any) => {
-        const { index, onDrag } = this.props;
-        const { x2Value, y2Value } = this.props;
+        const { index, onDrag, x2Value, y2Value } = this.props;
 
         const [x1Value, y1Value] = getNewXY(moreProps);
 

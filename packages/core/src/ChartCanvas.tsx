@@ -1,5 +1,5 @@
 import { extent as d3Extent, max, min } from "d3-array";
-import { ScaleContinuousNumeric } from "d3-scale";
+import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { clearCanvas, functor, head, identity, isDefined, isNotDefined, last, shallowEqual } from "./utils";
@@ -67,7 +67,7 @@ function getCursorStyle() {
     return <style type="text/css">{tooltipStyle}</style>;
 }
 
-function getDimensions(props: any) {
+function getDimensions(props: ChartCanvasProps) {
     return {
         height: props.height - props.margin.top - props.margin.bottom,
         width: props.width - props.margin.left - props.margin.right,
@@ -78,7 +78,7 @@ function getXScaleDirection(flipXScale: any) {
     return flipXScale ? -1 : 1;
 }
 
-function calculateFullData(props: any) {
+function calculateFullData(props: ChartCanvasProps) {
     const { data: fullData, plotFull, xScale, clamp, pointsPerPxThreshold, flipXScale } = props;
     const { xAccessor, displayXAccessor, minPointsPerPxThreshold } = props;
 
@@ -102,12 +102,14 @@ function calculateFullData(props: any) {
     };
 }
 
-const resetChart = (props: any) => {
+const resetChart = (props: ChartCanvasProps) => {
     const state = calculateState(props);
+
     const { xAccessor, displayXAccessor, fullData, plotData: initialPlotData, xScale } = state;
+
     const { postCalculator, children } = props;
 
-    const plotData = postCalculator(initialPlotData);
+    const plotData = postCalculator !== undefined ? postCalculator(initialPlotData) : initialPlotData;
 
     const dimensions = getDimensions(props);
 
@@ -195,7 +197,7 @@ function updateChart(
     };
 }
 
-function calculateState(props: any) {
+function calculateState(props: ChartCanvasProps) {
     const { xAccessor: inputXAccesor, xExtents: xExtentsProp, data, padding, flipXScale } = props;
 
     const direction = getXScaleDirection(flipXScale);
@@ -266,6 +268,7 @@ export interface ChartCanvasProps {
         | ("left" | "right" | "both")
         | ((domain: [number, number], items: [number, number]) => [number, number]);
     readonly className?: string;
+    readonly children?: React.ReactNode;
     readonly data: any[];
     readonly defaultFocus?: boolean;
     readonly disableInteraction?: boolean;
@@ -274,7 +277,7 @@ export interface ChartCanvasProps {
     readonly displayXAccessor: any; // func
     readonly flipXScale?: boolean;
     readonly height: number;
-    readonly margin?: {
+    readonly margin: {
         bottom: number;
         left: number;
         right: number;
@@ -283,7 +286,7 @@ export interface ChartCanvasProps {
     readonly maintainPointsPerPixelOnResize?: boolean;
     readonly minPointsPerPxThreshold?: number;
     readonly mouseMoveEvent?: boolean;
-    readonly onLoadMore?: (start: number, end: number) => void;
+    readonly onLoadMore?: (start: number | Date, end: number | Date) => void;
     readonly onClick?: React.MouseEventHandler<HTMLDivElement>;
     readonly onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
     readonly padding?:
@@ -294,27 +297,28 @@ export interface ChartCanvasProps {
               right: number;
               top: number;
           };
+    readonly plotFull?: boolean;
     readonly pointsPerPxThreshold?: number;
     readonly postCalculator?: (plotData: any[]) => any[];
     readonly ratio: number;
     readonly seriesName: string;
     readonly useCrossHairStyleCursor?: boolean;
     readonly width: number;
-    readonly xAccessor?: (data: any) => number;
+    readonly xAccessor: (data: any) => number | Date;
     readonly xExtents?: any[] | any; // func
-    readonly xScale: ScaleContinuousNumeric<number, number>;
+    readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
     readonly zIndex?: number;
     readonly zoomAnchor?: (options: IZoomAnchorOptions<any>) => number;
     readonly zoomMultiplier?: number;
 }
 
 interface ChartCanvasState {
-    xAccessor?: (data: any) => number;
+    xAccessor?: (data: any) => number | Date;
     displayXAccessor?: any;
     filterData?: any;
     chartConfig?: any;
     plotData?: any;
-    xScale: ScaleContinuousNumeric<number, number>;
+    xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
 }
 
 export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasState> {
@@ -491,6 +495,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const { xAccessor, chartConfig, plotData, xScale } = this.state;
 
         const currentCharts = getCurrentCharts(chartConfig, mouseXY);
+
         const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
 
         this.triggerEvent(
@@ -523,7 +528,10 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         });
 
         const plotData = postCalculator(beforePlotData);
-        const updatedScale = initialXScale!.copy().domain(domain);
+
+        const updatedScale = initialXScale!.copy().domain(domain) as
+            | ScaleContinuousNumeric<number, number>
+            | ScaleTime<number, number>;
 
         // @ts-ignore
         const chartConfig = getChartConfigWithUpdatedYScales(
@@ -575,7 +583,10 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         });
 
         const plotData = postCalculator(beforePlotData);
-        const updatedScale = initialXScale!.copy().domain(domain);
+
+        const updatedScale = initialXScale!.copy().domain(domain) as
+            | ScaleContinuousNumeric<number, number>
+            | ScaleTime<number, number>;
 
         const mouseXY = finalPinch.touch1Pos;
 
@@ -585,6 +596,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             { plotData, xAccessor, displayXAccessor, fullData },
             updatedScale.domain(),
         );
+
         const currentItem = getCurrentItem(updatedScale, xAccessor, mouseXY, plotData);
 
         return {
@@ -666,12 +678,12 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             plotData: initialPlotData,
         });
 
-        const cx = initialXScale!(item);
+        const cx = initialXScale(item);
         const c = zoomDirection > 0 ? 1 * zoomMultiplier : 1 / zoomMultiplier;
         const newDomain = initialXScale!
             .range()
             .map((x) => cx + (x - cx) * c)
-            .map(initialXScale!.invert);
+            .map((x) => initialXScale.invert(x));
 
         const { xScale, plotData, chartConfig } = this.calculateStateForDomain(newDomain);
 
@@ -796,7 +808,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
     public panHelper = (
         mouseXY: number[],
-        initialXScale: ScaleContinuousNumeric<number, number>,
+        initialXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         { dx, dy }: { dx: number; dy: number },
         chartsToPan: string[],
     ) => {
@@ -807,14 +819,17 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const newDomain = initialXScale
             .range()
             .map((x) => x - dx)
-            .map(initialXScale.invert);
+            .map((x) => initialXScale.invert(x));
 
         const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialXScale, {
             currentPlotData: this.hackyWayToStopPanBeyondBounds__plotData,
             currentDomain: this.hackyWayToStopPanBeyondBounds__domain,
         });
 
-        const updatedScale = initialXScale.copy().domain(domain);
+        const updatedScale = initialXScale.copy().domain(domain) as
+            | ScaleContinuousNumeric<number, number>
+            | ScaleTime<number, number>;
+
         const plotData = postCalculator(beforePlotData);
 
         const currentItem = getCurrentItem(updatedScale, xAccessor, mouseXY, plotData);
@@ -839,7 +854,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
     public handlePan = (
         mousePosition: number[],
-        panStartXScale: ScaleContinuousNumeric<number, number>,
+        panStartXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         dxdy: { dx: number; dy: number },
         chartsToPan: string[],
         e: React.MouseEvent,
@@ -876,7 +891,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
     public handlePanEnd = (
         mousePosition: number[],
-        panStartXScale: ScaleContinuousNumeric<number, number>,
+        panStartXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         dxdy: { dx: number; dy: number },
         chartsToPan: string[],
         e: React.MouseEvent | React.TouchEvent,
@@ -939,6 +954,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             this.waitingForMouseMoveAnimationFrame = true;
 
             const { chartConfig, plotData, xScale, xAccessor } = this.state;
+
             const currentCharts = getCurrentCharts(chartConfig, mouseXY);
             const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
             this.triggerEvent(
@@ -981,6 +997,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
     public handleDrag = ({ startPos, mouseXY }: { startPos: number[]; mouseXY: number[] }, e: React.MouseEvent) => {
         const { chartConfig, plotData, xScale, xAccessor } = this.state;
+
         const currentCharts = getCurrentCharts(chartConfig, mouseXY);
         const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
 

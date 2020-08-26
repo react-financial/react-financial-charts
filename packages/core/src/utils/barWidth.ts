@@ -8,9 +8,9 @@ import { head } from ".";
  * @param moreProps an object holding the xScale, xAccessor and plotData.
  * @return {number} the bar width.
  */
-export const plotDataLengthBarWidth = (
+export const plotDataLengthBarWidth = <T>(
     props: { widthRatio: number },
-    moreProps: { xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>; plotData: any[] },
+    moreProps: { xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>; plotData: T[] },
 ): number => {
     const { widthRatio } = props;
     const { xScale } = moreProps;
@@ -18,6 +18,7 @@ export const plotDataLengthBarWidth = (
     const [l, r] = xScale.range();
 
     const totalWidth = Math.abs(r - l);
+
     if (xScale.invert != null) {
         const [dl, dr] = xScale.domain();
         if (typeof dl === "number" && typeof dr === "number") {
@@ -40,9 +41,9 @@ export const plotDataLengthBarWidth = (
  * @return {Function} the width function.
  */
 export const timeIntervalBarWidth = (interval: any) => {
-    return function (
+    return function <T>(
         props: { widthRatio: number },
-        moreProps: { xScale: ScaleContinuousNumeric<number, number>; xAccessor: any; plotData: any[] },
+        moreProps: { xScale: ScaleContinuousNumeric<number, number>; xAccessor: any; plotData: T[] },
     ) {
         const { widthRatio } = props;
         const { xScale, xAccessor, plotData } = moreProps;

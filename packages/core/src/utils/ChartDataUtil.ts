@@ -1,5 +1,5 @@
 import { extent } from "d3-array";
-import { ScaleContinuousNumeric } from "d3-scale";
+import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import flattenDeep from "lodash.flattendeep";
 import * as React from "react";
 
@@ -134,7 +134,7 @@ export function getCurrentCharts(chartConfig, mouseXY: number[]) {
     return currentCharts;
 }
 
-function setRange(scale, height, padding, flipYScale) {
+function setRange(scale, height: number, padding, flipYScale) {
     if (scale.rangeRoundPoints || isNotDefined(scale.invert)) {
         if (isNaN(padding)) {
             throw new Error("padding has to be a number for ordinal scale");
@@ -165,9 +165,9 @@ function yDomainFromYExtents(yExtents, yScale, plotData) {
 }
 
 export function getChartConfigWithUpdatedYScales(
-    chartConfig,
-    { plotData, xAccessor, displayXAccessor, fullData },
-    xDomain,
+    chartConfig: any,
+    { plotData, xAccessor, displayXAccessor, fullData }: any,
+    xDomain: any,
     dy?: number,
     chartsToPan?: string[],
 ) {
@@ -190,7 +190,7 @@ export function getChartConfigWithUpdatedYScales(
         };
     });
 
-    const combine = zipper().combine((config, { realYDomain, yDomainDY, prevYDomain }) => {
+    const combine = zipper().combine((config: any, { realYDomain, yDomainDY, prevYDomain }) => {
         const { id, padding, height, yScale, yPan, flipYScale, yPanEnabled = false } = config;
 
         const another = chartsToPan !== undefined ? chartsToPan.indexOf(id) > -1 : true;
@@ -211,9 +211,14 @@ export function getChartConfigWithUpdatedYScales(
     return updatedChartConfig;
 }
 
-export function getCurrentItem(xScale: ScaleContinuousNumeric<number, number>, xAccessor, mouseXY, plotData) {
-    let xValue;
-    let item;
+export function getCurrentItem(
+    xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
+    xAccessor: any,
+    mouseXY: number[],
+    plotData: any[],
+) {
+    let xValue: number | Date;
+    let item: any;
     if (xScale.invert) {
         xValue = xScale.invert(mouseXY[0]);
         item = getClosestItem(plotData, xValue, xAccessor);
@@ -223,18 +228,23 @@ export function getCurrentItem(xScale: ScaleContinuousNumeric<number, number>, x
             .map((d, idx) => ({ x: Math.abs(d - mouseXY[0]), idx }))
             .reduce((a, b) => (a.x < b.x ? a : b));
 
-        item = isDefined(dr) ? plotData[dr.idx] : plotData[0];
+        item = dr !== undefined ? plotData[dr.idx] : plotData[0];
     }
     return item;
 }
 
-export function getXValue(xScale, xAccessor, mouseXY, plotData) {
-    let xValue;
-    let item;
+export function getXValue(
+    xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
+    xAccessor: any,
+    mouseXY: number[],
+    plotData: any[],
+) {
+    let xValue: number | Date;
+    let item: any;
     if (xScale.invert) {
         xValue = xScale.invert(mouseXY[0]);
-        if (xValue > xAccessor(last(plotData)) && xScale.value) {
-            return Math.round(xValue);
+        if (xValue > xAccessor(last(plotData))) {
+            return Math.round(xValue.valueOf());
         } else {
             item = getClosestItem(plotData, xValue, xAccessor);
         }
@@ -244,7 +254,7 @@ export function getXValue(xScale, xAccessor, mouseXY, plotData) {
             .map((d, idx) => ({ x: Math.abs(d - mouseXY[0]), idx }))
             .reduce((a, b) => (a.x < b.x ? a : b));
 
-        item = isDefined(dr) ? plotData[dr.idx] : plotData[0];
+        item = dr !== undefined ? plotData[dr.idx] : plotData[0];
     }
     return xAccessor(item);
 }

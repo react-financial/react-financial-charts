@@ -1,25 +1,16 @@
 import * as React from "react";
-import {
-    colorToRGBA,
-    first,
-    getAxisCanvas,
-    getMouseCanvas,
-    GenericChartComponent,
-    last,
-} from "@react-financial-charts/core";
+import { first, getAxisCanvas, getMouseCanvas, GenericChartComponent, last } from "@react-financial-charts/core";
 
 export interface SARSeriesProps {
-    readonly className?: string;
-    readonly fill?: {
-        falling: string;
-        rising: string;
+    readonly fillStyle?: {
+        falling: string | CanvasGradient | CanvasPattern;
+        rising: string | CanvasGradient | CanvasPattern;
     };
-    readonly yAccessor: any; // func
-    readonly opacity?: number;
-    readonly onClick?: any; // func
-    readonly onDoubleClick?: any; // func
-    readonly onContextMenu?: any; // func
     readonly highlightOnHover?: boolean;
+    readonly onClick?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDoubleClick?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onContextMenu?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly yAccessor: (datum: any) => number;
 }
 
 /**
@@ -30,17 +21,15 @@ export interface SARSeriesProps {
  */
 export class SARSeries extends React.Component<SARSeriesProps> {
     public static defaultProps = {
-        className: "react-financial-charts-sar",
-        fill: {
+        fillStyle: {
             falling: "#4682B4",
             rising: "#15EC2E",
         },
         highlightOnHover: true,
-        opacity: 0.2,
     };
 
     public render() {
-        const { highlightOnHover } = this.props;
+        const { highlightOnHover, onClick, onDoubleClick, onContextMenu } = this.props;
 
         const hoverProps = highlightOnHover
             ? {
@@ -56,16 +45,16 @@ export class SARSeries extends React.Component<SARSeriesProps> {
         return (
             <GenericChartComponent
                 canvasDraw={this.drawOnCanvas}
-                onClickWhenHover={this.props.onClick}
-                onDoubleClickWhenHover={this.props.onDoubleClick}
-                onContextMenuWhenHover={this.props.onContextMenu}
+                onClickWhenHover={onClick}
+                onDoubleClickWhenHover={onDoubleClick}
+                onContextMenuWhenHover={onContextMenu}
                 {...hoverProps}
             />
         );
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
-        const { yAccessor, fill = SARSeries.defaultProps.fill, opacity } = this.props;
+        const { yAccessor, fillStyle = SARSeries.defaultProps.fillStyle } = this.props;
         const {
             xAccessor,
             plotData,
@@ -82,9 +71,9 @@ export class SARSeries extends React.Component<SARSeriesProps> {
         plotData.forEach((each: any) => {
             const centerX = xScale(xAccessor(each));
             const centerY = yScale(yAccessor(each));
-            const color = yAccessor(each) > each.close ? fill.falling : fill.rising;
+            const color = yAccessor(each) > each.close ? fillStyle.falling : fillStyle.rising;
 
-            ctx.fillStyle = colorToRGBA(color, opacity);
+            ctx.fillStyle = color;
             ctx.strokeStyle = color;
 
             ctx.beginPath();

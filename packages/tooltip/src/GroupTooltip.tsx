@@ -8,6 +8,7 @@ export interface GroupTooltipProps {
     readonly className?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
+    readonly fontWeight?: number;
     readonly displayFormat: (value: number) => string;
     readonly displayInit?: string;
     readonly displayValuesFor: (props: GroupTooltipProps, moreProps: any) => any;
@@ -86,6 +87,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
             verticalSize = 13,
             fontFamily,
             fontSize,
+            fontWeight,
             layout,
             origin,
             displayFormat,
@@ -138,7 +140,7 @@ export class GroupTooltip extends React.Component<GroupTooltipProps> {
         return (
             <g transform={`translate(${xPos}, ${yPos})`} className={className} textAnchor={textAnchor}>
                 {layout === "horizontalInline" ? (
-                    <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
+                    <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize} fontWeight={fontWeight}>
                         {singleTooltip}
                     </ToolTipText>
                 ) : (

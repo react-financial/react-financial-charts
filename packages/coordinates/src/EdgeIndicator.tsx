@@ -30,7 +30,7 @@ export interface EdgeIndicatorProps {
     readonly stroke?: string | ((datum: any) => string);
     readonly textFill?: string | ((datum: any) => string);
     readonly type?: "horizontal";
-    readonly yAccessor?: any; // func
+    readonly yAccessor: (data: any) => number;
     readonly yAxisPad?: number;
 }
 

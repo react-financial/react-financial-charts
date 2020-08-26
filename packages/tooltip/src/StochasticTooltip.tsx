@@ -9,6 +9,7 @@ export interface StochasticTooltipProps {
     readonly className?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
+    readonly fontWeight?: number;
     readonly labelFill?: string;
     readonly onClick?: (event: React.MouseEvent) => void;
     readonly yAccessor: (currentItem: any) => { K: number; D: number };
@@ -48,6 +49,7 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
             onClick,
             fontFamily,
             fontSize,
+            fontWeight,
             yAccessor,
             displayFormat,
             origin: originProp,
@@ -79,7 +81,7 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
 
         return (
             <g className={className} transform={`translate(${x}, ${y})`} onClick={onClick}>
-                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
+                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize} fontWeight={fontWeight}>
                     <ToolTipTSpanLabel fill={labelFill}>{`${label} %K(`}</ToolTipTSpanLabel>
                     <tspan fill={stroke.kLine}>{`${options.windowSize}, ${options.kWindowSize}`}</tspan>
                     <ToolTipTSpanLabel fill={labelFill}>): </ToolTipTSpanLabel>

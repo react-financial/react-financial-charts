@@ -187,7 +187,11 @@ export interface HoverTooltipProps {
         strokeStyle?: string | CanvasGradient | CanvasPattern;
         width?: number;
     };
-    readonly backgroundShapeCanvas?: any; // func
+    readonly backgroundShapeCanvas: (
+        props: HoverTooltipProps,
+        { width, height }: { width: number; height: number },
+        ctx: CanvasRenderingContext2D,
+    ) => void;
     readonly chartId?: number | string;
     readonly fontFamily?: string;
     readonly fontFill?: string;

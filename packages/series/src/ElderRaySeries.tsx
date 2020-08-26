@@ -51,7 +51,6 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
             <g className={className}>
                 <OverlayBarSeries
                     baseAt={this.yAccessorForBarBase}
-                    className="react-financial-charts-elderray-bar"
                     stroke={stroke}
                     fillStyle={this.fillForEachBar}
                     widthRatio={widthRatio}

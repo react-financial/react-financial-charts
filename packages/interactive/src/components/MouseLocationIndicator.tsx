@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
     functor,
     getClosestValue,
@@ -8,13 +7,14 @@ import {
     noop,
     shallowEqual,
 } from "@react-financial-charts/core";
+import * as React from "react";
 import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
 
 interface MouseLocationIndicatorProps {
     readonly enabled: boolean;
     readonly snap: boolean;
-    readonly shouldDisableSnap: any; // func;
-    readonly snapTo?: any; // func;
+    readonly shouldDisableSnap: (e: React.MouseEvent) => boolean;
+    readonly snapTo?: (datum: any) => number;
     readonly onMouseMove: (e: React.MouseEvent, xyValue: number[], moreProps: any) => void;
     readonly onMouseDown: (e: React.MouseEvent, xyValue: number[], moreProps: any) => void;
     readonly onClick: (e: React.MouseEvent, xyValue: number[], moreProps: any) => void;
@@ -72,7 +72,7 @@ export class MouseLocationIndicator extends React.Component<MouseLocationIndicat
                     ? xAccessor(currentItem)
                     : getXValue(xScale, xAccessor, mouseXY, plotData);
             const yValue =
-                snap && !shouldDisableSnap(e)
+                snap && snapTo !== undefined && !shouldDisableSnap(e)
                     ? getClosestValue(snapTo(currentItem), yScale.invert(mouseXY[1]))
                     : yScale.invert(mouseXY[1]);
 

@@ -12,7 +12,7 @@ import * as React from "react";
 export interface LineSeriesProps {
     readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
     readonly connectNulls?: boolean;
-    readonly defined?: (d: number) => boolean;
+    readonly defined?: (d: number | undefined) => boolean;
     readonly highlightOnHover?: boolean;
     readonly hoverStrokeWidth?: number;
     readonly hoverTolerance?: number;
@@ -20,11 +20,11 @@ export interface LineSeriesProps {
      * A factory for a curve generator for the line.
      */
     readonly interpolation?: CurveFactory | CurveFactoryLineOnly;
-    readonly onClick?: any; // func
-    readonly onDoubleClick?: any; // func
-    readonly onHover?: any; // func
-    readonly onUnHover?: any; // func
-    readonly onContextMenu?: any; // func
+    readonly onClick?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onDoubleClick?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly onContextMenu?: (e: React.MouseEvent, moreProps: any) => void;
     /**
      * Color, gradient, or pattern to use for the stroke.
      */
@@ -40,7 +40,7 @@ export interface LineSeriesProps {
     /**
      * Selector for data to plot.
      */
-    readonly yAccessor: (data: any) => number;
+    readonly yAccessor: (data: any) => number | undefined;
 }
 
 /**
@@ -49,7 +49,7 @@ export interface LineSeriesProps {
 export class LineSeries extends React.Component<LineSeriesProps> {
     public static defaultProps = {
         connectNulls: false,
-        defined: (d: number) => !isNaN(d),
+        defined: (d: number | undefined) => d !== undefined && !isNaN(d),
         hoverStrokeWidth: 4,
         hoverTolerance: 6,
         highlightOnHover: false,

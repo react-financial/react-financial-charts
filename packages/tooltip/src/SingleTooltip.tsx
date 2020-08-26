@@ -10,9 +10,10 @@ export interface SingleTooltipProps {
     readonly yValue: string;
     readonly onClick?: (event: React.MouseEvent, details: any) => void;
     readonly fontFamily?: string;
+    readonly fontSize?: number;
+    readonly fontWeight?: number;
     readonly labelFill: string;
     readonly valueFill: string;
-    readonly fontSize?: number;
     readonly forChart: number | string;
     readonly options: any;
     readonly layout: layouts;
@@ -30,12 +31,28 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
      * Renders the value next to the label.
      */
     public renderValueNextToLabel() {
-        const { origin, yLabel, yValue, labelFill, valueFill, withShape, fontSize, fontFamily } = this.props;
+        const {
+            origin,
+            yLabel,
+            yValue,
+            labelFill,
+            valueFill,
+            withShape,
+            fontSize,
+            fontFamily,
+            fontWeight,
+        } = this.props;
 
         return (
             <g transform={`translate(${origin[0]}, ${origin[1]})`} onClick={this.handleClick}>
                 {withShape ? <rect x="0" y="-6" width="6" height="6" fill={valueFill} /> : null}
-                <ToolTipText x={withShape ? 8 : 0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
+                <ToolTipText
+                    x={withShape ? 8 : 0}
+                    y={0}
+                    fontFamily={fontFamily}
+                    fontSize={fontSize}
+                    fontWeight={fontWeight}
+                >
                     <ToolTipTSpanLabel fill={labelFill}>{yLabel}: </ToolTipTSpanLabel>
                     <tspan fill={valueFill}>{yValue}</tspan>
                 </ToolTipText>
@@ -47,12 +64,22 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
      * Renders the value beneath the label.
      */
     public renderValueBeneathLabel() {
-        const { origin, yLabel, yValue, labelFill, valueFill, withShape, fontSize, fontFamily } = this.props;
+        const {
+            origin,
+            yLabel,
+            yValue,
+            labelFill,
+            valueFill,
+            withShape,
+            fontSize,
+            fontFamily,
+            fontWeight,
+        } = this.props;
 
         return (
             <g transform={`translate(${origin[0]}, ${origin[1]})`} onClick={this.handleClick}>
                 {withShape ? <line x1={0} y1={2} x2={0} y2={28} stroke={valueFill} strokeWidth="4px" /> : null}
-                <ToolTipText x={5} y={11} fontFamily={fontFamily} fontSize={fontSize}>
+                <ToolTipText x={5} y={11} fontFamily={fontFamily} fontSize={fontSize} fontWeight={fontWeight}>
                     <ToolTipTSpanLabel fill={labelFill}>{yLabel}</ToolTipTSpanLabel>
                     <tspan x="5" dy="15" fill={valueFill}>
                         {yValue}
@@ -67,10 +94,10 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
      * The parent component must have a "text"-element.
      */
     public renderInline() {
-        const { yLabel, yValue, labelFill, valueFill, fontSize, fontFamily } = this.props;
+        const { yLabel, yValue, labelFill, valueFill, fontSize, fontFamily, fontWeight } = this.props;
 
         return (
-            <tspan onClick={this.handleClick} fontFamily={fontFamily} fontSize={fontSize}>
+            <tspan onClick={this.handleClick} fontFamily={fontFamily} fontSize={fontSize} fontWeight={fontWeight}>
                 <ToolTipTSpanLabel fill={labelFill}>{yLabel}:&nbsp;</ToolTipTSpanLabel>
                 <tspan fill={valueFill}>{yValue}&nbsp;&nbsp;</tspan>
             </tspan>

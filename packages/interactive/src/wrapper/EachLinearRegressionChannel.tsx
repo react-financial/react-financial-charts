@@ -1,7 +1,5 @@
-import * as React from "react";
-
-import { noop } from "@react-financial-charts/core";
 import { getCurrentItem } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
+import * as React from "react";
 import { isHover, saveNodeType } from "../utils";
 
 import { HoverTextNearMouse } from "../components/HoverTextNearMouse";
@@ -14,38 +12,36 @@ import {
 import { ClickableCircle } from "../components/ClickableCircle";
 
 interface EachLinearRegressionChannelProps {
-    defaultClassName?: string;
-    x1Value: any;
-    x2Value: any;
-    index?: number;
-    appearance: {
-        stroke: string;
-        fillOpacity: number;
-        strokeOpacity: number;
-        strokeWidth: number;
-        fill: string;
-        edgeStrokeWidth: number;
-        edgeStroke: string;
-        edgeFill: string;
-        r: number;
+    readonly defaultClassName?: string;
+    readonly x1Value: any;
+    readonly x2Value: any;
+    readonly index?: number;
+    readonly appearance: {
+        readonly stroke: string | CanvasGradient | CanvasPattern;
+        readonly strokeWidth: number;
+        readonly fill: string | CanvasGradient | CanvasPattern;
+        readonly edgeStrokeWidth: number;
+        readonly edgeStroke: string;
+        readonly edgeFill: string;
+        readonly r: number;
     };
-    edgeInteractiveCursor?: string;
-    onDrag: any; // func
-    onDragComplete: any; // func
-    snapTo?: any; // func
-    interactive: boolean;
-    selected: boolean;
-    hoverText: {
-        enable: boolean;
-        fontFamily: string;
-        fontSize: number;
-        fill: string;
-        text: string;
-        bgFill: string;
-        bgOpacity: number;
-        bgWidth: number | string;
-        bgHeight: number | string;
-        selectedText: string;
+    readonly edgeInteractiveCursor?: string;
+    readonly onDrag?: (e: React.MouseEvent, index: number | undefined, x1y1: { x1Value: any; x2Value }) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly snapTo?: (datum: any) => number;
+    readonly interactive: boolean;
+    readonly selected: boolean;
+    readonly hoverText: {
+        readonly enable: boolean;
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fill: string;
+        readonly text: string;
+        readonly bgFill: string;
+        readonly bgOpacity: number;
+        readonly bgWidth: number | string;
+        readonly bgHeight: number | string;
+        readonly selectedText: string;
     };
 }
 
@@ -58,14 +54,10 @@ export class EachLinearRegressionChannel extends React.Component<
     EachLinearRegressionChannelState
 > {
     public static defaultProps = {
-        onDrag: noop,
-        onDragComplete: noop,
         appearance: {
             stroke: "#000000",
-            fillOpacity: 0.7,
-            strokeOpacity: 1,
             strokeWidth: 1,
-            fill: "#8AAFE2",
+            fill: "rgba(138, 175, 226, 0.7)",
             edgeStrokeWidth: 2,
             edgeStroke: "#000000",
             edgeFill: "#FFFFFF",
@@ -108,17 +100,7 @@ export class EachLinearRegressionChannel extends React.Component<
             selected,
             onDragComplete,
         } = this.props;
-        const {
-            stroke,
-            strokeWidth,
-            strokeOpacity,
-            fill,
-            fillOpacity,
-            r,
-            edgeStrokeWidth,
-            edgeFill,
-            edgeStroke,
-        } = appearance;
+        const { stroke, strokeWidth, fill, r, edgeStrokeWidth, edgeFill, edgeStroke } = appearance;
         const { hover } = this.state;
 
         const hoverHandler = interactive ? { onHover: this.handleHover, onUnHover: this.handleHover } : {};
@@ -138,11 +120,9 @@ export class EachLinearRegressionChannel extends React.Component<
                     {...hoverHandler}
                     x1Value={x1Value}
                     x2Value={x2Value}
-                    fill={fill}
-                    stroke={stroke}
+                    fillStyle={fill}
+                    strokeStyle={stroke}
                     strokeWidth={hover || selected ? strokeWidth + 1 : strokeWidth}
-                    strokeOpacity={strokeOpacity}
-                    fillOpacity={fillOpacity}
                 />
                 <ClickableCircle
                     ref={this.saveNodeType("edge1")}
@@ -186,8 +166,10 @@ export class EachLinearRegressionChannel extends React.Component<
     };
 
     private readonly handleEdge2Drag = (e: React.MouseEvent, moreProps: any) => {
-        const { index, onDrag, snapTo } = this.props;
-        const { x1Value } = this.props;
+        const { index, onDrag, snapTo, x1Value } = this.props;
+        if (onDrag === undefined) {
+            return;
+        }
 
         const [x2Value] = getNewXY(moreProps, snapTo);
 
@@ -198,8 +180,10 @@ export class EachLinearRegressionChannel extends React.Component<
     };
 
     private readonly handleEdge1Drag = (e: React.MouseEvent, moreProps: any) => {
-        const { index, onDrag, snapTo } = this.props;
-        const { x2Value } = this.props;
+        const { index, onDrag, snapTo, x2Value } = this.props;
+        if (onDrag === undefined) {
+            return;
+        }
 
         const [x1Value] = getNewXY(moreProps, snapTo);
 

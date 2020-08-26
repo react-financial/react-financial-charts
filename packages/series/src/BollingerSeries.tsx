@@ -12,7 +12,7 @@ export interface BollingerSeriesProps {
         middle: string | CanvasGradient | CanvasPattern;
         bottom: string | CanvasGradient | CanvasPattern;
     };
-    readonly yAccessor?: (data: any) => any;
+    readonly yAccessor?: (data: any) => { bottom: number; middle: number; top: number };
 }
 
 export class BollingerSeries extends React.Component<BollingerSeriesProps> {
@@ -47,24 +47,44 @@ export class BollingerSeries extends React.Component<BollingerSeriesProps> {
     private readonly yAccessorForScaledBottom = (scale: ScaleContinuousNumeric<number, number>, d: any) => {
         const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
 
-        return scale(yAccessor(d) && yAccessor(d).bottom);
+        const bb = yAccessor(d);
+        if (bb === undefined) {
+            return undefined;
+        }
+
+        return scale(bb.bottom);
     };
 
     private readonly yAccessorForBottom = (d: any) => {
         const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
 
-        return yAccessor(d) && yAccessor(d).bottom;
+        const bb = yAccessor(d);
+        if (bb === undefined) {
+            return undefined;
+        }
+
+        return bb.bottom;
     };
 
     private readonly yAccessorForMiddle = (d: any) => {
         const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
 
-        return yAccessor(d) && yAccessor(d).middle;
+        const bb = yAccessor(d);
+        if (bb === undefined) {
+            return undefined;
+        }
+
+        return bb.middle;
     };
 
     private readonly yAccessorForTop = (d: any) => {
         const { yAccessor = BollingerSeries.defaultProps.yAccessor } = this.props;
 
-        return yAccessor(d) && yAccessor(d).top;
+        const bb = yAccessor(d);
+        if (bb === undefined) {
+            return undefined;
+        }
+
+        return bb.top;
     };
 }

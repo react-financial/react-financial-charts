@@ -15,15 +15,13 @@ interface EachGannFanProps {
     interactive: boolean;
     selected: boolean;
     appearance: {
-        stroke: string;
-        strokeOpacity: number;
-        fillOpacity: number;
+        stroke: string | CanvasGradient | CanvasPattern;
         strokeWidth: number;
         edgeStroke: string;
         edgeFill: string;
         edgeStrokeWidth: number;
         r: number;
-        fill: string[];
+        fill: Array<string | CanvasGradient | CanvasPattern>;
         fontFamily: string;
         fontSize: number;
         fontFill: string;
@@ -56,14 +54,21 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
         selected: false,
         appearance: {
             stroke: "#000000",
-            fillOpacity: 0.2,
-            strokeOpacity: 1,
             strokeWidth: 1,
             edgeStroke: "#000000",
             edgeFill: "#FFFFFF",
             edgeStrokeWidth: 1,
             r: 5,
-            fill: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f"],
+            fill: [
+                "rgba(31, 119, 180, 0.2)",
+                "rgba(255, 126, 14, 0.2)",
+                "rgba(44, 160, 44, 0.2)",
+                "rgba(214, 39, 39, 0.2)",
+                "rgba(148, 103, 189, 0.2)",
+                "rgba(140, 86, 75, 0.2)",
+                "rgba(227, 119, 194, 0.2)",
+                "rgba(127, 127, 127, 0.2)",
+            ],
             fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
             fontSize: 10,
             fontFill: "#000000",
@@ -97,7 +102,7 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
     public render() {
         const { startXY, endXY } = this.props;
         const { interactive, appearance } = this.props;
-        const { edgeFill, stroke, strokeWidth, strokeOpacity, fill, fillOpacity } = appearance;
+        const { edgeFill, stroke, strokeWidth, fill } = appearance;
         const { fontFamily, fontSize, fontFill } = appearance;
         const { hoverText, selected } = this.props;
         const { onDragComplete } = this.props;
@@ -134,11 +139,9 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
                     {...hoverHandler}
                     startXY={startXY}
                     endXY={endXY}
-                    stroke={stroke}
+                    strokeStyle={stroke}
                     strokeWidth={hover || selected ? strokeWidth + 1 : strokeWidth}
-                    fill={fill}
-                    strokeOpacity={strokeOpacity}
-                    fillOpacity={fillOpacity}
+                    fillStyle={fill}
                     fontFamily={fontFamily}
                     fontSize={fontSize}
                     fontFill={fontFill}

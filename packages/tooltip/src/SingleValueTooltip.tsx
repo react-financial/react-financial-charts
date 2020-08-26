@@ -12,11 +12,13 @@ export interface SingleValueTooltipProps {
     readonly xLabel?: string;
     readonly yLabel: string;
     readonly labelFill?: string;
+    readonly labelFontWeight?: number;
     readonly valueFill?: string;
     readonly origin?: [number, number] | ((width: number, height: number) => [number, number]);
     readonly className?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
+    readonly fontWeight?: number;
     readonly onClick?: (event: React.MouseEvent<SVGGElement, MouseEvent>) => void;
     readonly displayValuesFor?: (props: SingleValueTooltipProps, moreProps: any) => any;
     readonly xAccessor?: (d: any) => number;
@@ -47,7 +49,9 @@ export class SingleValueTooltip extends React.Component<SingleValueTooltipProps>
             onClick,
             fontFamily,
             fontSize,
+            fontWeight,
             labelFill,
+            labelFontWeight,
             valueFill,
             className,
             displayValuesFor = SingleValueTooltip.defaultProps.displayValuesFor,
@@ -89,12 +93,12 @@ export class SingleValueTooltip extends React.Component<SingleValueTooltipProps>
 
         return (
             <g className={className} transform={`translate(${x}, ${y})`} onClick={onClick}>
-                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize}>
+                <ToolTipText x={0} y={0} fontFamily={fontFamily} fontSize={fontSize} fontWeight={fontWeight}>
                     {xLabel ? (
                         <ToolTipTSpanLabel x={0} dy="5" fill={labelFill}>{`${xLabel}: `}</ToolTipTSpanLabel>
                     ) : null}
                     {xLabel ? <tspan fill={valueFill}>{`${xDisplayValue} `}</tspan> : null}
-                    <ToolTipTSpanLabel fill={labelFill}>{`${yLabel}: `}</ToolTipTSpanLabel>
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight}>{`${yLabel} `}</ToolTipTSpanLabel>
                     <tspan fill={valueFill}>{yDisplayValue}</tspan>
                 </ToolTipText>
             </g>

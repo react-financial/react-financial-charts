@@ -33,7 +33,7 @@ interface WithOHLCState {
     message: string;
 }
 
-export function withOHLCData(dataSet = "MSFT") {
+export function withOHLCData(dataSet = "DAILY") {
     return <TProps extends WithOHLCDataProps>(OriginalComponent: React.ComponentClass<TProps>) => {
         return class WithOHLCData extends React.Component<Omit<TProps, "data">, WithOHLCState> {
             public constructor(props: Omit<TProps, "data">) {

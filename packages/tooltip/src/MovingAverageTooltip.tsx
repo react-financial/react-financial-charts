@@ -9,8 +9,10 @@ export interface SingleMAToolTipProps {
     readonly displayName: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
+    readonly fontWeight?: number;
     readonly forChart: number | string;
     readonly labelFill?: string;
+    readonly labelFontWeight?: number;
     readonly onClick?: (event: React.MouseEvent<SVGRectElement, MouseEvent>, details: any) => void;
     readonly options: any;
     readonly origin: [number, number];
@@ -20,15 +22,27 @@ export interface SingleMAToolTipProps {
 
 export class SingleMAToolTip extends React.Component<SingleMAToolTipProps> {
     public render() {
-        const { color, displayName, fontSize, fontFamily, textFill, labelFill, value } = this.props;
+        const {
+            color,
+            displayName,
+            fontSize,
+            fontFamily,
+            fontWeight,
+            textFill,
+            labelFill,
+            labelFontWeight,
+            value,
+        } = this.props;
 
         const translate = "translate(" + this.props.origin[0] + ", " + this.props.origin[1] + ")";
 
         return (
             <g transform={translate}>
                 <line x1={0} y1={2} x2={0} y2={28} stroke={color} strokeWidth={4} />
-                <ToolTipText x={5} y={11} fontFamily={fontFamily} fontSize={fontSize}>
-                    <ToolTipTSpanLabel fill={labelFill}>{displayName}</ToolTipTSpanLabel>
+                <ToolTipText x={5} y={11} fontFamily={fontFamily} fontSize={fontSize} fontWeight={fontWeight}>
+                    <ToolTipTSpanLabel fill={labelFill} fontWeight={labelFontWeight}>
+                        {displayName}
+                    </ToolTipTSpanLabel>
                     <tspan x={5} dy={15} fill={textFill}>
                         {value}
                     </tspan>
@@ -57,6 +71,7 @@ interface MovingAverageTooltipProps {
     readonly labelFill?: string;
     readonly fontFamily?: string;
     readonly fontSize?: number;
+    readonly fontWeight?: number;
     readonly width?: number;
     readonly options: {
         yAccessor: (data: any) => number;
@@ -96,6 +111,7 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
             width = 65,
             fontFamily,
             fontSize,
+            fontWeight,
             textFill,
             labelFill,
             origin: originProp,
@@ -131,6 +147,7 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
                             onClick={onClick}
                             fontFamily={fontFamily}
                             fontSize={fontSize}
+                            fontWeight={fontWeight}
                             textFill={textFill}
                             labelFill={labelFill}
                         />

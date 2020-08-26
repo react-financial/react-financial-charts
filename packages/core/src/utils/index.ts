@@ -5,6 +5,7 @@ export { default as rebind } from "./rebind";
 export { default as zipper } from "./zipper";
 export { default as merge } from "./merge";
 export { default as slidingWindow } from "./slidingWindow";
+export * from "./closestItem";
 export * from "./identity";
 export * from "./noop";
 export * from "./shallowEqual";
@@ -15,12 +16,13 @@ export * from "./colors";
 export * from "./strokeDasharray";
 export * from "./PureComponent";
 
-export function getLogger(prefix) {
+export function getLogger(prefix: string) {
     let logger = noop;
     if (process.env.NODE_ENV !== "production") {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
-        logger = require("debug")("react-financial-charts:" + prefix);
+        logger = require("debug")(`react-financial-charts:${prefix}`);
     }
+
     return logger;
 }
 
@@ -46,7 +48,7 @@ export function path(loc = []) {
     };
 }
 
-export function functor(v) {
+export function functor(v: any) {
     return typeof v === "function" ? v : () => v;
 }
 
@@ -73,9 +75,6 @@ export const TOUCHMOVE = "touchmove.pan";
 export const TOUCHEND = "touchend.pan touchcancel.pan";
 
 export function getTouchProps(touch) {
-    if (!touch) {
-        return {};
-    }
     return {
         pageX: touch.pageX,
         pageY: touch.pageY,
@@ -84,52 +83,9 @@ export function getTouchProps(touch) {
     };
 }
 
-export function getClosestItemIndexes(array, value, accessor) {
-    let lo = 0;
-    let hi = array.length - 1;
-    while (hi - lo > 1) {
-        const mid = Math.round((lo + hi) / 2);
-        if (accessor(array[mid]) <= value) {
-            lo = mid;
-        } else {
-            hi = mid;
-        }
-    }
-    // for Date object === does not work, so using the <= in combination with >=
-    // the same code works for both dates and numbers
-    if (accessor(array[lo])?.valueOf() === value?.valueOf()) {
-        hi = lo;
-    }
-    if (accessor(array[hi])?.valueOf() === value?.valueOf()) {
-        lo = hi;
-    }
-
-    if (accessor(array[lo]) < value && accessor(array[hi]) < value) {
-        lo = hi;
-    }
-    if (accessor(array[lo]) > value && accessor(array[hi]) > value) {
-        hi = lo;
-    }
-
-    return { left: lo, right: hi };
-}
-
-export function getClosestItem(array, value, accessor) {
-    const { left, right } = getClosestItemIndexes(array, value, accessor);
-
-    if (left === right) {
-        return array[left];
-    }
-
-    const closest =
-        Math.abs(accessor(array[left]) - value) < Math.abs(accessor(array[right]) - value) ? array[left] : array[right];
-
-    return closest;
-}
-
-export function head(array, accessor?) {
+export function head(array: any[], accessor?: any) {
     if (accessor && array) {
-        let value;
+        let value: any;
         // tslint:disable-next-line: prefer-for-of
         for (let i = 0; i < array.length; i++) {
             value = array[i];
@@ -137,12 +93,14 @@ export function head(array, accessor?) {
                 return value;
             }
         }
+
         return undefined;
     }
+
     return array ? array[0] : undefined;
 }
 
-export function tail(array, accessor) {
+export function tail<T>(array: T[], accessor) {
     if (accessor && array) {
         return array.map(accessor).slice(1);
     }
@@ -151,7 +109,7 @@ export function tail(array, accessor) {
 
 export const first = head;
 
-export function last(array, accessor?) {
+export function last(array: any[], accessor?) {
     if (accessor && array) {
         let value;
         for (let i = array.length - 1; i >= 0; i--) {
@@ -170,7 +128,7 @@ export const isDefined = <T>(d: T) => {
     return d !== null && d !== undefined;
 };
 
-export function isNotDefined(d) {
+export function isNotDefined<T>(d: T) {
     return !isDefined(d);
 }
 
@@ -178,7 +136,7 @@ export function isObject(d) {
     return isDefined(d) && typeof d === "object" && !Array.isArray(d);
 }
 
-export function touchPosition(touch, e: React.TouchEvent): [number, number] {
+export function touchPosition(touch: { clientX: number; clientY: number }, e: React.TouchEvent): [number, number] {
     const container = e.currentTarget;
     const rect = container.getBoundingClientRect();
     const x = touch.clientX - rect.left - container.clientLeft;
@@ -186,9 +144,12 @@ export function touchPosition(touch, e: React.TouchEvent): [number, number] {
     return [Math.round(x), Math.round(y)];
 }
 
-export function mousePosition(e: React.MouseEvent, defaultRect?): [number, number] {
+export function mousePosition(
+    e: React.MouseEvent,
+    defaultRect?: { height: number; width: number; left: number; top: number },
+): [number, number] {
     const container = e.currentTarget;
-    const rect = defaultRect || container.getBoundingClientRect();
+    const rect = defaultRect ?? container.getBoundingClientRect();
     const x = e.clientX - rect.left - container.clientLeft;
     const y = e.clientY - rect.top - container.clientTop;
     return [Math.round(x), Math.round(y)];

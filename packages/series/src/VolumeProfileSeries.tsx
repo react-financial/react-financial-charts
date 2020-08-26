@@ -16,8 +16,7 @@ export interface VolumeProfileSeriesProps {
     readonly className?: string;
     readonly opacity?: number;
     readonly showSessionBackground?: boolean;
-    readonly sessionBackGround?: string;
-    readonly sessionBackGroundOpacity?: number;
+    readonly sessionBackGround?: string | CanvasGradient | CanvasPattern;
 }
 
 export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProps> {
@@ -29,8 +28,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         fill: ({ type }: any) => (type === "up" ? "#6BA583" : "#FF0000"),
         stroke: "#FFFFFF",
         showSessionBackground: false,
-        sessionBackGround: "#4682B4",
-        sessionBackGroundOpacity: 0.3,
+        sessionBackGround: "rgba(70, 130, 180, 0.3)",
         source: (d: any) => d.close,
         volume: (d: any) => d.volume,
         absoluteChange: (d: any) => d.absoluteChange,
@@ -47,16 +45,24 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { xAccessor, width } = moreProps;
+
         const { rects, sessionBg } = this.helper(this.props, moreProps, xAccessor, width);
 
         this.drawOnCanvasContext(ctx, this.props, rects, sessionBg);
     };
 
-    private readonly drawOnCanvasContext = (ctx: CanvasRenderingContext2D, props: any, rects: any, sessionBg: any) => {
-        const { opacity, sessionBackGround, sessionBackGroundOpacity, showSessionBackground } = props;
+    private readonly drawOnCanvasContext = (
+        ctx: CanvasRenderingContext2D,
+        props: VolumeProfileSeriesProps,
+        rects: any[],
+        sessionBg: any[],
+    ) => {
+        const { opacity, sessionBackGround, showSessionBackground } = props;
 
         if (showSessionBackground) {
-            ctx.fillStyle = colorToRGBA(sessionBackGround, sessionBackGroundOpacity);
+            if (sessionBackGround !== undefined) {
+                ctx.fillStyle = sessionBackGround;
+            }
 
             sessionBg.forEach((each: any) => {
                 const { x, y, height, width } = each;

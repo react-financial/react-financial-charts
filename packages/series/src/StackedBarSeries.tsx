@@ -20,7 +20,6 @@ export interface StackedBarSeriesProps {
               d: [number, number],
               moreProps: any,
           ) => number);
-    readonly className?: string | any; // func
     readonly clip?: boolean;
     readonly direction?: "up" | "down";
     readonly fillStyle?:
@@ -31,8 +30,8 @@ export interface StackedBarSeriesProps {
     readonly spaceBetweenBar?: number;
     readonly stroke?: boolean;
     readonly swapScales?: boolean;
-    readonly yAccessor: ((d: any) => number)[];
-    readonly width?: number | any; // func
+    readonly yAccessor: ((data: any) => number | undefined) | ((d: any) => number)[];
+    readonly width?: number | ((props: StackedBarSeriesProps, moreProps: any) => number);
     readonly widthRatio?: number;
 }
 
@@ -41,7 +40,6 @@ export class StackedBarSeries extends React.Component<StackedBarSeriesProps> {
         baseAt: (xScale: ScaleContinuousNumeric<number, number>, yScale: ScaleContinuousNumeric<number, number>) =>
             head(yScale.range()),
         direction: "up",
-        className: "bar",
         stroke: false,
         fillStyle: "rgba(70, 130, 180, 0.5)",
         width: plotDataLengthBarWidth,
@@ -99,7 +97,7 @@ export function identityStack() {
 
 export function drawOnCanvasHelper(
     ctx: CanvasRenderingContext2D,
-    props: StackedBarSeriesProps,
+    props: any,
     moreProps: any,
     xAccessor: any,
     stackFn: any,
@@ -166,7 +164,7 @@ export const rotateXY = (array: any[]) =>
         };
     });
 
-export const drawOnCanvas2 = (props: StackedBarSeriesProps, ctx: CanvasRenderingContext2D, bars: any) => {
+export const drawOnCanvas2 = (props: { stroke?: boolean }, ctx: CanvasRenderingContext2D, bars: any) => {
     const { stroke } = props;
 
     const nest = group(bars, (d: any) => d.fillStyle);
@@ -200,9 +198,8 @@ export function getBars(
     stack = identityStack,
     after = identity,
 ) {
-    const { baseAt, className, fillStyle, stroke, spaceBetweenBar = 0 } = props;
+    const { baseAt, fillStyle, stroke, spaceBetweenBar = 0 } = props;
 
-    const getClassName = functor(className);
     const getFill = functor(fillStyle);
     const getBase = functor(baseAt);
 
@@ -229,7 +226,6 @@ export function getBars(
             // @ts-ignore
             d[key] = eachYAccessor(each);
             const appearance = {
-                className: getClassName(each, i),
                 stroke: stroke ? getFill(each, i) : "none",
                 fillStyle: getFill(each, i),
             };

@@ -6,12 +6,12 @@ import * as React from "react";
 export interface AreaOnlySeriesProps {
     readonly base?:
         | number
-        | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
+        | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number | undefined);
     readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
     /**
      * The default accessor for defined returns not NaN, thus assumes that the input data is always a number.
      */
-    readonly defined?: (data: number) => boolean;
+    readonly defined?: (data: number | undefined) => boolean;
     /**
      * Color, gradient, or pattern to use for fill.
      */
@@ -23,12 +23,12 @@ export interface AreaOnlySeriesProps {
     /**
      * Selector for data to plot.
      */
-    readonly yAccessor: (data: any) => number;
+    readonly yAccessor: (data: any) => number | undefined;
 }
 
 export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
     public static defaultProps = {
-        defined: (d: number) => !isNaN(d),
+        defined: (d: number | undefined) => d !== undefined && !isNaN(d),
         base: (yScale: ScaleContinuousNumeric<number, number>) => first(yScale.range()),
     };
 

@@ -15,7 +15,7 @@ interface EachFibRetracementProps {
     readonly x2: any;
     readonly y1: number;
     readonly y2: number;
-    readonly yDisplayFormat: any; // func
+    readonly yDisplayFormat: (value: number) => string;
     readonly type: string;
     readonly selected: boolean;
     readonly appearance: {

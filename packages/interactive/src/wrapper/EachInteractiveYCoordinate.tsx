@@ -9,10 +9,8 @@ interface EachInteractiveYCoordinateProps {
     readonly draggable: boolean;
     readonly yValue: number;
     readonly bgFill: string;
-    readonly bgOpacity: number;
     readonly stroke: string;
     readonly strokeWidth: number;
-    readonly strokeOpacity: number;
     readonly strokeDasharray: strokeDashTypes;
     readonly textFill: string;
     readonly fontWeight: string;
@@ -44,9 +42,7 @@ export class EachInteractiveYCoordinate extends React.Component<
 > {
     public static defaultProps = {
         strokeWidth: 1,
-        opacity: 1,
         selected: false,
-        fill: "#FFFFFF",
         draggable: false,
     };
 
@@ -71,18 +67,15 @@ export class EachInteractiveYCoordinate extends React.Component<
         const {
             yValue,
             bgFill,
-            bgOpacity,
             textFill,
             fontFamily,
             fontSize,
             fontWeight,
             fontStyle,
             text,
-            // hoverText,
             selected,
             onDragComplete,
             stroke,
-            strokeOpacity,
             strokeDasharray,
             strokeWidth,
             edge,
@@ -114,15 +107,13 @@ export class EachInteractiveYCoordinate extends React.Component<
                     {...hoverHandler}
                     {...dragProps}
                     yValue={yValue}
-                    bgFill={bgFill}
-                    bgOpacity={bgOpacity}
+                    bgFillStyle={bgFill}
                     textFill={textFill}
                     fontFamily={fontFamily}
                     fontStyle={fontStyle}
                     fontWeight={fontWeight}
                     fontSize={fontSize}
-                    stroke={stroke}
-                    strokeOpacity={strokeOpacity}
+                    strokeStyle={stroke}
                     strokeDasharray={strokeDasharray}
                     strokeWidth={strokeWidth}
                     text={text}

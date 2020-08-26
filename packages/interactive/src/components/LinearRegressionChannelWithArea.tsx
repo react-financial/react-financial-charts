@@ -1,11 +1,6 @@
 import { deviation, sum, zip } from "d3-array";
 import * as React from "react";
-import {
-    colorToRGBA,
-    getClosestItemIndexes,
-    getMouseCanvas,
-    GenericChartComponent,
-} from "@react-financial-charts/core";
+import { getClosestItemIndexes, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { isHovering2 } from "./StraightLine";
 
 interface LinearRegressionChannelWithAreaProps {
@@ -15,11 +10,9 @@ interface LinearRegressionChannelWithAreaProps {
         | "SD" // standard deviation channel
         | "Raff"; // Raff Regression Channel
     readonly interactiveCursorClass?: string;
-    readonly stroke: string;
+    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
     readonly strokeWidth: number;
-    readonly fill: string;
-    readonly fillOpacity: number;
-    readonly strokeOpacity: number;
+    readonly fillStyle: string | CanvasGradient | CanvasPattern;
     readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
@@ -60,12 +53,12 @@ export class LinearRegressionChannelWithArea extends React.Component<LinearRegre
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
-        const { stroke, strokeWidth, fillOpacity, strokeOpacity, fill } = this.props;
+        const { strokeStyle, strokeWidth, fillStyle } = this.props;
         const { x1, y1, x2, y2, dy } = helper(this.props, moreProps);
 
         ctx.lineWidth = strokeWidth;
-        ctx.strokeStyle = colorToRGBA(stroke, strokeOpacity);
-        ctx.fillStyle = colorToRGBA(fill, fillOpacity);
+        ctx.strokeStyle = strokeStyle;
+        ctx.fillStyle = fillStyle;
 
         ctx.beginPath();
         ctx.moveTo(x1, y1 - dy);

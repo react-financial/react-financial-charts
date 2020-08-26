@@ -1,10 +1,16 @@
-import * as React from "react";
 import { getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
+import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
+import * as React from "react";
 import { drawOnCanvasHelper, identityStack, StackedBarSeries } from "./StackedBarSeries";
 
 export interface GroupedBarSeriesProps {
-    readonly baseAt: number | any; // func
-    readonly className: string | any; // func
+    readonly baseAt:
+        | number
+        | ((
+              xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
+              yScale: ScaleContinuousNumeric<number, number>,
+              datum: any,
+          ) => number);
     readonly direction: "up" | "down";
     readonly fillStyle?:
         | string
@@ -14,14 +20,14 @@ export interface GroupedBarSeriesProps {
     readonly spaceBetweenBar?: number;
     readonly stroke: boolean;
     readonly widthRatio?: number;
-    readonly yAccessor: any[]; // func
+    readonly yAccessor: ((data: any) => number | undefined) | ((d: any) => number)[];
 }
 
 export class GroupedBarSeries extends React.Component<GroupedBarSeriesProps> {
     public static defaultProps = {
         ...StackedBarSeries.defaultProps,
-        widthRatio: 0.8,
         spaceBetweenBar: 5,
+        widthRatio: 0.8,
     };
 
     public render() {

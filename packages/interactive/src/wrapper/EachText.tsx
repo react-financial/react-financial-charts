@@ -8,7 +8,6 @@ interface EachTextProps {
     index?: number;
     position?: any;
     bgFill: string;
-    bgOpacity: number;
     bgStrokeWidth: number;
     bgStroke?: string;
     textFill: string;
@@ -40,10 +39,8 @@ interface EachTextState {
 
 export class EachText extends React.Component<EachTextProps, EachTextState> {
     public static defaultProps = {
-        bgOpacity: 1,
         bgStrokeWidth: 1,
         selected: false,
-        fill: "#8AAFE2",
         hoverText: {
             ...HoverTextNearMouse.defaultProps,
             enable: true,
@@ -78,7 +75,6 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
         const {
             position,
             bgFill,
-            bgOpacity,
             bgStroke,
             bgStrokeWidth,
             textFill,
@@ -116,8 +112,7 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
                     onDrag={this.handleDrag}
                     onDragComplete={onDragComplete}
                     position={position}
-                    bgFill={bgFill}
-                    bgOpacity={bgOpacity}
+                    bgFillStyle={bgFill}
                     bgStroke={bgStroke || textFill}
                     bgStrokeWidth={bgStrokeWidth}
                     textFill={textFill}

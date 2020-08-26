@@ -43,7 +43,7 @@ export interface AlternatingFillAreaSeriesProps {
     /**
      * Selector for data to plot.
      */
-    readonly yAccessor: (data: any) => number;
+    readonly yAccessor: (data: any) => number | undefined;
 }
 
 /**

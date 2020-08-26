@@ -7,24 +7,24 @@ import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminat
 import { EachInteractiveYCoordinate } from "./wrapper/EachInteractiveYCoordinate";
 
 interface InteractiveYCoordinateProps {
-    readonly onChoosePosition: any; // func
-    readonly onDragComplete: any; // func
-    readonly onSelect?: any; // func
-    readonly onDelete?: any; // func
+    readonly onChoosePosition: (e: React.MouseEvent, newText: any, moreProps: any) => void;
+    readonly onDragComplete: (e: React.MouseEvent, newAlertList: any[], moreProps: any, draggedAlert: any) => void;
+    readonly onSelect?: (e: React.MouseEvent, interactives: any[], moreProps: any) => void;
+    readonly onDelete?: (e: React.MouseEvent, yCoordinate: any, moreProps: any) => void;
     readonly defaultPriceCoordinate: {
-        bgFill: string;
-        bgOpacity: number;
-        stroke: string;
-        strokeDasharray: strokeDashTypes;
-        strokeOpacity: number;
-        strokeWidth: number;
-        textFill: string;
-        fontFamily: string;
-        fontWeight: string;
-        fontStyle: string;
-        fontSize: number;
-        text: string;
-        textBox: {
+        readonly bgFill: string;
+        readonly bgOpacity: number;
+        readonly stroke: string;
+        readonly strokeDasharray: strokeDashTypes;
+        readonly strokeOpacity: number;
+        readonly strokeWidth: number;
+        readonly textFill: string;
+        readonly fontFamily: string;
+        readonly fontWeight: string;
+        readonly fontStyle: string;
+        readonly fontSize: number;
+        readonly text: string;
+        readonly textBox: {
             height: number;
             left: number;
             padding: {
@@ -39,7 +39,7 @@ interface InteractiveYCoordinateProps {
                 width: number;
             };
         };
-        edge: {
+        readonly edge: {
             stroke: string;
             strokeOpacity: number;
             strokeWidth: number;
@@ -116,7 +116,6 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
     // @ts-ignore
     private getSelectionState;
     private saveNodeType;
-
     // @ts-ignore
     private terminate;
 
@@ -156,14 +155,14 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         );
     }
 
-    private readonly handleDelete = (e: React.MouseEvent, index, moreProps) => {
+    private readonly handleDelete = (e: React.MouseEvent, index: number | undefined, moreProps: any) => {
         const { onDelete, yCoordinateList } = this.props;
-        if (onDelete !== undefined) {
+        if (onDelete !== undefined && index !== undefined) {
             onDelete(e, yCoordinateList[index], moreProps);
         }
     };
 
-    private readonly handleDragComplete = (e: React.MouseEvent, moreProps) => {
+    private readonly handleDragComplete = (e: React.MouseEvent, moreProps: any) => {
         const { override } = this.state;
         if (isDefined(override)) {
             const { yCoordinateList } = this.props;

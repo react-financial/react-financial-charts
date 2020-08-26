@@ -1,13 +1,11 @@
-import * as React from "react";
-
 import {
     getStrokeDasharrayCanvas,
     getMouseCanvas,
     GenericChartComponent,
-    isDefined,
     noop,
     strokeDashTypes,
 } from "@react-financial-charts/core";
+import * as React from "react";
 
 interface StraightLineProps {
     readonly x1Value: any;
@@ -35,7 +33,6 @@ interface StraightLineProps {
     readonly edgeStroke?: string;
     readonly edgeStrokeWidth?: number;
     readonly withEdge?: boolean;
-    readonly children?: any; // func
     readonly tolerance?: number;
     readonly selected?: boolean;
 }
@@ -44,7 +41,6 @@ class StraightLine extends React.Component<StraightLineProps> {
     public static defaultProps = {
         onEdge1Drag: noop,
         onEdge2Drag: noop,
-        onDragStart: noop,
         edgeStrokeWidth: 3,
         edgeStroke: "#000000",
         edgeFill: "#FFFFFF",
@@ -81,7 +77,7 @@ class StraightLine extends React.Component<StraightLineProps> {
     private readonly isHover = (moreProps: any) => {
         const { tolerance, onHover } = this.props;
 
-        if (isDefined(onHover)) {
+        if (onHover !== undefined) {
             const { x1Value, x2Value, y1Value, y2Value, type } = this.props;
             const { mouseXY, xScale } = moreProps;
             const {
@@ -126,7 +122,7 @@ class StraightLine extends React.Component<StraightLineProps> {
 export function isHovering2(start, end, [mouseX, mouseY], tolerance) {
     const m = getSlope(start, end);
 
-    if (m !== undefined && isDefined(m)) {
+    if (m !== undefined) {
         const b = getYIntercept(m, end);
         const y = m * mouseX + b;
         return (
@@ -160,7 +156,7 @@ export function isHovering({ x1Value, y1Value, x2Value, y2Value, mouseXY, type, 
     const m = getSlope(start, end);
     const [mouseX, mouseY] = mouseXY;
 
-    if (m !== undefined && isDefined(m)) {
+    if (m !== undefined) {
         const b = getYIntercept(m, end);
         const y = m * mouseX + b;
 

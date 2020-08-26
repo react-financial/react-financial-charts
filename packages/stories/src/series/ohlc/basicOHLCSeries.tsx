@@ -62,6 +62,6 @@ class BasicOHLCSeries extends React.Component<ChartProps> {
 
 export const Daily = withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicOHLCSeries)));
 
-export const Intraday = withOHLCData("MSFT_INTRA_DAY")(
+export const Intraday = withOHLCData("MINUTES")(
     withSize({ style: { minHeight: 600 } })(withDeviceRatio()(BasicOHLCSeries)),
 );

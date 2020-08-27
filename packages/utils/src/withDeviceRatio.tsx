@@ -11,7 +11,7 @@ export interface WithRatioState {
 export const withDeviceRatio = () => {
     return <TProps extends WithRatioProps>(OriginalComponent: React.ComponentClass<TProps>) => {
         return class WithRatio extends React.Component<Omit<TProps, "ratio">, WithRatioState> {
-            public ref = React.createRef<HTMLCanvasElement>();
+            public readonly ref = React.createRef<HTMLCanvasElement>();
 
             public componentDidMount() {
                 const { current } = this.ref;

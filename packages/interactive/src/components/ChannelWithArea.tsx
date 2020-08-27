@@ -53,7 +53,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps) => {
+    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const { strokeStyle, strokeWidth, fillStyle } = this.props;
         const { line1, line2 } = helper(this.props, moreProps);
 
@@ -90,7 +90,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
         }
     };
 
-    private readonly isHover = (moreProps) => {
+    private readonly isHover = (moreProps: any) => {
         const { tolerance, onHover } = this.props;
 
         if (onHover !== undefined) {
@@ -134,7 +134,7 @@ export class ChannelWithArea extends React.Component<ChannelWithAreaProps> {
     };
 }
 
-function getLines(props: ChannelWithAreaProps, moreProps) {
+function getLines(props: ChannelWithAreaProps, moreProps: any) {
     const { startXY, endXY, dy, type } = props;
     const { xScale } = moreProps;
 
@@ -164,7 +164,7 @@ function getLines(props: ChannelWithAreaProps, moreProps) {
     };
 }
 
-function helper(props: ChannelWithAreaProps, moreProps) {
+function helper(props: ChannelWithAreaProps, moreProps: any) {
     const lines = getLines(props, moreProps);
     const {
         xScale,

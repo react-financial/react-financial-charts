@@ -50,12 +50,12 @@ export class EachText extends React.Component<EachTextProps, EachTextState> {
         },
     };
 
-    private dragStartPosition;
+    private dragStartPosition: any;
     // @ts-ignore
-    private isHover;
-    private saveNodeType;
+    private isHover: any;
+    private saveNodeType: any;
 
-    public constructor(props) {
+    public constructor(props: EachTextProps) {
         super(props);
 
         this.handleHover = this.handleHover.bind(this);

@@ -30,7 +30,7 @@ export class ClickableShape extends React.Component<ClickableShapeProps> {
         strokeWidth: 1,
     };
 
-    private closeIcon;
+    private closeIcon: any;
 
     public render() {
         const { interactiveCursorClass, onHover, onUnHover, onClick, show } = this.props;

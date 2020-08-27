@@ -8,7 +8,7 @@ interface HoverTextNearMouseProps {
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fill?: string;
-    readonly text: string;
+    readonly text?: string;
     readonly bgFill?: string;
     readonly bgOpacity?: number;
     readonly bgWidth: number | string;
@@ -30,16 +30,7 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
         bgOpacity: 0.5,
     };
 
-    private textNode;
-
-    public constructor(props: HoverTextNearMouseProps) {
-        super(props);
-
-        this.state = {
-            textWidth: undefined,
-            textHeight: undefined,
-        };
-    }
+    private readonly textNode = React.createRef<SVGTextElement>();
 
     public componentDidMount() {
         this.updateTextSize();
@@ -76,7 +67,7 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
                 <g>
                     <rect fill={bgFill} fillOpacity={bgOpacity} stroke={bgFill} {...rect} />
                     <text
-                        ref={this.saveNode}
+                        ref={this.textNode}
                         fontSize={fontSize}
                         fontFamily={fontFamily}
                         textAnchor="start"
@@ -123,8 +114,8 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
     private readonly updateTextSize = () => {
         const { bgWidth, bgHeight } = this.props;
         if (bgWidth === "auto" || bgHeight === "auto") {
-            const textNode = this.textNode;
-            if (textNode) {
+            const textNode = this.textNode.current;
+            if (textNode !== null) {
                 const { width, height } = textNode.getBBox();
                 if (this.state.textWidth !== width || this.state.textHeight !== height) {
                     this.setState({
@@ -134,10 +125,6 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
                 }
             }
         }
-    };
-
-    private readonly saveNode = (node) => {
-        this.textNode = node;
     };
 }
 

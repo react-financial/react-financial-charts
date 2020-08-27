@@ -68,15 +68,15 @@ export class GannFan extends React.Component<GannFanProps, GannFanState> {
         fans: [],
     };
 
-    private mouseMoved;
+    private mouseMoved: any;
     // @ts-ignore
-    private getSelectionState;
-    private saveNodeType;
+    private getSelectionState: any;
+    private saveNodeType: any;
 
     // @ts-ignore
-    private terminate;
+    private terminate: any;
 
-    public constructor(props) {
+    public constructor(props: GannFanProps) {
         super(props);
 
         this.terminate = terminate.bind(this);

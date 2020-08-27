@@ -49,7 +49,7 @@ interface EachGannFanState {
 
 export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanState> {
     public static defaultProps = {
-        yDisplayFormat: (d) => d.toFixed(2),
+        yDisplayFormat: (d: number) => d.toFixed(2),
         interactive: true,
         selected: false,
         appearance: {
@@ -84,11 +84,11 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
     };
 
     // @ts-ignore
-    private isHover;
-    private dragStart;
-    private saveNodeType;
+    private isHover: any;
+    private dragStart: any;
+    private saveNodeType: any;
 
-    public constructor(props) {
+    public constructor(props: EachGannFanProps) {
         super(props);
 
         this.isHover = isHover.bind(this);
@@ -156,7 +156,7 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
         );
     }
 
-    private readonly getEdgeCircle = ({ xy, dragHandler, cursor, fill, edge }) => {
+    private readonly getEdgeCircle = ({ xy, dragHandler, cursor, fill, edge }: any) => {
         const { hover } = this.state;
         const { selected, appearance } = this.props;
         const { edgeStroke, edgeStrokeWidth, r } = appearance;
@@ -180,7 +180,7 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
         );
     };
 
-    private readonly handleLine1Edge2Drag = (e: React.MouseEvent, moreProps) => {
+    private readonly handleLine1Edge2Drag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
         const { endXY } = this.dragStart;
 
@@ -209,7 +209,7 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
         });
     };
 
-    private readonly handleLine1Edge1Drag = (e: React.MouseEvent, moreProps) => {
+    private readonly handleLine1Edge1Drag = (e: React.MouseEvent, moreProps: any) => {
         const { index, onDrag } = this.props;
         const { startXY } = this.dragStart;
 
@@ -283,7 +283,7 @@ export class EachGannFan extends React.Component<EachGannFanProps, EachGannFanSt
         };
     };
 
-    private readonly handleHover = (moreProps) => {
+    private readonly handleHover = (moreProps: any) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,

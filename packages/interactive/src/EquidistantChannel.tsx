@@ -68,12 +68,12 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
 
     // @ts-ignore
     private terminate: () => void;
-    private saveNodeType;
+    private saveNodeType: any;
     // @ts-ignore
     private getSelectionState;
-    private mouseMoved;
+    private mouseMoved: any;
 
-    public constructor(props) {
+    public constructor(props: EquidistantChannelProps) {
         super(props);
 
         this.terminate = terminate.bind(this);

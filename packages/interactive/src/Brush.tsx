@@ -34,8 +34,8 @@ export class Brush extends React.Component<BrushProps, BrushState> {
 
     private zoomHappening?: boolean;
 
-    public constructor(props: BrushProps, context) {
-        super(props, context);
+    public constructor(props: BrushProps) {
+        super(props);
 
         this.terminate = this.terminate.bind(this);
         this.state = {

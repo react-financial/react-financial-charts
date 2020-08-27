@@ -1,6 +1,6 @@
 import { isDefined, isNotDefined, mapObject } from "@react-financial-charts/core";
 
-export function getValueFromOverride(override, index, key, defaultValue) {
+export function getValueFromOverride(override: any, index: any, key: any, defaultValue: any) {
     if (isDefined(override) && override.index === index) {
         return override[key];
     }
@@ -15,8 +15,8 @@ export function terminate() {
     });
 }
 
-export function saveNodeType(type) {
-    return (node) => {
+export function saveNodeType(type: any) {
+    return (node: any) => {
         // @ts-ignore
         if (isDefined(this.nodes)) {
             // @ts-ignore
@@ -33,8 +33,8 @@ export function saveNodeType(type) {
         }
     };
 }
-export function isHoverForInteractiveType(interactiveType) {
-    return function (moreProps) {
+export function isHoverForInteractiveType(interactiveType: any) {
+    return function (moreProps: any) {
         // this has to be function as it is bound to this
 
         // @ts-ignore
@@ -53,7 +53,7 @@ export function isHoverForInteractiveType(interactiveType) {
     };
 }
 
-export function isHover(moreProps) {
+export function isHover(moreProps: any) {
     // @ts-ignore
     const hovering = mapObject(this.nodes, (node) => node.isHover(moreProps)).reduce((a, b) => {
         return a || b;
@@ -61,7 +61,7 @@ export function isHover(moreProps) {
     return hovering;
 }
 
-function getMouseXY(moreProps, [ox, oy]) {
+function getMouseXY(moreProps: any, [ox, oy]: any) {
     if (Array.isArray(moreProps.mouseXY)) {
         const {
             mouseXY: [x, y],
@@ -72,9 +72,9 @@ function getMouseXY(moreProps, [ox, oy]) {
     return moreProps.mouseXY;
 }
 
-export function getMorePropsForChart(moreProps, chartId) {
+export function getMorePropsForChart(moreProps: any, chartId: any) {
     const { chartConfig: chartConfigList } = moreProps;
-    const chartConfig = chartConfigList.find((each) => each.id === chartId);
+    const chartConfig = chartConfigList.find((each: any) => each.id === chartId);
 
     const { origin } = chartConfig;
     const mouseXY = getMouseXY(moreProps, origin);
@@ -85,10 +85,10 @@ export function getMorePropsForChart(moreProps, chartId) {
     };
 }
 
-export function getSelected(interactives) {
+export function getSelected(interactives: any) {
     const selected = interactives
-        .map((each) => {
-            const objects = each.objects.filter((obj) => {
+        .map((each: any) => {
+            const objects = each.objects.filter((obj: any) => {
                 return obj.selected;
             });
             return {
@@ -96,6 +96,6 @@ export function getSelected(interactives) {
                 objects,
             };
         })
-        .filter((each) => each.objects.length > 0);
+        .filter((each: any) => each.objects.length > 0);
     return selected;
 }

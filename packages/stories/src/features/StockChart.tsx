@@ -194,6 +194,11 @@ class StockChart extends React.Component<StockChartProps> {
 }
 
 export default withOHLCData()(withSize({ style: { minHeight: 600 } })(withDeviceRatio()(StockChart)));
-export const IntradayStockChart = withOHLCData("MINUTES")(
+
+export const MinutesStockChart = withOHLCData("MINUTES")(
+    withSize({ style: { minHeight: 600 } })(withDeviceRatio()(StockChart)),
+);
+
+export const SecondsStockChart = withOHLCData("SECONDS")(
     withSize({ style: { minHeight: 600 } })(withDeviceRatio()(StockChart)),
 );

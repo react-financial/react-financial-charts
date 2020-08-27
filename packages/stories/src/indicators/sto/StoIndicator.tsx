@@ -38,22 +38,22 @@ class StoIndicator extends React.Component<ChartProps> {
 
         const slowSTO = stochasticOscillator()
             .options({ windowSize: 14, kWindowSize: 3, dWindowSize: 3 })
-            .merge((d, c) => {
+            .merge((d: any, c: any) => {
                 d.slowSTO = c;
             })
-            .accessor((d) => d.slowSTO);
+            .accessor((d: any) => d.slowSTO);
         const fastSTO = stochasticOscillator()
             .options({ windowSize: 14, kWindowSize: 1, dWindowSize: 3 })
-            .merge((d, c) => {
+            .merge((d: any, c: any) => {
                 d.fastSTO = c;
             })
-            .accessor((d) => d.fastSTO);
+            .accessor((d: any) => d.fastSTO);
         const fullSTO = stochasticOscillator()
             .options({ windowSize: 14, kWindowSize: 3, dWindowSize: 4 })
-            .merge((d, c) => {
+            .merge((d: any, c: any) => {
                 d.fullSTO = c;
             })
-            .accessor((d) => d.fullSTO);
+            .accessor((d: any) => d.fullSTO);
 
         const calculatedData = slowSTO(fastSTO(fullSTO(initialData)));
 

@@ -308,7 +308,7 @@ export interface ChartCanvasProps {
     readonly xExtents?: any[] | any; // func
     readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
     readonly zIndex?: number;
-    readonly zoomAnchor?: (options: IZoomAnchorOptions<any>) => number;
+    readonly zoomAnchor?: (options: IZoomAnchorOptions<any>) => number | Date;
     readonly zoomMultiplier?: number;
 }
 

@@ -43,8 +43,8 @@ class CompareIndicator extends React.Component<ChartProps> {
                 mainKeys: ["open", "high", "low", "close"],
                 compareKeys: ["AAPLClose", "SP500Close", "GEClose"],
             })
-            .accessor((d) => d.compare)
-            .merge((d, c) => {
+            .accessor((d: any) => d.compare)
+            .merge((d: any, c: any) => {
                 d.compare = c;
             });
 

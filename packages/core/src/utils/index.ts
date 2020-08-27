@@ -26,7 +26,7 @@ export function getLogger(prefix: string) {
     return logger;
 }
 
-export function sign(x) {
+export function sign(x: any) {
     // @ts-ignore
     return (x > 0) - (x < 0);
 }
@@ -35,7 +35,7 @@ export function path(loc = []) {
     const key = Array.isArray(loc) ? loc : [loc];
     const length = key.length;
 
-    return function (obj, defaultValue?) {
+    return function (obj: any, defaultValue?: any) {
         if (length === 0) {
             return isDefined(obj) ? obj : defaultValue;
         }
@@ -52,7 +52,7 @@ export function functor(v: any) {
     return typeof v === "function" ? v : () => v;
 }
 
-export function getClosestValue(inputValue, currentValue) {
+export function getClosestValue(inputValue: any, currentValue: any) {
     const values = Array.isArray(inputValue) ? inputValue : [inputValue];
 
     const diff = values
@@ -61,7 +61,7 @@ export function getClosestValue(inputValue, currentValue) {
     return currentValue + diff;
 }
 
-export function d3Window(node) {
+export function d3Window(node: any) {
     const d3win =
         node && ((node.ownerDocument && node.ownerDocument.defaultView) || (node.document && node) || node.defaultView);
     return d3win;
@@ -74,7 +74,7 @@ export const MOUSEUP = "mouseup.pan";
 export const TOUCHMOVE = "touchmove.pan";
 export const TOUCHEND = "touchend.pan touchcancel.pan";
 
-export function getTouchProps(touch) {
+export function getTouchProps(touch: any) {
     return {
         pageX: touch.pageX,
         pageY: touch.pageY,
@@ -100,7 +100,7 @@ export function head(array: any[], accessor?: any) {
     return array ? array[0] : undefined;
 }
 
-export function tail<T>(array: T[], accessor) {
+export function tail<T>(array: T[], accessor?: any) {
     if (accessor && array) {
         return array.map(accessor).slice(1);
     }
@@ -109,7 +109,7 @@ export function tail<T>(array: T[], accessor) {
 
 export const first = head;
 
-export function last(array: any[], accessor?) {
+export function last(array: any[], accessor?: any) {
     if (accessor && array) {
         let value;
         for (let i = array.length - 1; i >= 0; i--) {
@@ -132,7 +132,7 @@ export function isNotDefined<T>(d: T) {
     return !isDefined(d);
 }
 
-export function isObject(d) {
+export function isObject(d: any) {
     return isDefined(d) && typeof d === "object" && !Array.isArray(d);
 }
 

@@ -17,7 +17,7 @@ import {
     zipper,
 } from "./index";
 
-export function getChartOrigin(origin, contextWidth, contextHeight) {
+export function getChartOrigin(origin: any, contextWidth: number, contextHeight: number) {
     const originCoordinates = typeof origin === "function" ? origin(contextWidth, contextHeight) : origin;
 
     return originCoordinates;
@@ -33,8 +33,8 @@ export function getDimensions({ width, height }: any, chartProps: any) {
     };
 }
 
-function values(func) {
-    return (d) => {
+function values(func: any) {
+    return (d: any) => {
         const obj = func(d);
         if (isObject(obj)) {
             return mapObject(obj);
@@ -43,7 +43,7 @@ function values(func) {
     };
 }
 
-function isArraySize2AndNumber(yExtentsProp) {
+function isArraySize2AndNumber(yExtentsProp: any) {
     if (Array.isArray(yExtentsProp) && yExtentsProp.length === 2) {
         const [a, b] = yExtentsProp;
         return typeof a === "number" && typeof b === "number";
@@ -51,7 +51,7 @@ function isArraySize2AndNumber(yExtentsProp) {
     return false;
 }
 
-export function getNewChartConfig(innerDimension, children, existingChartConfig: any[] = []) {
+export function getNewChartConfig(innerDimension: any, children: any, existingChartConfig: any[] = []) {
     return React.Children.map(children, (each) => {
         if (each && each.type.toString() === Chart.toString()) {
             const chartProps = {
@@ -120,21 +120,21 @@ export function getNewChartConfig(innerDimension, children, existingChartConfig:
             };
         }
         return undefined;
-    }).filter((each) => isDefined(each));
+    }).filter((each: any) => isDefined(each));
 }
-export function getCurrentCharts(chartConfig, mouseXY: number[]) {
+export function getCurrentCharts(chartConfig: any, mouseXY: number[]) {
     const currentCharts = chartConfig
-        .filter((eachConfig) => {
+        .filter((eachConfig: any) => {
             const top = eachConfig.origin[1];
             const bottom = top + eachConfig.height;
             return mouseXY[1] > top && mouseXY[1] < bottom;
         })
-        .map((config) => config.id);
+        .map((config: any) => config.id);
 
     return currentCharts;
 }
 
-function setRange(scale, height: number, padding, flipYScale) {
+function setRange(scale: any, height: number, padding: any, flipYScale: any) {
     if (scale.rangeRoundPoints || isNotDefined(scale.invert)) {
         if (isNaN(padding)) {
             throw new Error("padding has to be a number for ordinal scale");
@@ -153,8 +153,8 @@ function setRange(scale, height: number, padding, flipYScale) {
     return scale;
 }
 
-function yDomainFromYExtents(yExtents, yScale, plotData) {
-    const yValues = yExtents.map((eachExtent) => plotData.map(values(eachExtent)));
+function yDomainFromYExtents(yExtents: any, yScale: any, plotData: any) {
+    const yValues = yExtents.map((eachExtent: any) => plotData.map(values(eachExtent)));
 
     const allYValues = flattenDeep(yValues);
 
@@ -171,7 +171,7 @@ export function getChartConfigWithUpdatedYScales(
     dy?: number,
     chartsToPan?: string[],
 ) {
-    const yDomains = chartConfig.map(({ yExtentsCalculator, yExtents, yScale }) => {
+    const yDomains = chartConfig.map(({ yExtentsCalculator, yExtents, yScale }: any) => {
         const realYDomain = isDefined(yExtentsCalculator)
             ? yExtentsCalculator({ plotData, xDomain, xAccessor, displayXAccessor, fullData })
             : yDomainFromYExtents(yExtents, yScale, plotData);
@@ -180,7 +180,7 @@ export function getChartConfigWithUpdatedYScales(
             dy !== undefined
                 ? yScale
                       .range()
-                      .map((each) => each - dy)
+                      .map((each: any) => each - dy)
                       .map(yScale.invert)
                 : yScale.domain();
         return {
@@ -190,7 +190,7 @@ export function getChartConfigWithUpdatedYScales(
         };
     });
 
-    const combine = zipper().combine((config: any, { realYDomain, yDomainDY, prevYDomain }) => {
+    const combine = zipper().combine((config: any, { realYDomain, yDomainDY, prevYDomain }: any) => {
         const { id, padding, height, yScale, yPan, flipYScale, yPanEnabled = false } = config;
 
         const another = chartsToPan !== undefined ? chartsToPan.indexOf(id) > -1 : true;

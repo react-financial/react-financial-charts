@@ -1,5 +1,5 @@
 import * as React from "react";
-import StockChart, { IntradayStockChart } from "./StockChart";
+import StockChart, { MinutesStockChart, SecondsStockChart } from "./StockChart";
 
 export default {
     component: StockChart,
@@ -8,4 +8,6 @@ export default {
 
 export const daily = () => <StockChart />;
 
-export const intraDay = () => <IntradayStockChart dateTimeFormat="%H:%M" />;
+export const minutes = () => <MinutesStockChart dateTimeFormat="%H:%M" />;
+
+export const seconds = () => <SecondsStockChart dateTimeFormat="%H:%M:%S" />;

@@ -135,14 +135,14 @@ function helper(props: any, moreProps: any) {
 
     const array = fullData.slice(startIndex, endIndex);
 
-    const xs = array.map((d) => xAccessor(d).valueOf());
-    const ys = array.map((d) => d.close);
+    const xs = array.map((d: any) => xAccessor(d).valueOf());
+    const ys = array.map((d: any) => d.close);
     const n = array.length;
 
     const xys = zip<number>(xs, ys).map((d) => {
         return d[0] * d[1];
     });
-    const xSquareds = xs.map((x) => Math.pow(x, 2));
+    const xSquareds = xs.map((x: any) => Math.pow(x, 2));
 
     const b = (n * sum(xys) - sum(xs) * sum(ys)) / (n * sum(xSquareds) - Math.pow(sum(xs), 2));
     const a = (sum(ys) - b * sum(xs)) / n;

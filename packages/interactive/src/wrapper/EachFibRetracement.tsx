@@ -54,7 +54,7 @@ interface EachFibRetracementState {
 
 export class EachFibRetracement extends React.Component<EachFibRetracementProps, EachFibRetracementState> {
     public static defaultProps = {
-        yDisplayFormat: (d) => d.toFixed(2),
+        yDisplayFormat: (d: number) => d.toFixed(2),
         interactive: true,
         appearance: {
             strokeStyle: "#000000",
@@ -75,12 +75,12 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
         },
     };
 
-    private dragStart;
+    private dragStart: any;
     // @ts-ignore
-    private isHover;
-    private saveNodeType;
+    private isHover: any;
+    private saveNodeType: any;
 
-    public constructor(props) {
+    public constructor(props: EachFibRetracementProps) {
         super(props);
 
         this.isHover = isHover.bind(this);
@@ -117,7 +117,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
                 {lines.map((line, j) => {
                     const text = `${yDisplayFormat(line.y)} (${line.percent.toFixed(2)}%)`;
 
-                    const xyProvider = ({ xScale, chartConfig }) => {
+                    const xyProvider = ({ xScale, chartConfig }: any) => {
                         const { yScale } = chartConfig;
                         const { x1: lineX1, y1: lineY1, x2: lineX2 } = generateLine({
                             type: lineType,

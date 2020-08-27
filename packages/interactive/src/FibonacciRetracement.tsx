@@ -76,13 +76,13 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
 
     // @ts-ignore
     private getSelectionState;
-    private mouseMoved;
-    private saveNodeType;
+    private mouseMoved: any;
+    private saveNodeType: any;
 
     // @ts-ignore
     private terminate;
 
-    public constructor(props) {
+    public constructor(props: FibonacciRetracementProps) {
         super(props);
 
         this.handleEdge1Drag = this.handleEdge1Drag.bind(this);
@@ -181,7 +181,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         }
     };
 
-    private readonly handleEdge1Drag = (_: React.MouseEvent, echo, newXYValue, origXYValue) => {
+    private readonly handleEdge1Drag = (_: React.MouseEvent, echo: any, newXYValue: any, origXYValue: any) => {
         const { retracements } = this.props;
         const { index } = echo;
 
@@ -198,7 +198,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         });
     };
 
-    private readonly handleDrag = (_: React.MouseEvent, index, xy) => {
+    private readonly handleDrag = (_: React.MouseEvent, index: any, xy: any) => {
         this.setState({
             override: {
                 index,
@@ -207,7 +207,7 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         });
     };
 
-    private readonly handleEdge2Drag = (_: React.MouseEvent, echo, newXYValue, origXYValue) => {
+    private readonly handleEdge2Drag = (_: React.MouseEvent, echo: any, newXYValue: any, origXYValue: any) => {
         const { retracements } = this.props;
         const { index } = echo;
 

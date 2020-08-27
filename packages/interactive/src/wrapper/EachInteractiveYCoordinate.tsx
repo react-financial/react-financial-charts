@@ -46,12 +46,12 @@ export class EachInteractiveYCoordinate extends React.Component<
         draggable: false,
     };
 
-    private dragStartPosition;
+    private dragStartPosition: any;
     // @ts-ignore
-    private isHover;
-    private saveNodeType;
+    private isHover: any;
+    private saveNodeType: any;
 
-    public constructor(props) {
+    public constructor(props: EachInteractiveYCoordinateProps) {
         super(props);
 
         this.isHover = isHover.bind(this);

@@ -119,7 +119,7 @@ class StraightLine extends React.Component<StraightLineProps> {
     };
 }
 
-export function isHovering2(start, end, [mouseX, mouseY], tolerance) {
+export function isHovering2(start: any, end: any, [mouseX, mouseY]: any, tolerance: any) {
     const m = getSlope(start, end);
 
     if (m !== undefined) {

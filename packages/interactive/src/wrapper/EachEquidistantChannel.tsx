@@ -46,7 +46,7 @@ interface EachEquidistantChannelState {
 
 export class EachEquidistantChannel extends React.Component<EachEquidistantChannelProps, EachEquidistantChannelState> {
     public static defaultProps = {
-        yDisplayFormat: (d) => d.toFixed(2),
+        yDisplayFormat: (d: number) => d.toFixed(2),
         interactive: true,
         selected: false,
         onDrag: noop,
@@ -55,10 +55,10 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         },
     };
 
-    private dragStart;
+    private dragStart: any;
     // @ts-ignore
-    private isHover;
-    private saveNodeType;
+    private isHover: any;
+    private saveNodeType: any;
 
     public constructor(props: EachEquidistantChannelProps) {
         super(props);
@@ -145,7 +145,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         );
     }
 
-    private readonly getEdgeCircle = ({ xy, dragHandler, cursor, fill, edge }) => {
+    private readonly getEdgeCircle = ({ xy, dragHandler, cursor, fill, edge }: any) => {
         const { hover } = this.state;
         const { appearance } = this.props;
         const { edgeStroke, edgeStrokeWidth, r } = appearance;
@@ -296,7 +296,7 @@ export class EachEquidistantChannel extends React.Component<EachEquidistantChann
         };
     };
 
-    private readonly handleHover = (_: React.MouseEvent, moreProps) => {
+    private readonly handleHover = (_: React.MouseEvent, moreProps: any) => {
         if (this.state.hover !== moreProps.hovering) {
             this.setState({
                 hover: moreProps.hovering,

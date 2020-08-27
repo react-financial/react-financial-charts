@@ -68,12 +68,12 @@ export class StandardDeviationChannel extends React.Component<
     };
 
     // @ts-ignore
-    private getSelectionState;
-    private mouseMoved;
-    private saveNodeType;
+    private getSelectionState: any;
+    private mouseMoved: any;
+    private saveNodeType: any;
 
     // @ts-ignore
-    private terminate;
+    private terminate: any;
 
     public constructor(props: StandardDeviationChannelProps) {
         super(props);

@@ -6,7 +6,7 @@ interface DrawingObjectSelectorProps {
     readonly getInteractiveNodes: () => any[];
     readonly onSelect?: (e: React.MouseEvent, interactives: any[], moreProps: any) => void;
     readonly onDoubleClick?: (e: React.MouseEvent, item: any, moreProps: any) => void;
-    readonly drawingObjectMap: object;
+    readonly drawingObjectMap: any;
     readonly enabled: boolean;
 }
 

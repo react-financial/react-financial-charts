@@ -114,10 +114,10 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
     };
 
     // @ts-ignore
-    private getSelectionState;
-    private saveNodeType;
+    private getSelectionState: any;
+    private saveNodeType: any;
     // @ts-ignore
-    private terminate;
+    private terminate: any;
 
     public constructor(props: InteractiveYCoordinateProps) {
         super(props);
@@ -194,7 +194,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         }
     };
 
-    private readonly handleDrag = (_: React.MouseEvent, index, yValue) => {
+    private readonly handleDrag = (_: React.MouseEvent, index: any, yValue: any) => {
         this.setState({
             override: {
                 index,

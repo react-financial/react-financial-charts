@@ -26,7 +26,7 @@ interface EachLinearRegressionChannelProps {
         readonly r: number;
     };
     readonly edgeInteractiveCursor?: string;
-    readonly onDrag?: (e: React.MouseEvent, index: number | undefined, x1y1: { x1Value: any; x2Value }) => void;
+    readonly onDrag?: (e: React.MouseEvent, index: number | undefined, x1y1: { x1Value: any; x2Value: any }) => void;
     readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
     readonly snapTo?: (datum: any) => number;
     readonly interactive: boolean;
@@ -75,10 +75,10 @@ export class EachLinearRegressionChannel extends React.Component<
     };
 
     // @ts-ignore
-    private isHover;
-    private saveNodeType;
+    private isHover: any;
+    private saveNodeType: any;
 
-    public constructor(props) {
+    public constructor(props: EachLinearRegressionChannelProps) {
         super(props);
 
         this.isHover = isHover.bind(this);

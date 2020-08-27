@@ -73,12 +73,12 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         },
     };
 
-    private dragStart;
+    private dragStart: any;
     // @ts-ignore
-    private isHover;
-    private saveNodeType;
+    private isHover: any;
+    private saveNodeType: any;
 
-    public constructor(props) {
+    public constructor(props: EachTrendLineProps) {
         super(props);
 
         this.isHover = isHover.bind(this);
@@ -281,7 +281,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
     };
 }
 
-export function getNewXY(moreProps) {
+export function getNewXY(moreProps: any) {
     const {
         xScale,
         chartConfig: { yScale },

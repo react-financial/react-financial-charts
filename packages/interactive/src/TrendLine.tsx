@@ -53,7 +53,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
         currentPositionstrokeOpacity: 1,
         currentPositionStrokeWidth: 3,
         currentPositionRadius: 0,
-        shouldDisableSnap: (e) => e.button === 2 || e.shiftKey,
+        shouldDisableSnap: (e: React.MouseEvent) => e.button === 2 || e.shiftKey,
         hoverText: {
             ...HoverTextNearMouse.defaultProps,
             enable: true,
@@ -75,11 +75,11 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
     };
 
     // @ts-ignore
-    private getSelectionState;
-    private mouseMoved;
-    private saveNodeType;
+    private getSelectionState: any;
+    private mouseMoved: any;
+    private saveNodeType: any;
     // @ts-ignore
-    private terminate;
+    private terminate: any;
 
     public constructor(props: TrendLineProps) {
         super(props);

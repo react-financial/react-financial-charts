@@ -64,13 +64,13 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
     };
 
     // @ts-ignore
-    private getSelectionState;
-    private saveNodeType;
+    private getSelectionState: any;
+    private saveNodeType: any;
 
     // @ts-ignore
-    private terminate;
+    private terminate: any;
 
-    public constructor(props) {
+    public constructor(props: InteractiveTextProps) {
         super(props);
 
         this.terminate = terminate.bind(this);
@@ -174,7 +174,7 @@ export class InteractiveText extends React.Component<InteractiveTextProps, Inter
         }
     };
 
-    private readonly handleDrag = (_: React.MouseEvent, index, position) => {
+    private readonly handleDrag = (_: React.MouseEvent, index: any, position: any) => {
         this.setState({
             override: {
                 index,

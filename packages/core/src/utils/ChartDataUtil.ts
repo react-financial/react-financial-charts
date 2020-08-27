@@ -67,7 +67,7 @@ const isChartProps = (props: ChartProps | any | undefined): props is ChartProps 
 
 export function getNewChartConfig(innerDimension: any, children: any, existingChartConfig: any[] = []) {
     return React.Children.map(children, (each) => {
-        if (each !== undefined && isChartProps(each.props)) {
+        if (each !== undefined && each !== null && isChartProps(each.props)) {
             const chartProps = {
                 ...Chart.defaultProps,
                 ...each.props,

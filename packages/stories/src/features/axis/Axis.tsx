@@ -54,9 +54,9 @@ class AxisExample extends React.Component<ChartProps> {
                 xExtents={xExtents}
             >
                 <Chart id={1} yExtents={this.yExtents}>
-                    <CandlestickSeries />
                     <XAxis />
                     <YAxis axisAt={axisAt} {...rest} />
+                    <CandlestickSeries />
                 </Chart>
             </ChartCanvas>
         );

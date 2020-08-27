@@ -30,13 +30,13 @@ interface ForceIndexIndicator {
 export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.forceIndex);
+        .accessor((d: any) => d.forceIndex);
 
     const underlyingAlgorithm = forceIndex();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: number) => {
             datum.forceIndex = i;
         });
 

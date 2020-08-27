@@ -33,7 +33,7 @@ export default function () {
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: any) => {
             datum.absoluteChange = i.absoluteChange;
             datum.percentChange = i.percentChange;
         });

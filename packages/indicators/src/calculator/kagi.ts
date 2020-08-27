@@ -5,8 +5,8 @@ import { Kagi as defaultOptions } from "./defaultOptionsForComputation";
 
 export default function () {
     let options = defaultOptions;
-    let dateAccessor = (d) => d.date;
-    let dateMutator = (d, date) => {
+    let dateAccessor = (d: any) => d.date;
+    let dateMutator = (d: any, date: any) => {
         d.date = date;
     };
 
@@ -15,28 +15,28 @@ export default function () {
 
         // @ts-ignore
         const source = path(sourcePath);
-        let reversalThreshold;
+        let reversalThreshold: any;
 
         if (reversalType === "ATR") {
             const atrAlgorithm = atr().options({ windowSize });
 
             const atrCalculator = merge()
                 .algorithm(atrAlgorithm)
-                .merge((d, c) => {
+                .merge((d: any, c: any) => {
                     d["atr" + windowSize] = c;
                 });
 
             atrCalculator(data);
-            reversalThreshold = (d) => d["atr" + windowSize];
+            reversalThreshold = (d: any) => d["atr" + windowSize];
         } else {
             reversalThreshold = functor(reversal);
         }
 
         const kagiData: any[] = [];
 
-        let prevPeak;
-        let prevTrough;
-        let direction;
+        let prevPeak: any;
+        let prevTrough: any;
+        let direction: any;
 
         let line: {
             added?: any;

@@ -29,13 +29,13 @@ interface ElderRayIndicator {
 export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.elderRay);
+        .accessor((d: any) => d.elderRay);
 
     const underlyingAlgorithm = elderRay();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: number) => {
             datum.elderRay = i;
         });
 

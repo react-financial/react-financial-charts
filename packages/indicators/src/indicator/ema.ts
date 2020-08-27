@@ -29,13 +29,13 @@ interface EMAIndicator {
 export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.ema);
+        .accessor((d: any) => d.ema);
 
     const underlyingAlgorithm = ema();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: number) => {
             datum.ema = i;
         });
 

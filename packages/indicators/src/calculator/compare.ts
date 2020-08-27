@@ -20,7 +20,7 @@ export default function () {
         const first = head(data);
         const b = base(first);
 
-        const firsts = {};
+        const firsts: any = {};
 
         const compareData = data.map((d) => {
             const result = {};

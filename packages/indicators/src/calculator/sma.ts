@@ -17,7 +17,7 @@ export default function () {
         const average = slidingWindow()
             .windowSize(windowSize)
             .sourcePath(sourcePath)
-            .accumulator((values) => mean(values));
+            .accumulator((values: any[]) => mean(values));
 
         return average(data);
     };

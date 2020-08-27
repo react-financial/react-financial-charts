@@ -1,7 +1,7 @@
 import { isNotDefined } from "@react-financial-charts/core";
 import { PointAndFigure as defaultOptions } from "./defaultOptionsForComputation";
 
-function createBox(d, dateAccessor, dateMutator) {
+function createBox(d: any, dateAccessor: any, dateMutator: any) {
     const box = {
         open: d.open,
         fromDate: dateAccessor(d),
@@ -15,14 +15,14 @@ function createBox(d, dateAccessor, dateMutator) {
     return box;
 }
 
-function updateColumns(columnData, dateAccessor, dateMutator) {
-    columnData.forEach(function (d) {
+function updateColumns(columnData: any, dateAccessor: any, dateMutator: any) {
+    columnData.forEach(function (d: any) {
         d.startOfYear = false;
         d.startOfQuarter = false;
         d.startOfMonth = false;
         d.startOfWeek = false;
 
-        d.boxes.forEach(function (eachBox) {
+        d.boxes.forEach(function (eachBox: any) {
             if (isNotDefined(d.open)) {
                 d.open = eachBox.open;
             }
@@ -69,8 +69,8 @@ function updateColumns(columnData, dateAccessor, dateMutator) {
 
 export default function () {
     let options = defaultOptions;
-    let dateAccessor = (d) => d.date;
-    let dateMutator = (d, date) => {
+    let dateAccessor = (d: any) => d.date;
+    let dateMutator = (d: any, date: any) => {
         d.date = date;
     };
 
@@ -79,7 +79,7 @@ export default function () {
 
         const source =
             // eslint-disable-next-line prettier/prettier
-            sourcePath === "high/low" ? ((d) => ({ high: d.high, low: d.low })) : ((d) => ({ high: d.close, low: d.close }));
+            sourcePath === "high/low" ? ((d: any) => ({ high: d.high, low: d.low })) : ((d: any) => ({ high: d.close, low: d.close }));
 
         const pricingMethod = source;
         const columnData: any[] = [];

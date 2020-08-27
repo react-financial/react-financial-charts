@@ -43,11 +43,11 @@ export default function () {
         // @ts-ignore
         const source = path(sourcePath);
 
-        let prevAvgGain;
-        let prevAvgLoss;
+        let prevAvgGain: any;
+        let prevAvgLoss: any;
         const rsiAlgorithm = slidingWindow()
             .windowSize(windowSize)
-            .accumulator((values) => {
+            .accumulator((values: any) => {
                 const avgGain = isDefined(prevAvgGain)
                     ? (prevAvgGain * (windowSize - 1) + last(values).gain) / windowSize
                     : mean<any>(values, (each) => each.gain);
@@ -76,7 +76,7 @@ export default function () {
         const gainsAndLossesCalculator = slidingWindow()
             .windowSize(2)
             .undefinedValue(() => [0, 0])
-            .accumulator((tuple) => {
+            .accumulator((tuple: any) => {
                 const prev = tuple[0];
                 const now = tuple[1];
                 const change = source(now) - source(prev);

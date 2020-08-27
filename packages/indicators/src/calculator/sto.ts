@@ -38,18 +38,18 @@ export interface STOOptions {
 export default function () {
     let options: STOOptions = defaultOptions;
 
-    let source = (d) => ({ open: d.open, high: d.high, low: d.low, close: d.close });
+    let source = (d: any) => ({ open: d.open, high: d.high, low: d.low, close: d.close });
 
     const calculator = (data: any[]) => {
         const { windowSize, kWindowSize, dWindowSize } = options;
 
-        const high = (d) => source(d).high;
-        const low = (d) => source(d).low;
-        const close = (d) => source(d).close;
+        const high = (d: any) => source(d).high;
+        const low = (d: any) => source(d).low;
+        const close = (d: any) => source(d).close;
 
         const kWindow = slidingWindow()
             .windowSize(windowSize)
-            .accumulator((values) => {
+            .accumulator((values: any[]) => {
                 const highestHigh = max<any, number>(values, high);
                 if (highestHigh === undefined) {
                     return undefined;
@@ -69,12 +69,12 @@ export default function () {
         const kSmoothed = slidingWindow()
             .skipInitial(windowSize - 1)
             .windowSize(kWindowSize)
-            .accumulator((values) => mean(values));
+            .accumulator((values: any[]) => mean(values));
 
         const dWindow = slidingWindow()
             .skipInitial(windowSize - 1 + kWindowSize - 1)
             .windowSize(dWindowSize)
-            .accumulator((values) => mean(values));
+            .accumulator((values: any[]) => mean(values));
 
         const kData = kSmoothed(kWindow(data));
         const dData = dWindow(kData);

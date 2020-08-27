@@ -48,7 +48,7 @@ export default function () {
         // @ts-ignore
         const source = path(sourcePath);
         const alpha = 2 / (windowSize + 1);
-        let previous;
+        let previous: any;
         let initialAccumulator = 0;
         let skip = 0;
 

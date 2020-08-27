@@ -59,12 +59,12 @@ export default function () {
                 ? ema().options({ windowSize, sourcePath })
                 : slidingWindow()
                       .windowSize(windowSize)
-                      .accumulator((values) => mean(values))
+                      .accumulator((values: any) => mean(values))
                       .sourcePath(sourcePath);
 
         const bollingerBandAlgorithm = slidingWindow()
             .windowSize(windowSize)
-            .accumulator((values) => {
+            .accumulator((values: any) => {
                 const avg = last(values).mean;
                 const stdDev = deviation<any>(values, (each) => source(each.datum));
                 if (stdDev === undefined) {
@@ -78,7 +78,7 @@ export default function () {
                 };
             });
 
-        const zip = zipper().combine((datum, meanValue) => ({ datum, mean: meanValue }));
+        const zip = zipper().combine((datum: any, meanValue: any) => ({ datum, mean: meanValue }));
 
         // @ts-ignore
         const tuples = zip(data, meanAlgorithm(data));

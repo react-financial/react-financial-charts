@@ -29,13 +29,13 @@ interface SMAIndicator {
 export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.sma);
+        .accessor((d: any) => d.sma);
 
     const underlyingAlgorithm = sma();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: number) => {
             datum.sma = i;
         });
 

@@ -20,7 +20,7 @@ export default function () {
 
         const forceIndexCalulator = slidingWindow()
             .windowSize(2)
-            .accumulator(([prev, curr]) => (source(curr) - source(prev)) * volume(curr));
+            .accumulator(([prev, curr]: any) => (source(curr) - source(prev)) * volume(curr));
 
         const forceIndex = forceIndexCalulator(data);
 

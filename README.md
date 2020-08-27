@@ -97,7 +97,7 @@ npm start
 - [x] Add all series' to storybook
 - [x] Split project into multiple packages
 - [x] Fix issues with empty datasets
-- [ ] Correct all class props
+- [x] Correct all class props
 - [ ] Migrate to new React Context API
 - [ ] Remove all UNSAFE methods
 - [ ] Add documentation to storybook

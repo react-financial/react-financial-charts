@@ -36,7 +36,7 @@ export default function () {
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: number) => {
             datum.rsi = i;
         });
 

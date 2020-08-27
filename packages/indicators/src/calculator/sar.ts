@@ -1,7 +1,7 @@
 import { isDefined, isNotDefined, mappedSlidingWindow } from "@react-financial-charts/core";
 import { SAR as defaultOptions } from "./defaultOptionsForComputation";
 
-function calc(prev, now) {
+function calc(prev: any, now: any) {
     const risingSar = prev.risingSar + prev.af * (prev.risingEp - prev.risingSar);
 
     const fallingSar = prev.fallingSar - prev.af * (prev.fallingSar - prev.fallingEp);
@@ -40,7 +40,7 @@ export default function () {
                     af: accelerationFactor,
                 };
             })
-            .accumulator(([prev, now]) => {
+            .accumulator(([prev, now]: any) => {
                 const { risingSar, fallingSar, risingEp, fallingEp } = calc(prev, now);
 
                 if (isNotDefined(prev.use) && risingSar > now.low && fallingSar < now.high) {
@@ -93,7 +93,7 @@ export default function () {
                 };
             });
 
-        const calculatedData = algorithm(data).map((d) => d.sar);
+        const calculatedData = algorithm(data).map((d: any) => d.sar);
 
         return calculatedData;
     };

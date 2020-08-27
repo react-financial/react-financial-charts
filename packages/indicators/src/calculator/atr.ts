@@ -34,19 +34,19 @@ export default function () {
         const trueRangeAlgorithm = slidingWindow()
             .windowSize(2)
             .source(source)
-            .undefinedValue((d) => d.high - d.low) // the first TR value is simply the High minus the Low
-            .accumulator((values) => {
+            .undefinedValue((d: any) => d.high - d.low) // the first TR value is simply the High minus the Low
+            .accumulator((values: any) => {
                 const prev = values[0];
                 const d = values[1];
                 return Math.max(d.high - d.low, d.high - prev.close, d.low - prev.close);
             });
 
-        let prevATR;
+        let prevATR: any;
 
         const atrAlgorithm = slidingWindow()
             .skipInitial(1) // trueRange starts from index 1 so ATR starts from 1
             .windowSize(windowSize)
-            .accumulator((values) => {
+            .accumulator((values: any) => {
                 const tr = last(values);
                 const atr = isDefined(prevATR)
                     ? (prevATR * (windowSize - 1) + tr) / windowSize

@@ -7,8 +7,8 @@ import { Renko as defaultOptions } from "./defaultOptionsForComputation";
 export default function () {
     let options = defaultOptions;
 
-    let dateAccessor = (d) => d.date;
-    let dateMutator = (d, date) => {
+    let dateAccessor = (d: any) => d.date;
+    let dateMutator = (d: any, date: any) => {
         d.date = date;
     };
 
@@ -17,22 +17,22 @@ export default function () {
 
         const source =
             // eslint-disable-next-line prettier/prettier
-            sourcePath === "high/low" ? (d => ({ high: d.high, low: d.low })) : (d => ({ high: d.close, low: d.close }));
+            sourcePath === "high/low" ? ((d: any) => ({ high: d.high, low: d.low })) : ((d: any) => ({ high: d.close, low: d.close }));
 
         const pricingMethod = source;
-        let brickSize;
+        let brickSize: any;
 
         if (reversalType === "ATR") {
             const atrAlgorithm = atr().options({ windowSize });
 
             const atrCalculator = merge()
                 .algorithm(atrAlgorithm)
-                .merge((d, c) => {
+                .merge((d: any, c: any) => {
                     d["atr" + windowSize] = c;
                 });
 
             atrCalculator(rawData);
-            brickSize = (d) => d["atr" + windowSize];
+            brickSize = (d: any) => d["atr" + windowSize];
         } else {
             brickSize = functor(fixedBrickSize);
         }

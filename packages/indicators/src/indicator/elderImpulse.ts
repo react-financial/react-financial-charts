@@ -6,15 +6,15 @@ import { ElderImpulse as appearanceOptions } from "./defaultOptionsForAppearance
 const ALGORITHM_TYPE = "ElderImpulse";
 
 export default function () {
-    let macdSource;
-    let emaSource;
+    let macdSource: any;
+    let emaSource: any;
 
     const base = baseIndicator().type(ALGORITHM_TYPE).stroke(appearanceOptions.stroke).fill(undefined);
 
     const underlyingAlgorithm = slidingWindow()
         .windowSize(2)
         .undefinedValue("neutral")
-        .accumulator(([prev, curr]) => {
+        .accumulator(([prev, curr]: any) => {
             if (isNotDefined(macdSource)) {
                 throw new Error(`macdSource not defined for ${ALGORITHM_TYPE} calculator`);
             }
@@ -42,23 +42,23 @@ export default function () {
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: number) => {
             datum.elderImpulse = i;
         });
 
-    const indicator = function (data, options = { merge: true }) {
+    const indicator = function (data: any, options = { merge: true }) {
         const newData = options.merge ? mergedAlgorithm(data) : underlyingAlgorithm(data);
 
         return newData;
     };
-    indicator.macdSource = function (x) {
+    indicator.macdSource = function (x: any) {
         if (!arguments.length) {
             return macdSource;
         }
         macdSource = x;
         return indicator;
     };
-    indicator.emaSource = function (x) {
+    indicator.emaSource = function (x: any) {
         if (!arguments.length) {
             return emaSource;
         }

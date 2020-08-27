@@ -30,13 +30,13 @@ interface CompareIndicator {
 export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.compare);
+        .accessor((d: any) => d.compare);
 
     const underlyingAlgorithm = compare();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: number) => {
             datum.compare = i;
         });
 

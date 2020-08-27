@@ -30,13 +30,13 @@ interface SARIndicator {
 export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.sar);
+        .accessor((d: any) => d.sar);
 
     const underlyingAlgorithm = sar();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: number) => {
             datum.sar = i;
         });
 

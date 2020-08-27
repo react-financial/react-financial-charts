@@ -33,13 +33,13 @@ export default function () {
         .type(ALGORITHM_TYPE)
         .fill(appearanceOptions.fill)
         .stroke(appearanceOptions.stroke)
-        .accessor((d) => d.macd);
+        .accessor((d: any) => d.macd);
 
     const underlyingAlgorithm = macd();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: number) => {
             datum.macd = i;
         });
 

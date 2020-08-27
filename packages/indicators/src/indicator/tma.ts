@@ -30,13 +30,13 @@ interface TMAIndicator {
 export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.tma);
+        .accessor((d: any) => d.tma);
 
     const underlyingAlgorithm = tma();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: number) => {
             datum.tma = i;
         });
 

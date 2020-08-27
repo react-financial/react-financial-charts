@@ -24,7 +24,7 @@ export default function () {
         const algo = slidingWindow()
             .windowSize(2)
             .sourcePath(sourcePath)
-            .accumulator(([prev, curr]) => {
+            .accumulator(([prev, curr]: any) => {
                 const absoluteChange = curr - prev;
                 const percentChange = (absoluteChange * 100) / prev;
                 return { absoluteChange, percentChange };

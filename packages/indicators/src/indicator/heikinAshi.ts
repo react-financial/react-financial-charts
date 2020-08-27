@@ -8,13 +8,13 @@ const ALGORITHM_TYPE = "HeikinAshi";
 export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.ha);
+        .accessor((d: any) => d.ha);
 
     const underlyingAlgorithm = heikinAshi();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: any) => {
             return { ...datum, ...i };
         });
 

@@ -30,13 +30,13 @@ interface WMAIndicator {
 export default function () {
     const base = baseIndicator()
         .type(ALGORITHM_TYPE)
-        .accessor((d) => d.wma);
+        .accessor((d: any) => d.wma);
 
     const underlyingAlgorithm = wma();
 
     const mergedAlgorithm = merge()
         .algorithm(underlyingAlgorithm)
-        .merge((datum, i) => {
+        .merge((datum: any, i: number) => {
             datum.wma = i;
         });
 

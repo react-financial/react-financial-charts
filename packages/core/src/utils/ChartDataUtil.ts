@@ -3,7 +3,7 @@ import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import flattenDeep from "lodash.flattendeep";
 import * as React from "react";
 
-import { Chart } from "../Chart";
+import { Chart, ChartProps } from "../Chart";
 
 import {
     functor,
@@ -48,16 +48,31 @@ function isArraySize2AndNumber(yExtentsProp: any) {
         const [a, b] = yExtentsProp;
         return typeof a === "number" && typeof b === "number";
     }
+
     return false;
 }
 
+const isChartProps = (props: ChartProps | any | undefined): props is ChartProps => {
+    if (props === undefined) {
+        return false;
+    }
+
+    const chartProps = props as ChartProps;
+    if (chartProps.id === undefined) {
+        return false;
+    }
+
+    return true;
+};
+
 export function getNewChartConfig(innerDimension: any, children: any, existingChartConfig: any[] = []) {
     return React.Children.map(children, (each) => {
-        if (each && each.type.toString() === Chart.toString()) {
+        if (each !== undefined && isChartProps(each.props)) {
             const chartProps = {
                 ...Chart.defaultProps,
                 ...each.props,
             };
+
             const {
                 id,
                 origin,
@@ -110,18 +125,18 @@ export function getNewChartConfig(innerDimension: any, children: any, existingCh
                 yExtents,
                 yExtentsCalculator,
                 flipYScale,
-                // yScale: setRange(yScale.copy(), height, padding, flipYScale),
                 yScale,
                 yPan,
                 yPanEnabled,
-                // mouseCoordinates,
                 width,
                 height,
             };
         }
+
         return undefined;
-    }).filter((each: any) => isDefined(each));
+    }).filter((each: any) => each !== undefined);
 }
+
 export function getCurrentCharts(chartConfig: any, mouseXY: number[]) {
     const currentCharts = chartConfig
         .filter((eachConfig: any) => {
@@ -205,7 +220,6 @@ export function getChartConfigWithUpdatedYScales(
         };
     });
 
-    // @ts-ignore
     const updatedChartConfig = combine(chartConfig, yDomains);
 
     return updatedChartConfig;

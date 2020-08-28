@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.10](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.9...v1.0.0-alpha.10) (2020-08-28)
+
+
+### Bug Fixes
+
+* correcting more props ([2b3c1e0](https://github.com/reactivemarkets/react-financial-charts/commit/2b3c1e093b12131b7a4bc1ed12fd8ea4c541ac4b))
+
+
+
+
+
 # [1.0.0-alpha.9](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.8...v1.0.0-alpha.9) (2020-08-24)
 
 

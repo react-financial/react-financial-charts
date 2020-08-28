@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.10](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.9...v1.0.0-alpha.10) (2020-08-28)
+
+
+### Bug Fixes
+
+* **core:** children can be undefined or null ([17aa844](https://github.com/markmcdowell/react-financial-charts/commit/17aa844d19d87caf8b763cb07d3ea6ddc7c05d9c))
+* **core:** using type guard to check type of canvas children ([829ccfa](https://github.com/markmcdowell/react-financial-charts/commit/829ccfacd11da678a5920c37309fc991130b19ea)), closes [#417](https://github.com/markmcdowell/react-financial-charts/issues/417)
+* **stories:** tts should be date ([4c703bd](https://github.com/markmcdowell/react-financial-charts/commit/4c703bd66c9b6ccaa475f5f650bafa0189781845))
+* **utils:** setting ref to readonly ([8addf91](https://github.com/markmcdowell/react-financial-charts/commit/8addf917a7e2cb193c50521697e8e06dc3850c16))
+* correcting more props ([2b3c1e0](https://github.com/markmcdowell/react-financial-charts/commit/2b3c1e093b12131b7a4bc1ed12fd8ea4c541ac4b))
+* correcting zoomAnchor prop type ([981077b](https://github.com/markmcdowell/react-financial-charts/commit/981077b1e6e08b7c22d75842c7df90e82711e038))
+
+
+
+
+
 # [1.0.0-alpha.9](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.8...v1.0.0-alpha.9) (2020-08-24)
 
 

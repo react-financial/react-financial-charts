@@ -20,12 +20,8 @@ export interface BarSeriesProps {
               moreProps: any,
           ) => number);
     readonly clip?: boolean;
-    readonly fillStyle?:
-        | string
-        | CanvasGradient
-        | CanvasPattern
-        | ((data: any) => string | CanvasGradient | CanvasPattern);
-    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly fillStyle?: string | ((data: any) => string);
+    readonly strokeStyle?: string;
     readonly swapScales?: boolean;
     readonly width?: number | ((props: { widthRatio: number }, moreProps: any) => number);
     readonly widthRatio?: number;

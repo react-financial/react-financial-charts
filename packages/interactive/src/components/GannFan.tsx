@@ -7,7 +7,7 @@ interface GannFanProps {
     readonly startXY: number[];
     readonly defaultClassName?: string;
     readonly endXY: number[];
-    readonly fillStyle: Array<string | CanvasGradient | CanvasPattern>;
+    readonly fillStyle: Array<string>;
     readonly fontFamily: string;
     readonly fontSize: number;
     readonly fontFill: string;
@@ -18,7 +18,7 @@ interface GannFanProps {
     readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
     readonly selected: boolean;
-    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle: string;
     readonly strokeWidth: number;
     readonly tolerance: number;
 }

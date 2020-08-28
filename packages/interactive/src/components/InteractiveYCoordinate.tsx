@@ -9,8 +9,8 @@ import {
 } from "@react-financial-charts/core";
 
 export interface InteractiveYCoordinateProps {
-    readonly bgFillStyle: string | CanvasGradient | CanvasPattern;
-    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
+    readonly bgFillStyle: string;
+    readonly strokeStyle: string;
     readonly strokeWidth: number;
     readonly strokeDasharray: strokeDashTypes;
     readonly textFill: string;

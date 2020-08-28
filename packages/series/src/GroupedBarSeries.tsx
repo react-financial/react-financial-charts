@@ -12,11 +12,7 @@ export interface GroupedBarSeriesProps {
               datum: any,
           ) => number);
     readonly direction: "up" | "down";
-    readonly fillStyle?:
-        | string
-        | CanvasGradient
-        | CanvasPattern
-        | ((data: any) => string | CanvasGradient | CanvasPattern);
+    readonly fillStyle?: string | ((data: any) => string);
     readonly spaceBetweenBar?: number;
     readonly stroke: boolean;
     readonly widthRatio?: number;

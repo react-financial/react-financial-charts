@@ -2,7 +2,7 @@ import * as React from "react";
 import { isDefined, isNotDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
 export interface KagiSeriesProps {
-    readonly currentValueStroke?: string | CanvasGradient | CanvasPattern;
+    readonly currentValueStroke?: string;
     readonly fill?: {
         yang: string;
         yin: string;

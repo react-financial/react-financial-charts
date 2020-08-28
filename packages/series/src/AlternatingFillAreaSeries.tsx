@@ -12,8 +12,8 @@ export interface AlternatingFillAreaSeriesProps {
      * Color, gradient, or pattern to use for fill.
      */
     readonly fillStyle?: {
-        top: string | CanvasGradient | CanvasPattern;
-        bottom: string | CanvasGradient | CanvasPattern;
+        top: string;
+        bottom: string;
     };
     /**
      * A factory for a curve generator for the area and line.
@@ -23,8 +23,8 @@ export interface AlternatingFillAreaSeriesProps {
      * Color, gradient, or pattern to use for the stroke.
      */
     readonly strokeStyle?: {
-        top: string | CanvasGradient | CanvasPattern;
-        bottom: string | CanvasGradient | CanvasPattern;
+        top: string;
+        bottom: string;
     };
     /**
      * Stroke dash.

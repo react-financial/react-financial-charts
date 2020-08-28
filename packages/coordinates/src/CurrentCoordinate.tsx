@@ -5,11 +5,7 @@ export interface CurrentCoordinateProps {
     /**
      * Fill style for the circle.
      */
-    readonly fillStyle?:
-        | string
-        | CanvasGradient
-        | CanvasPattern
-        | ((datum: any) => string | CanvasGradient | CanvasPattern);
+    readonly fillStyle?: string | ((datum: any) => string);
     /**
      * The radius to draw the circle
      */
@@ -17,11 +13,7 @@ export interface CurrentCoordinateProps {
     /**
      * Stroke of the circle
      */
-    readonly strokeStyle?:
-        | string
-        | CanvasGradient
-        | CanvasPattern
-        | ((datum: any) => string | CanvasGradient | CanvasPattern);
+    readonly strokeStyle?: string | ((datum: any) => string);
     /**
      * Y accessor to use for the circle.
      */

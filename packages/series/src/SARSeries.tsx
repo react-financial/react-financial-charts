@@ -3,8 +3,8 @@ import { first, getAxisCanvas, getMouseCanvas, GenericChartComponent, last } fro
 
 export interface SARSeriesProps {
     readonly fillStyle?: {
-        falling: string | CanvasGradient | CanvasPattern;
-        rising: string | CanvasGradient | CanvasPattern;
+        falling: string;
+        rising: string;
     };
     readonly highlightOnHover?: boolean;
     readonly onClick?: (e: React.MouseEvent, moreProps: any) => void;

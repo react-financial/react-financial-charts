@@ -40,14 +40,14 @@ interface AxisProps {
     readonly showGridLines?: boolean;
     readonly showTicks?: boolean;
     readonly showTickLabel?: boolean;
-    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle: string;
     readonly strokeWidth: number;
     readonly tickFormat?: (data: any) => string;
     readonly tickPadding?: number;
     readonly tickSize?: number;
     readonly ticks?: number;
     readonly tickLabelFill?: string;
-    readonly tickStrokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly tickStrokeStyle?: string;
     readonly tickStrokeWidth?: number;
     readonly tickStrokeDasharray?: strokeDashTypes;
     readonly tickValues?: number[] | ((domain: number[]) => number[]);

@@ -23,7 +23,7 @@ export interface XAxisProps {
     readonly showGridLines?: boolean;
     readonly showTicks?: boolean;
     readonly showTickLabel?: boolean;
-    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle?: string;
     readonly strokeWidth?: number;
     readonly tickFormat?: (data: any) => string;
     readonly tickPadding?: number;

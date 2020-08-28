@@ -9,11 +9,11 @@ export interface StochasticSeriesProps {
     readonly overSold?: number;
     readonly middle?: number;
     readonly strokeStyle?: {
-        top: string | CanvasGradient | CanvasPattern;
-        middle: string | CanvasGradient | CanvasPattern;
-        bottom: string | CanvasGradient | CanvasPattern;
-        dLine: string | CanvasGradient | CanvasPattern;
-        kLine: string | CanvasGradient | CanvasPattern;
+        top: string;
+        middle: string;
+        bottom: string;
+        dLine: string;
+        kLine: string;
     };
     readonly yAccessor: (data: any) => { K: number; D: number };
 }

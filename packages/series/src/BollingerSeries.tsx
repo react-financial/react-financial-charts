@@ -6,11 +6,11 @@ import { LineSeries } from "./LineSeries";
 export interface BollingerSeriesProps {
     readonly areaClassName?: string;
     readonly className?: string;
-    readonly fillStyle?: string | CanvasGradient | CanvasPattern;
+    readonly fillStyle?: string;
     readonly strokeStyle?: {
-        top: string | CanvasGradient | CanvasPattern;
-        middle: string | CanvasGradient | CanvasPattern;
-        bottom: string | CanvasGradient | CanvasPattern;
+        top: string;
+        middle: string;
+        bottom: string;
     };
     readonly yAccessor?: (data: any) => { bottom: number; middle: number; top: number };
 }

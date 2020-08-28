@@ -182,9 +182,9 @@ const defaultOrigin = (props: HoverTooltipProps, moreProps: any, bgSize: any, po
 
 export interface HoverTooltipProps {
     readonly background?: {
-        fillStyle?: string | CanvasGradient | CanvasPattern;
+        fillStyle?: string;
         height?: number;
-        strokeStyle?: string | CanvasGradient | CanvasPattern;
+        strokeStyle?: string;
         width?: number;
     };
     readonly backgroundShapeCanvas: (
@@ -205,8 +205,8 @@ export interface HoverTooltipProps {
     readonly tooltip: {
         content: (data: any) => { x: string; y: { label: string; value?: string; stroke?: string }[] };
     };
-    readonly toolTipFillStyle?: string | CanvasGradient | CanvasPattern;
-    readonly toolTipStrokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly toolTipFillStyle?: string;
+    readonly toolTipStrokeStyle?: string;
     readonly tooltipCanvas: (props: HoverTooltipProps, content: any, ctx: CanvasRenderingContext2D) => void;
     readonly yAccessor: (data: any) => number;
 }

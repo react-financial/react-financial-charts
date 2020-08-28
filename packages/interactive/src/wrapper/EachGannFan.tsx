@@ -15,13 +15,13 @@ interface EachGannFanProps {
     interactive: boolean;
     selected: boolean;
     appearance: {
-        stroke: string | CanvasGradient | CanvasPattern;
+        stroke: string;
         strokeWidth: number;
         edgeStroke: string;
         edgeFill: string;
         edgeStrokeWidth: number;
         r: number;
-        fill: Array<string | CanvasGradient | CanvasPattern>;
+        fill: Array<string>;
         fontFamily: string;
         fontSize: number;
         fontFill: string;

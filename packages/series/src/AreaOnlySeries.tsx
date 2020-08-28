@@ -15,7 +15,7 @@ export interface AreaOnlySeriesProps {
     /**
      * Color, gradient, or pattern to use for fill.
      */
-    readonly fillStyle?: string | CanvasGradient | CanvasPattern;
+    readonly fillStyle?: string;
     /**
      * A factory for a curve generator for the area.
      */
@@ -74,7 +74,9 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         if (interpolation !== undefined) {
             areaSeries.curve(interpolation);
         }
+
         areaSeries(plotData);
+
         ctx.fill();
 
         if (canvasClip) {

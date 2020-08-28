@@ -5,13 +5,13 @@ import { StraightLine } from "./StraightLine";
 
 export interface ElderRaySeriesProps {
     readonly fillStyle?: {
-        bearPower: string | CanvasGradient | CanvasPattern;
-        bullPower: string | CanvasGradient | CanvasPattern;
+        bearPower: string;
+        bullPower: string;
     };
     readonly className?: string;
     readonly clip?: boolean;
     readonly stroke?: boolean;
-    readonly straightLineStrokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly straightLineStrokeStyle?: string;
     readonly straightLineStrokeDasharray?: strokeDashTypes;
     readonly widthRatio?: number;
     readonly yAccessor: (data: any) => { bearPower: number; bullPower: number };

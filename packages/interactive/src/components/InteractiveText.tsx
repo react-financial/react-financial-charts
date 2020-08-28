@@ -2,9 +2,9 @@ import * as React from "react";
 import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
 export interface InteractiveTextProps {
-    readonly bgFillStyle: string | CanvasGradient | CanvasPattern;
+    readonly bgFillStyle: string;
     readonly bgStrokeWidth: number;
-    readonly bgStroke: string | CanvasGradient | CanvasPattern;
+    readonly bgStroke: string;
     readonly defaultClassName?: string;
     readonly fontFamily: string;
     readonly fontSize: number;
@@ -19,7 +19,7 @@ export interface InteractiveTextProps {
     readonly interactiveCursorClass?: string;
     readonly selected: boolean;
     readonly text: string;
-    readonly textFill: string | CanvasGradient | CanvasPattern;
+    readonly textFill: string;
     readonly tolerance: number;
 }
 

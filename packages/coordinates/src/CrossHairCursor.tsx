@@ -17,7 +17,7 @@ const defaultCustomX = (props: CrossHairCursorProps, moreProps: any) => {
 export interface CrossHairCursorProps {
     readonly customX?: (props: CrossHairCursorProps, moreProps: any) => number;
     readonly snapX?: boolean;
-    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle?: string;
     readonly strokeDasharray?: strokeDashTypes;
     readonly strokeWidth?: number;
 }

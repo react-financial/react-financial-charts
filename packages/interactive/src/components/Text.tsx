@@ -5,7 +5,7 @@ interface TextProps {
     readonly children: string;
     readonly fontFamily: string;
     readonly fontSize: number;
-    readonly fillStyle: string | CanvasGradient | CanvasPattern;
+    readonly fillStyle: string;
     readonly selected?: boolean;
     readonly xyProvider: (moreProps: any) => number[];
 }

@@ -22,11 +22,7 @@ export interface StackedBarSeriesProps {
           ) => number);
     readonly clip?: boolean;
     readonly direction?: "up" | "down";
-    readonly fillStyle?:
-        | string
-        | CanvasGradient
-        | CanvasPattern
-        | ((data: any, y: number) => string | CanvasGradient | CanvasPattern);
+    readonly fillStyle?: string | ((data: any, y: number) => string);
     readonly spaceBetweenBar?: number;
     readonly stroke?: boolean;
     readonly swapScales?: boolean;

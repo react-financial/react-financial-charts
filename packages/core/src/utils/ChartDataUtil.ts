@@ -168,12 +168,11 @@ function setRange(scale: any, height: number, padding: any, flipYScale: any) {
     return scale;
 }
 
-function yDomainFromYExtents(yExtents: any, yScale: any, plotData: any) {
+function yDomainFromYExtents(yExtents: any, yScale: any, plotData: any[]) {
     const yValues = yExtents.map((eachExtent: any) => plotData.map(values(eachExtent)));
 
-    const allYValues = flattenDeep(yValues);
+    const allYValues: number[] = flattenDeep(yValues);
 
-    // @ts-ignore
     const realYDomain = yScale.invert ? extent(allYValues) : [...new Set(allYValues).values()];
 
     return realYDomain;

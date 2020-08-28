@@ -7,8 +7,8 @@ export interface ClickableCircleProps {
     readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
     readonly strokeWidth: number;
-    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
-    readonly fillStyle: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle: string;
+    readonly fillStyle: string;
     readonly r: number;
     readonly cx?: number;
     readonly cy?: number;

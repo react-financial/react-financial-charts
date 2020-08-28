@@ -14,7 +14,7 @@ export interface AreaSeriesProps {
     /**
      * Color, gradient, or pattern to use for fill.
      */
-    readonly fillStyle?: string | CanvasGradient | CanvasPattern;
+    readonly fillStyle?: string;
     /**
      * A factory for a curve generator for the area and line.
      */
@@ -22,7 +22,7 @@ export interface AreaSeriesProps {
     /**
      * Color, gradient, or pattern to use for the stroke.
      */
-    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle?: string;
     /**
      * Stroke dash.
      */

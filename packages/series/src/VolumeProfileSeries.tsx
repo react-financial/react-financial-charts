@@ -16,7 +16,7 @@ export interface VolumeProfileSeriesProps {
     readonly className?: string;
     readonly opacity?: number;
     readonly showSessionBackground?: boolean;
-    readonly sessionBackGround?: string | CanvasGradient | CanvasPattern;
+    readonly sessionBackGround?: string;
 }
 
 export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProps> {

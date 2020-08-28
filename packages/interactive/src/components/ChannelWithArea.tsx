@@ -7,9 +7,9 @@ interface ChannelWithAreaProps {
     readonly endXY?: number[];
     readonly dy?: number;
     readonly interactiveCursorClass?: string;
-    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle: string;
     readonly strokeWidth: number;
-    readonly fillStyle: string | CanvasGradient | CanvasPattern;
+    readonly fillStyle: string;
     readonly type:
         | "XLINE" // extends from -Infinity to +Infinity
         | "RAY" // extends to +/-Infinity in one direction

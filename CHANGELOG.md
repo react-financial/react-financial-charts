@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.12](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.11...v1.0.0-alpha.12) (2020-08-28)
+
+
+### Bug Fixes
+
+* **interactive:** missing constructor to initialize state in HoverTextNearMouse ([27f410a](https://github.com/markmcdowell/react-financial-charts/commit/27f410a56a4ab87e758c55965ec162ce0066d509)), closes [#435](https://github.com/markmcdowell/react-financial-charts/issues/435)
+* **series:** BarSeries should have opacity ([7d6e414](https://github.com/markmcdowell/react-financial-charts/commit/7d6e41441ff292a0a899cf4b84738b14c0b5aa24))
+
+
+
+
+
 # [1.0.0-alpha.11](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.10...v1.0.0-alpha.11) (2020-08-28)
 
 

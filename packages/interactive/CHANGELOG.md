@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.12](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.11...v1.0.0-alpha.12) (2020-08-28)
+
+
+### Bug Fixes
+
+* **interactive:** missing constructor to initialize state in HoverTextNearMouse ([27f410a](https://github.com/reactivemarkets/react-financial-charts/commit/27f410a56a4ab87e758c55965ec162ce0066d509)), closes [#435](https://github.com/reactivemarkets/react-financial-charts/issues/435)
+
+
+
+
+
 # [1.0.0-alpha.11](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.10...v1.0.0-alpha.11) (2020-08-28)
 
 **Note:** Version bump only for package @react-financial-charts/interactive

@@ -3,7 +3,6 @@ import * as React from "react";
 import {
     first,
     functor,
-    isDefined,
     getAxisCanvas,
     GenericChartComponent,
     last,
@@ -30,18 +29,19 @@ export interface EdgeIndicatorProps {
     readonly stroke?: string | ((datum: any) => string);
     readonly textFill?: string | ((datum: any) => string);
     readonly type?: "horizontal";
-    readonly yAccessor: (data: any) => number;
+    readonly yAccessor: (data: any) => number | undefined;
     readonly yAxisPad?: number;
 }
 
 export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
     public static defaultProps = {
-        type: "horizontal",
         fitToText: false,
+        lineStroke: "#000000",
+        lineOpacity: 1,
+        lineStrokeDasharray: "ShortDot",
         orient: "right",
-        edgeAt: "right",
-        textFill: "#FFFFFF",
         displayFormat: format(".2f"),
+        edgeAt: "right",
         yAxisPad: 0,
         rectHeight: 20,
         rectWidth: 50,
@@ -55,9 +55,8 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         stroke: noop,
         strokeOpacity: 1,
         strokeWidth: 1,
-        lineStroke: "#000000",
-        lineOpacity: 1,
-        lineStrokeDasharray: "ShortDot",
+        textFill: "#FFFFFF",
+        type: "horizontal",
     };
 
     public render() {
@@ -74,7 +73,7 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const edge = this.helper(this.props, moreProps);
-        if (edge === null) {
+        if (edge === undefined) {
             return;
         }
 
@@ -88,16 +87,17 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
 
     private readonly helper = (props: EdgeIndicatorProps, moreProps: any) => {
         const { itemType, yAccessor } = props;
+
         const { plotData } = moreProps;
 
         const item = itemType === "first" ? first(plotData, yAccessor) : last(plotData, yAccessor);
 
-        const edge = isDefined(item) ? this.getEdge(props, moreProps, item) : null;
+        const edge = item !== undefined ? this.getEdge(moreProps, item) : undefined;
 
         return edge;
     };
 
-    private readonly getEdge = (props: EdgeIndicatorProps, moreProps: any, item: any) => {
+    private readonly getEdge = (moreProps: any, item: any) => {
         const {
             fontFamily,
             fontSize,
@@ -107,9 +107,15 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
             yAxisPad = EdgeIndicator.defaultProps.yAxisPad,
             orient,
             lineStroke,
-        } = props;
-
-        const { yAccessor, fill, fullWidth, textFill, rectHeight, rectWidth, arrowWidth, stroke } = props;
+            yAccessor,
+            fill,
+            fullWidth,
+            textFill,
+            rectHeight,
+            rectWidth,
+            arrowWidth,
+            stroke,
+        } = this.props;
 
         const {
             xScale,
@@ -119,6 +125,10 @@ export class EdgeIndicator extends React.Component<EdgeIndicatorProps> {
         } = moreProps;
 
         const yValue = yAccessor(item);
+        if (yValue === undefined) {
+            return undefined;
+        }
+
         const xValue = xAccessor(item);
 
         const x1 = fullWidth ? 0 : Math.round(xScale(xValue));

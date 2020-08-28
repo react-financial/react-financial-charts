@@ -95,7 +95,7 @@ function calculateFullData(props: ChartCanvasProps) {
 
     return {
         xAccessor,
-        displayXAccessor: displayXAccessor || xAccessor,
+        displayXAccessor: displayXAccessor ?? xAccessor,
         xScale: xScale.copy(),
         fullData,
         filterData,
@@ -274,7 +274,7 @@ export interface ChartCanvasProps {
     readonly disableInteraction?: boolean;
     readonly disablePan?: boolean;
     readonly disableZoom?: boolean;
-    readonly displayXAccessor: any; // func
+    readonly displayXAccessor?: (data: any) => number | Date;
     readonly flipXScale?: boolean;
     readonly height: number;
     readonly margin: {
@@ -696,7 +696,6 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
         const start = head(xScale.domain());
         const end = xAccessor!(firstItem);
-        const { onLoadMore } = this.props;
 
         this.mutableState = {
             mouseXY,
@@ -726,6 +725,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             },
             () => {
                 if (start < end) {
+                    const { onLoadMore } = this.props;
                     if (onLoadMore !== undefined) {
                         onLoadMore(start, end);
                     }

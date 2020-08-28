@@ -32,6 +32,15 @@ export class HoverTextNearMouse extends React.Component<HoverTextNearMouseProps,
 
     private readonly textNode = React.createRef<SVGTextElement>();
 
+    public constructor(props: HoverTextNearMouseProps) {
+        super(props);
+
+        this.state = {
+            textWidth: undefined,
+            textHeight: undefined,
+        };
+    }
+
     public componentDidMount() {
         this.updateTextSize();
     }

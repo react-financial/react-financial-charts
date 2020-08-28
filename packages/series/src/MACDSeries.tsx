@@ -7,7 +7,6 @@ import { StraightLine } from "./StraightLine";
 export interface MACDSeriesProps {
     readonly className?: string;
     readonly clip?: boolean;
-    readonly divergenceStroke?: boolean;
     readonly fillStyle?: {
         divergence: string | CanvasGradient | CanvasPattern;
     };
@@ -30,7 +29,6 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
     public static defaultProps = {
         className: "react-financial-charts-macd-series",
         clip: true,
-        divergenceStroke: false,
         fillStyle: {
             divergence: "rgba(70, 130, 180, 0.6)",
         },
@@ -48,7 +46,6 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
             className,
             clip,
             fillStyle = MACDSeries.defaultProps.fillStyle,
-            divergenceStroke,
             strokeStyle = MACDSeries.defaultProps.strokeStyle,
             widthRatio,
             width,
@@ -60,7 +57,6 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
                     baseAt={this.yAccessorForDivergenceBase}
                     width={width}
                     widthRatio={widthRatio}
-                    stroke={divergenceStroke}
                     fillStyle={fillStyle.divergence}
                     clip={clip}
                     yAccessor={this.yAccessorForDivergence}

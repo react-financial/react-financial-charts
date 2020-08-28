@@ -25,8 +25,6 @@ export interface BarSeriesProps {
         | CanvasGradient
         | CanvasPattern
         | ((data: any) => string | CanvasGradient | CanvasPattern);
-    readonly opacity?: number;
-    readonly stroke?: boolean;
     readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
     readonly swapScales?: boolean;
     readonly width?: number | ((props: { widthRatio: number }, moreProps: any) => number);
@@ -44,9 +42,7 @@ export class BarSeries extends React.Component<BarSeriesProps> {
             yScale: ScaleContinuousNumeric<number, number> /* , d*/,
         ) => head(yScale.range()),
         clip: true,
-        direction: "up",
         fillStyle: "rgba(70, 130, 180, 0.5)",
-        stroke: false,
         swapScales: false,
         width: plotDataLengthBarWidth,
         widthRatio: 0.8,
@@ -73,7 +69,7 @@ export class BarSeries extends React.Component<BarSeriesProps> {
         } else {
             const bars = this.getBars(moreProps);
 
-            const { stroke, strokeStyle } = this.props;
+            const { strokeStyle } = this.props;
 
             const nest = group(bars, (d: any) => d.fillStyle);
 
@@ -90,7 +86,7 @@ export class BarSeries extends React.Component<BarSeriesProps> {
                         ctx.fillRect(d.x - 0.5, d.y, 1, d.height);
                     } else {
                         ctx.fillRect(d.x + 0.5, d.y + 0.5, d.width, d.height);
-                        if (stroke) {
+                        if (strokeStyle !== undefined) {
                             ctx.strokeRect(d.x, d.y, d.width, d.height);
                         }
                     }

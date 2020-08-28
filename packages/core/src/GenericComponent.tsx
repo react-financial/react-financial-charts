@@ -15,6 +15,7 @@ const aliases = {
     dragstart: "drag",
     dragend: "drag",
     dragcancel: "drag",
+    zoom: "zoom",
 };
 
 interface GenericComponentProps {

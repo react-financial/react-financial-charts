@@ -171,7 +171,9 @@ export const drawOnCanvas2 = (props: { stroke?: boolean }, ctx: CanvasRenderingC
 
     nest.forEach((values, key) => {
         if (head(values).width > 1) {
-            ctx.strokeStyle = key;
+            if (key !== undefined) {
+                ctx.strokeStyle = key;
+            }
         }
         ctx.fillStyle = key;
 

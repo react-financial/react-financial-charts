@@ -10,9 +10,9 @@ interface LinearRegressionChannelWithAreaProps {
         | "SD" // standard deviation channel
         | "Raff"; // Raff Regression Channel
     readonly interactiveCursorClass?: string;
-    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle: string;
     readonly strokeWidth: number;
-    readonly fillStyle: string | CanvasGradient | CanvasPattern;
+    readonly fillStyle: string;
     readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onDrag?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;

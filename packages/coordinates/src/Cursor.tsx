@@ -14,18 +14,10 @@ export interface CursorProps {
     readonly disableYCursor?: boolean;
     readonly snapX?: boolean;
     readonly strokeDasharray?: strokeDashTypes;
-    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle?: string;
     readonly useXCursorShape?: boolean;
-    readonly xCursorShapeFillStyle?:
-        | string
-        | CanvasGradient
-        | CanvasPattern
-        | ((currentItem: any) => string | CanvasGradient | CanvasPattern);
-    readonly xCursorShapeStrokeStyle?:
-        | string
-        | CanvasGradient
-        | CanvasPattern
-        | ((currentItem: any) => string | CanvasGradient | CanvasPattern);
+    readonly xCursorShapeFillStyle?: string | ((currentItem: any) => string);
+    readonly xCursorShapeStrokeStyle?: string | ((currentItem: any) => string);
     readonly xCursorShapeStrokeDasharray?: strokeDashTypes;
 }
 
@@ -63,7 +55,7 @@ export class Cursor extends React.Component<CursorProps> {
         );
     }
 
-    private getXCursorShapeStroke({ currentItem }: any): string | CanvasGradient | CanvasPattern | undefined {
+    private getXCursorShapeStroke({ currentItem }: any): string | undefined {
         const { xCursorShapeStrokeStyle } = this.props;
 
         return xCursorShapeStrokeStyle instanceof Function
@@ -71,7 +63,7 @@ export class Cursor extends React.Component<CursorProps> {
             : xCursorShapeStrokeStyle;
     }
 
-    private getXCursorShapeFill({ currentItem }: any): string | CanvasGradient | CanvasPattern | undefined {
+    private getXCursorShapeFill({ currentItem }: any): string | undefined {
         const { xCursorShapeFillStyle } = this.props;
 
         return xCursorShapeFillStyle instanceof Function ? xCursorShapeFillStyle(currentItem) : xCursorShapeFillStyle;

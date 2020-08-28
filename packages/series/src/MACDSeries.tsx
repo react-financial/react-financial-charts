@@ -8,12 +8,12 @@ export interface MACDSeriesProps {
     readonly className?: string;
     readonly clip?: boolean;
     readonly fillStyle?: {
-        divergence: string | CanvasGradient | CanvasPattern;
+        divergence: string;
     };
     readonly strokeStyle?: {
-        macd: string | CanvasGradient | CanvasPattern;
-        signal: string | CanvasGradient | CanvasPattern;
-        zero: string | CanvasGradient | CanvasPattern;
+        macd: string;
+        signal: string;
+        zero: string;
     };
     readonly widthRatio?: number;
     readonly width?: number | ((props: { widthRatio: number }, moreProps: any) => number);

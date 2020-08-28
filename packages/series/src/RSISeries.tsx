@@ -8,12 +8,12 @@ export interface RSISeriesProps {
     readonly className?: string;
     readonly yAccessor: (data: any) => any;
     readonly strokeStyle?: {
-        line: string | CanvasGradient | CanvasPattern;
-        top: string | CanvasGradient | CanvasPattern;
-        middle: string | CanvasGradient | CanvasPattern;
-        bottom: string | CanvasGradient | CanvasPattern;
-        outsideThreshold: string | CanvasGradient | CanvasPattern;
-        insideThreshold: string | CanvasGradient | CanvasPattern;
+        line: string;
+        top: string;
+        middle: string;
+        bottom: string;
+        outsideThreshold: string;
+        insideThreshold: string;
     };
     readonly strokeDasharray?: {
         line: strokeDashTypes;

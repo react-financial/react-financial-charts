@@ -17,9 +17,9 @@ interface EachLinearRegressionChannelProps {
     readonly x2Value: any;
     readonly index?: number;
     readonly appearance: {
-        readonly stroke: string | CanvasGradient | CanvasPattern;
+        readonly stroke: string;
         readonly strokeWidth: number;
-        readonly fill: string | CanvasGradient | CanvasPattern;
+        readonly fill: string;
         readonly edgeStrokeWidth: number;
         readonly edgeStroke: string;
         readonly edgeFill: string;

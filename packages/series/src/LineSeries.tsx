@@ -28,7 +28,7 @@ export interface LineSeriesProps {
     /**
      * Color, gradient, or pattern to use for the stroke.
      */
-    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle?: string;
     /**
      * Stroke dash.
      */
@@ -59,7 +59,16 @@ export class LineSeries extends React.Component<LineSeriesProps> {
     };
 
     public render() {
-        const { highlightOnHover, onClick, onContextMenu, onDoubleClick, onHover, onUnHover } = this.props;
+        const {
+            highlightOnHover,
+            onClick,
+            onContextMenu,
+            onDoubleClick,
+            onHover,
+            onUnHover,
+            strokeDasharray,
+        } = this.props;
+
         const hoverProps =
             highlightOnHover || onHover || onUnHover
                 ? {
@@ -72,9 +81,11 @@ export class LineSeries extends React.Component<LineSeriesProps> {
                       canvasToDraw: getAxisCanvas,
                   };
 
+        const lineDash = getStrokeDasharrayCanvas(strokeDasharray);
+
         return (
             <GenericChartComponent
-                canvasDraw={this.drawOnCanvas}
+                canvasDraw={this.drawOnCanvas(lineDash)}
                 onClickWhenHover={onClick}
                 onDoubleClickWhenHover={onDoubleClick}
                 onContextMenuWhenHover={onContextMenu}
@@ -85,17 +96,16 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
+    private readonly drawOnCanvas = (lineDash?: number[]) => (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const {
             connectNulls,
             yAccessor,
-            strokeStyle,
-            strokeWidth = LineSeries.defaultProps.strokeWidth,
             hoverStrokeWidth = LineSeries.defaultProps.hoverStrokeWidth,
             defined = LineSeries.defaultProps.defined,
-            strokeDasharray,
             interpolation,
             canvasClip,
+            strokeStyle,
+            strokeWidth = LineSeries.defaultProps.strokeWidth,
         } = this.props;
 
         const {
@@ -117,9 +127,9 @@ export class LineSeries extends React.Component<LineSeriesProps> {
             ctx.strokeStyle = strokeStyle;
         }
 
-        const lineDash = getStrokeDasharrayCanvas(strokeDasharray);
-
-        ctx.setLineDash(lineDash);
+        if (lineDash !== undefined) {
+            ctx.setLineDash(lineDash);
+        }
 
         const dataSeries = d3Line()
             .x((d) => Math.round(xScale(xAccessor(d))))

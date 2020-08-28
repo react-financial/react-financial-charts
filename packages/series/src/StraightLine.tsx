@@ -10,7 +10,7 @@ import {
 export interface StraightLineProps {
     readonly lineDash?: strokeDashTypes | number[];
     readonly lineWidth?: number;
-    readonly strokeStyle?: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle?: string;
     readonly type?: "vertical" | "horizontal";
     readonly yValue?: number;
     readonly xValue?: number;

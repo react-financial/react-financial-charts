@@ -5,13 +5,13 @@ import { isDefined, getAxisCanvas, GenericChartComponent } from "@react-financia
 export interface RenkoSeriesProps {
     readonly clip?: boolean;
     readonly fill?: {
-        up: string | CanvasGradient | CanvasPattern;
-        down: string | CanvasGradient | CanvasPattern;
-        partial: string | CanvasGradient | CanvasPattern;
+        up: string;
+        down: string;
+        partial: string;
     };
     readonly stroke?: {
-        up: string | CanvasGradient | CanvasPattern;
-        down: string | CanvasGradient | CanvasPattern;
+        up: string;
+        down: string;
     };
     readonly yAccessor?: (data: any) => any;
 }

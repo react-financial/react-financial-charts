@@ -5,11 +5,7 @@ import * as React from "react";
 
 export interface LabelProps {
     readonly datum?: any;
-    readonly fillStyle?:
-        | string
-        | CanvasGradient
-        | CanvasPattern
-        | ((datum: any) => string | CanvasGradient | CanvasPattern);
+    readonly fillStyle?: string | ((datum: any) => string);
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fontWeight?: string;

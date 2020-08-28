@@ -28,18 +28,10 @@ export interface CandlestickSeriesProps {
     readonly className?: string;
     readonly classNames?: string | (() => string);
     readonly clip?: boolean;
-    readonly fill?: string | CanvasGradient | CanvasPattern | ((data: any) => string | CanvasGradient | CanvasPattern);
-    readonly stroke?:
-        | string
-        | CanvasGradient
-        | CanvasPattern
-        | ((data: any) => string | CanvasGradient | CanvasPattern);
+    readonly fill?: string | ((data: any) => string);
+    readonly stroke?: string | ((data: any) => string);
     readonly wickClassName?: string;
-    readonly wickStroke?:
-        | string
-        | CanvasGradient
-        | CanvasPattern
-        | ((data: any) => string | CanvasGradient | CanvasPattern);
+    readonly wickStroke?: string | ((data: any) => string);
     readonly width?: number | ((props: CandlestickSeriesProps, moreProps: any) => number);
     readonly widthRatio?: number;
     readonly yAccessor?: (data: any) => { open: number; high: number; low: number; close: number };

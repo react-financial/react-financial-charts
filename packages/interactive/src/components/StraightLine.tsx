@@ -13,7 +13,7 @@ interface StraightLineProps {
     readonly y1Value: any;
     readonly y2Value: any;
     readonly interactiveCursorClass?: string;
-    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle: string;
     readonly strokeWidth?: number;
     readonly strokeDasharray?: strokeDashTypes;
     readonly type:

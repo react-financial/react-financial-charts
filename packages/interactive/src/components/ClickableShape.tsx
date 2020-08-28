@@ -7,7 +7,7 @@ interface ClickableShapeProps {
     readonly fontFamily: string;
     readonly fontStyle: string;
     readonly fontSize: number;
-    readonly strokeStyle: string | CanvasGradient | CanvasPattern;
+    readonly strokeStyle: string;
     readonly strokeWidth: number;
     readonly text: string;
     readonly textBox: {

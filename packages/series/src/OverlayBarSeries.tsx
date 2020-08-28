@@ -22,11 +22,7 @@ export interface OverlayBarSeriesProps {
     readonly stroke?: boolean;
     readonly width?: any;
     readonly widthRatio?: number;
-    readonly fillStyle?:
-        | string
-        | CanvasGradient
-        | CanvasPattern
-        | ((data: any, y: number) => string | CanvasGradient | CanvasPattern);
+    readonly fillStyle?: string | ((data: any, y: number) => string);
     readonly yAccessor: ((datum: any) => number | undefined)[];
     readonly xScale?: ScaleContinuousNumeric<number, number>;
     readonly yScale?: ScaleContinuousNumeric<number, number>;

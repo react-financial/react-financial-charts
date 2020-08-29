@@ -25,7 +25,7 @@ export interface XAxisProps {
     readonly showTickLabel?: boolean;
     readonly strokeStyle?: string;
     readonly strokeWidth?: number;
-    readonly tickFormat?: (data: any) => string;
+    readonly tickFormat?: (value: number | Date) => string;
     readonly tickPadding?: number;
     readonly tickSize?: number;
     readonly tickLabelFill?: string;

@@ -1,3 +1,4 @@
+export { default as algo } from "./algorithm";
 export { default as ema } from "./ema";
 export { default as sma } from "./sma";
 export { default as wma } from "./wma";

@@ -1,5 +1,5 @@
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
-import { head } from ".";
+import { first, last } from ".";
 
 /**
  * Bar width is based on the amount of items in the plot data and the distance between the first and last of those
@@ -10,45 +10,35 @@ import { head } from ".";
  */
 export const plotDataLengthBarWidth = <T>(
     props: { widthRatio: number },
-    moreProps: { xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>; plotData: T[] },
+    moreProps: {
+        xAccessor: (datum: T) => number | Date;
+        xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
+        plotData: T[];
+    },
 ): number => {
     const { widthRatio } = props;
-    const { xScale } = moreProps;
+    const { xAccessor, xScale, plotData } = moreProps;
 
     const [l, r] = xScale.range();
-
-    const totalWidth = Math.abs(r - l);
 
     if (xScale.invert != null) {
         const [dl, dr] = xScale.domain();
         if (typeof dl === "number" && typeof dr === "number") {
+            const totalWidth = Math.abs(r - l);
+
             const width = totalWidth / Math.abs(dl - dr);
 
             return width * widthRatio;
         }
 
-        return 1;
+        const width = xScale(xAccessor(last(plotData))) - xScale(xAccessor(first(plotData)));
+
+        return (width / plotData.length) * widthRatio * 0.7;
     }
+
+    const totalWidth = Math.abs(r - l);
 
     const width = totalWidth / xScale.domain().length;
 
     return width * widthRatio;
-};
-
-/**
- * Generates a width function that calculates the bar width based on the given time interval.
- * @param interval a d3-time time interval.
- * @return {Function} the width function.
- */
-export const timeIntervalBarWidth = (interval: any) => {
-    return function <T>(
-        props: { widthRatio: number },
-        moreProps: { xScale: ScaleContinuousNumeric<number, number>; xAccessor: any; plotData: T[] },
-    ) {
-        const { widthRatio } = props;
-        const { xScale, xAccessor, plotData } = moreProps;
-
-        const first = xAccessor(head(plotData));
-        return Math.abs(xScale(interval.offset(first, 1)) - xScale(first)) * widthRatio;
-    };
 };

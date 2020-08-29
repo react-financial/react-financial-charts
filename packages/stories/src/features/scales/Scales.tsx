@@ -1,7 +1,7 @@
 import { format } from "d3-format";
 import { scaleTime, ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
-import { Chart, ChartCanvas, XAxis, YAxis, AreaSeries, withDeviceRatio, withSize } from "react-financial-charts";
+import { Chart, ChartCanvas, XAxis, YAxis, CandlestickSeries, withDeviceRatio, withSize } from "react-financial-charts";
 import { IOHLCData, withOHLCData } from "../../data";
 
 interface ChartProps {
@@ -39,17 +39,13 @@ class Scales extends React.Component<ChartProps> {
                 xExtents={xExtents}
             >
                 <Chart id={1} yExtents={this.yExtents} yScale={yScale}>
-                    <AreaSeries yAccessor={this.yAccessor} />
+                    <CandlestickSeries />
                     <XAxis />
                     <YAxis tickFormat={format(".2f")} />
                 </Chart>
             </ChartCanvas>
         );
     }
-
-    private readonly yAccessor = (data: IOHLCData) => {
-        return data.close;
-    };
 
     private readonly yExtents = (data: IOHLCData) => {
         return [data.high, data.low];

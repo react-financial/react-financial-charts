@@ -6,11 +6,15 @@ export interface SARSeriesProps {
         falling: string;
         rising: string;
     };
+    readonly strokeStyle?: {
+        falling: string;
+        rising: string;
+    };
     readonly highlightOnHover?: boolean;
     readonly onClick?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onDoubleClick?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onContextMenu?: (e: React.MouseEvent, moreProps: any) => void;
-    readonly yAccessor: (datum: any) => number;
+    readonly yAccessor: (datum: any) => number | undefined;
 }
 
 /**
@@ -25,7 +29,7 @@ export class SARSeries extends React.Component<SARSeriesProps> {
             falling: "#4682B4",
             rising: "#15EC2E",
         },
-        highlightOnHover: true,
+        highlightOnHover: false,
     };
 
     public render() {
@@ -54,7 +58,7 @@ export class SARSeries extends React.Component<SARSeriesProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
-        const { yAccessor, fillStyle = SARSeries.defaultProps.fillStyle } = this.props;
+        const { yAccessor, fillStyle = SARSeries.defaultProps.fillStyle, strokeStyle } = this.props;
         const {
             xAccessor,
             plotData,
@@ -68,19 +72,28 @@ export class SARSeries extends React.Component<SARSeriesProps> {
         const d = ((width / plotData.length) * 0.5) / 2;
         const radius = Math.min(2, Math.max(0.5, d)) + (hovering ? 2 : 0);
 
-        plotData.forEach((each: any) => {
+        (plotData as any[]).forEach((each) => {
+            const yValue = yAccessor(each);
+            if (yValue === undefined) {
+                return;
+            }
+
             const centerX = xScale(xAccessor(each));
-            const centerY = yScale(yAccessor(each));
-            const color = yAccessor(each) > each.close ? fillStyle.falling : fillStyle.rising;
+            const centerY = yScale(yValue);
+            const color = yValue > each.close ? fillStyle.falling : fillStyle.rising;
 
             ctx.fillStyle = color;
-            ctx.strokeStyle = color;
+            if (strokeStyle !== undefined) {
+                ctx.strokeStyle = yValue > each.close ? strokeStyle.falling : strokeStyle.rising;
+            }
 
             ctx.beginPath();
             ctx.ellipse(centerX, centerY, radius, radius, 0, 0, 2 * Math.PI);
             ctx.closePath();
             ctx.fill();
-            ctx.stroke();
+            if (strokeStyle !== undefined) {
+                ctx.stroke();
+            }
         });
     };
 

@@ -6,15 +6,23 @@ import {
     plotDataLengthBarWidth,
 } from "@react-financial-charts/core";
 import { group } from "d3-array";
-import { ScaleContinuousNumeric } from "d3-scale";
+import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";
 import { drawOnCanvasHelper, identityStack } from "./StackedBarSeries";
+
+interface IBar {
+    readonly x: number;
+    readonly y: number;
+    readonly height: number;
+    readonly width: number;
+    readonly fillStyle: string;
+}
 
 export interface BarSeriesProps {
     readonly baseAt?:
         | number
         | ((
-              xScale: ScaleContinuousNumeric<number, number>,
+              xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
               yScale: ScaleContinuousNumeric<number, number>,
               d: [number, number],
               moreProps: any,
@@ -91,7 +99,12 @@ export class BarSeries extends React.Component<BarSeriesProps> {
         }
     };
 
-    private readonly getBars = (moreProps: any) => {
+    private readonly getBars = (moreProps: {
+        chartConfig: any;
+        xAccessor: (data: any) => number | Date;
+        xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
+        plotData: any[];
+    }) => {
         const { baseAt, fillStyle, width, yAccessor } = this.props;
 
         const {
@@ -114,13 +127,16 @@ export class BarSeries extends React.Component<BarSeriesProps> {
         const offset = Math.floor(0.5 * barWidth);
 
         return plotData
-            .filter((d: any) => yAccessor(d) !== undefined)
-            .map((d: any) => {
-                const xValue = xAccessor(d);
+            .map((d) => {
                 const yValue = yAccessor(d);
-                let y = yScale(yValue);
+                if (yValue === undefined) {
+                    return undefined;
+                }
 
+                const xValue = xAccessor(d);
                 const x = Math.round(xScale(xValue)) - offset;
+
+                let y = yScale(yValue);
 
                 let h = getBase(xScale, yScale, d) - yScale(yValue);
                 if (h < 0) {
@@ -135,6 +151,7 @@ export class BarSeries extends React.Component<BarSeriesProps> {
                     width: offset * 2,
                     fillStyle: getFill(d),
                 };
-            });
+            })
+            .filter((d) => d !== undefined) as IBar[];
     };
 }

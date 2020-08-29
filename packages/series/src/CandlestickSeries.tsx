@@ -1,13 +1,12 @@
 import { functor, getAxisCanvas, GenericChartComponent, plotDataLengthBarWidth } from "@react-financial-charts/core";
 import { group } from "d3-array";
-import { ScaleContinuousNumeric } from "d3-scale";
+import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";
 
 export interface ICandle {
     readonly x: number;
     readonly y: number;
     readonly height: number;
-    readonly className?: string;
     readonly fill: string;
     readonly stroke: string;
     readonly direction: number;
@@ -23,30 +22,22 @@ export interface ICandle {
 }
 
 export interface CandlestickSeriesProps {
-    readonly candleClassName?: string;
     readonly candleStrokeWidth?: number;
-    readonly className?: string;
-    readonly classNames?: string | (() => string);
     readonly clip?: boolean;
     readonly fill?: string | ((data: any) => string);
     readonly stroke?: string | ((data: any) => string);
-    readonly wickClassName?: string;
     readonly wickStroke?: string | ((data: any) => string);
     readonly width?: number | ((props: CandlestickSeriesProps, moreProps: any) => number);
     readonly widthRatio?: number;
-    readonly yAccessor?: (data: any) => { open: number; high: number; low: number; close: number };
+    readonly yAccessor: (data: any) => { open: number; high: number; low: number; close: number } | undefined;
 }
 
 export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
     public static defaultProps = {
-        candleClassName: "react-financial-charts-candlestick-candle",
         candleStrokeWidth: 0.5,
-        className: "react-financial-charts-candlestick",
-        classNames: (d: any) => (d.close > d.open ? "up" : "down"),
         clip: true,
         fill: (d: any) => (d.close > d.open ? "#26a69a" : "#ef5350"),
         stroke: (d: any) => (d.close > d.open ? "#26a69a" : "#ef5350"),
-        wickClassName: "react-financial-charts-candlestick-wick",
         wickStroke: (d: any) => (d.close > d.open ? "#26a69a" : "#ef5350"),
         width: plotDataLengthBarWidth,
         widthRatio: 0.8,
@@ -125,23 +116,16 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
     };
 
     private readonly getCandleData = (
-        xAccessor: (data: any) => number,
-        xScale: ScaleContinuousNumeric<number, number>,
+        xAccessor: (data: any) => number | Date,
+        xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         yScale: ScaleContinuousNumeric<number, number>,
         plotData: any[],
-    ): ICandle[] => {
-        const {
-            classNames,
-            fill: fillProp,
-            stroke: strokeProp,
-            yAccessor = CandlestickSeries.defaultProps.yAccessor,
-            wickStroke: wickStrokeProp,
-        } = this.props;
+    ) => {
+        const { fill: fillProp, stroke: strokeProp, yAccessor, wickStroke: wickStrokeProp } = this.props;
 
-        const wickStroke = functor(wickStrokeProp);
-        const className = functor(classNames);
         const fill = functor(fillProp);
         const stroke = functor(strokeProp);
+        const wickStroke = functor(wickStrokeProp);
         const widthFunctor = functor(this.props.width);
         const width = widthFunctor(this.props, {
             xScale,
@@ -156,6 +140,10 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
             .filter((d) => d.close !== undefined)
             .map((d) => {
                 const ohlc = yAccessor(d);
+                if (ohlc === undefined) {
+                    return undefined;
+                }
+
                 const x = Math.round(xScale(xAccessor(d)));
                 const y = Math.round(yScale(Math.max(ohlc.open, ohlc.close)));
                 const height = Math.max(1, Math.round(Math.abs(yScale(ohlc.open) - yScale(ohlc.close))));
@@ -173,11 +161,11 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
                     },
                     height,
                     width: offset * 2,
-                    className: className(ohlc),
                     fill: fill(ohlc),
                     stroke: stroke(ohlc),
                     direction: ohlc.close - ohlc.open,
                 };
-            });
+            })
+            .filter((d) => d !== undefined) as ICandle[];
     };
 }

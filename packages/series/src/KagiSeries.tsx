@@ -2,12 +2,21 @@ import * as React from "react";
 import { isDefined, isNotDefined, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
 export interface KagiSeriesProps {
+    /**
+     * Current value stroke
+     */
     readonly currentValueStroke?: string;
-    readonly fill?: {
+    /**
+     * Fill values.
+     */
+    readonly fill: {
         yang: string;
         yin: string;
     };
-    readonly stroke?: {
+    /**
+     * Stroke values.
+     */
+    readonly stroke: {
         yang: string;
         yin: string;
     };
@@ -39,7 +48,7 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
     }
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
-        const { stroke = KagiSeries.defaultProps.stroke, strokeWidth, currentValueStroke } = this.props;
+        const { stroke, strokeWidth, currentValueStroke } = this.props;
         const {
             xAccessor,
             xScale,
@@ -47,7 +56,7 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
             plotData,
         } = moreProps;
 
-        const paths = helper(plotData, xAccessor);
+        const paths = this.helper(plotData, xAccessor);
 
         let begin = true;
 
@@ -94,53 +103,53 @@ export class KagiSeries extends React.Component<KagiSeriesProps> {
         ctx.lineTo(x, y2);
         ctx.stroke();
     };
-}
 
-const helper = (plotData: any[], xAccessor: any) => {
-    const kagiLine: any[] = [];
-    let kagi: {
-        added?: boolean;
-        plot?: any;
-        type?: any;
-    } = {};
-    let d = plotData[0];
-    let idx = xAccessor(d);
+    private readonly helper = (plotData: any[], xAccessor: any) => {
+        const kagiLine: any[] = [];
+        let kagi: {
+            added?: boolean;
+            plot?: any;
+            type?: any;
+        } = {};
+        let d = plotData[0];
+        let idx = xAccessor(d);
 
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < plotData.length; i++) {
-        d = plotData[i];
+        // tslint:disable-next-line: prefer-for-of
+        for (let i = 0; i < plotData.length; i++) {
+            d = plotData[i];
 
-        if (isNotDefined(d.close)) {
-            continue;
+            if (isNotDefined(d.close)) {
+                continue;
+            }
+            if (isNotDefined(kagi.type)) {
+                kagi.type = d.startAs;
+            }
+            if (isNotDefined(kagi.plot)) {
+                kagi.plot = [];
+            }
+
+            idx = xAccessor(d);
+            kagi.plot.push([idx, d.open]);
+
+            if (isDefined(d.changeTo)) {
+                kagi.plot.push([idx, d.changePoint]);
+                kagi.added = true;
+                kagiLine.push(kagi);
+
+                kagi = {
+                    type: d.changeTo,
+                    plot: [],
+                    added: false,
+                };
+                kagi.plot.push([idx, d.changePoint]);
+            }
         }
-        if (isNotDefined(kagi.type)) {
-            kagi.type = d.startAs;
-        }
-        if (isNotDefined(kagi.plot)) {
-            kagi.plot = [];
-        }
 
-        idx = xAccessor(d);
-        kagi.plot.push([idx, d.open]);
-
-        if (isDefined(d.changeTo)) {
-            kagi.plot.push([idx, d.changePoint]);
-            kagi.added = true;
+        if (!kagi.added) {
+            kagi.plot.push([idx, d.close, d.current, d.reverseAt]);
             kagiLine.push(kagi);
-
-            kagi = {
-                type: d.changeTo,
-                plot: [],
-                added: false,
-            };
-            kagi.plot.push([idx, d.changePoint]);
         }
-    }
 
-    if (!kagi.added) {
-        kagi.plot.push([idx, d.close, d.current, d.reverseAt]);
-        kagiLine.push(kagi);
-    }
-
-    return kagiLine;
-};
+        return kagiLine;
+    };
+}

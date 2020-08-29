@@ -6,24 +6,54 @@ import {
     getMouseCanvas,
     GenericChartComponent,
 } from "@react-financial-charts/core";
-import { line as d3Line, CurveFactoryLineOnly, CurveFactory } from "d3-shape";
+import { line, CurveFactoryLineOnly, CurveFactory } from "d3-shape";
 import * as React from "react";
 
 export interface LineSeriesProps {
     readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
+    /**
+     * Wether to connect the line between undefined data points.
+     */
     readonly connectNulls?: boolean;
-    readonly defined?: (d: number | undefined) => boolean;
-    readonly highlightOnHover?: boolean;
-    readonly hoverStrokeWidth?: number;
-    readonly hoverTolerance?: number;
     /**
      * A factory for a curve generator for the line.
      */
-    readonly interpolation?: CurveFactory | CurveFactoryLineOnly;
+    readonly curve?: CurveFactory | CurveFactoryLineOnly;
+    /**
+     * Function to decide if a data point has been defined.
+     */
+    readonly defined?: (d: number | undefined) => boolean;
+    /**
+     * Whether to highlight the line when within the `hoverTolerance`.
+     */
+    readonly highlightOnHover?: boolean;
+    /**
+     * Width to increase the line to on hover.
+     */
+    readonly hoverStrokeWidth?: number;
+    /**
+     * The distance between the cursor and the closest point in the line.
+     */
+    readonly hoverTolerance?: number;
+    /**
+     * Click handler.
+     */
     readonly onClick?: (e: React.MouseEvent, moreProps: any) => void;
+    /**
+     * Double click handler.
+     */
     readonly onDoubleClick?: (e: React.MouseEvent, moreProps: any) => void;
+    /**
+     * Hover handler.
+     */
     readonly onHover?: (e: React.MouseEvent, moreProps: any) => void;
+    /**
+     * Unhover handler.
+     */
     readonly onUnHover?: (e: React.MouseEvent, moreProps: any) => void;
+    /**
+     * Context menu handler.
+     */
     readonly onContextMenu?: (e: React.MouseEvent, moreProps: any) => void;
     /**
      * Color, gradient, or pattern to use for the stroke.
@@ -102,7 +132,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
             yAccessor,
             hoverStrokeWidth = LineSeries.defaultProps.hoverStrokeWidth,
             defined = LineSeries.defaultProps.defined,
-            interpolation,
+            curve,
             canvasClip,
             strokeStyle,
             strokeWidth = LineSeries.defaultProps.strokeWidth,
@@ -131,12 +161,12 @@ export class LineSeries extends React.Component<LineSeriesProps> {
             ctx.setLineDash(lineDash);
         }
 
-        const dataSeries = d3Line()
+        const dataSeries = line()
             .x((d) => Math.round(xScale(xAccessor(d))))
             .y((d) => Math.round(yScale(yAccessor(d))));
 
-        if (interpolation !== undefined) {
-            dataSeries.curve(interpolation);
+        if (curve !== undefined) {
+            dataSeries.curve(curve);
         }
 
         if (!connectNulls) {

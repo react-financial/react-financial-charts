@@ -3,7 +3,6 @@ import { scaleLinear } from "d3-scale";
 import * as React from "react";
 import {
     accumulatingWindow,
-    colorToRGBA,
     functor,
     head,
     identity,
@@ -13,30 +12,38 @@ import {
 } from "@react-financial-charts/core";
 
 export interface VolumeProfileSeriesProps {
-    readonly className?: string;
-    readonly opacity?: number;
-    readonly showSessionBackground?: boolean;
+    readonly absoluteChange: (datum: any) => number;
+    readonly bins: number;
+    readonly bySession?: boolean;
+    readonly fill?: (widthType: { type: "up" | "down"; width: number }) => string;
+    readonly maxProfileWidthPercent: number;
+    readonly orient?: "left" | "right";
+    readonly partialStartOK?: boolean;
+    readonly partialEndOK?: boolean;
     readonly sessionBackGround?: string;
+    readonly sessionStart: ({ d, i, plotData }: any) => boolean;
+    readonly showSessionBackground?: boolean;
+    readonly source: (d: number, i: number, data: ArrayLike<number>) => number;
+    readonly stroke?: string;
+    readonly volume: (datum: any) => number;
 }
 
 export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProps> {
     public static defaultProps = {
-        className: "line ",
-        bins: 20,
-        opacity: 0.5,
-        maxProfileWidthPercent: 50,
-        fill: ({ type }: any) => (type === "up" ? "#6BA583" : "#FF0000"),
-        stroke: "#FFFFFF",
-        showSessionBackground: false,
-        sessionBackGround: "rgba(70, 130, 180, 0.3)",
-        source: (d: any) => d.close,
-        volume: (d: any) => d.volume,
         absoluteChange: (d: any) => d.absoluteChange,
+        bins: 20,
         bySession: false,
-        sessionStart: ({ d, i, plotData }: any) => i > 0 && plotData[i - 1].date.getMonth() !== d.date.getMonth(),
+        fill: ({ type }: { type: "up" | "down"; width: number }) => (type === "up" ? "#6BA583" : "#FF0000"),
+        maxProfileWidthPercent: 50,
         orient: "left",
         partialStartOK: true,
         partialEndOK: true,
+        sessionBackGround: "rgba(70, 130, 180, 0.3)",
+        sessionStart: ({ d, i, plotData }: any) => i > 0 && plotData[i - 1].date.getMonth() !== d.date.getMonth(),
+        showSessionBackground: false,
+        source: (d: any) => d.close,
+        stroke: "#FFFFFF",
+        volume: (d: any) => d.volume,
     };
 
     public render() {
@@ -48,16 +55,11 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
 
         const { rects, sessionBg } = this.helper(this.props, moreProps, xAccessor, width);
 
-        this.drawOnCanvasContext(ctx, this.props, rects, sessionBg);
+        this.drawOnCanvasContext(ctx, rects, sessionBg);
     };
 
-    private readonly drawOnCanvasContext = (
-        ctx: CanvasRenderingContext2D,
-        props: VolumeProfileSeriesProps,
-        rects: any[],
-        sessionBg: any[],
-    ) => {
-        const { opacity, sessionBackGround, showSessionBackground } = props;
+    private readonly drawOnCanvasContext = (ctx: CanvasRenderingContext2D, rects: any[], sessionBg: any[]) => {
+        const { sessionBackGround, showSessionBackground } = this.props;
 
         if (showSessionBackground) {
             if (sessionBackGround !== undefined) {
@@ -78,7 +80,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
             const { x, y, height, w1, w2, stroke1, stroke2, fill1, fill2 } = each;
 
             if (w1 > 0) {
-                ctx.fillStyle = colorToRGBA(fill1, opacity);
+                ctx.fillStyle = fill1;
                 if (stroke1 !== "none") {
                     ctx.strokeStyle = stroke1;
                 }
@@ -94,7 +96,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
             }
 
             if (w2 > 0) {
-                ctx.fillStyle = colorToRGBA(fill2, opacity);
+                ctx.fillStyle = fill2;
                 if (stroke2 !== "none") {
                     ctx.strokeStyle = stroke2;
                 }
@@ -111,7 +113,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         });
     };
 
-    private readonly helper = (props: any, moreProps: any, xAccessor: any, width: number) => {
+    private readonly helper = (props: VolumeProfileSeriesProps, moreProps: any, xAccessor: any, width: number) => {
         const {
             xScale: realXScale,
             chartConfig: { yScale },
@@ -124,7 +126,6 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
 
         const sessionBuilder = accumulatingWindow()
             .discardTillStart(!partialStartOK)
-            // @ts-ignore
             .discardTillEnd(!partialEndOK)
             .accumulateTill((d: any, i: any) => {
                 return sessionStart({ d, i, ...moreProps });

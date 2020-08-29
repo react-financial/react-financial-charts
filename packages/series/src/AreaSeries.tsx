@@ -6,6 +6,9 @@ import { AreaOnlySeries } from "./AreaOnlySeries";
 import { LineSeries } from "./LineSeries";
 
 export interface AreaSeriesProps {
+    /**
+     * The base y value to draw the area to.
+     */
     readonly baseAt?:
         | number
         | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
@@ -18,7 +21,7 @@ export interface AreaSeriesProps {
     /**
      * A factory for a curve generator for the area and line.
      */
-    readonly interpolation?: CurveFactory;
+    readonly curve?: CurveFactory;
     /**
      * Color, gradient, or pattern to use for the stroke.
      */
@@ -57,7 +60,7 @@ export class AreaSeries extends Component<AreaSeriesProps> {
             strokeWidth,
             strokeDasharray,
             fillStyle,
-            interpolation,
+            curve,
             canvasClip,
             yAccessor,
         } = this.props;
@@ -66,7 +69,7 @@ export class AreaSeries extends Component<AreaSeriesProps> {
             <g className={className}>
                 <AreaOnlySeries
                     yAccessor={yAccessor}
-                    interpolation={interpolation}
+                    curve={curve}
                     base={baseAt}
                     fillStyle={fillStyle}
                     canvasClip={canvasClip}
@@ -76,7 +79,7 @@ export class AreaSeries extends Component<AreaSeriesProps> {
                     strokeStyle={strokeStyle}
                     strokeWidth={strokeWidth}
                     strokeDasharray={strokeDasharray}
-                    interpolation={interpolation}
+                    curve={curve}
                     canvasClip={canvasClip}
                     highlightOnHover={false}
                 />

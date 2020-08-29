@@ -1,4 +1,4 @@
-import { ScaleContinuousNumeric } from "d3-scale";
+import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";
 import { BarSeries } from "./BarSeries";
 import { LineSeries } from "./LineSeries";
@@ -69,7 +69,7 @@ export class MACDSeries extends React.Component<MACDSeriesProps> {
     }
 
     private readonly yAccessorForDivergenceBase = (
-        xScale: ScaleContinuousNumeric<number, number>,
+        xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         yScale: ScaleContinuousNumeric<number, number>,
     ) => {
         return yScale(0);

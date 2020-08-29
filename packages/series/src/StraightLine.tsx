@@ -1,4 +1,4 @@
-import { ScaleContinuousNumeric } from "d3-scale";
+import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";
 import {
     getAxisCanvas,
@@ -61,7 +61,7 @@ export class StraightLine extends React.Component<StraightLineProps> {
 
     private readonly getLineCoordinates = (
         type: "horizontal" | "vertical" | undefined,
-        xScale: ScaleContinuousNumeric<number, number>,
+        xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         yScale: ScaleContinuousNumeric<number, number>,
         xValue: number | undefined,
         yValue: number | undefined,

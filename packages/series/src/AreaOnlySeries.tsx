@@ -1,9 +1,12 @@
 import { first, functor, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { ScaleContinuousNumeric } from "d3-scale";
-import { area as d3Area, CurveFactory } from "d3-shape";
+import { area, CurveFactory } from "d3-shape";
 import * as React from "react";
 
 export interface AreaOnlySeriesProps {
+    /**
+     * The base y value to draw the area to.
+     */
     readonly base?:
         | number
         | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number | undefined);
@@ -19,7 +22,7 @@ export interface AreaOnlySeriesProps {
     /**
      * A factory for a curve generator for the area.
      */
-    readonly interpolation?: CurveFactory;
+    readonly curve?: CurveFactory;
     /**
      * Selector for data to plot.
      */
@@ -39,7 +42,7 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const {
             fillStyle,
-            interpolation,
+            curve,
             canvasClip,
             yAccessor,
             defined = AreaOnlySeries.defaultProps.defined,
@@ -64,22 +67,22 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
 
         ctx.beginPath();
         const newBase = functor(base);
-        const areaSeries = d3Area()
+        const areaSeries = area()
             .defined((d) => defined(yAccessor(d)))
             .x((d) => Math.round(xScale(xAccessor(d))))
             .y0((d) => newBase(yScale, d, moreProps))
             .y1((d) => Math.round(yScale(yAccessor(d))))
             .context(ctx);
 
-        if (interpolation !== undefined) {
-            areaSeries.curve(interpolation);
+        if (curve !== undefined) {
+            areaSeries.curve(curve);
         }
 
         areaSeries(plotData);
 
         ctx.fill();
 
-        if (canvasClip) {
+        if (canvasClip !== undefined) {
             ctx.restore();
         }
     };

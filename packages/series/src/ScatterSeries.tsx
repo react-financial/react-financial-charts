@@ -1,12 +1,25 @@
 import { functor, getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { group } from "d3-array";
+import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";
 
 export interface ScatterSeriesProps {
-    readonly marker?: any; // func
-    readonly markerProvider?: any; // func
+    /**
+     * A Marker to draw.
+     */
+    readonly marker?: any;
+    /**
+     * Given the data point return a Marker.
+     */
+    readonly markerProvider?: (datum: any) => any;
+    /**
+     * Props to pass to the marker.
+     */
     readonly markerProps?: object;
-    readonly yAccessor: (data: any) => number;
+    /**
+     * Accessor for y value.
+     */
+    readonly yAccessor: (data: any) => number | undefined;
 }
 
 export class ScatterSeries extends React.Component<ScatterSeriesProps> {
@@ -43,7 +56,12 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
         });
     };
 
-    private readonly getMarkers = (moreProps: any) => {
+    private readonly getMarkers = (moreProps: {
+        xAccessor: (data: any) => number | Date;
+        xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
+        chartConfig: any;
+        plotData: any[];
+    }) => {
         const { yAccessor, markerProvider, markerProps } = this.props;
 
         const {
@@ -58,24 +76,33 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
             throw new Error("required prop, either marker or markerProvider missing");
         }
 
-        return plotData.map((d: any) => {
-            if (markerProvider) {
-                Marker = markerProvider(d);
-            }
+        return plotData
+            .map((d: any) => {
+                const yValue = yAccessor(d);
+                if (yValue === undefined) {
+                    return undefined;
+                }
 
-            const mProps = { ...Marker.defaultProps, ...markerProps };
+                const xValue = xAccessor(d);
 
-            const fill = functor(mProps.fillStyle);
-            const stroke = functor(mProps.strokeStyle);
+                if (markerProvider) {
+                    Marker = markerProvider(d);
+                }
 
-            return {
-                x: xScale(xAccessor(d)),
-                y: yScale(yAccessor(d)),
-                fillStyle: fill(d),
-                strokeStyle: stroke(d),
-                datum: d,
-                marker: Marker,
-            };
-        });
+                const mProps = { ...Marker.defaultProps, ...markerProps };
+
+                const fill = functor(mProps.fillStyle);
+                const stroke = functor(mProps.strokeStyle);
+
+                return {
+                    x: xScale(xValue),
+                    y: yScale(yValue),
+                    fillStyle: fill(d),
+                    strokeStyle: stroke(d),
+                    datum: d,
+                    marker: Marker,
+                };
+            })
+            .filter((marker) => marker !== undefined);
     };
 }

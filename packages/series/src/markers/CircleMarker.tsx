@@ -41,11 +41,13 @@ export class CircleMarker extends React.Component<CircleMarkerProps> {
             ctx.fillStyle = fillStyle;
         }
 
-        const radius = functor(r)(point.datum);
+        const { datum, x, y } = point;
 
-        ctx.moveTo(point.x, point.y);
+        const radius = functor(r)(datum);
+
+        ctx.moveTo(x, y);
         ctx.beginPath();
-        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI, false);
+        ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
         ctx.stroke();
         ctx.fill();
     };

@@ -1,14 +1,12 @@
 export * from "./AreaSeries";
 export * from "./AlternatingFillAreaSeries";
 export * from "./AreaOnlySeries";
-export * from "./CircleMarker";
-export * from "./TriangleMarker";
-export * from "./SquareMarker";
+export * from "./markers";
 export * from "./LineSeries";
 export * from "./CandlestickSeries";
 export * from "./OHLCSeries";
 export * from "./BarSeries";
-export { StackedBarSeries } from "./StackedBarSeries";
+export { StackedBarSeries, StackedBarSeriesProps } from "./StackedBarSeries";
 export * from "./GroupedBarSeries";
 export * from "./KagiSeries";
 export * from "./PointAndFigureSeries";

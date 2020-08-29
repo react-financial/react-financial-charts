@@ -18,7 +18,7 @@ export interface AlternatingFillAreaSeriesProps {
     /**
      * A factory for a curve generator for the area and line.
      */
-    readonly interpolation?: CurveFactory;
+    readonly curve?: CurveFactory;
     /**
      * Color, gradient, or pattern to use for the stroke.
      */
@@ -77,7 +77,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         const {
             className,
             yAccessor,
-            interpolation,
+            curve,
             strokeStyle = AlternatingFillAreaSeries.defaultProps.strokeStyle,
             strokeWidth = AlternatingFillAreaSeries.defaultProps.strokeWidth,
             strokeDasharray = AlternatingFillAreaSeries.defaultProps.strokeDasharray,
@@ -90,7 +90,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
                 <AreaSeries
                     canvasClip={this.topClip}
                     yAccessor={yAccessor}
-                    interpolation={interpolation}
+                    curve={curve}
                     baseAt={this.baseAt}
                     fillStyle={fillStyle.top}
                     strokeStyle={strokeStyle.top}
@@ -100,7 +100,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
                 <AreaSeries
                     canvasClip={this.bottomClip}
                     yAccessor={yAccessor}
-                    interpolation={interpolation}
+                    curve={curve}
                     baseAt={this.baseAt}
                     fillStyle={fillStyle.bottom}
                     strokeStyle={strokeStyle.bottom}

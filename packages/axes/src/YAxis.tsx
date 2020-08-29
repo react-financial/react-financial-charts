@@ -25,7 +25,7 @@ export interface YAxisProps {
     readonly showTickLabel?: boolean;
     readonly strokeStyle?: string;
     readonly strokeWidth?: number;
-    readonly tickFormat?: (data: any) => string;
+    readonly tickFormat?: (value: number) => string;
     readonly tickPadding?: number;
     readonly tickSize?: number;
     readonly tickLabelFill?: string;

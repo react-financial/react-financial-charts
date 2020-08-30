@@ -286,8 +286,21 @@ export interface ChartCanvasProps {
     readonly maintainPointsPerPixelOnResize?: boolean;
     readonly minPointsPerPxThreshold?: number;
     readonly mouseMoveEvent?: boolean;
-    readonly onLoadMore?: (start: number | Date, end: number | Date) => void;
+    /**
+     * Called when panning left past the first data point.
+     */
+    readonly onLoadAfter?: (start: number | Date, end: number | Date) => void;
+    /**
+     * Called when panning right past the last data point.
+     */
+    readonly onLoadBefore?: (start: number | Date, end: number | Date) => void;
+    /**
+     * Click event handler.
+     */
     readonly onClick?: React.MouseEventHandler<HTMLDivElement>;
+    /**
+     * Double click event handler.
+     */
     readonly onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
     readonly padding?:
         | number
@@ -644,15 +657,24 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
 
             const { fullData } = this;
             const firstItem = head(fullData);
+            const scale_start = head(xScale.domain());
+            const data_start = xAccessor(firstItem);
 
-            const start = head(xScale.domain());
-            const end = xAccessor(firstItem);
-            const { onLoadMore } = this.props;
+            const lastItem = last(fullData);
+            const scale_end = last(xScale.domain());
+            const data_end = xAccessor(lastItem);
+
+            const { onLoadAfter, onLoadBefore } = this.props;
 
             this.setState(state, () => {
-                if (start < end) {
-                    if (onLoadMore !== undefined) {
-                        onLoadMore(start, end);
+                if (scale_start < data_start) {
+                    if (onLoadBefore !== undefined) {
+                        onLoadBefore(scale_start, data_start);
+                    }
+                }
+                if (data_end < scale_end) {
+                    if (onLoadAfter !== undefined) {
+                        onLoadAfter(data_end, scale_end);
                     }
                 }
             });
@@ -693,9 +715,12 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         this.clearThreeCanvas();
 
         const firstItem = head(fullData);
+        const scale_start = head(xScale.domain());
+        const data_start = xAccessor!(firstItem);
 
-        const start = head(xScale.domain());
-        const end = xAccessor!(firstItem);
+        const lastItem = last(fullData);
+        const scale_end = last(xScale.domain());
+        const data_end = xAccessor!(lastItem);
 
         this.mutableState = {
             mouseXY,
@@ -717,6 +742,8 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             e,
         );
 
+        const { onLoadAfter, onLoadBefore } = this.props;
+
         this.setState(
             {
                 xScale,
@@ -724,10 +751,14 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                 chartConfig,
             },
             () => {
-                if (start < end) {
-                    const { onLoadMore } = this.props;
-                    if (onLoadMore !== undefined) {
-                        onLoadMore(start, end);
+                if (scale_start < data_start) {
+                    if (onLoadBefore !== undefined) {
+                        onLoadBefore(scale_start, data_start);
+                    }
+                }
+                if (data_end < scale_end) {
+                    if (onLoadAfter !== undefined) {
+                        onLoadAfter(data_end, scale_end);
                     }
                 }
             },
@@ -741,9 +772,14 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const { xAccessor } = this.state;
         const { fullData } = this;
         const firstItem = head(fullData);
-        const start = head(xScale.domain());
-        const end = xAccessor!(firstItem);
-        const { onLoadMore } = this.props;
+        const scale_start = head(xScale.domain());
+        const data_start = xAccessor!(firstItem);
+
+        const lastItem = last(fullData);
+        const scale_end = last(xScale.domain());
+        const data_end = xAccessor!(lastItem);
+
+        const { onLoadAfter, onLoadBefore } = this.props;
 
         this.setState(
             {
@@ -752,9 +788,14 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                 chartConfig,
             },
             () => {
-                if (start < end) {
-                    if (onLoadMore !== undefined) {
-                        onLoadMore(start, end);
+                if (scale_start < data_start) {
+                    if (onLoadBefore !== undefined) {
+                        onLoadBefore(scale_start, data_start);
+                    }
+                }
+                if (data_end < scale_end) {
+                    if (onLoadAfter !== undefined) {
+                        onLoadAfter(data_end, scale_end);
                     }
                 }
             },
@@ -911,10 +952,14 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             const { fullData } = this;
 
             const firstItem = head(fullData);
-            const start = head(xScale.domain());
-            const end = xAccessor!(firstItem);
+            const scale_start = head(xScale.domain());
+            const data_start = xAccessor!(firstItem);
 
-            const { onLoadMore } = this.props;
+            const lastItem = last(fullData);
+            const scale_end = last(xScale.domain());
+            const data_end = xAccessor!(lastItem);
+
+            const { onLoadAfter, onLoadBefore } = this.props;
 
             this.clearThreeCanvas();
 
@@ -925,9 +970,14 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
                     chartConfig,
                 },
                 () => {
-                    if (start < end) {
-                        if (onLoadMore !== undefined) {
-                            onLoadMore(start, end);
+                    if (scale_start < data_start) {
+                        if (onLoadBefore !== undefined) {
+                            onLoadBefore(scale_start, data_start);
+                        }
+                    }
+                    if (data_end < scale_end) {
+                        if (onLoadAfter !== undefined) {
+                            onLoadAfter(data_end, scale_end);
                         }
                     }
                 },

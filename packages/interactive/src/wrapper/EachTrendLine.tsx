@@ -1,15 +1,11 @@
 import * as React from "react";
-
 import { ascending as d3Ascending } from "d3-array";
 import { noop, strokeDashTypes } from "@react-financial-charts/core";
 import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
 import { isHover, saveNodeType } from "../utils";
+import { ClickableCircle, HoverTextNearMouse, InteractiveStraightLine } from "../components";
 
-import { ClickableCircle } from "../components/ClickableCircle";
-import { HoverTextNearMouse } from "../components/HoverTextNearMouse";
-import StraightLine from "../components/StraightLine";
-
-interface EachTrendLineProps {
+export interface EachTrendLineProps {
     readonly x1Value: any;
     readonly x2Value: any;
     readonly y1Value: any;
@@ -121,7 +117,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
 
         return (
             <g>
-                <StraightLine
+                <InteractiveStraightLine
                     ref={this.saveNodeType("line")}
                     selected={selected || hover}
                     onHover={this.handleHover}

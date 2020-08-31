@@ -1,9 +1,9 @@
+import { last } from "@react-financial-charts/core";
 import { interpolateNumber } from "d3-interpolate";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { last } from "@react-financial-charts/core";
 
-interface ZoomButtonsProps {
+export interface ZoomButtonsProps {
     readonly fill: string;
     readonly fillOpacity: number;
     readonly heightFromBase: number;
@@ -35,7 +35,7 @@ export class ZoomButtons extends React.Component<ZoomButtonsProps> {
         xAxisZoom: PropTypes.func.isRequired,
     };
 
-    private interval?: any;
+    private interval?: number;
 
     public render() {
         const { chartConfig } = this.context;
@@ -161,7 +161,7 @@ export class ZoomButtons extends React.Component<ZoomButtonsProps> {
             return [left(i), right(i)];
         });
 
-        this.interval = setInterval(() => {
+        this.interval = window.setInterval(() => {
             xAxisZoom(foo.shift());
             if (foo.length === 0) {
                 clearInterval(this.interval);

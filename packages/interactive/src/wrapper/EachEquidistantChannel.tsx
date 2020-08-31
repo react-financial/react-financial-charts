@@ -1,39 +1,35 @@
 import * as React from "react";
-
 import { isDefined, noop } from "@react-financial-charts/core";
 import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
 import { isHover, saveNodeType } from "../utils";
+import { ChannelWithArea, ClickableCircle, HoverTextNearMouse } from "../components";
 
-import { ChannelWithArea } from "../components/ChannelWithArea";
-import { ClickableCircle } from "../components/ClickableCircle";
-import { HoverTextNearMouse } from "../components/HoverTextNearMouse";
-
-interface EachEquidistantChannelProps {
+export interface EachEquidistantChannelProps {
     readonly startXY: number[];
     readonly endXY: number[];
     readonly dy?: number;
     readonly interactive: boolean;
     readonly selected: boolean;
     readonly hoverText: {
-        enable: boolean;
-        fontFamily: string;
-        fontSize: number;
-        fill: string;
-        text: string;
-        bgFill: string;
-        bgOpacity: number;
-        bgWidth: number | string;
-        bgHeight: number | string;
+        readonly enable: boolean;
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fill: string;
+        readonly text: string;
+        readonly bgFill: string;
+        readonly bgOpacity: number;
+        readonly bgWidth: number | string;
+        readonly bgHeight: number | string;
     };
     readonly appearance: {
-        stroke: string;
-        strokeWidth: number;
-        fill: string;
-        edgeStroke: string;
-        edgeFill: string;
-        edgeFill2: string;
-        edgeStrokeWidth: number;
-        r: number;
+        readonly stroke: string;
+        readonly strokeWidth: number;
+        readonly fill: string;
+        readonly edgeStroke: string;
+        readonly edgeFill: string;
+        readonly edgeFill2: string;
+        readonly edgeStrokeWidth: number;
+        readonly r: number;
     };
     readonly index?: number;
     readonly onDrag: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;

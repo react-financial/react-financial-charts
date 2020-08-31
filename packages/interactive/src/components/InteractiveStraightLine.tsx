@@ -7,7 +7,7 @@ import {
 } from "@react-financial-charts/core";
 import * as React from "react";
 
-interface StraightLineProps {
+export interface StraightLineProps {
     readonly x1Value: any;
     readonly x2Value: any;
     readonly y1Value: any;
@@ -37,7 +37,7 @@ interface StraightLineProps {
     readonly selected?: boolean;
 }
 
-class StraightLine extends React.Component<StraightLineProps> {
+export class InteractiveStraightLine extends React.Component<StraightLineProps> {
     public static defaultProps = {
         onEdge1Drag: noop,
         onEdge2Drag: noop,
@@ -102,7 +102,11 @@ class StraightLine extends React.Component<StraightLineProps> {
     };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
-        const { strokeWidth = StraightLine.defaultProps.strokeWidth, strokeDasharray, strokeStyle } = this.props;
+        const {
+            strokeWidth = InteractiveStraightLine.defaultProps.strokeWidth,
+            strokeDasharray,
+            strokeStyle,
+        } = this.props;
         const { x1, y1, x2, y2 } = helper(this.props, moreProps);
 
         ctx.lineWidth = strokeWidth;
@@ -311,5 +315,3 @@ function getLineCoordinates({ start, end }: any) {
         y2,
     };
 }
-
-export default StraightLine;

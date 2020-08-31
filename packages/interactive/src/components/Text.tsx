@@ -1,7 +1,7 @@
 import * as React from "react";
 import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
 
-interface TextProps {
+export interface TextProps {
     readonly children: string;
     readonly fontFamily: string;
     readonly fontSize: number;

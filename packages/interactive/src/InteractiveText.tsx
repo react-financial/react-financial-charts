@@ -1,25 +1,25 @@
 import * as PropTypes from "prop-types";
 import * as React from "react";
 import { isDefined, noop, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
-import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
+import { HoverTextNearMouse } from "./components";
 import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { EachText } from "./wrapper/EachText";
+import { EachText } from "./wrapper";
 
 interface InteractiveTextProps {
     readonly onChoosePosition: (e: React.MouseEvent, newText: any, moreProps: any) => void;
     readonly onDragComplete?: (e: React.MouseEvent, newTextList: any[], moreProps: any) => void;
     readonly onSelect?: (e: React.MouseEvent, interactives: any[], moreProps: any) => void;
     readonly defaultText: {
-        bgFill: string;
-        bgOpacity: number;
-        bgStrokeWidth?: number;
-        bgStroke?: string;
-        textFill: string;
-        fontFamily: string;
-        fontWeight: string;
-        fontStyle: string;
-        fontSize: number;
-        text: string;
+        readonly bgFill: string;
+        readonly bgOpacity: number;
+        readonly bgStrokeWidth?: number;
+        readonly bgStroke?: string;
+        readonly textFill: string;
+        readonly fontFamily: string;
+        readonly fontWeight: string;
+        readonly fontStyle: string;
+        readonly fontSize: number;
+        readonly text: string;
     };
     readonly hoverText: object;
     readonly textList: any[];

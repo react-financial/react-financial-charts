@@ -9,3 +9,4 @@ export { InteractiveText } from "./InteractiveText";
 export { InteractiveYCoordinate } from "./InteractiveYCoordinate";
 export { DrawingObjectSelector } from "./DrawingObjectSelector";
 export { ZoomButtons } from "./ZoomButtons";
+export * from "./utils";

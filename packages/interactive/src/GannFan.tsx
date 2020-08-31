@@ -1,9 +1,8 @@
 import * as React from "react";
 import { isDefined, isNotDefined, noop } from "@react-financial-charts/core";
-import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
-import { MouseLocationIndicator } from "./components/MouseLocationIndicator";
+import { HoverTextNearMouse, MouseLocationIndicator } from "./components";
 import { isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { EachGannFan } from "./wrapper/EachGannFan";
+import { EachGannFan } from "./wrapper";
 
 export interface GannFanProps {
     readonly enabled: boolean;
@@ -15,18 +14,18 @@ export interface GannFanProps {
     readonly currentPositionOpacity?: number;
     readonly currentPositionRadius?: number;
     readonly appearance: {
-        stroke: string;
-        strokeOpacity: number;
-        fillOpacity: number;
-        strokeWidth: number;
-        edgeStroke: string;
-        edgeFill: string;
-        edgeStrokeWidth: number;
-        r: number;
-        fill: string[];
-        fontFamily: string;
-        fontSize: number;
-        fontFill: string;
+        readonly stroke: string;
+        readonly strokeOpacity: number;
+        readonly fillOpacity: number;
+        readonly strokeWidth: number;
+        readonly edgeStroke: string;
+        readonly edgeFill: string;
+        readonly edgeStrokeWidth: number;
+        readonly r: number;
+        readonly fill: string[];
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fontFill: string;
     };
     readonly hoverText: object;
     readonly fans: any[];

@@ -1,15 +1,10 @@
 import * as React from "react";
-
 import { isDefined, isNotDefined, noop, strokeDashTypes } from "@react-financial-charts/core";
-
 import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
+import { HoverTextNearMouse, MouseLocationIndicator, InteractiveStraightLine } from "./components";
+import { EachTrendLine } from "./wrapper";
 
-import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
-import { MouseLocationIndicator } from "./components/MouseLocationIndicator";
-import StraightLine from "./components/StraightLine";
-import { EachTrendLine } from "./wrapper/EachTrendLine";
-
-interface TrendLineProps {
+export interface TrendLineProps {
     readonly snap: boolean;
     readonly enabled: boolean;
     readonly snapTo: (datum: any) => number;
@@ -25,16 +20,15 @@ interface TrendLineProps {
         | "XLINE" // extends from -Infinity to +Infinity
         | "RAY" // extends to +/-Infinity in one direction
         | "LINE"; // extends between the set bounds
-    // eslint-disable-next-line @typescript-eslint/ban-types
     readonly hoverText: object;
     readonly trends: any[];
     readonly appearance: {
-        strokeStyle: string;
-        strokeWidth: number;
-        strokeDasharray: strokeDashTypes;
-        edgeStrokeWidth: number;
-        edgeFill: string;
-        edgeStroke: string;
+        readonly strokeStyle: string;
+        readonly strokeWidth: number;
+        readonly strokeDasharray: strokeDashTypes;
+        readonly edgeStrokeWidth: number;
+        readonly edgeFill: string;
+        readonly edgeStroke: string;
     };
 }
 
@@ -112,7 +106,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
 
         const tempLine =
             isDefined(current) && isDefined(current.end) ? (
-                <StraightLine
+                <InteractiveStraightLine
                     type={type}
                     x1Value={current.start[0]}
                     y1Value={current.start[1]}

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
-import { isHovering2 } from "./StraightLine";
+import { isHovering2 } from "./InteractiveStraightLine";
 
-interface ClickableShapeProps {
+export interface ClickableShapeProps {
     readonly fontWeight: string;
     readonly fontFamily: string;
     readonly fontStyle: string;
@@ -11,9 +11,9 @@ interface ClickableShapeProps {
     readonly strokeWidth: number;
     readonly text: string;
     readonly textBox: {
-        closeIcon: any;
-        left: number;
-        padding: any;
+        readonly closeIcon: any;
+        readonly left: number;
+        readonly padding: any;
     };
     readonly hovering?: boolean;
     readonly interactiveCursorClass?: string;

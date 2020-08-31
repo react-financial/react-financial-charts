@@ -4,7 +4,7 @@ import { isDefined, GenericChartComponent } from "@react-financial-charts/core";
 const PADDING = 10;
 const MIN_WIDTH = PADDING;
 
-interface HoverTextNearMouseProps {
+export interface HoverTextNearMouseProps {
     readonly fontFamily?: string;
     readonly fontSize?: number;
     readonly fill?: string;

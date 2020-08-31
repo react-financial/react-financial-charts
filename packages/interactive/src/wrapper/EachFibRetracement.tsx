@@ -1,16 +1,11 @@
 import * as React from "react";
-
 import { head, last, noop } from "@react-financial-charts/core";
 import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
 import { isHover, saveNodeType } from "../utils";
-
-import { ClickableCircle } from "../components/ClickableCircle";
-import { HoverTextNearMouse } from "../components/HoverTextNearMouse";
-import StraightLine, { generateLine } from "../components/StraightLine";
-import { Text } from "../components/Text";
+import { ClickableCircle, HoverTextNearMouse, InteractiveStraightLine, generateLine, Text } from "../components";
 import { getNewXY } from "./EachTrendLine";
 
-interface EachFibRetracementProps {
+export interface EachFibRetracementProps {
     readonly x1: any;
     readonly x2: any;
     readonly y1: number;
@@ -19,29 +14,29 @@ interface EachFibRetracementProps {
     readonly type: string;
     readonly selected: boolean;
     readonly appearance: {
-        strokeStyle: string;
-        strokeWidth: number;
-        fontFamily: string;
-        fontSize: number;
-        fontFill: string;
-        edgeStroke: string;
-        edgeFill: string;
-        nsEdgeFill: string;
-        edgeStrokeWidth: number;
-        r: number;
+        readonly strokeStyle: string;
+        readonly strokeWidth: number;
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fontFill: string;
+        readonly edgeStroke: string;
+        readonly edgeFill: string;
+        readonly nsEdgeFill: string;
+        readonly edgeStrokeWidth: number;
+        readonly r: number;
     };
     readonly interactive: boolean;
     readonly hoverText: {
-        enable: boolean;
-        fontFamily: string;
-        fontSize: number;
-        fill: string;
-        text: string;
-        bgFill: string;
-        bgOpacity: number;
-        bgWidth: number | string;
-        bgHeight: number | string;
-        selectedText: string;
+        readonly enable: boolean;
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fill: string;
+        readonly text: string;
+        readonly bgFill: string;
+        readonly bgOpacity: number;
+        readonly bgWidth: number | string;
+        readonly bgHeight: number | string;
+        readonly selectedText: string;
     };
     readonly index?: number;
     readonly onDrag: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
@@ -165,7 +160,7 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
                     const hoverHandler = interactive ? { onHover: this.handleHover, onUnHover: this.handleHover } : {};
                     return (
                         <g key={j}>
-                            <StraightLine
+                            <InteractiveStraightLine
                                 ref={this.saveNodeType(`line_${j}`)}
                                 selected={selected || hover}
                                 {...hoverHandler}

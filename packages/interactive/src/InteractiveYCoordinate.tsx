@@ -1,10 +1,10 @@
+import { format } from "d3-format";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-import { format } from "d3-format";
 import { isDefined, strokeDashTypes } from "@react-financial-charts/core";
-import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
+import { HoverTextNearMouse } from "./components";
 import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { EachInteractiveYCoordinate } from "./wrapper/EachInteractiveYCoordinate";
+import { EachInteractiveYCoordinate } from "./wrapper";
 
 interface InteractiveYCoordinateProps {
     readonly onChoosePosition: (e: React.MouseEvent, newText: any, moreProps: any) => void;
@@ -25,13 +25,13 @@ interface InteractiveYCoordinateProps {
         readonly fontSize: number;
         readonly text: string;
         readonly textBox: {
-            height: number;
-            left: number;
-            padding: {
+            readonly height: number;
+            readonly left: number;
+            readonly padding: {
                 left: number;
                 right: number;
             };
-            closeIcon: {
+            readonly closeIcon: {
                 padding: {
                     left: number;
                     right: number;
@@ -40,11 +40,11 @@ interface InteractiveYCoordinateProps {
             };
         };
         readonly edge: {
-            stroke: string;
-            strokeOpacity: number;
-            strokeWidth: number;
-            fill: string;
-            fillOpacity: number;
+            readonly stroke: string;
+            readonly strokeOpacity: number;
+            readonly strokeWidth: number;
+            readonly fill: string;
+            readonly fillOpacity: number;
         };
     };
     readonly hoverText: object;

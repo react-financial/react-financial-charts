@@ -21,10 +21,10 @@ export interface InteractiveYCoordinateProps {
     readonly text: string;
     readonly edge: object;
     readonly textBox: {
-        closeIcon: any;
-        left: number;
-        height: number;
-        padding: any;
+        readonly closeIcon: any;
+        readonly left: number;
+        readonly height: number;
+        readonly padding: any;
     };
     readonly yValue: number;
     readonly onDragStart?: (e: React.MouseEvent, moreProps: any) => void;

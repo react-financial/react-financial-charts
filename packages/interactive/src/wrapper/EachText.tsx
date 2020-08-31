@@ -1,35 +1,34 @@
 import * as React from "react";
 import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
 import { isHover, saveNodeType } from "../utils";
-import { HoverTextNearMouse } from "../components/HoverTextNearMouse";
-import { InteractiveText } from "../components/InteractiveText";
+import { HoverTextNearMouse, InteractiveText } from "../components";
 
-interface EachTextProps {
-    index?: number;
-    position?: any;
-    bgFill: string;
-    bgStrokeWidth: number;
-    bgStroke?: string;
-    textFill: string;
-    fontWeight: string;
-    fontFamily: string;
-    fontStyle: string;
-    fontSize: number;
-    text: string;
-    selected: boolean;
-    onDrag?: (e: React.MouseEvent, index: number | undefined, xyValue: number[]) => void;
-    onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
-    hoverText: {
-        enable: boolean;
-        fontFamily: string;
-        fontSize: number;
-        fill: string;
-        text: string;
-        selectedText: string;
-        bgFill: string;
-        bgOpacity: number;
-        bgWidth: number | string;
-        bgHeight: number | string;
+export interface EachTextProps {
+    readonly index?: number;
+    readonly position?: any;
+    readonly bgFill: string;
+    readonly bgStrokeWidth: number;
+    readonly bgStroke?: string;
+    readonly textFill: string;
+    readonly fontWeight: string;
+    readonly fontFamily: string;
+    readonly fontStyle: string;
+    readonly fontSize: number;
+    readonly text: string;
+    readonly selected: boolean;
+    readonly onDrag?: (e: React.MouseEvent, index: number | undefined, xyValue: number[]) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly hoverText: {
+        readonly enable: boolean;
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fill: string;
+        readonly text: string;
+        readonly selectedText: string;
+        readonly bgFill: string;
+        readonly bgOpacity: number;
+        readonly bgWidth: number | string;
+        readonly bgHeight: number | string;
     };
 }
 

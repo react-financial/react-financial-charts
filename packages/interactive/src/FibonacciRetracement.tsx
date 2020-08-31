@@ -1,9 +1,8 @@
 import * as React from "react";
 import { isDefined, isNotDefined, noop } from "@react-financial-charts/core";
-import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
-import { MouseLocationIndicator } from "./components/MouseLocationIndicator";
+import { HoverTextNearMouse, MouseLocationIndicator } from "./components";
 import { isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { EachFibRetracement } from "./wrapper/EachFibRetracement";
+import { EachFibRetracement } from "./wrapper";
 
 interface FibonacciRetracementProps {
     readonly enabled: boolean;
@@ -22,17 +21,17 @@ interface FibonacciRetracementProps {
     readonly currentPositionRadius?: number;
     readonly retracements: any[];
     readonly appearance: {
-        stroke: string;
-        strokeWidth: number;
-        strokeOpacity: number;
-        fontFamily: string;
-        fontSize: number;
-        fontFill: string;
-        edgeStroke: string;
-        edgeFill: string;
-        nsEdgeFill: string;
-        edgeStrokeWidth: number;
-        r: number;
+        readonly stroke: string;
+        readonly strokeWidth: number;
+        readonly strokeOpacity: number;
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fontFill: string;
+        readonly edgeStroke: string;
+        readonly edgeFill: string;
+        readonly nsEdgeFill: string;
+        readonly edgeStrokeWidth: number;
+        readonly r: number;
     };
 }
 
@@ -75,12 +74,11 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
     };
 
     // @ts-ignore
-    private getSelectionState;
+    private getSelectionState: any;
     private mouseMoved: any;
     private saveNodeType: any;
-
     // @ts-ignore
-    private terminate;
+    private terminate: any;
 
     public constructor(props: FibonacciRetracementProps) {
         super(props);

@@ -1,46 +1,42 @@
 import * as React from "react";
-
 import { isDefined, noop } from "@react-financial-charts/core";
 import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
 import { isHover, saveNodeType } from "../utils";
+import { ClickableCircle, GannFan, HoverTextNearMouse } from "../components";
 
-import { ClickableCircle } from "../components/ClickableCircle";
-import { GannFan } from "../components/GannFan";
-import { HoverTextNearMouse } from "../components/HoverTextNearMouse";
-
-interface EachGannFanProps {
-    startXY: number[];
-    endXY: number[];
-    dy?: number;
-    interactive: boolean;
-    selected: boolean;
-    appearance: {
-        stroke: string;
-        strokeWidth: number;
-        edgeStroke: string;
-        edgeFill: string;
-        edgeStrokeWidth: number;
-        r: number;
-        fill: Array<string>;
-        fontFamily: string;
-        fontSize: number;
-        fontFill: string;
+export interface EachGannFanProps {
+    readonly startXY: number[];
+    readonly endXY: number[];
+    readonly dy?: number;
+    readonly interactive: boolean;
+    readonly selected: boolean;
+    readonly appearance: {
+        readonly stroke: string;
+        readonly strokeWidth: number;
+        readonly edgeStroke: string;
+        readonly edgeFill: string;
+        readonly edgeStrokeWidth: number;
+        readonly r: number;
+        readonly fill: Array<string>;
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fontFill: string;
     };
-    hoverText: {
-        enable: boolean;
-        fontFamily: string;
-        fontSize: number;
-        fill: string;
-        text: string;
-        bgFill: string;
-        bgOpacity: number;
-        bgWidth: number | string;
-        bgHeight: number | string;
-        selectedText: string;
+    readonly hoverText: {
+        readonly enable: boolean;
+        readonly fontFamily: string;
+        readonly fontSize: number;
+        readonly fill: string;
+        readonly text: string;
+        readonly bgFill: string;
+        readonly bgOpacity: number;
+        readonly bgWidth: number | string;
+        readonly bgHeight: number | string;
+        readonly selectedText: string;
     };
-    index?: number;
-    onDrag: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
-    onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
+    readonly index?: number;
+    readonly onDrag: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
+    readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
 }
 
 interface EachGannFanState {

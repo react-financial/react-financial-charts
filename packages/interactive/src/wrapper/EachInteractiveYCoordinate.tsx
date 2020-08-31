@@ -1,10 +1,9 @@
 import * as React from "react";
 import { strokeDashTypes } from "@react-financial-charts/core";
 import { isHover, saveNodeType } from "../utils";
-import { ClickableShape } from "../components/ClickableShape";
-import { InteractiveYCoordinate } from "../components/InteractiveYCoordinate";
+import { ClickableShape, InteractiveYCoordinate } from "../components";
 
-interface EachInteractiveYCoordinateProps {
+export interface EachInteractiveYCoordinateProps {
     readonly index?: number;
     readonly draggable: boolean;
     readonly yValue: number;
@@ -21,10 +20,10 @@ interface EachInteractiveYCoordinateProps {
     readonly selected: boolean;
     readonly edge: object;
     readonly textBox: {
-        closeIcon: any;
-        left: number;
-        height: number;
-        padding: any;
+        readonly closeIcon: any;
+        readonly left: number;
+        readonly height: number;
+        readonly padding: any;
     };
     readonly onDrag?: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
     readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;

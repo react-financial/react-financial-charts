@@ -1,10 +1,9 @@
 import * as React from "react";
 import { isDefined, isNotDefined, noop } from "@react-financial-charts/core";
-import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
-import { MouseLocationIndicator } from "./components/MouseLocationIndicator";
-import { getSlope, getYIntercept } from "./components/StraightLine";
+import { HoverTextNearMouse, MouseLocationIndicator } from "./components";
+import { getSlope, getYIntercept } from "./components/InteractiveStraightLine";
 import { isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { EachEquidistantChannel } from "./wrapper/EachEquidistantChannel";
+import { EachEquidistantChannel } from "./wrapper";
 
 interface EquidistantChannelProps {
     readonly enabled: boolean;
@@ -15,20 +14,19 @@ interface EquidistantChannelProps {
     readonly currentPositionStrokeWidth?: number;
     readonly currentPositionOpacity?: number;
     readonly currentPositionRadius?: number;
-    // eslint-disable-next-line @typescript-eslint/ban-types
     readonly hoverText: object;
     readonly channels: any[];
     readonly appearance: {
-        stroke: string;
-        strokeOpacity: number;
-        strokeWidth: number;
-        fill: string;
-        fillOpacity: number;
-        edgeStroke: string;
-        edgeFill: string;
-        edgeFill2: string;
-        edgeStrokeWidth: number;
-        r: number;
+        readonly stroke: string;
+        readonly strokeOpacity: number;
+        readonly strokeWidth: number;
+        readonly fill: string;
+        readonly fillOpacity: number;
+        readonly edgeStroke: string;
+        readonly edgeFill: string;
+        readonly edgeFill2: string;
+        readonly edgeStrokeWidth: number;
+        readonly r: number;
     };
 }
 
@@ -70,7 +68,7 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
     private terminate: () => void;
     private saveNodeType: any;
     // @ts-ignore
-    private getSelectionState;
+    private getSelectionState: any;
     private mouseMoved: any;
 
     public constructor(props: EquidistantChannelProps) {
@@ -78,7 +76,6 @@ export class EquidistantChannel extends React.Component<EquidistantChannelProps,
 
         this.terminate = terminate.bind(this);
         this.saveNodeType = saveNodeType.bind(this);
-
         this.getSelectionState = isHoverForInteractiveType("channels").bind(this);
 
         this.state = {};

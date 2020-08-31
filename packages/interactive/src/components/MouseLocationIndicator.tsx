@@ -10,7 +10,7 @@ import {
 import * as React from "react";
 import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
 
-interface MouseLocationIndicatorProps {
+export interface MouseLocationIndicatorProps {
     readonly enabled: boolean;
     readonly snap: boolean;
     readonly shouldDisableSnap: (e: React.MouseEvent) => boolean;

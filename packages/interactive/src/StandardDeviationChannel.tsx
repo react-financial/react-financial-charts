@@ -1,9 +1,8 @@
 import * as React from "react";
 import { isDefined, isNotDefined } from "@react-financial-charts/core";
 import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { HoverTextNearMouse } from "./components/HoverTextNearMouse";
-import { MouseLocationIndicator } from "./components/MouseLocationIndicator";
-import { EachLinearRegressionChannel } from "./wrapper/EachLinearRegressionChannel";
+import { HoverTextNearMouse, MouseLocationIndicator } from "./components";
+import { EachLinearRegressionChannel } from "./wrapper";
 
 export interface StandardDeviationChannelProps {
     readonly enabled: boolean;
@@ -16,15 +15,15 @@ export interface StandardDeviationChannelProps {
     readonly currentPositionOpacity?: number;
     readonly currentPositionRadius?: number;
     readonly appearance: {
-        stroke?: string;
-        strokeOpacity?: number;
-        strokeWidth?: number;
-        fill?: string;
-        fillOpacity?: number;
-        edgeStrokeWidth?: number;
-        edgeStroke?: string;
-        edgeFill?: string;
-        r?: number;
+        readonly stroke?: string;
+        readonly strokeOpacity?: number;
+        readonly strokeWidth?: number;
+        readonly fill?: string;
+        readonly fillOpacity?: number;
+        readonly edgeStrokeWidth?: number;
+        readonly edgeStroke?: string;
+        readonly edgeFill?: string;
+        readonly r?: number;
     };
     readonly hoverText: object;
     readonly channels: any[];

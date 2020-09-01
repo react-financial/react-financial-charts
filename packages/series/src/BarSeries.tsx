@@ -78,8 +78,8 @@ export class BarSeries extends React.Component<BarSeriesProps> {
             const nest = group(bars, (d: any) => d.fillStyle);
 
             nest.forEach((values, key) => {
-                if (head(values).width > 1) {
-                    if (strokeStyle !== undefined) {
+                if (strokeStyle !== undefined) {
+                    if (head(values).width > 1) {
                         ctx.strokeStyle = strokeStyle;
                     }
                 }

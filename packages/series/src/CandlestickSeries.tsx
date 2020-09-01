@@ -37,7 +37,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         candleStrokeWidth: 0.5,
         clip: true,
         fill: (d: any) => (d.close > d.open ? "#26a69a" : "#ef5350"),
-        stroke: (d: any) => (d.close > d.open ? "#26a69a" : "#ef5350"),
+        stroke: "none",
         wickStroke: (d: any) => (d.close > d.open ? "#26a69a" : "#ef5350"),
         width: plotDataLengthBarWidth,
         widthRatio: 0.8,
@@ -71,7 +71,6 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         const wickNest = group(candleData, (d) => d.wick.stroke);
 
         wickNest.forEach((values, key) => {
-            ctx.strokeStyle = key;
             ctx.fillStyle = key;
             values.forEach((each) => {
                 const d = each.wick;
@@ -103,9 +102,9 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
                     if (d.width <= 1) {
                         ctx.fillRect(d.x - 0.5, d.y, 1, d.height);
                     } else if (d.height === 0) {
-                        ctx.fillRect(d.x, d.y - 0.5, d.width, 1);
+                        ctx.fillRect(d.x - 0.5, d.y, d.width, 1);
                     } else {
-                        ctx.fillRect(d.x, d.y, d.width, d.height);
+                        ctx.fillRect(d.x - 0.5, d.y, d.width, d.height);
                         if (strokeKey !== "none") {
                             ctx.strokeRect(d.x, d.y, d.width, d.height);
                         }
@@ -144,7 +143,8 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
                     return undefined;
                 }
 
-                const x = Math.round(xScale(xAccessor(d)));
+                const xValue = xAccessor(d);
+                const x = Math.round(xScale(xValue));
                 const y = Math.round(yScale(Math.max(ohlc.open, ohlc.close)));
                 const height = Math.max(1, Math.round(Math.abs(yScale(ohlc.open) - yScale(ohlc.close))));
 

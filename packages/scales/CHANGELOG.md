@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.13](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.12...v1.0.0-alpha.13) (2020-09-01)
+
+
+### Bug Fixes
+
+* **core:** correcting xextents props ([ec80146](https://github.com/reactivemarkets/react-financial-charts/commit/ec80146bb171c21fd0daa41ac620b8081d6e6266))
+* fixing scaling when data is discontinuous ([4b20255](https://github.com/reactivemarkets/react-financial-charts/commit/4b20255d05b4590c2a5fc196bf505c95a63431f0))
+
+
+
+
+
 # [1.0.0-alpha.10](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.9...v1.0.0-alpha.10) (2020-08-28)
 
 

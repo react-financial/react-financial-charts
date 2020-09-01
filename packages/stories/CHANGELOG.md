@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.13](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.12...v1.0.0-alpha.13) (2020-09-01)
+
+
+### Bug Fixes
+
+* **core:** correcting xextents props ([ec80146](https://github.com/markmcdowell/react-financial-charts/commit/ec80146bb171c21fd0daa41ac620b8081d6e6266))
+* fixing scaling when data is discontinuous ([4b20255](https://github.com/markmcdowell/react-financial-charts/commit/4b20255d05b4590c2a5fc196bf505c95a63431f0))
+* **core:** correcting bar width with continuous scales ([a967a18](https://github.com/markmcdowell/react-financial-charts/commit/a967a18347be6b8ad11d50da579911c9bd2f97ee))
+
+
+### Features
+
+* **stories:** adding custom timeFormat to scales stories ([c72b81c](https://github.com/markmcdowell/react-financial-charts/commit/c72b81c8ff4351de3a6ccb1d55c6b2c783cdd000))
+* **stories:** adding scales examples ([5cbcd9d](https://github.com/markmcdowell/react-financial-charts/commit/5cbcd9dc8c7a1624ddd197daab28bb837c9ff698))
+
+
+
+
+
 # [1.0.0-alpha.12](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.11...v1.0.0-alpha.12) (2020-08-28)
 
 **Note:** Version bump only for package @react-financial-charts/stories

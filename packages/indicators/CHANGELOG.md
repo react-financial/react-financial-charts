@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.13](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.12...v1.0.0-alpha.13) (2020-09-01)
+
+
+### Features
+
+* **indicator:** adding algorithm indicator ([206c6a2](https://github.com/reactivemarkets/react-financial-charts/commit/206c6a23061deeddfdd740237ab76ba5abdbfe40))
+
+
+
+
+
 # [1.0.0-alpha.10](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.9...v1.0.0-alpha.10) (2020-08-28)
 
 **Note:** Version bump only for package @react-financial-charts/indicators

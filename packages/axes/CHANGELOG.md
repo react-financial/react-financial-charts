@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.13](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.12...v1.0.0-alpha.13) (2020-09-01)
+
+
+### Bug Fixes
+
+* fixing scaling when data is discontinuous ([4b20255](https://github.com/reactivemarkets/react-financial-charts/commit/4b20255d05b4590c2a5fc196bf505c95a63431f0))
+* **axes:** correcting tickFormat prop ([f97e9c5](https://github.com/reactivemarkets/react-financial-charts/commit/f97e9c57f2a96b5f5f431a160d8fe02dc7a38e27))
+* removing canvas gradients ([2205163](https://github.com/reactivemarkets/react-financial-charts/commit/220516356300c6c1c8528de3ca43e7ddaf8e5e66))
+
+
+
+
+
 # [1.0.0-alpha.10](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.9...v1.0.0-alpha.10) (2020-08-28)
 
 **Note:** Version bump only for package @react-financial-charts/axes

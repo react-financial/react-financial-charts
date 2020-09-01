@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.13](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.12...v1.0.0-alpha.13) (2020-09-01)
+
+
+### Bug Fixes
+
+* **core:** correcting xextents props ([ec80146](https://github.com/markmcdowell/react-financial-charts/commit/ec80146bb171c21fd0daa41ac620b8081d6e6266))
+* **series:** small performance improvments in bar and candles ([98c06ea](https://github.com/markmcdowell/react-financial-charts/commit/98c06eab5cb9809d7f1cabff131b698c4404339d))
+* fixing scaling when data is discontinuous ([4b20255](https://github.com/markmcdowell/react-financial-charts/commit/4b20255d05b4590c2a5fc196bf505c95a63431f0))
+* **axes:** correcting tickFormat prop ([f97e9c5](https://github.com/markmcdowell/react-financial-charts/commit/f97e9c57f2a96b5f5f431a160d8fe02dc7a38e27))
+* **core:** correcting bar width with continuous scales ([a967a18](https://github.com/markmcdowell/react-financial-charts/commit/a967a18347be6b8ad11d50da579911c9bd2f97ee))
+* **core:** displayXAccessor is optional ([d6a5dda](https://github.com/markmcdowell/react-financial-charts/commit/d6a5dda949c5178a8213cabda23d1178d4ea155a))
+* **interactive:** correcting exports ([afe3ba9](https://github.com/markmcdowell/react-financial-charts/commit/afe3ba9c38a9300c720895c51b5a0d09631eace9)), closes [#440](https://github.com/markmcdowell/react-financial-charts/issues/440)
+* **series:** correcting props & dealing with undefined data ([99664ba](https://github.com/markmcdowell/react-financial-charts/commit/99664ba609692aab7b56edb81c0fec31a4922422))
+* removing canvas gradients ([2205163](https://github.com/markmcdowell/react-financial-charts/commit/220516356300c6c1c8528de3ca43e7ddaf8e5e66))
+
+
+### Features
+
+* **core:** replaced onLoadMore with onLoadBefore & onLoadAfter ([4957c32](https://github.com/markmcdowell/react-financial-charts/commit/4957c32314db84131d3b34a8759dcc9ab28770c1))
+* **indicator:** adding algorithm indicator ([206c6a2](https://github.com/markmcdowell/react-financial-charts/commit/206c6a23061deeddfdd740237ab76ba5abdbfe40))
+* **stories:** adding custom timeFormat to scales stories ([c72b81c](https://github.com/markmcdowell/react-financial-charts/commit/c72b81c8ff4351de3a6ccb1d55c6b2c783cdd000))
+* **stories:** adding scales examples ([5cbcd9d](https://github.com/markmcdowell/react-financial-charts/commit/5cbcd9dc8c7a1624ddd197daab28bb837c9ff698))
+
+
+
+
+
 # [1.0.0-alpha.12](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.11...v1.0.0-alpha.12) (2020-08-28)
 
 

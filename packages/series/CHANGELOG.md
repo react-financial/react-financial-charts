@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.13](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.12...v1.0.0-alpha.13) (2020-09-01)
+
+
+### Bug Fixes
+
+* **series:** correcting props & dealing with undefined data ([99664ba](https://github.com/reactivemarkets/react-financial-charts/commit/99664ba609692aab7b56edb81c0fec31a4922422))
+* **series:** small performance improvments in bar and candles ([98c06ea](https://github.com/reactivemarkets/react-financial-charts/commit/98c06eab5cb9809d7f1cabff131b698c4404339d))
+* removing canvas gradients ([2205163](https://github.com/reactivemarkets/react-financial-charts/commit/220516356300c6c1c8528de3ca43e7ddaf8e5e66))
+
+
+
+
+
 # [1.0.0-alpha.12](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.11...v1.0.0-alpha.12) (2020-08-28)
 
 

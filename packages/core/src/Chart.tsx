@@ -1,7 +1,6 @@
 import { scaleLinear, ScaleContinuousNumeric } from "d3-scale";
 import * as PropTypes from "prop-types";
 import * as React from "react";
-
 import { PureComponent } from "./utils";
 
 export interface ChartProps {
@@ -87,21 +86,27 @@ export class Chart extends PureComponent<ChartProps> {
 
         switch (type) {
             case "contextmenu": {
-                if (onContextMenu !== undefined) {
-                    const { currentCharts } = moreProps;
-                    if (currentCharts.indexOf(id) > -1) {
-                        onContextMenu(e, moreProps);
-                    }
+                if (onContextMenu === undefined) {
+                    return;
                 }
+
+                const { currentCharts } = moreProps;
+                if (currentCharts.indexOf(id) > -1) {
+                    onContextMenu(e, moreProps);
+                }
+
                 break;
             }
             case "dblclick": {
-                if (onDoubleClick !== undefined) {
-                    const { currentCharts } = moreProps;
-                    if (currentCharts.indexOf(id) > -1) {
-                        onDoubleClick(e, moreProps);
-                    }
+                if (onDoubleClick === undefined) {
+                    return;
                 }
+
+                const { currentCharts } = moreProps;
+                if (currentCharts.indexOf(id) > -1) {
+                    onDoubleClick(e, moreProps);
+                }
+
                 break;
             }
         }

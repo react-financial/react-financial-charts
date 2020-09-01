@@ -67,18 +67,18 @@ function getCursorStyle() {
     return <style type="text/css">{tooltipStyle}</style>;
 }
 
-function getDimensions(props: ChartCanvasProps) {
+function getDimensions<TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) {
     return {
         height: props.height - props.margin.top - props.margin.bottom,
         width: props.width - props.margin.left - props.margin.right,
     };
 }
 
-function getXScaleDirection(flipXScale: any) {
+function getXScaleDirection(flipXScale?: boolean) {
     return flipXScale ? -1 : 1;
 }
 
-function calculateFullData(props: ChartCanvasProps) {
+function calculateFullData<TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) {
     const { data: fullData, plotFull, xScale, clamp, pointsPerPxThreshold, flipXScale } = props;
     const { xAccessor, displayXAccessor, minPointsPerPxThreshold } = props;
 
@@ -102,7 +102,7 @@ function calculateFullData(props: ChartCanvasProps) {
     };
 }
 
-const resetChart = (props: ChartCanvasProps) => {
+const resetChart = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) => {
     const state = calculateState(props);
 
     const { xAccessor, displayXAccessor, fullData, plotData: initialPlotData, xScale } = state;
@@ -197,7 +197,7 @@ function updateChart(
     };
 }
 
-function calculateState(props: ChartCanvasProps) {
+function calculateState<TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) {
     const { xAccessor: inputXAccesor, xExtents: xExtentsProp, data, padding, flipXScale } = props;
 
     const direction = getXScaleDirection(flipXScale);
@@ -207,7 +207,9 @@ function calculateState(props: ChartCanvasProps) {
     const extent =
         typeof xExtentsProp === "function"
             ? xExtentsProp(data)
-            : d3Extent(xExtentsProp.map((d: any) => functor(d)).map((each: any) => each(data, inputXAccesor)));
+            : (d3Extent<number | Date>(
+                  xExtentsProp.map((d: any) => functor(d)).map((each: any) => each(data, inputXAccesor)),
+              ) as [TXAxis, TXAxis]);
 
     const { xAccessor, displayXAccessor, xScale, fullData, filterData } = calculateFullData(props);
 
@@ -262,7 +264,7 @@ function isInteractionEnabled(xScale: any, xAccessor: any, data: any) {
     return interaction;
 }
 
-export interface ChartCanvasProps {
+export interface ChartCanvasProps<TXAxis extends number | Date> {
     readonly clamp?:
         | boolean
         | ("left" | "right" | "both")
@@ -274,7 +276,7 @@ export interface ChartCanvasProps {
     readonly disableInteraction?: boolean;
     readonly disablePan?: boolean;
     readonly disableZoom?: boolean;
-    readonly displayXAccessor?: (data: any) => number | Date;
+    readonly displayXAccessor?: (data: any) => TXAxis;
     readonly flipXScale?: boolean;
     readonly height: number;
     readonly margin: {
@@ -289,11 +291,11 @@ export interface ChartCanvasProps {
     /**
      * Called when panning left past the first data point.
      */
-    readonly onLoadAfter?: (start: number | Date, end: number | Date) => void;
+    readonly onLoadAfter?: (start: TXAxis, end: TXAxis) => void;
     /**
      * Called when panning right past the last data point.
      */
-    readonly onLoadBefore?: (start: number | Date, end: number | Date) => void;
+    readonly onLoadBefore?: (start: TXAxis, end: TXAxis) => void;
     /**
      * Click event handler.
      */
@@ -317,24 +319,27 @@ export interface ChartCanvasProps {
     readonly seriesName: string;
     readonly useCrossHairStyleCursor?: boolean;
     readonly width: number;
-    readonly xAccessor: (data: any) => number | Date;
-    readonly xExtents?: any[] | any; // func
+    readonly xAccessor: (data: any) => TXAxis;
+    readonly xExtents: ((data: any[]) => [TXAxis, TXAxis]) | (((datum: any) => TXAxis) | TXAxis)[];
     readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
     readonly zIndex?: number;
-    readonly zoomAnchor?: (options: IZoomAnchorOptions<any>) => number | Date;
+    readonly zoomAnchor?: (options: IZoomAnchorOptions<any>) => TXAxis;
     readonly zoomMultiplier?: number;
 }
 
-interface ChartCanvasState {
-    xAccessor?: (data: any) => number | Date;
+interface ChartCanvasState<TXAxis extends number | Date> {
+    xAccessor?: (data: any) => TXAxis;
     displayXAccessor?: any;
     filterData?: any;
     chartConfig?: any;
-    plotData?: any;
+    plotData: any[];
     xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
 }
 
-export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasState> {
+export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
+    ChartCanvasProps<TXAxis>,
+    ChartCanvasState<TXAxis>
+> {
     public static defaultProps = {
         clamp: false,
         className: "react-financial-charts",
@@ -351,7 +356,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         padding: 0,
         pointsPerPxThreshold: 2,
         useCrossHairStyleCursor: true,
-        xAccessor: identity as (data: any) => number,
+        xAccessor: identity as (data: any) => any,
         xExtents: [min, max] as any[],
         zIndex: 1,
         zoomAnchor: mouseBasedZoomAnchor,
@@ -420,7 +425,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
     // tslint:disable-next-line: variable-name
     private hackyWayToStopPanBeyondBounds__domain?: any[] | null;
 
-    public constructor(props: ChartCanvasProps) {
+    public constructor(props: ChartCanvasProps<TXAxis>) {
         super(props);
 
         const { fullData, ...state } = resetChart(props);
@@ -1125,7 +1130,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         };
     }
 
-    public UNSAFE_componentWillReceiveProps(nextProps: ChartCanvasProps) {
+    public UNSAFE_componentWillReceiveProps(nextProps: ChartCanvasProps<TXAxis>) {
         const reset = shouldResetChart(this.props, nextProps);
 
         const interaction = isInteractionEnabled(this.state.xScale, this.state.xAccessor, this.state.plotData);

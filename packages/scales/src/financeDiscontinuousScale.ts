@@ -1,4 +1,4 @@
-import { head, isDefined, last } from "@react-financial-charts/core";
+import { head, last } from "@react-financial-charts/core";
 import { ascending } from "d3-array";
 import { scaleLinear, InterpolatorFactory } from "d3-scale";
 import { levelDefinition } from "./levels";
@@ -126,7 +126,7 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
     scale.value = (x: any) => {
         const d = Math.abs(head(index).index);
         const row = index[Math.floor(x + d)];
-        if (isDefined(row)) {
+        if (row !== undefined) {
             const { date } = row;
             return date;
         }

@@ -29,9 +29,9 @@ class Scales extends React.Component<ChartProps> {
         const { data, height, ratio, width, xScale = scaleTime(), yScale } = this.props;
 
         const xAccessor = (d: IOHLCData) => d.date;
-        const start = xAccessor(data[data.length - 1]);
-        const end = xAccessor(data[Math.max(0, data.length - 100)]);
-        const xExtents = [start, end];
+        const max = xAccessor(data[data.length - 1]);
+        const min = xAccessor(data[Math.max(0, data.length - 100)]);
+        const xExtents = [min, max];
 
         return (
             <ChartCanvas

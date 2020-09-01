@@ -865,6 +865,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialXScale, {
             currentPlotData: this.hackyWayToStopPanBeyondBounds__plotData,
             currentDomain: this.hackyWayToStopPanBeyondBounds__domain,
+            ignoreThresholds: true,
         });
 
         const updatedScale = initialXScale.copy().domain(domain) as
@@ -874,6 +875,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
         const plotData = postCalculator(beforePlotData);
 
         const currentItem = getCurrentItem(updatedScale, xAccessor, mouseXY, plotData);
+
         const chartConfig = getChartConfigWithUpdatedYScales(
             initialChartConfig,
             { plotData, xAccessor, displayXAccessor, fullData },
@@ -881,6 +883,7 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             dy,
             chartsToPan,
         );
+
         const currentCharts = getCurrentCharts(chartConfig, mouseXY);
 
         return {
@@ -904,23 +907,23 @@ export class ChartCanvas extends React.Component<ChartCanvasProps, ChartCanvasSt
             this.waitingForPanAnimationFrame = true;
 
             this.hackyWayToStopPanBeyondBounds__plotData =
-                this.hackyWayToStopPanBeyondBounds__plotData || this.state.plotData;
+                this.hackyWayToStopPanBeyondBounds__plotData ?? this.state.plotData;
             this.hackyWayToStopPanBeyondBounds__domain =
-                this.hackyWayToStopPanBeyondBounds__domain || this.state.xScale!.domain();
+                this.hackyWayToStopPanBeyondBounds__domain ?? this.state.xScale!.domain();
 
-            const state = this.panHelper(mousePosition, panStartXScale, dxdy, chartsToPan);
+            const newState = this.panHelper(mousePosition, panStartXScale, dxdy, chartsToPan);
 
-            this.hackyWayToStopPanBeyondBounds__plotData = state.plotData;
-            this.hackyWayToStopPanBeyondBounds__domain = state.xScale.domain();
+            this.hackyWayToStopPanBeyondBounds__plotData = newState.plotData;
+            this.hackyWayToStopPanBeyondBounds__domain = newState.xScale.domain();
 
             this.panInProgress = true;
 
-            this.triggerEvent("pan", state, e);
+            this.triggerEvent("pan", newState, e);
 
             this.mutableState = {
-                mouseXY: state.mouseXY,
-                currentItem: state.currentItem,
-                currentCharts: state.currentCharts,
+                mouseXY: newState.mouseXY,
+                currentItem: newState.currentItem,
+                currentCharts: newState.currentCharts,
             };
             requestAnimationFrame(() => {
                 this.waitingForPanAnimationFrame = false;

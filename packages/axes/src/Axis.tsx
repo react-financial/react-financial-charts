@@ -3,7 +3,6 @@ import {
     getAxisCanvas,
     GenericChartComponent,
     getStrokeDasharrayCanvas,
-    identity,
     last,
     strokeDashTypes,
 } from "@react-financial-charts/core";
@@ -205,9 +204,7 @@ const tickHelper = (props: AxisProps, scale: ScaleContinuousNumeric<number, numb
         tickValues = scale.domain();
     }
 
-    const baseFormat = scale.tickFormat ? scale.tickFormat(tickArguments) : identity;
-
-    const format = tickFormat === undefined ? baseFormat : (d: any) => tickFormat(d) || "";
+    const format = tickFormat === undefined ? scale.tickFormat(tickArguments) : (d: any) => tickFormat(d) || "";
 
     const sign = orient === "top" || orient === "left" ? -1 : 1;
     const tickSpacing = Math.max(innerTickSize, 0) + tickPadding;

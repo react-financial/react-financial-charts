@@ -35,6 +35,7 @@ class BasicLineSeries extends React.Component<ChartProps> {
                 ratio={ratio}
                 width={width}
                 margin={this.margin}
+                minPointsPerPxThreshold={0.0025}
                 data={data}
                 displayXAccessor={displayXAccessor}
                 seriesName="Data"

@@ -493,8 +493,9 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
             this.dx = dx;
             this.dy = dy;
 
-            if (this.props.onPan !== undefined) {
-                this.props.onPan(mouseXY, panStartXScale, { dx, dy }, chartsToPan, e);
+            const { onPan } = this.props;
+            if (onPan !== undefined) {
+                onPan(mouseXY, panStartXScale, { dx, dy }, chartsToPan, e);
             }
         }
     };

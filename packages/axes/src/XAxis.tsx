@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import * as React from "react";
 import { Axis } from "./Axis";
 
-export interface XAxisProps {
+export interface XAxisProps<T extends number | Date> {
     readonly axisAt?: number | "top" | "bottom" | "middle";
     readonly className?: string;
     readonly domainClassName?: string;
@@ -25,7 +25,7 @@ export interface XAxisProps {
     readonly showTickLabel?: boolean;
     readonly strokeStyle?: string;
     readonly strokeWidth?: number;
-    readonly tickFormat?: (value: number | Date) => string;
+    readonly tickFormat?: (value: T) => string;
     readonly tickPadding?: number;
     readonly tickSize?: number;
     readonly tickLabelFill?: string;
@@ -39,7 +39,7 @@ export interface XAxisProps {
     readonly zoomCursorClassName?: string;
 }
 
-export class XAxis extends React.Component<XAxisProps> {
+export class XAxis<T extends number | Date> extends React.Component<XAxisProps<T>> {
     public static defaultProps = {
         axisAt: "bottom",
         className: "react-financial-charts-x-axis",

@@ -42,24 +42,24 @@ interface EventCaptureProps {
     readonly onMouseLeave?: (event: React.MouseEvent) => void;
     readonly onPinchZoom?: (
         initialPinch: {
-            xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
-            touch1Pos: [number, number];
-            touch2Pos: [number, number];
-            range: number[];
+            readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
+            readonly touch1Pos: [number, number];
+            readonly touch2Pos: [number, number];
+            readonly range: number[];
         },
         currentPinch: {
-            xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
-            touch1Pos: [number, number];
-            touch2Pos: [number, number];
+            readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
+            readonly touch1Pos: [number, number];
+            readonly touch2Pos: [number, number];
         },
         e: React.TouchEvent,
     ) => void;
     readonly onPinchZoomEnd?: (
         initialPinch: {
-            xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
-            touch1Pos: [number, number];
-            touch2Pos: [number, number];
-            range: number[];
+            readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
+            readonly touch1Pos: [number, number];
+            readonly touch2Pos: [number, number];
+            readonly range: number[];
         },
         e: React.TouchEvent,
     ) => void;
@@ -199,7 +199,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     };
 
     public handleWheel = (e: React.WheelEvent) => {
-        const { zoom, onZoom } = this.props;
+        const { onPan, zoom, onZoom } = this.props;
         const { panInProgress } = this.state;
 
         const yZoom = Math.abs(e.deltaY) > Math.abs(e.deltaX) && Math.abs(e.deltaY) > 0;
@@ -230,8 +230,8 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 this.dy += e.deltaY;
                 const dxdy = { dx: this.dx, dy: this.dy };
 
-                if (this.props.onPan !== undefined) {
-                    this.props.onPan(mouseXY, panStartXScale, dxdy, chartsToPan, e);
+                if (onPan !== undefined) {
+                    onPan(mouseXY, panStartXScale, dxdy, chartsToPan, e);
                 }
             } else {
                 const { xScale, chartConfig } = this.props;
@@ -623,7 +623,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
         const { chartsToPan, ...initialPinch } = pinchZoomStart;
 
-        if (zoomEnabled && onPinchZoom) {
+        if (zoomEnabled && onPinchZoom !== undefined) {
             onPinchZoom(
                 initialPinch,
                 {

@@ -24,9 +24,9 @@ class BasicLineSeries extends React.Component<ChartProps> {
 
         const { data, xScale, xAccessor, displayXAccessor } = this.xScaleProvider(initialData);
 
-        const start = xAccessor(data[data.length - 1]);
-        const end = xAccessor(data[Math.max(0, data.length - 100)]);
-        const xExtents = [start, end];
+        const max = xAccessor(data[data.length - 1]);
+        const min = xAccessor(data[Math.max(0, data.length - 100)]);
+        const xExtents = [min, max];
 
         return (
             <ChartCanvas

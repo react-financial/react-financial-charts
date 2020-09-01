@@ -26,9 +26,9 @@ class BasicScatterSeries extends React.Component<ChartProps> {
 
         const { data, xScale, xAccessor, displayXAccessor } = this.xScaleProvider(initialData);
 
-        const start = xAccessor(data[data.length - 1]);
-        const end = xAccessor(data[Math.max(0, data.length - 100)]);
-        const xExtents = [start, end];
+        const maxX = xAccessor(data[data.length - 1]);
+        const minX = xAccessor(data[Math.max(0, data.length - 100)]);
+        const xExtents = [minX, maxX];
 
         const maximium = max<IOHLCData, number>(data, (d) => d.volume);
 

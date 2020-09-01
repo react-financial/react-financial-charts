@@ -61,9 +61,9 @@ class StoIndicator extends React.Component<ChartProps> {
 
         const { data, xScale, xAccessor, displayXAccessor } = xScaleProvider(calculatedData);
 
-        const start = xAccessor(data[data.length - 1]);
-        const end = xAccessor(data[Math.max(0, data.length - 100)]);
-        const xExtents = [start, end];
+        const min = xAccessor(data[data.length - 1]);
+        const max = xAccessor(data[Math.max(0, data.length - 100)]);
+        const xExtents = [min, max];
 
         const gridHeight = height - margin.top - margin.bottom;
 

@@ -1,4 +1,4 @@
-import { identity, slidingWindow, zipper } from "@react-financial-charts/core";
+import { slidingWindow, zipper } from "@react-financial-charts/core";
 import { timeFormat, timeFormatDefaultLocale } from "d3-time-format";
 import financeDiscontinuousScale from "./financeDiscontinuousScale";
 import { defaultFormatters, levelDefinition, IFormatters } from "./levels";
@@ -116,7 +116,7 @@ const discontinuousIndexCalculatorLocalTime = discontinuousIndexCalculator.accum
     },
 );
 
-function doStuff(realDateAccessor: any, inputDateAccessor: any, initialIndex: number, formatters: IFormatters) {
+function createIndex(realDateAccessor: any, inputDateAccessor: any, initialIndex: number, formatters: IFormatters) {
     return function (data: any[]) {
         const dateAccessor = realDateAccessor(inputDateAccessor);
 
@@ -136,9 +136,31 @@ function doStuff(realDateAccessor: any, inputDateAccessor: any, initialIndex: nu
     };
 }
 
+export interface DiscontinuousTimeScaleProviderBuilder {
+    (data: any[]): {
+        data: any[];
+        xScale: any;
+        xAccessor: (data: any) => number;
+        displayXAccessor: (data: any) => number;
+    };
+    initialIndex(): any;
+    initialIndex(x: any): DiscontinuousTimeScaleProviderBuilder;
+    inputDateAccessor(): any;
+    inputDateAccessor(accessor: (data: any) => Date): DiscontinuousTimeScaleProviderBuilder;
+    indexAccessor(): any;
+    indexAccessor(x: any): DiscontinuousTimeScaleProviderBuilder;
+    indexMutator(): any;
+    indexMutator(x: any): DiscontinuousTimeScaleProviderBuilder;
+    withIndex(): any;
+    withIndex(x: any): DiscontinuousTimeScaleProviderBuilder;
+    utc(): DiscontinuousTimeScaleProviderBuilder;
+    setLocale(locale?: any, formatters?: IFormatters): DiscontinuousTimeScaleProviderBuilder;
+    indexCalculator(): any;
+}
+
 export function discontinuousTimeScaleProviderBuilder() {
     let initialIndex = 0;
-    let realDateAccessor = identity as (x: any) => any;
+    let realDateAccessor = (d: any) => d;
     let inputDateAccessor = (d: any) => d.date;
     let indexAccessor = (d: any) => d.idx;
     let indexMutator = (d: any, idx: any) => ({ ...d, idx });
@@ -150,7 +172,7 @@ export function discontinuousTimeScaleProviderBuilder() {
         let index = withIndex;
 
         if (index === undefined) {
-            const response = doStuff(realDateAccessor, inputDateAccessor, initialIndex, currentFormatters)(data);
+            const response = createIndex(realDateAccessor, inputDateAccessor, initialIndex, currentFormatters)(data);
 
             index = response.index;
         }
@@ -228,10 +250,10 @@ export function discontinuousTimeScaleProviderBuilder() {
     };
 
     discontinuousTimeScaleProvider.indexCalculator = function () {
-        return doStuff(realDateAccessor, inputDateAccessor, initialIndex, currentFormatters);
+        return createIndex(realDateAccessor, inputDateAccessor, initialIndex, currentFormatters);
     };
 
-    return discontinuousTimeScaleProvider;
+    return discontinuousTimeScaleProvider as DiscontinuousTimeScaleProviderBuilder;
 }
 
 export default discontinuousTimeScaleProviderBuilder();

@@ -8,6 +8,7 @@ import {
     YAxis,
     withDeviceRatio,
     withSize,
+    IZoomAnchorOptions,
 } from "react-financial-charts";
 import { IOHLCData, withOHLCData } from "../../data";
 
@@ -20,7 +21,7 @@ interface ChartProps {
     readonly height: number;
     readonly ratio: number;
     readonly width: number;
-    readonly zoomAnchor?: any;
+    readonly zoomAnchor?: (options: IZoomAnchorOptions<any>) => number | Date;
 }
 
 class Interaction extends React.Component<ChartProps> {

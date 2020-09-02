@@ -323,7 +323,7 @@ export interface ChartCanvasProps<TXAxis extends number | Date> {
     readonly xExtents: ((data: any[]) => [TXAxis, TXAxis]) | (((data: any[]) => TXAxis) | TXAxis)[];
     readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
     readonly zIndex?: number;
-    readonly zoomAnchor?: (options: IZoomAnchorOptions<any>) => TXAxis;
+    readonly zoomAnchor?: (options: IZoomAnchorOptions<any, TXAxis>) => TXAxis;
     readonly zoomMultiplier?: number;
 }
 

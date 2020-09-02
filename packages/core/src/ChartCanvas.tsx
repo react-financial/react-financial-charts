@@ -320,7 +320,7 @@ export interface ChartCanvasProps<TXAxis extends number | Date> {
     readonly useCrossHairStyleCursor?: boolean;
     readonly width: number;
     readonly xAccessor: (data: any) => TXAxis;
-    readonly xExtents: ((data: any[]) => [TXAxis, TXAxis]) | (((datum: any) => TXAxis) | TXAxis)[];
+    readonly xExtents: ((data: any[]) => [TXAxis, TXAxis]) | (((data: any[]) => TXAxis) | TXAxis)[];
     readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
     readonly zIndex?: number;
     readonly zoomAnchor?: (options: IZoomAnchorOptions<any>) => TXAxis;

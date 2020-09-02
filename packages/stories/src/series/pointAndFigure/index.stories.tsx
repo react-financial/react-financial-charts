@@ -1,6 +1,6 @@
 import * as React from "react";
 import { PointAndFigureSeries } from "../../../../series/src/PointAndFigureSeries";
-import { Daily } from "./basicPointAndFigureSeries";
+import { Daily } from "./BasicPointAndFigureSeries";
 
 export default {
     component: PointAndFigureSeries,

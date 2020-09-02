@@ -1,7 +1,7 @@
 import { Story } from "@storybook/react";
 import * as React from "react";
 import { AreaSeries, AreaSeriesProps } from "../../../../series/src/AreaSeries";
-import { Daily, Intraday } from "./basicAreaSeries";
+import { Daily, Intraday } from "./BasicAreaSeries";
 
 export default {
     title: "Visualization/Series/Area",

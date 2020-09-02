@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.14](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.13...v1.0.0-alpha.14) (2020-09-02)
+
+
+### Bug Fixes
+
+* **core:** correcting zoom anchor types ([052981a](https://github.com/markmcdowell/react-financial-charts/commit/052981a9d7462c7c2e9bba4ae9486f1a1db14553))
+* **stories:** correcting file casing of series examples ([b2bf6d7](https://github.com/markmcdowell/react-financial-charts/commit/b2bf6d7503cb1e7a76341c2bbd0c8c6b6ad6906e))
+
+
+
+
+
 # [1.0.0-alpha.13](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.12...v1.0.0-alpha.13) (2020-09-01)
 
 

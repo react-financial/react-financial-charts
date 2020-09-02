@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.14](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.13...v1.0.0-alpha.14) (2020-09-02)
+
+
+### Bug Fixes
+
+* **core:** correcting xExtents type ([d3607fe](https://github.com/reactivemarkets/react-financial-charts/commit/d3607fedccda783badd2214b9d2ec27fa2faca31))
+* **core:** correcting zoom anchor types ([052981a](https://github.com/reactivemarkets/react-financial-charts/commit/052981a9d7462c7c2e9bba4ae9486f1a1db14553))
+
+
+
+
+
 # [1.0.0-alpha.13](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.12...v1.0.0-alpha.13) (2020-09-01)
 
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { KagiSeries } from "../../../../series/src/KagiSeries";
-import { Daily, Intraday } from "./basicKagiSeries";
+import { Daily, Intraday } from "./BasicKagiSeries";
 
 export default {
     component: KagiSeries,

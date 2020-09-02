@@ -1,6 +1,6 @@
 import * as React from "react";
 import { CandlestickSeries } from "../../../../series/src/CandlestickSeries";
-import { Daily, Intraday } from "./basicHeikinAshiSeries";
+import { Daily, Intraday } from "./BasicHeikinAshiSeries";
 
 export default {
     component: CandlestickSeries,

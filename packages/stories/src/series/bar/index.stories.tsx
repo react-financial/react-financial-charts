@@ -1,7 +1,7 @@
 import { Story } from "@storybook/react";
 import * as React from "react";
 import { BarSeries, BarSeriesProps } from "../../../../series/src/BarSeries";
-import { Daily, Intraday } from "./basicBarSeries";
+import { Daily, Intraday } from "./BasicBarSeries";
 
 export default {
     component: BarSeries,

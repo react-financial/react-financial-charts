@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ScatterSeries } from "../../../../series/src/ScatterSeries";
-import BasicScatterSeries from "./basicScatterSeries";
+import BasicScatterSeries from "./BasicScatterSeries";
 
 export default {
     component: ScatterSeries,

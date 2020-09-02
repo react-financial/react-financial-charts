@@ -5,7 +5,6 @@ export interface TriangleProps {
     readonly className?: string;
     readonly direction?: "top" | "bottom" | "left" | "right" | "hide" | ((datum: any) => any);
     readonly fillStyle?: string | ((datum: any) => string);
-    readonly opacity?: number;
     readonly point: {
         x: number;
         y: number;
@@ -19,9 +18,6 @@ export interface TriangleProps {
 export class Triangle extends React.Component<TriangleProps> {
     public static defaultProps = {
         direction: "top",
-        strokeStyle: "#4682B4",
-        strokeWidth: 1,
-        opacity: 0.5,
         fillStyle: "#4682B4",
         className: "react-financial-charts-marker-triangle",
     };
@@ -52,7 +48,6 @@ export class Triangle extends React.Component<TriangleProps> {
         ctx.moveTo(x, y - innerHypotenuse);
         ctx.lineTo(x + w / 2, y + innerOpposite);
         ctx.lineTo(x - w / 2, y + innerOpposite);
-        ctx.stroke();
 
         // TODO: rotation does not work
         // example: https://gist.github.com/geoffb/6392450
@@ -64,10 +59,14 @@ export class Triangle extends React.Component<TriangleProps> {
             ctx.restore();
         }
         ctx.fill();
+
+        if (strokeStyle !== undefined) {
+            ctx.stroke();
+        }
     };
 
     public render() {
-        const { className, fillStyle, strokeStyle, strokeWidth, opacity, point, width } = this.props;
+        const { className, fillStyle, strokeStyle, strokeWidth, point, width } = this.props;
 
         const rotation = getRotationInDegrees(this.props, point);
         if (rotation == null) {
@@ -92,7 +91,6 @@ export class Triangle extends React.Component<TriangleProps> {
                 points={points}
                 stroke={strokeColor}
                 strokeWidth={strokeWidth}
-                fillOpacity={opacity}
                 fill={fillColor}
                 transform={rotation !== 0 ? `rotate(${rotation}, ${x}, ${y})` : undefined}
             />

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.15](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.14...v1.0.0-alpha.15) (2020-09-03)
+
+
+### Bug Fixes
+
+* **coordinates:** adding half a pixel for alignment on crosshair ([d760ae4](https://github.com/markmcdowell/react-financial-charts/commit/d760ae4470d2883a6f5d5049505664ad8debb849))
+* **series:** filtering plotData on AlternateDataSeries ([2c435bf](https://github.com/markmcdowell/react-financial-charts/commit/2c435bf7f1dca36a6775c3628bbeb41f77eddd5f))
+
+
+### Features
+
+* **stories:** adding updating data example ([8b39605](https://github.com/markmcdowell/react-financial-charts/commit/8b39605902cb0ae0db75c55bbd8086bc27a8b6be))
+
+
+
+
+
 # [1.0.0-alpha.14](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.13...v1.0.0-alpha.14) (2020-09-02)
 
 

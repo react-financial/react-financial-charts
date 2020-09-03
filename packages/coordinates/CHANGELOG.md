@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.15](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.14...v1.0.0-alpha.15) (2020-09-03)
+
+
+### Bug Fixes
+
+* **coordinates:** adding half a pixel for alignment on crosshair ([d760ae4](https://github.com/reactivemarkets/react-financial-charts/commit/d760ae4470d2883a6f5d5049505664ad8debb849))
+
+
+
+
+
 # [1.0.0-alpha.14](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.13...v1.0.0-alpha.14) (2020-09-02)
 
 **Note:** Version bump only for package @react-financial-charts/coordinates

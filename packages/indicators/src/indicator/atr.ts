@@ -1,6 +1,5 @@
 import { atr } from "../calculator";
-import { merge, rebind } from "@react-financial-charts/core";
-
+import { merge, rebind } from "../utils";
 import { ATROptions } from "../calculator/atr";
 import baseIndicator from "./baseIndicator";
 

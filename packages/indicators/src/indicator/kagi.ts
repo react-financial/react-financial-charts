@@ -1,5 +1,4 @@
-import { rebind } from "@react-financial-charts/core";
-
+import { rebind } from "../utils";
 import { kagi } from "../calculator";
 import baseIndicator from "./baseIndicator";
 

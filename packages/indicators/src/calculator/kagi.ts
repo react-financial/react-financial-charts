@@ -1,6 +1,6 @@
-import { functor, isNotDefined, merge, path } from "@react-financial-charts/core";
+import { functor, isNotDefined, path } from "@react-financial-charts/core";
 import atr from "./atr";
-
+import { merge } from "../utils";
 import { Kagi as defaultOptions } from "./defaultOptionsForComputation";
 
 export default function () {

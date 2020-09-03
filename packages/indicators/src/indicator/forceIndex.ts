@@ -1,7 +1,5 @@
-import { merge, rebind } from "@react-financial-charts/core";
-
+import { merge, rebind } from "../utils";
 import { forceIndex } from "../calculator";
-
 import { ForceIndexOptions } from "../calculator/forceIndex";
 import baseIndicator from "./baseIndicator";
 

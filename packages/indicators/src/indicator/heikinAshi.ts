@@ -1,7 +1,6 @@
 import { heikinAshi } from "../calculator";
 import baseIndicator from "./baseIndicator";
-
-import { merge, rebind } from "@react-financial-charts/core";
+import { merge, rebind } from "../utils";
 
 const ALGORITHM_TYPE = "HeikinAshi";
 

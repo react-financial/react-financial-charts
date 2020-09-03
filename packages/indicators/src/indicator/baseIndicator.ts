@@ -1,5 +1,4 @@
 import { scaleOrdinal } from "d3-scale";
-import { noop } from "@react-financial-charts/core";
 
 const defaultColors = ["#F44336", "#2196F3", "#8BC34A", "#FF5722", "#3F51B5", "#03A9F4", "#9C27B0", "#4CAF50"];
 
@@ -30,7 +29,9 @@ export default function () {
     let echo: any;
     let type: string;
 
-    const baseIndicator = () => noop;
+    const baseIndicator = () => () => {
+        /** Do Nothing */
+    };
 
     baseIndicator.id = (newId?: number) => {
         if (newId === undefined) {

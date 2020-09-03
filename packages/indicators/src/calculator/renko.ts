@@ -1,5 +1,5 @@
-import { functor, isNotDefined, merge } from "@react-financial-charts/core";
-
+import { functor, isNotDefined } from "@react-financial-charts/core";
+import { merge } from "../utils";
 import atr from "./atr";
 
 import { Renko as defaultOptions } from "./defaultOptionsForComputation";

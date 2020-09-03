@@ -1,9 +1,4 @@
-import { identity } from "./identity";
-import { noop } from "./noop";
-
-export { default as rebind } from "./rebind";
 export { default as zipper } from "./zipper";
-export { default as merge } from "./merge";
 export { default as slidingWindow } from "./slidingWindow";
 export * from "./closestItem";
 export * from "./identity";
@@ -15,16 +10,6 @@ export * from "./barWidth";
 export * from "./colors";
 export * from "./strokeDasharray";
 export * from "./PureComponent";
-
-export function getLogger(prefix: string) {
-    let logger = noop;
-    if (process.env.NODE_ENV !== "production") {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        logger = require("debug")(`react-financial-charts:${prefix}`);
-    }
-
-    return logger;
-}
 
 export function sign(x: any) {
     // @ts-ignore
@@ -164,7 +149,7 @@ export function clearCanvas(canvasList: CanvasRenderingContext2D[], ratio: numbe
 }
 
 // copied from https://github.com/lodash/lodash/blob/master/mapObject.js
-export function mapObject(object = {}, iteratee = identity) {
+export function mapObject(object = {}, iteratee = (x: any) => x) {
     const props = Object.keys(object);
     const result = new Array(props.length);
 

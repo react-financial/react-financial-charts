@@ -1,5 +1,4 @@
-import { merge, rebind } from "@react-financial-charts/core";
-
+import { merge, rebind } from "../utils";
 import { bollingerband } from "../calculator";
 import { BollingerBandOptions } from "../calculator/bollingerband";
 import baseIndicator from "./baseIndicator";

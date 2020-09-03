@@ -1,7 +1,5 @@
-import { merge, rebind } from "@react-financial-charts/core";
-
+import { merge, rebind } from "../utils";
 import { tma } from "../calculator";
-
 import { TMAOptions } from "../calculator/tma";
 import baseIndicator from "./baseIndicator";
 

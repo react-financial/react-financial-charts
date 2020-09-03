@@ -1,6 +1,5 @@
 import { elderRay } from "../calculator";
-import { merge, rebind } from "@react-financial-charts/core";
-
+import { merge, rebind } from "../utils";
 import { ElderRayOptions } from "../calculator/elderRay";
 import baseIndicator from "./baseIndicator";
 

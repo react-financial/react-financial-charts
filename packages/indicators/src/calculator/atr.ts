@@ -1,7 +1,5 @@
 import { sum } from "d3-array";
-
 import { isDefined, last, slidingWindow } from "@react-financial-charts/core";
-
 import { ATR as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface ATROptions {

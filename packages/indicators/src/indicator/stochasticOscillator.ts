@@ -1,5 +1,4 @@
-import { merge, rebind } from "@react-financial-charts/core";
-
+import { merge, rebind } from "../utils";
 import { sto } from "../calculator";
 import { STOOptions } from "../calculator/sto";
 import baseIndicator from "./baseIndicator";

@@ -1,6 +1,5 @@
 import { change } from "../calculator";
-import { merge, rebind } from "@react-financial-charts/core";
-
+import { merge, rebind } from "../utils";
 import { ChangeOptions } from "../calculator/change";
 import baseIndicator from "./baseIndicator";
 

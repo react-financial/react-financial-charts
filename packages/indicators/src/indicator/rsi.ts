@@ -1,7 +1,5 @@
-import { merge, rebind } from "@react-financial-charts/core";
-
+import { merge, rebind } from "../utils";
 import { rsi } from "../calculator";
-
 import { RSIOptions } from "../calculator/rsi";
 import baseIndicator from "./baseIndicator";
 

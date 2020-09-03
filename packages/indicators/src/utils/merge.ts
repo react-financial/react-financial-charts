@@ -23,12 +23,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
-import { identity } from "./identity";
-import { noop } from "./noop";
 import zipper from "./zipper";
-
-import { isNotDefined } from "./index";
 
 interface Merge {
     (data: any[]): any;
@@ -43,18 +38,20 @@ interface Merge {
 // applies an algorithm to an array, merging the result back into
 // the source array using the given merge function.
 export default function () {
-    let algorithm = identity;
+    let algorithm = (x: any) => x;
     let skipUndefined = true;
-    let merge = noop;
+    let merge = () => {
+        /** Do Nothing */
+    };
 
     const mergeCompute = (data: any[]) => {
         const zip = zipper().combine((datum: any, indicator: any) => {
             const result =
-                skipUndefined && isNotDefined(indicator)
+                skipUndefined && indicator === undefined
                     ? datum
                     : // @ts-ignore
                       merge(datum, indicator);
-            return isNotDefined(result) ? datum : result;
+            return result === undefined ? datum : result;
         });
 
         // @ts-ignore

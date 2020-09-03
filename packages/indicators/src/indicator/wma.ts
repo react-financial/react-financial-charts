@@ -1,7 +1,5 @@
-import { merge, rebind } from "@react-financial-charts/core";
-
+import { merge, rebind } from "../utils";
 import { wma } from "../calculator";
-
 import { WMAOptions } from "../calculator/wma";
 import baseIndicator from "./baseIndicator";
 

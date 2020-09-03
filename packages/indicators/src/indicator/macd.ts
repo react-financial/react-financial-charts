@@ -1,7 +1,5 @@
-import { merge, rebind } from "@react-financial-charts/core";
-
+import { merge, rebind } from "../utils";
 import { macd } from "../calculator";
-
 import { MACDOptions } from "../calculator/macd";
 import baseIndicator from "./baseIndicator";
 import { MACD as appearanceOptions } from "./defaultOptionsForAppearance";

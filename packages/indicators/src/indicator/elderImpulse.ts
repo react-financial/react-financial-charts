@@ -1,5 +1,5 @@
-import { isDefined, isNotDefined, merge, rebind, slidingWindow } from "@react-financial-charts/core";
-
+import { isDefined, isNotDefined, slidingWindow } from "@react-financial-charts/core";
+import { merge, rebind } from "../utils";
 import baseIndicator from "./baseIndicator";
 import { ElderImpulse as appearanceOptions } from "./defaultOptionsForAppearance";
 

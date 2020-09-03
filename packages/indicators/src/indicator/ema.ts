@@ -1,5 +1,4 @@
-import { merge, rebind } from "@react-financial-charts/core";
-
+import { merge, rebind } from "../utils";
 import { ema } from "../calculator";
 import { EMAOptions } from "../calculator/ema";
 import baseIndicator from "./baseIndicator";

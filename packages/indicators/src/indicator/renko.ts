@@ -1,5 +1,4 @@
-import { rebind } from "@react-financial-charts/core";
-
+import { rebind } from "../utils";
 import { renko } from "../calculator";
 import baseIndicator from "./baseIndicator";
 

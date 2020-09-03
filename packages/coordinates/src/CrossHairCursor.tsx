@@ -10,7 +10,7 @@ import {
 const defaultCustomX = (props: CrossHairCursorProps, moreProps: any) => {
     const { xScale, xAccessor, currentItem, mouseXY } = moreProps;
     const { snapX } = props;
-    const x = snapX ? Math.round(xScale(xAccessor(currentItem))) : mouseXY[0];
+    const x = snapX ? Math.round(xScale(xAccessor(currentItem))) : mouseXY[0] + 0.5;
     return x;
 };
 

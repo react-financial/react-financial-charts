@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "d3-dsv": "^1.2.0",
-    "d3-format": "^1.4.4",
-    "d3-time-format": "^2.2.3",
+    "d3-format": "^1.4.5",
+    "d3-time-format": "^2.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-financial-charts": "file:../charts"

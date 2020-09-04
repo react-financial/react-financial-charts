@@ -144,11 +144,11 @@ export default function () {
             } else if (
                 // @ts-ignore
                 (line.close >= line.open /* going up */ &&
-                priceMovement < 0 /* and moving in other direction */ &&
+                    priceMovement < 0 /* and moving in other direction */ &&
                     Math.abs(priceMovement) > reversalThreshold(d)) /* and the movement is big enough for reversal */ ||
                 // @ts-ignore
                 (line.close < line.open /* going down */ &&
-                priceMovement > 0 /* and moving in other direction */ &&
+                    priceMovement > 0 /* and moving in other direction */ &&
                     /* and the movement is big enough for reversal */
                     Math.abs(priceMovement) > reversalThreshold(d))
             ) {

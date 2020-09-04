@@ -1,4 +1,3 @@
-import { head, tail } from "@react-financial-charts/core";
 import * as PropTypes from "prop-types";
 import * as React from "react";
 
@@ -20,8 +19,8 @@ export class AlternateDataSeries<TData> extends React.Component<AlternateDataSer
         const { data } = this.props;
         const { plotData, xAccessor } = this.context;
 
-        const startDate = xAccessor(head(plotData));
-        const endDate = xAccessor(tail(plotData));
+        const startDate = xAccessor(plotData[0]);
+        const endDate = xAccessor(plotData[plotData.length - 1]);
 
         return {
             plotData: data.filter((d) => {

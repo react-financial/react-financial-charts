@@ -24,7 +24,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 import { zip } from "d3-array";
-
 import { MACD as defaultOptions } from "./defaultOptionsForComputation";
 import ema from "./ema";
 

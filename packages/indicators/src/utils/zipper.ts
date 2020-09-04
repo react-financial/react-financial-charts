@@ -1,6 +1,7 @@
 /* an extension to d3.zip so we call a function instead of an array */
 
 import { min } from "d3-array";
+import { identity } from "./identity";
 
 interface Zip {
     (...args: any[]): any[];
@@ -9,7 +10,7 @@ interface Zip {
 }
 
 export default function zipper() {
-    let combine = (x: any) => x;
+    let combine = identity;
 
     function zip() {
         const n = arguments.length;

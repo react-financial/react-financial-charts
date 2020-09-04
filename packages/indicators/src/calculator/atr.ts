@@ -1,5 +1,5 @@
 import { sum } from "d3-array";
-import { isDefined, last, slidingWindow } from "@react-financial-charts/core";
+import { slidingWindow } from "../utils";
 import { ATR as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface ATROptions {
@@ -39,16 +39,15 @@ export default function () {
                 return Math.max(d.high - d.low, d.high - prev.close, d.low - prev.close);
             });
 
-        let prevATR: any;
+        let prevATR: number | undefined;
 
         const atrAlgorithm = slidingWindow()
             .skipInitial(1) // trueRange starts from index 1 so ATR starts from 1
             .windowSize(windowSize)
-            .accumulator((values: any) => {
-                const tr = last(values);
-                const atr = isDefined(prevATR)
-                    ? (prevATR * (windowSize - 1) + tr) / windowSize
-                    : sum(values) / windowSize;
+            .accumulator((values: any[]) => {
+                const tr = values[values.length - 1];
+                const atr =
+                    prevATR !== undefined ? (prevATR * (windowSize - 1) + tr) / windowSize : sum(values) / windowSize;
 
                 prevATR = atr;
                 return atr;

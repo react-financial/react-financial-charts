@@ -4,18 +4,17 @@ export * from "./closestItem";
 export * from "./identity";
 export * from "./noop";
 export * from "./shallowEqual";
-export { default as mappedSlidingWindow } from "./mappedSlidingWindow";
 export { default as accumulatingWindow } from "./accumulatingWindow";
 export * from "./barWidth";
 export * from "./strokeDasharray";
 export * from "./PureComponent";
 
-export function sign(x: any) {
+export const sign = (x: any) => {
     // @ts-ignore
     return (x > 0) - (x < 0);
-}
+};
 
-export function path(loc = []) {
+export const path = (loc = []) => {
     const key = Array.isArray(loc) ? loc : [loc];
     const length = key.length;
 
@@ -30,11 +29,11 @@ export function path(loc = []) {
         }
         return index === length ? obj : defaultValue;
     };
-}
+};
 
-export function functor(v: any) {
+export const functor = (v: any) => {
     return typeof v === "function" ? v : () => v;
-}
+};
 
 export function getClosestValue(inputValue: any, currentValue: any) {
     const values = Array.isArray(inputValue) ? inputValue : [inputValue];

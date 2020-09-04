@@ -25,10 +25,8 @@ THE SOFTWARE.
 */
 
 import { deviation, mean } from "d3-array";
-
-import { last, path, slidingWindow, zipper } from "@react-financial-charts/core";
+import { path, slidingWindow, zipper } from "../utils";
 import ema from "./ema";
-
 import { BollingerBand as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface BollingerBandOptions {
@@ -51,7 +49,6 @@ export default function () {
     const calculator = (data: any[]) => {
         const { windowSize, multiplier, movingAverageType, sourcePath } = options;
 
-        // @ts-ignore
         const source = path(sourcePath);
 
         const meanAlgorithm =
@@ -64,8 +61,8 @@ export default function () {
 
         const bollingerBandAlgorithm = slidingWindow()
             .windowSize(windowSize)
-            .accumulator((values: any) => {
-                const avg = last(values).mean;
+            .accumulator((values: any[]) => {
+                const avg = values[values.length - 1].mean;
                 const stdDev = deviation<any>(values, (each) => source(each.datum));
                 if (stdDev === undefined) {
                     return undefined;
@@ -78,9 +75,8 @@ export default function () {
                 };
             });
 
-        const zip = zipper().combine((datum: any, meanValue: any) => ({ datum, mean: meanValue }));
+        const zip = zipper().combine((datum: any, meanValue: number) => ({ datum, mean: meanValue }));
 
-        // @ts-ignore
         const tuples = zip(data, meanAlgorithm(data));
 
         return bollingerBandAlgorithm(tuples);

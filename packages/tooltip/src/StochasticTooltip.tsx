@@ -1,4 +1,4 @@
-import { functor, GenericChartComponent, last } from "@react-financial-charts/core";
+import { functor, GenericChartComponent } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
 import { ToolTipText } from "./ToolTipText";
@@ -66,7 +66,7 @@ export class StochasticTooltip extends React.Component<StochasticTooltipProps> {
             fullData,
         } = moreProps;
 
-        const currentItem = displayValuesFor(this.props, moreProps) ?? last(fullData);
+        const currentItem = displayValuesFor(this.props, moreProps) ?? fullData[fullData.length - 1];
 
         const stochastic = currentItem && yAccessor(currentItem);
 

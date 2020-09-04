@@ -1,4 +1,4 @@
-import { path, slidingWindow } from "@react-financial-charts/core";
+import { path, slidingWindow } from "../utils";
 import { ForceIndex as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface ForceIndexOptions {
@@ -12,10 +12,8 @@ export default function () {
     const calculator = (data: any[]) => {
         const { sourcePath, volumePath } = options;
 
-        // @ts-ignore
         const source = path(sourcePath);
 
-        // @ts-ignore
         const volume = path(volumePath);
 
         const forceIndexCalulator = slidingWindow()

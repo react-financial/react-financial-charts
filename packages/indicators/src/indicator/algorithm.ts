@@ -1,5 +1,4 @@
-import { identity, slidingWindow } from "@react-financial-charts/core";
-import { merge } from "../utils";
+import { identity, merge, slidingWindow } from "../utils";
 
 export interface Algorithm {
     (data: any[]): any;

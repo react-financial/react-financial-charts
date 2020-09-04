@@ -1,13 +1,12 @@
-import { isDefined, isNotDefined, slidingWindow } from "@react-financial-charts/core";
-import { merge, rebind } from "../utils";
+import { merge, rebind, slidingWindow } from "../utils";
 import baseIndicator from "./baseIndicator";
 import { ElderImpulse as appearanceOptions } from "./defaultOptionsForAppearance";
 
 const ALGORITHM_TYPE = "ElderImpulse";
 
 export default function () {
-    let macdSource: any;
-    let emaSource: any;
+    let macdSource: any | undefined;
+    let emaSource: any | undefined;
 
     const base = baseIndicator().type(ALGORITHM_TYPE).stroke(appearanceOptions.stroke).fill(undefined);
 
@@ -15,18 +14,20 @@ export default function () {
         .windowSize(2)
         .undefinedValue("neutral")
         .accumulator(([prev, curr]: any) => {
-            if (isNotDefined(macdSource)) {
+            if (macdSource === undefined) {
                 throw new Error(`macdSource not defined for ${ALGORITHM_TYPE} calculator`);
             }
-            if (isNotDefined(emaSource)) {
+            if (emaSource === undefined) {
                 throw new Error(`emaSource not defined for ${ALGORITHM_TYPE} calculator`);
             }
 
-            if (isDefined(macdSource(prev)) && isDefined(emaSource(prev))) {
-                const prevMACDDivergence = macdSource(prev).divergence;
+            const prevMacd = macdSource(prev);
+            const prevEMA = emaSource(prev);
+
+            if (prevMacd !== undefined && prevEMA !== undefined) {
+                const prevMACDDivergence = prevMacd.divergence;
                 const currMACDDivergence = macdSource(curr).divergence;
 
-                const prevEMA = emaSource(prev);
                 const currEMA = emaSource(curr);
 
                 if (currMACDDivergence >= prevMACDDivergence && currEMA >= prevEMA) {

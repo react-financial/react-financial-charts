@@ -1,6 +1,5 @@
+import { functor } from "./functor";
 import { identity } from "./identity";
-import { functor } from "./index";
-import { noop } from "./noop";
 
 interface MappedSlidingWindow {
     (data: any[]): any;
@@ -19,7 +18,9 @@ interface MappedSlidingWindow {
 export default function () {
     let undefinedValue: any;
     let windowSize = 10;
-    let accumulator = noop;
+    let accumulator = () => {
+        /** Do Nothing */
+    };
     let source = identity;
     let skipInitial = 0;
 

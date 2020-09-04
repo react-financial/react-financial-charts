@@ -1,4 +1,3 @@
-import { head, last } from "@react-financial-charts/core";
 import { ascending } from "d3-array";
 import { scaleLinear, InterpolatorFactory } from "d3-scale";
 import { levelDefinition } from "./levels";
@@ -59,9 +58,9 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
         const [domainStart, domainEnd] = backingLinearScale.domain();
 
         const dStart = Math.ceil(domainStart);
-        const dHead = head(index)?.index;
+        const dHead = index[0]?.index;
         const start = Math.max(dStart, dHead) + Math.abs(dHead);
-        const end = Math.min(Math.floor(domainEnd), last(index)?.index) + Math.abs(dHead);
+        const end = Math.min(Math.floor(domainEnd), index[index.length - 1]?.index) + Math.abs(dHead);
 
         const desiredTickCount = Math.ceil(((end - start) / (domainEnd - domainStart)) * backingTicks.length);
 
@@ -92,12 +91,13 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
         if (end - start > ticks.length) {
             const ticksSet = new Set(ticks);
 
-            const d = Math.abs(head(index).index);
+            const d = Math.abs(index[0].index);
 
             // ignore ticks within this distance
             const distance = Math.ceil(
-                (backingTicks.length > 0 ? (last(backingTicks) - head(backingTicks)) / backingTicks.length / 4 : 1) *
-                    1.5,
+                (backingTicks.length > 0
+                    ? (backingTicks[backingTicks.length - 1] - backingTicks[0]) / backingTicks.length / 4
+                    : 1) * 1.5,
             );
 
             for (let i = 0; i < ticks.length - 1; i++) {
@@ -118,13 +118,13 @@ export default function financeDiscontinuousScale(index: any[], backingLinearSca
     };
     scale.tickFormat = () => {
         return function (x: any) {
-            const d = Math.abs(head(index).index);
+            const d = Math.abs(index[0].index);
             const { format, date } = index[Math.floor(x + d)];
             return format(date);
         };
     };
     scale.value = (x: any) => {
-        const d = Math.abs(head(index).index);
+        const d = Math.abs(index[0].index);
         const row = index[Math.floor(x + d)];
         if (row !== undefined) {
             const { date } = row;

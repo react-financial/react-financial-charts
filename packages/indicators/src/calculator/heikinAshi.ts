@@ -1,16 +1,17 @@
-import { identity, mappedSlidingWindow } from "@react-financial-charts/core";
+import { mappedSlidingWindow } from "../utils";
 
 export default function () {
-    let source = identity;
+    let source = (x: any) => x;
 
     const calculator = (data: any[]) => {
         const algorithm = mappedSlidingWindow()
             .windowSize(2)
-            // @ts-ignore
-            .undefinedValue(({ open, high, low, close }) => {
-                close = (open + high + low + close) / 4;
-                return { open, high, low, close };
-            })
+            .undefinedValue(
+                ({ open, high, low, close }: { open: number; high: number; low: number; close: number }) => {
+                    close = (open + high + low + close) / 4;
+                    return { open, high, low, close };
+                },
+            )
             .accumulator(([prev, now]: any) => {
                 const { date, volume } = now;
                 const close = (now.open + now.high + now.low + now.close) / 4;

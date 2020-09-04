@@ -1,4 +1,4 @@
-import { slidingWindow } from "@react-financial-charts/core";
+import { slidingWindow } from "../utils";
 import { Change as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface ChangeOptions {

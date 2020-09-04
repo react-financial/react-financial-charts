@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.16](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.15...v1.0.0-alpha.16) (2020-09-04)
+
+
+### Bug Fixes
+
+* **series:** fixing AlternateDataSeries filtering ([65e31c4](https://github.com/reactivemarkets/react-financial-charts/commit/65e31c47844a25c9e10ec2f116e3e82867a37416))
+
+
+
+
+
 # [1.0.0-alpha.15](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.14...v1.0.0-alpha.15) (2020-09-03)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@react-financial-charts/tooltip",
-  "version": "1.0.0-alpha.15",
+  "version": "1.0.0-alpha.16",
   "description": "Tooltips for react-financial-charts",
   "publishConfig": {
     "access": "public"

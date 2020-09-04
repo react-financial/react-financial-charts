@@ -1,4 +1,3 @@
-import { isNotDefined } from "@react-financial-charts/core";
 import { PointAndFigure as defaultOptions } from "./defaultOptionsForComputation";
 
 function createBox(d: any, dateAccessor: any, dateMutator: any) {
@@ -23,17 +22,17 @@ function updateColumns(columnData: any, dateAccessor: any, dateMutator: any) {
         d.startOfWeek = false;
 
         d.boxes.forEach(function (eachBox: any) {
-            if (isNotDefined(d.open)) {
+            if (d.open === undefined) {
                 d.open = eachBox.open;
             }
             d.close = eachBox.close;
             d.high = Math.max(d.open, d.close);
             d.low = Math.min(d.open, d.close);
 
-            if (isNotDefined(d.fromDate)) {
+            if (d.fromDate === undefined) {
                 d.fromDate = eachBox.fromDate;
             }
-            if (isNotDefined(d.date)) {
+            if (d.date === undefined) {
                 d.date = eachBox.date;
             }
             d.toDate = eachBox.toDate;

@@ -24,7 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-import { isNotDefined, path } from "@react-financial-charts/core";
+import { path } from "../utils";
 import { EMA as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface EMAOptions {
@@ -45,7 +45,6 @@ export default function () {
     const calculator = (data: any[]) => {
         const { windowSize, sourcePath } = options;
 
-        // @ts-ignore
         const source = path(sourcePath);
         const alpha = 2 / (windowSize + 1);
         let previous: any;
@@ -54,7 +53,7 @@ export default function () {
 
         return data.map(function (d, i) {
             const v = source(d, i);
-            if (isNotDefined(previous) && isNotDefined(v)) {
+            if (previous === undefined && v === undefined) {
                 skip++;
                 return undefined;
             } else if (i < windowSize + skip - 1) {

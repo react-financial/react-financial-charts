@@ -32,8 +32,7 @@
 */
 
 import { sum } from "d3-array";
-
-import { slidingWindow } from "@react-financial-charts/core";
+import { slidingWindow } from "../utils";
 import { TMA as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface TMAOptions {

@@ -25,8 +25,7 @@ THE SOFTWARE.
 */
 
 import { mean } from "d3-array";
-
-import { isDefined, last, path, slidingWindow } from "@react-financial-charts/core";
+import { path, slidingWindow } from "../utils";
 import { RSI as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface RSIOptions {
@@ -47,18 +46,20 @@ export default function () {
         let prevAvgLoss: any;
         const rsiAlgorithm = slidingWindow()
             .windowSize(windowSize)
-            .accumulator((values: any) => {
-                const avgGain = isDefined(prevAvgGain)
-                    ? (prevAvgGain * (windowSize - 1) + last(values).gain) / windowSize
-                    : mean<any>(values, (each) => each.gain);
+            .accumulator((values: any[]) => {
+                const avgGain =
+                    prevAvgGain !== undefined
+                        ? (prevAvgGain * (windowSize - 1) + values[values.length - 1].gain) / windowSize
+                        : mean<any>(values, (each) => each.gain);
 
                 if (avgGain === undefined) {
                     return undefined;
                 }
 
-                const avgLoss = isDefined(prevAvgLoss)
-                    ? (prevAvgLoss * (windowSize - 1) + last(values).loss) / windowSize
-                    : mean<any>(values, (each) => each.loss);
+                const avgLoss =
+                    prevAvgLoss !== undefined
+                        ? (prevAvgLoss * (windowSize - 1) + values[values.length - 1].loss) / windowSize
+                        : mean<any>(values, (each) => each.loss);
 
                 if (avgLoss === undefined) {
                     return undefined;

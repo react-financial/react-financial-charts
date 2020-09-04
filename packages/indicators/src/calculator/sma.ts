@@ -1,6 +1,5 @@
 import { mean } from "d3-array";
-
-import { slidingWindow } from "@react-financial-charts/core";
+import { slidingWindow } from "../utils";
 import { SMA as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface SMAOptions {

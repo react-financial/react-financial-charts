@@ -1,4 +1,4 @@
-import { isDefined, isNotDefined, mappedSlidingWindow } from "@react-financial-charts/core";
+import { mappedSlidingWindow } from "../utils";
 import { SAR as defaultOptions } from "./defaultOptionsForComputation";
 
 function calc(prev: any, now: any) {
@@ -43,7 +43,7 @@ export default function () {
             .accumulator(([prev, now]: any) => {
                 const { risingSar, fallingSar, risingEp, fallingEp } = calc(prev, now);
 
-                if (isNotDefined(prev.use) && risingSar > now.low && fallingSar < now.high) {
+                if (prev.use === undefined && risingSar > now.low && fallingSar < now.high) {
                     return {
                         risingSar,
                         fallingSar,
@@ -52,17 +52,18 @@ export default function () {
                     };
                 }
 
-                const use = isDefined(prev.use)
-                    ? prev.use === "rising"
-                        ? risingSar > now.low
-                            ? "falling"
-                            : "rising"
-                        : fallingSar < now.high
-                        ? "rising"
-                        : "falling"
-                    : risingSar > now.low
-                    ? "falling"
-                    : "rising";
+                const use =
+                    prev.use !== undefined
+                        ? prev.use === "rising"
+                            ? risingSar > now.low
+                                ? "falling"
+                                : "rising"
+                            : fallingSar < now.high
+                            ? "rising"
+                            : "falling"
+                        : risingSar > now.low
+                        ? "falling"
+                        : "rising";
 
                 const current =
                     prev.use === use

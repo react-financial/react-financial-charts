@@ -1,7 +1,5 @@
-import { functor, isNotDefined } from "@react-financial-charts/core";
-import { merge } from "../utils";
+import { functor, merge } from "../utils";
 import atr from "./atr";
-
 import { Renko as defaultOptions } from "./defaultOptionsForComputation";
 
 export default function () {
@@ -16,8 +14,9 @@ export default function () {
         const { reversalType, fixedBrickSize, sourcePath, windowSize } = options;
 
         const source =
-            // eslint-disable-next-line prettier/prettier
-            sourcePath === "high/low" ? ((d: any) => ({ high: d.high, low: d.low })) : ((d: any) => ({ high: d.close, low: d.close }));
+            sourcePath === "high/low"
+                ? (d: any) => ({ high: d.high, low: d.low })
+                : (d: any) => ({ high: d.close, low: d.close });
 
         const pricingMethod = source;
         let brickSize: any;
@@ -69,7 +68,7 @@ export default function () {
         let direction = 0;
 
         rawData.forEach(function (d, idx) {
-            if (isNotDefined(brick.from)) {
+            if (brick.from === undefined) {
                 brick.high = d.high;
                 brick.low = d.low;
                 brick.startOfYear = d.startOfYear;

@@ -25,10 +25,8 @@ THE SOFTWARE.
 */
 
 import { mean, zip } from "d3-array";
-
+import { slidingWindow } from "../utils";
 import ema from "./ema";
-
-import { slidingWindow } from "@react-financial-charts/core";
 import { ElderRay as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface ElderRayOptions {

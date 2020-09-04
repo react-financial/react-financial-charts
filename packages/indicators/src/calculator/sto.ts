@@ -25,8 +25,7 @@ THE SOFTWARE.
 */
 
 import { max, mean, min, zip } from "d3-array";
-
-import { last, slidingWindow } from "@react-financial-charts/core";
+import { slidingWindow } from "../utils";
 import { FullStochasticOscillator as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface STOOptions {
@@ -60,7 +59,7 @@ export default function () {
                     return undefined;
                 }
 
-                const currentClose = close(last(values));
+                const currentClose = close(values[values.length - 1]);
                 const k = ((currentClose - lowestLow) / (highestHigh - lowestLow)) * 100;
 
                 return k;

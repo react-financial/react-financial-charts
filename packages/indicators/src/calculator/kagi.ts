@@ -1,6 +1,5 @@
-import { functor, isNotDefined, path } from "@react-financial-charts/core";
+import { functor, merge, path } from "../utils";
 import atr from "./atr";
-import { merge } from "../utils";
 import { Kagi as defaultOptions } from "./defaultOptionsForComputation";
 
 export default function () {
@@ -13,8 +12,8 @@ export default function () {
     const calculator = (data: any[]) => {
         const { reversalType, windowSize, reversal, sourcePath } = options;
 
-        // @ts-ignore
         const source = path(sourcePath);
+
         let reversalThreshold: any;
 
         if (reversalType === "ATR") {
@@ -60,7 +59,7 @@ export default function () {
         } = {};
 
         data.forEach(function (d) {
-            if (isNotDefined(line.from)) {
+            if (line.from === undefined) {
                 dateMutator(line, dateAccessor(d));
                 line.from = dateAccessor(d);
 
@@ -163,7 +162,7 @@ export default function () {
                 let nextChangeTo;
                 if (direction < 0 /* if direction so far has been -ve*/) {
                     // compare with line.close becomes prevTrough
-                    if (isNotDefined(prevPeak)) {
+                    if (prevPeak === undefined) {
                         prevPeak = line.open;
                     }
                     prevTrough = line.close;
@@ -172,7 +171,7 @@ export default function () {
                         nextChangeTo = "yang";
                     }
                 } else {
-                    if (isNotDefined(prevTrough)) {
+                    if (prevTrough === undefined) {
                         prevTrough = line.open;
                     }
                     prevPeak = line.close;
@@ -181,7 +180,7 @@ export default function () {
                         nextChangeTo = "yin";
                     }
                 }
-                if (isNotDefined(line.startAs)) {
+                if (line.startAs === undefined) {
                     line.startAs = direction > 0 ? "yang" : "yin";
                 }
 

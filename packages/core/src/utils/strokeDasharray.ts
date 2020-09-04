@@ -14,7 +14,6 @@ export type strokeDashTypes =
 
 export const getStrokeDasharrayCanvas = (type?: strokeDashTypes) => {
     const a = getStrokeDasharray(type).split(",");
-
     if (a.length === 1) {
         return [];
     }

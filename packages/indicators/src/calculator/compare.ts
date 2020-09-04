@@ -1,4 +1,4 @@
-import { head, isDefined, isNotDefined, path } from "@react-financial-charts/core";
+import { path } from "../utils";
 import { Change as defaultOptions } from "./defaultOptionsForComputation";
 
 export interface CompareOptions {
@@ -14,10 +14,9 @@ export default function () {
     const calculator = (data: any[]) => {
         const { basePath, mainKeys, compareKeys } = options;
 
-        // @ts-ignore
         const base = path(basePath);
 
-        const first = head(data);
+        const first = data[0];
         const b = base(first);
 
         const firsts: any = {};
@@ -40,11 +39,11 @@ export default function () {
             });
 
             compareKeys.forEach((key) => {
-                if (isDefined(d[key]) && isNotDefined(firsts[key])) {
+                if (d[key] !== undefined && firsts[key] === undefined) {
                     // @ts-ignore
                     firsts[key] = d[key];
                 }
-                if (isDefined(d[key]) && isDefined(firsts[key])) {
+                if (d[key] !== undefined && firsts[key] !== undefined) {
                     // @ts-ignore
                     result[key] = (d[key] - firsts[key]) / firsts[key];
                 }

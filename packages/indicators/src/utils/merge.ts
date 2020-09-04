@@ -24,6 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 import zipper from "./zipper";
+import { identity } from "./identity";
 
 interface Merge {
     (data: any[]): any;
@@ -38,7 +39,7 @@ interface Merge {
 // applies an algorithm to an array, merging the result back into
 // the source array using the given merge function.
 export default function () {
-    let algorithm = (x: any) => x;
+    let algorithm = identity;
     let skipUndefined = true;
     let merge = () => {
         /** Do Nothing */

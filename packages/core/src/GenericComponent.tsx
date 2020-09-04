@@ -21,13 +21,13 @@ const aliases = {
 interface GenericComponentProps {
     readonly svgDraw?: (moreProps: any) => React.ReactNode;
     readonly canvasDraw?: (ctx: CanvasRenderingContext2D, moreProps: any) => void;
+    readonly canvasToDraw?: (contexts: ICanvasContexts) => CanvasRenderingContext2D | undefined;
     readonly clip?: boolean;
     readonly disablePan?: boolean;
     readonly drawOn: string[];
     readonly edgeClip?: boolean;
     readonly enableDragOnHover?: boolean;
     readonly interactiveCursorClass?: string;
-    readonly canvasToDraw?: (contexts: ICanvasContexts) => CanvasRenderingContext2D | undefined;
     readonly isHover?: (moreProps: any, e: React.MouseEvent) => boolean;
     readonly onClick?: (e: React.MouseEvent, moreProps: any) => void;
     readonly onClickWhenHover?: (e: React.MouseEvent, moreProps: any) => void;
@@ -294,7 +294,12 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     }
 
     public isHover(e: React.MouseEvent) {
-        return this.props.isHover !== undefined ? this.props.isHover(this.getMoreProps(), e) : false;
+        const { isHover } = this.props;
+        if (isHover === undefined) {
+            return false;
+        }
+
+        return isHover(this.getMoreProps(), e);
     }
 
     public getPanConditions() {
@@ -339,6 +344,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
             draw: this.draw,
             getPanConditions: this.getPanConditions,
         });
+
         this.UNSAFE_componentWillReceiveProps(this.props, this.context);
     }
 

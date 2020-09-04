@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { colorToRGBA, getStrokeDasharray, getStrokeDasharrayCanvas, isDefined } from "@react-financial-charts/core";
+import { getStrokeDasharray, getStrokeDasharrayCanvas, isDefined } from "@react-financial-charts/core";
 
 export const renderSVG = (props: any) => {
     const { className } = props;
@@ -9,15 +9,15 @@ export const renderSVG = (props: any) => {
     if (edge === null) {
         return null;
     }
+
     let line;
     let coordinateBase;
     let coordinate;
 
-    if (edge.line !== undefined && isDefined(edge.line)) {
+    if (edge.line !== undefined) {
         line = (
             <line
                 className="react-financial-charts-cross-hair"
-                strokeOpacity={edge.line.opacity}
                 stroke={edge.line.stroke}
                 strokeDasharray={getStrokeDasharray(edge.line.strokeDasharray)}
                 x1={edge.line.x1}
@@ -47,10 +47,8 @@ export const renderSVG = (props: any) => {
                         width={rectWidth}
                         stroke={edge.coordinateBase.stroke}
                         strokeLinejoin="miter"
-                        strokeOpacity={edge.coordinateBase.strokeOpacity}
                         strokeWidth={edge.coordinateBase.strokeWidth}
                         fill={edge.coordinateBase.fill}
-                        fillOpacity={edge.coordinateBase.opacity}
                     />
                 </g>
             ) : (
@@ -62,7 +60,6 @@ export const renderSVG = (props: any) => {
                     height={rectHeight}
                     width={rectWidth}
                     fill={edge.coordinateBase.fill}
-                    opacity={edge.coordinateBase.opacity}
                 />
             );
 
@@ -100,14 +97,11 @@ const helper = (props: any) => {
         hideLine,
         lineStrokeDasharray,
         fill,
-        opacity,
         fontFamily,
         fontSize,
         textFill,
         lineStroke,
-        lineOpacity,
         stroke,
-        strokeOpacity,
         strokeWidth,
         arrowWidth,
         rectWidth,
@@ -154,10 +148,8 @@ const helper = (props: any) => {
             rectWidth,
             rectRadius,
             fill,
-            opacity,
             arrowWidth,
             stroke,
-            strokeOpacity,
             strokeWidth,
         };
         coordinate = {
@@ -174,7 +166,6 @@ const helper = (props: any) => {
     const line = hideLine
         ? undefined
         : {
-              opacity: lineOpacity,
               stroke: lineStroke,
               strokeDasharray: lineStrokeDasharray,
               x1,
@@ -210,7 +201,7 @@ export const drawOnCanvas = (ctx: CanvasRenderingContext2D, props: any) => {
     if (edge.line !== undefined && isDefined(edge.line)) {
         const dashArray = getStrokeDasharrayCanvas(edge.line.strokeDasharray);
         ctx.setLineDash(dashArray);
-        ctx.strokeStyle = colorToRGBA(edge.line.stroke, edge.line.opacity);
+        ctx.strokeStyle = edge.line.stroke;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(edge.line.x1, edge.line.y1);
@@ -223,9 +214,9 @@ export const drawOnCanvas = (ctx: CanvasRenderingContext2D, props: any) => {
     if (edge.coordinateBase !== undefined) {
         const { arrowWidth, rectWidth, rectHeight, rectRadius } = edge.coordinateBase;
 
-        ctx.fillStyle = colorToRGBA(edge.coordinateBase.fill, edge.coordinateBase.opacity);
-        if (isDefined(edge.coordinateBase.stroke)) {
-            ctx.strokeStyle = colorToRGBA(edge.coordinateBase.stroke, edge.coordinateBase.strokeOpacity);
+        ctx.fillStyle = edge.coordinateBase.fill;
+        if (edge.coordinateBase.stroke !== undefined) {
+            ctx.strokeStyle = edge.coordinateBase.stroke;
             ctx.lineWidth = edge.coordinateBase.strokeWidth;
         }
 

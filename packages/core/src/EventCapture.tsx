@@ -262,16 +262,15 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     }
 
     public handleMouseMove = () => {
-        const e = d3Event;
-
         const { onMouseMove, mouseMove } = this.props;
+        if (onMouseMove === undefined) {
+            return;
+        }
 
         if (this.mouseInteraction && mouseMove && !this.state.panInProgress) {
             const newPos = mouse(this.ref.current!);
 
-            if (onMouseMove !== undefined) {
-                onMouseMove(newPos, "mouse", e);
-            }
+            onMouseMove(newPos, "mouse", d3Event);
         }
     };
 
@@ -327,7 +326,8 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     };
 
     public handleDrag = () => {
-        if (this.props.onDrag === undefined) {
+        const { onDrag } = this.props;
+        if (onDrag === undefined) {
             return;
         }
 
@@ -341,7 +341,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         const e = d3Event;
         const mouseXY = mouse(this.ref.current!);
 
-        this.props.onDrag(
+        onDrag(
             {
                 startPos: dragStartPosition,
                 mouseXY,
@@ -538,15 +538,15 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
             return;
         }
 
-        const touchXY = touchPosition(getTouchProps(e.touches[0]), e);
+        const touch = getTouchProps(e.touches[0]);
+        const touchXY = touchPosition(touch, e);
         onMouseMove(touchXY, "touch", e);
     };
 
     public handleTouchStart = (e: React.TouchEvent) => {
         this.mouseInteraction = false;
 
-        const { pan: panEnabled, chartConfig, onMouseMove } = this.props;
-        const { xScale, onPanEnd } = this.props;
+        const { pan: panEnabled, chartConfig, onMouseMove, xScale, onPanEnd } = this.props;
 
         if (e.touches.length === 1) {
             this.panHappened = false;
@@ -612,28 +612,30 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     };
 
     public handlePinchZoom = () => {
-        const e = d3Event;
-        const [touch1Pos, touch2Pos] = touches(this.ref.current!);
-        const { xScale, zoom: zoomEnabled, onPinchZoom } = this.props;
-
         const { pinchZoomStart } = this.state;
         if (pinchZoomStart === undefined) {
             return;
         }
 
+        const { xScale, zoom: zoomEnabled, onPinchZoom } = this.props;
+        if (!zoomEnabled || onPinchZoom === undefined) {
+            return;
+        }
+
+        const e = d3Event;
+        const [touch1Pos, touch2Pos] = touches(this.ref.current!);
+
         const { chartsToPan, ...initialPinch } = pinchZoomStart;
 
-        if (zoomEnabled && onPinchZoom !== undefined) {
-            onPinchZoom(
-                initialPinch,
-                {
-                    touch1Pos,
-                    touch2Pos,
-                    xScale,
-                },
-                e,
-            );
-        }
+        onPinchZoom(
+            initialPinch,
+            {
+                touch1Pos,
+                touch2Pos,
+                xScale,
+            },
+            e,
+        );
     };
 
     public handlePinchZoomEnd = () => {
@@ -642,8 +644,6 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         const win = d3Window(this.ref.current);
         select(win).on(TOUCHMOVE, null).on(TOUCHEND, null);
 
-        const { zoom: zoomEnabled, onPinchZoomEnd } = this.props;
-
         const { pinchZoomStart } = this.state;
         if (pinchZoomStart === undefined) {
             return;
@@ -651,6 +651,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
 
         const { chartsToPan, ...initialPinch } = pinchZoomStart;
 
+        const { zoom: zoomEnabled, onPinchZoomEnd } = this.props;
         if (zoomEnabled && onPinchZoomEnd) {
             onPinchZoomEnd(initialPinch, e);
         }

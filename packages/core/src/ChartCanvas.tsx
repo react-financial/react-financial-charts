@@ -16,14 +16,14 @@ import evaluator from "./utils/evaluator";
 
 const CANDIDATES_FOR_RESET = ["seriesName"];
 
-function shouldResetChart(thisProps: any, nextProps: any) {
+const shouldResetChart = (thisProps: any, nextProps: any) => {
     return !CANDIDATES_FOR_RESET.every((key) => {
         const result = shallowEqual(thisProps[key], nextProps[key]);
         return result;
     });
-}
+};
 
-function getCursorStyle() {
+const getCursorStyle = () => {
     const tooltipStyle = `
 	.react-financial-charts-grabbing-cursor {
 		pointer-events: all;
@@ -65,24 +65,34 @@ function getCursorStyle() {
 		cursor: ew-resize;
 	}`;
     return <style type="text/css">{tooltipStyle}</style>;
-}
+};
 
-function getDimensions<TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) {
+const getDimensions = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) => {
+    const { margin, height, width } = props;
     return {
-        height: props.height - props.margin.top - props.margin.bottom,
-        width: props.width - props.margin.left - props.margin.right,
+        height: height - margin.top - margin.bottom,
+        width: width - margin.left - margin.right,
     };
-}
+};
 
-function getXScaleDirection(flipXScale?: boolean) {
+const getXScaleDirection = (flipXScale?: boolean) => {
     return flipXScale ? -1 : 1;
-}
+};
 
-function calculateFullData<TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) {
-    const { data: fullData, plotFull, xScale, clamp, pointsPerPxThreshold, flipXScale } = props;
-    const { xAccessor, displayXAccessor, minPointsPerPxThreshold } = props;
+const calculateFullData = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) => {
+    const {
+        data: fullData,
+        plotFull,
+        xScale,
+        clamp,
+        pointsPerPxThreshold,
+        flipXScale,
+        xAccessor,
+        displayXAccessor,
+        minPointsPerPxThreshold,
+    } = props;
 
-    const useWholeData = isDefined(plotFull) ? plotFull : xAccessor === identity;
+    const useWholeData = plotFull !== undefined ? plotFull : xAccessor === identity;
 
     const { filterData } = evaluator({
         xScale,
@@ -100,7 +110,7 @@ function calculateFullData<TXAxis extends number | Date>(props: ChartCanvasProps
         fullData,
         filterData,
     };
-}
+};
 
 const resetChart = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) => {
     const state = calculateState(props);
@@ -127,35 +137,36 @@ const resetChart = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis
     };
 };
 
-function updateChart(
+const updateChart = (
     newState: any,
-    initialXScale: any,
+    initialXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
     props: any,
     lastItemWasVisible: boolean,
     initialChartConfig: any,
-) {
+) => {
     const { fullData, xScale, xAccessor, displayXAccessor, filterData } = newState;
 
     const lastItem = last(fullData);
+    const lastXItem = xAccessor(lastItem);
     const [start, end] = initialXScale.domain();
 
-    const { postCalculator, children, padding, flipXScale } = props;
-    const { maintainPointsPerPixelOnResize } = props;
+    const { postCalculator, children, padding, flipXScale, maintainPointsPerPixelOnResize } = props;
+
     const direction = getXScaleDirection(flipXScale);
     const dimensions = getDimensions(props);
-
     const updatedXScale = setXRange(xScale, dimensions, padding, direction);
 
     let initialPlotData;
-    if (!lastItemWasVisible || end >= xAccessor(lastItem)) {
+    if (!lastItemWasVisible || end >= lastXItem) {
         // resize comes here...
         // get plotData between [start, end] and do not change the domain
         const [rangeStart, rangeEnd] = initialXScale.range();
         const [newRangeStart, newRangeEnd] = updatedXScale.range();
-        const newDomainExtent = ((newRangeEnd - newRangeStart) / (rangeEnd - rangeStart)) * (end - start);
-        const newStart = maintainPointsPerPixelOnResize ? end - newDomainExtent : start;
+        const newDomainExtent =
+            ((newRangeEnd - newRangeStart) / (rangeEnd - rangeStart)) * (end.valueOf() - start.valueOf());
+        const newStart = maintainPointsPerPixelOnResize ? end.valueOf() - newDomainExtent : start;
 
-        const lastItemX = initialXScale(xAccessor(lastItem));
+        const lastItemX = initialXScale(lastXItem);
 
         const response = filterData(fullData, [newStart, end], xAccessor, updatedXScale, {
             fallbackStart: start,
@@ -163,16 +174,16 @@ function updateChart(
         });
         initialPlotData = response.plotData;
         updatedXScale.domain(response.domain);
-    } else if (lastItemWasVisible && end < xAccessor(lastItem)) {
+    } else if (lastItemWasVisible && end < lastXItem) {
         // this is when a new item is added and last item was visible
         // so slide over and show the new item also
 
         // get plotData between [xAccessor(l) - (end - start), xAccessor(l)] and DO change the domain
-        const dx = initialXScale(xAccessor(lastItem)) - initialXScale.range()[1];
+        const dx = initialXScale(lastXItem) - initialXScale.range()[1];
         const [newStart, newEnd] = initialXScale
             .range()
-            .map((x: number) => x + dx)
-            .map(initialXScale.invert);
+            .map((x) => x + dx)
+            .map((x) => initialXScale.invert(x));
 
         const response = filterData(fullData, [newStart, newEnd], xAccessor, updatedXScale);
         initialPlotData = response.plotData;
@@ -195,9 +206,9 @@ function updateChart(
         fullData,
         filterData,
     };
-}
+};
 
-function calculateState<TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) {
+const calculateState = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) => {
     const { xAccessor: inputXAccesor, xExtents: xExtentsProp, data, padding, flipXScale } = props;
 
     const direction = getXScaleDirection(flipXScale);
@@ -225,9 +236,9 @@ function calculateState<TXAxis extends number | Date>(props: ChartCanvasProps<TX
         fullData,
         filterData,
     };
-}
+};
 
-function setXRange(xScale: any, dimensions: any, padding: any, direction = 1) {
+const setXRange = (xScale: any, dimensions: any, padding: any, direction = 1) => {
     if (xScale.rangeRoundPoints) {
         if (isNaN(padding)) {
             throw new Error("padding has to be a number for ordinal scale");
@@ -248,21 +259,25 @@ function setXRange(xScale: any, dimensions: any, padding: any, direction = 1) {
         }
     }
     return xScale;
-}
+};
 
-function pinchCoordinates(pinch: any) {
+const pinchCoordinates = (pinch: any) => {
     const { touch1Pos, touch2Pos } = pinch;
 
     return {
         topLeft: [Math.min(touch1Pos[0], touch2Pos[0]), Math.min(touch1Pos[1], touch2Pos[1])],
         bottomRight: [Math.max(touch1Pos[0], touch2Pos[0]), Math.max(touch1Pos[1], touch2Pos[1])],
     };
-}
+};
 
-function isInteractionEnabled(xScale: any, xAccessor: any, data: any) {
+const isInteractionEnabled = (
+    xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
+    xAccessor: any,
+    data: any,
+) => {
     const interaction = !isNaN(xScale(xAccessor(head(data)))) && isDefined(xScale.invert);
     return interaction;
-}
+};
 
 export interface ChartCanvasProps<TXAxis extends number | Date> {
     readonly clamp?:
@@ -509,7 +524,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         return dragableComponents.length > 0 && last(dragableComponents).id === id;
     };
 
-    public handleContextMenu = (mouseXY: any, e: any) => {
+    public handleContextMenu = (mouseXY: number[], e: React.MouseEvent) => {
         const { xAccessor, chartConfig, plotData, xScale } = this.state;
 
         const currentCharts = getCurrentCharts(chartConfig, mouseXY);
@@ -547,11 +562,10 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
 
         const plotData = postCalculator(beforePlotData);
 
-        const updatedScale = initialXScale!.copy().domain(domain) as
+        const updatedScale = initialXScale.copy().domain(domain) as
             | ScaleContinuousNumeric<number, number>
             | ScaleTime<number, number>;
 
-        // @ts-ignore
         const chartConfig = getChartConfigWithUpdatedYScales(
             initialChartConfig,
             { plotData, xAccessor, displayXAccessor, fullData },
@@ -574,8 +588,8 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             plotData: initialPlotData,
             xAccessor,
             displayXAccessor,
+            filterData,
         } = this.state;
-        const { filterData } = this.state;
         const { fullData } = this;
         const { postCalculator = ChartCanvas.defaultProps.postCalculator } = this.props;
 
@@ -593,7 +607,6 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const y = Math.round(e - ((yDash - e) * (e - iTL[0])) / (yDash + (e - fTL[0])));
 
         const newDomain = [x, y].map(initialPinchXScale.invert);
-        // var domainR = initial.right + right;
 
         const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialPinchXScale, {
             currentPlotData: initialPlotData,
@@ -608,7 +621,6 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
 
         const mouseXY = finalPinch.touch1Pos;
 
-        // @ts-ignore
         const chartConfig = getChartConfigWithUpdatedYScales(
             initialChartConfig,
             { plotData, xAccessor, displayXAccessor, fullData },
@@ -1133,8 +1145,9 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
     public UNSAFE_componentWillReceiveProps(nextProps: ChartCanvasProps<TXAxis>) {
         const reset = shouldResetChart(this.props, nextProps);
 
-        const interaction = isInteractionEnabled(this.state.xScale, this.state.xAccessor, this.state.plotData);
-        const { chartConfig: initialChartConfig } = this.state;
+        const { chartConfig: initialChartConfig, plotData, xAccessor, xScale } = this.state;
+
+        const interaction = isInteractionEnabled(xScale, xAccessor, plotData);
 
         let newState;
         if (!interaction || reset || !shallowEqual(this.props.xExtents, nextProps.xExtents)) {
@@ -1142,20 +1155,15 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             newState = resetChart(nextProps);
             this.mutableState = {};
         } else {
-            const [start, end] = this.state.xScale!.domain();
+            const [start, end] = xScale.domain();
             const prevLastItem = last(this.fullData);
 
             const calculatedState = calculateFullData(nextProps);
             const { xAccessor } = calculatedState;
-            const lastItemWasVisible = xAccessor(prevLastItem) <= end && xAccessor(prevLastItem) >= start;
+            const previousX = xAccessor(prevLastItem);
+            const lastItemWasVisible = previousX <= end && previousX >= start;
 
-            newState = updateChart(
-                calculatedState,
-                this.state.xScale,
-                nextProps,
-                lastItemWasVisible,
-                initialChartConfig,
-            );
+            newState = updateChart(calculatedState, xScale, nextProps, lastItemWasVisible, initialChartConfig);
         }
 
         const { fullData, ...state } = newState;

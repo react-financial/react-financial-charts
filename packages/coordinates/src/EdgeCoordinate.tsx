@@ -1,9 +1,8 @@
 import * as React from "react";
-import { colorToRGBA, isDefined } from "@react-financial-charts/core";
 
 const helper = (props: any) => {
     const { coordinate: displayCoordinate, show, type, orient, edgeAt, hideLine } = props;
-    const { fill, opacity, fontFamily, fontSize, textFill, lineStroke, lineOpacity, arrowWidth } = props;
+    const { fill, fontFamily, fontSize, textFill, lineStroke, arrowWidth } = props;
     const { rectWidth, rectHeight } = props;
     const { x1, y1, x2, y2 } = props;
 
@@ -31,14 +30,13 @@ const helper = (props: any) => {
     let coordinateBase;
     let coordinate;
     const textAnchor = "middle";
-    if (isDefined(displayCoordinate)) {
+    if (displayCoordinate !== undefined) {
         coordinateBase = {
             edgeXRect,
             edgeYRect,
             rectHeight,
             rectWidth,
             fill,
-            opacity,
             arrowWidth,
         };
         coordinate = {
@@ -55,7 +53,6 @@ const helper = (props: any) => {
     const line = hideLine
         ? undefined
         : {
-              opacity: lineOpacity,
               stroke: lineStroke,
               x1,
               y1,
@@ -73,7 +70,7 @@ const helper = (props: any) => {
 export interface EdgeCoordinateProps {
     readonly className?: string;
     readonly type: "vertical" | "horizontal";
-    readonly coordinate: any;
+    readonly coordinate?: any;
     readonly x1: number;
     readonly y1: number;
     readonly x2: number;
@@ -82,9 +79,9 @@ export interface EdgeCoordinateProps {
     readonly rectWidth?: number;
     readonly hideLine?: boolean;
     readonly fill?: string;
-    readonly opacity?: number;
     readonly fontFamily: string;
     readonly fontSize: number;
+    readonly lineStroke?: string;
 }
 
 export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
@@ -93,12 +90,10 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
         orient: "left",
         hideLine: false,
         fill: "#8a8a8a",
-        opacity: 1,
         fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
         fontSize: 13,
         textFill: "#FFFFFF",
-        lineStroke: "#000000",
-        lineOpacity: 0.3,
+        lineStroke: "rgba(0, 0, 0, 0.3)",
         arrowWidth: 10,
     };
 
@@ -106,7 +101,6 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
         props = { ...EdgeCoordinate.defaultProps, ...props };
 
         const edge = helper(props);
-
         if (edge === null) {
             return;
         }
@@ -114,7 +108,7 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
         if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
             const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
 
-            ctx.fillStyle = colorToRGBA(edge.coordinateBase.fill, edge.coordinateBase.opacity);
+            ctx.fillStyle = edge.coordinateBase.fill;
 
             const x = edge.coordinateBase.edgeXRect;
             const y = edge.coordinateBase.edgeYRect;
@@ -150,7 +144,7 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
         }
 
         if (edge.line !== undefined) {
-            ctx.strokeStyle = colorToRGBA(edge.line.stroke, edge.line.opacity);
+            ctx.strokeStyle = edge.line.stroke;
 
             ctx.beginPath();
             ctx.moveTo(edge.line.x1, edge.line.y1);
@@ -174,7 +168,6 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
             line = (
                 <line
                     className="react-financial-charts-cross-hair"
-                    opacity={edge.line.opacity}
                     stroke={edge.line.stroke}
                     x1={edge.line.x1}
                     y1={edge.line.y1}
@@ -206,7 +199,6 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
                             height={rectHeight}
                             width={rectWidth}
                             fill={edge.coordinateBase.fill}
-                            opacity={edge.coordinateBase.opacity}
                         />
                     </g>
                 ) : (
@@ -218,7 +210,6 @@ export class EdgeCoordinate extends React.Component<EdgeCoordinateProps> {
                         height={rectHeight}
                         width={rectWidth}
                         fill={edge.coordinateBase.fill}
-                        opacity={edge.coordinateBase.opacity}
                     />
                 );
 

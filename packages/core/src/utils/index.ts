@@ -7,7 +7,6 @@ export * from "./shallowEqual";
 export { default as mappedSlidingWindow } from "./mappedSlidingWindow";
 export { default as accumulatingWindow } from "./accumulatingWindow";
 export * from "./barWidth";
-export * from "./colors";
 export * from "./strokeDasharray";
 export * from "./PureComponent";
 
@@ -83,13 +82,6 @@ export function head(array: any[], accessor?: any) {
     }
 
     return array ? array[0] : undefined;
-}
-
-export function tail<T>(array: T[], accessor?: any) {
-    if (accessor && array) {
-        return array.map(accessor).slice(1);
-    }
-    return array ? array.slice(1) : undefined;
 }
 
 export const first = head;

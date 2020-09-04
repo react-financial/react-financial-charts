@@ -47,14 +47,13 @@ export class GenericChartComponent extends GenericComponent {
 
         ctx.save();
         const { margin, ratio } = this.context;
-        const { chartConfig } = moreProps;
-
-        const canvasOriginX = 0.5 * ratio + chartConfig.origin[0] + margin.left;
-        const canvasOriginY = 0.5 * ratio + chartConfig.origin[1] + margin.top;
-
         const {
-            chartConfig: { width, height },
+            chartConfig: { width, height, origin },
         } = moreProps;
+
+        const canvasOriginX = 0.5 * ratio + origin[0] + margin.left;
+        const canvasOriginY = 0.5 * ratio + origin[1] + margin.top;
+
         const { clip, edgeClip } = this.props;
 
         ctx.setTransform(1, 0, 0, 1, 0, 0);

@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { colorToRGBA, isDefined } from "@react-financial-charts/core";
-
 export function renderSVG(props: any) {
     const { className } = props;
 
@@ -13,11 +11,10 @@ export function renderSVG(props: any) {
     let coordinateBase;
     let coordinate;
 
-    if (edge.line !== undefined && isDefined(edge.line)) {
+    if (edge.line !== undefined) {
         line = (
             <line
                 className="react-financial-charts-cross-hair"
-                opacity={edge.line.opacity}
                 stroke={edge.line.stroke}
                 x1={edge.line.x1}
                 y1={edge.line.y1}
@@ -47,7 +44,6 @@ export function renderSVG(props: any) {
                         height={rectHeight}
                         width={rectWidth}
                         fill={edge.coordinateBase.fill}
-                        opacity={edge.coordinateBase.opacity}
                     />
                 </g>
             ) : (
@@ -59,7 +55,6 @@ export function renderSVG(props: any) {
                     height={rectHeight}
                     width={rectWidth}
                     fill={edge.coordinateBase.fill}
-                    opacity={edge.coordinateBase.opacity}
                 />
             );
 
@@ -89,7 +84,7 @@ export function renderSVG(props: any) {
 
 function helper(props: any) {
     const { coordinate: displayCoordinate, show, type, orient, edgeAt, hideLine } = props;
-    const { fill, opacity, fontFamily, fontSize, textFill, lineStroke, lineOpacity, arrowWidth } = props;
+    const { fill, fontFamily, fontSize, textFill, lineStroke, arrowWidth } = props;
     const { rectWidth, rectHeight } = props;
     const { x1, y1, x2, y2, dx } = props;
 
@@ -117,14 +112,13 @@ function helper(props: any) {
     let coordinateBase;
     let coordinate;
     const textAnchor = "middle";
-    if (isDefined(displayCoordinate)) {
+    if (displayCoordinate !== undefined) {
         coordinateBase = {
             edgeXRect,
             edgeYRect,
             rectHeight,
             rectWidth,
             fill,
-            opacity,
             arrowWidth,
         };
         coordinate = {
@@ -141,7 +135,6 @@ function helper(props: any) {
     const line = hideLine
         ? undefined
         : {
-              opacity: lineOpacity,
               stroke: lineStroke,
               x1,
               y1,
@@ -166,7 +159,7 @@ export function drawOnCanvas(ctx: CanvasRenderingContext2D, props: any) {
     if (edge.coordinate !== undefined && edge.coordinateBase !== undefined) {
         const { rectWidth, rectHeight, arrowWidth } = edge.coordinateBase;
 
-        ctx.fillStyle = colorToRGBA(edge.coordinateBase.fill, edge.coordinateBase.opacity);
+        ctx.fillStyle = edge.coordinateBase.fill;
 
         const x = edge.coordinateBase.edgeXRect;
         const y = edge.coordinateBase.edgeYRect;
@@ -200,8 +193,8 @@ export function drawOnCanvas(ctx: CanvasRenderingContext2D, props: any) {
 
         ctx.fillText(edge.coordinate.displayCoordinate, edge.coordinate.edgeXText, edge.coordinate.edgeYText);
     }
-    if (edge.line !== undefined && isDefined(edge.line)) {
-        ctx.strokeStyle = colorToRGBA(edge.line.stroke, edge.line.opacity);
+    if (edge.line !== undefined) {
+        ctx.strokeStyle = edge.line.stroke;
 
         ctx.beginPath();
         ctx.moveTo(edge.line.x1, edge.line.y1);

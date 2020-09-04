@@ -38,8 +38,8 @@
     "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "d3-array": "^2.5.0",
-    "d3-scale": "^3.2.1"
+    "d3-array": "^2.7.1",
+    "d3-scale": "^2.2.2"
   },
   "peerDependencies": {
     "react": "^16.0.0",

@@ -188,7 +188,7 @@ export function discontinuousTimeScaleProviderBuilder() {
         return {
             data: finalData,
             xScale,
-            xAccessor: (d: any) => d && indexAccessor(d).index,
+            xAccessor: (d: any) => d && indexAccessor(d)?.index,
             displayXAccessor: realDateAccessor(inputDateAccessor),
         };
     };

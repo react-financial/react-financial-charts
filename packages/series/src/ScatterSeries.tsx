@@ -34,20 +34,16 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
 
         const nest = group(
             points,
-            // @ts-ignore
             (d) => d.fillStyle,
-            // @ts-ignore
             (d) => d.strokeStyle,
         );
 
         nest.forEach((fillValues, fillKey) => {
             if (fillKey !== "none") {
-                // @ts-ignore
                 ctx.fillStyle = fillKey;
             }
 
             fillValues.forEach((strokeValues) => {
-                // @ts-ignore
                 strokeValues.forEach((point) => {
                     const { marker } = point;
                     marker.drawOnCanvas({ ...marker.defaultProps, ...markerProps, fillStyle: fillKey }, point, ctx);
@@ -103,6 +99,7 @@ export class ScatterSeries extends React.Component<ScatterSeriesProps> {
                     marker: Marker,
                 };
             })
-            .filter((marker) => marker !== undefined);
+            .filter((marker) => marker !== undefined)
+            .map((marker) => marker!);
     };
 }

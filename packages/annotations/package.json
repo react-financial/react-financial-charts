@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@react-financial-charts/core": "file:../core",
-    "@types/d3-scale": "^2.2.0",
+    "@types/d3-scale": "^3.2.2",
     "prop-types": "^15.7.2"
   }
 }

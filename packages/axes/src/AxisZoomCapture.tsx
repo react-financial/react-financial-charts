@@ -13,7 +13,7 @@ import {
 } from "@react-financial-charts/core";
 import { mean } from "d3-array";
 import { ScaleContinuousNumeric } from "d3-scale";
-import { event as d3Event, mouse, select, touches } from "d3-selection";
+import { select, pointer } from "d3-selection";
 import * as React from "react";
 
 export interface AxisZoomCaptureProps {
@@ -49,7 +49,6 @@ interface AxisZoomCaptureState {
 
 export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZoomCaptureState> {
     private readonly ref = React.createRef<SVGRectElement>();
-    private mouseInteraction = false;
     private clicked = false;
     private dragHappened = false;
 
@@ -83,7 +82,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         );
     }
 
-    private readonly handleDragEnd = () => {
+    private readonly handleDragEnd = (e: any) => {
         const container = this.ref.current;
         if (container === null) {
             return;
@@ -91,8 +90,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
 
         if (!this.dragHappened) {
             if (this.clicked) {
-                const e = d3Event;
-                const mouseXY = this.mouseInteraction ? mouse(container) : touches(container)[0];
+                const mouseXY = pointer(e, container);
                 const { onDoubleClick } = this.props;
                 if (onDoubleClick !== undefined) {
                     onDoubleClick(e, mouseXY);
@@ -112,7 +110,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
         });
     };
 
-    private readonly handleDrag = () => {
+    private readonly handleDrag = (e: any) => {
         const container = this.ref.current;
         if (container === null) {
             return;
@@ -126,7 +124,7 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
             const { startScale } = startPosition;
             const { startXY } = startPosition;
 
-            const mouseXY = this.mouseInteraction ? mouse(container) : touches(container)[0];
+            const mouseXY = pointer(e, container);
 
             const diff = getMouseDelta(startXY, mouseXY);
 
@@ -158,7 +156,6 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
             return;
         }
 
-        this.mouseInteraction = false;
         this.dragHappened = false;
 
         const { getScale, getMoreProps } = this.props;
@@ -187,7 +184,6 @@ export class AxisZoomCapture extends React.Component<AxisZoomCaptureProps, AxisZ
             return;
         }
 
-        this.mouseInteraction = true;
         this.dragHappened = false;
 
         const { getScale, getMoreProps } = this.props;

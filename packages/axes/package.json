@@ -1,6 +1,6 @@
 {
   "name": "@react-financial-charts/axes",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.0",
   "description": "Axes for react-financial-charts",
   "publishConfig": {
     "access": "public"

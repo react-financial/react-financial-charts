@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.16...v1.0.0) (2020-12-30)
+
+
+### Bug Fixes
+
+* indexAccessor(d) on discontinuousTimeScaleProvider ([48270a7](https://github.com/markmcdowell/react-financial-charts/commit/48270a7591e526d5315410ba90936a31866f2ecb))
+
+
+### Features
+
+* **deps:** moving to d3 v6 ([8d371d2](https://github.com/markmcdowell/react-financial-charts/commit/8d371d240bc7ac3db3e2f0037b3c0807e05b4749))
+
+
+
+
+
 # [1.0.0-alpha.16](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0-alpha.15...v1.0.0-alpha.16) (2020-09-04)
 
 

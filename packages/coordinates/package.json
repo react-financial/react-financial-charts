@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@react-financial-charts/core": "file:../core",
-    "d3-format": "^1.4.5",
+    "d3-format": "^2.0.0",
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {

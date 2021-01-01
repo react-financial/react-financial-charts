@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0...v1.0.1) (2021-01-01)
+
+
+### Bug Fixes
+
+* **core:** bug with panning on mobiles ([db34691](https://github.com/reactivemarkets/react-financial-charts/commit/db34691d2bf8eb00277d6653034b3541bc75940d)), closes [#459](https://github.com/reactivemarkets/react-financial-charts/issues/459)
+
+
+
+
+
 # [1.0.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.16...v1.0.0) (2020-12-30)
 
 

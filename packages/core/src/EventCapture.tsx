@@ -479,7 +479,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
                 dx = mouseXY[0] - panOrigin[0];
                 dy = mouseXY[1] - panOrigin[1];
             } else {
-                mouseXY = pointer(e, this.ref.current);
+                mouseXY = pointers(e, this.ref.current)[0];
                 this.lastNewPos = mouseXY;
                 dx = panOrigin[0] - mouseXY[0];
                 dy = panOrigin[1] - mouseXY[1];

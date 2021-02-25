@@ -38,8 +38,8 @@
     "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react": "^16.0.0 || ^17.0.0",
+    "react-dom": "^16.0.0 || ^17.0.0"
   },
   "dependencies": {
     "@react-financial-charts/core": "file:../core",

@@ -33,7 +33,8 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
         absoluteChange: (d: any) => d.absoluteChange,
         bins: 20,
         bySession: false,
-        fill: ({ type }: { type: "up" | "down"; width: number }) => (type === "up" ? "#6BA583" : "#FF0000"),
+        fill: ({ type }: { type: "up" | "down"; width: number }) =>
+            type === "up" ? "rgba(38, 166, 154, 0.5)" : "rgba(239, 83, 80, 0.5)",
         maxProfileWidthPercent: 50,
         orient: "left",
         partialStartOK: true,
@@ -120,9 +121,20 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
             plotData,
         } = moreProps;
 
-        const { sessionStart, bySession, partialStartOK, partialEndOK } = props;
-
-        const { bins, maxProfileWidthPercent, source, volume, absoluteChange, orient, fill, stroke } = props;
+        const {
+            sessionStart,
+            bySession,
+            partialStartOK,
+            partialEndOK,
+            bins,
+            maxProfileWidthPercent,
+            source,
+            volume,
+            absoluteChange,
+            orient,
+            fill,
+            stroke,
+        } = props;
 
         const sessionBuilder = accumulatingWindow()
             .discardTillStart(!partialStartOK)
@@ -146,7 +158,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
             const rolledup = (data: any[]) => {
                 const sortFunction = orient === "right" ? descending : ascending;
 
-                const sortedData = data.sort(sortFunction);
+                const sortedData = data.sort((a, b) => sortFunction(a.direction, b.direction));
 
                 return rollup(
                     sortedData,
@@ -181,7 +193,7 @@ export class VolumeProfileSeries extends React.Component<VolumeProfileSeriesProp
                 .range([start, end]);
 
             const totalVolumes = volumeInBins.map((volumes) => {
-                const totalVolume = sum<any>(volumes, (d) => d.value);
+                const totalVolume = sum<any>(volumes, (d) => d[1]);
                 const totalVolumeX = xScale(totalVolume);
                 const widthLocal = base(xScale) - totalVolumeX;
                 const x = widthLocal < 0 ? totalVolumeX + widthLocal : totalVolumeX;

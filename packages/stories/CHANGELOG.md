@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.1...v1.1.0) (2021-02-26)
+
+
+### Bug Fixes
+
+* **series:** fixing volume profile series ([584dd26](https://github.com/markmcdowell/react-financial-charts/commit/584dd26a074756685d13ac2085667491d3b30899)), closes [#418](https://github.com/markmcdowell/react-financial-charts/issues/418)
+
+
+### Features
+
+* adding react 17 as peer dependency ([569209b](https://github.com/markmcdowell/react-financial-charts/commit/569209b6eb00f3c93eae1b5a9e4f014c055c93c7)), closes [#468](https://github.com/markmcdowell/react-financial-charts/issues/468)
+
+
+
+
+
 ## [1.0.1](https://github.com/markmcdowell/react-financial-charts/compare/v1.0.0...v1.0.1) (2021-01-01)
 
 **Note:** Version bump only for package @react-financial-charts/stories

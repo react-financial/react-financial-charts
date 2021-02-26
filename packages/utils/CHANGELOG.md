@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.1...v1.1.0) (2021-02-26)
+
+
+### Features
+
+* adding react 17 as peer dependency ([569209b](https://github.com/reactivemarkets/react-financial-charts/commit/569209b6eb00f3c93eae1b5a9e4f014c055c93c7)), closes [#468](https://github.com/reactivemarkets/react-financial-charts/issues/468)
+
+
+
+
+
 # [1.0.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.0-alpha.16...v1.0.0) (2020-12-30)
 
 

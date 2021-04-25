@@ -1,0 +1,7 @@
+---
+name: Default CodeQL config
+paths-ignore: 
+  - node_modules
+  - '**/*.test.ts'
+  - '**/dist/**/*'
+  - '**/lib/**/*'

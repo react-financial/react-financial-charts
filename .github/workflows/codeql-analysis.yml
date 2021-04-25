@@ -1,0 +1,33 @@
+---
+name: GitHub CodeQL
+on:
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches: 
+      - main
+  schedule:
+    - cron: '0 7 * * 6'
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['typescript']
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        config-file: ./.github/codeql-config.yml
+        languages: ${{ matrix.language }}
+    - name: Install npm dependencies
+      run: npm ci
+    - name: Build
+      run: npm run build
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1

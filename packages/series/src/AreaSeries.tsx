@@ -13,7 +13,10 @@ export interface AreaSeriesProps {
         | number
         | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
     readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
-    readonly className?: string;
+    /**
+     * Wether to connect the area between undefined data points.
+     */
+    readonly connectNulls?: boolean;
     /**
      * Color, gradient, or pattern to use for fill.
      */
@@ -45,7 +48,6 @@ export interface AreaSeriesProps {
  */
 export class AreaSeries extends Component<AreaSeriesProps> {
     public static defaultProps: Partial<AreaSeriesProps> = {
-        className: "react-financial-charts-area",
         fillStyle: "rgba(33, 150, 243, 0.1)",
         strokeStyle: "#2196f3",
         strokeWidth: 3,
@@ -55,7 +57,7 @@ export class AreaSeries extends Component<AreaSeriesProps> {
     public render() {
         const {
             baseAt,
-            className,
+            connectNulls,
             strokeStyle,
             strokeWidth,
             strokeDasharray,
@@ -66,8 +68,9 @@ export class AreaSeries extends Component<AreaSeriesProps> {
         } = this.props;
 
         return (
-            <g className={className}>
+            <g>
                 <AreaOnlySeries
+                    connectNulls={connectNulls}
                     yAccessor={yAccessor}
                     curve={curve}
                     base={baseAt}
@@ -75,6 +78,7 @@ export class AreaSeries extends Component<AreaSeriesProps> {
                     canvasClip={canvasClip}
                 />
                 <LineSeries
+                    connectNulls={connectNulls}
                     yAccessor={yAccessor}
                     strokeStyle={strokeStyle}
                     strokeWidth={strokeWidth}

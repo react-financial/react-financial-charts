@@ -1,6 +1,6 @@
 {
   "name": "@react-financial-charts/series",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Series for react-financial-charts",
   "publishConfig": {
     "access": "public"

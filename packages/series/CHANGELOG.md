@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.1.0...v1.2.0) (2021-04-26)
+
+
+### Features
+
+* **series:** adding connectNulls to AreaSeries ([d800dc5](https://github.com/reactivemarkets/react-financial-charts/commit/d800dc5289387d29bc4b194a57b85c62b2ff18ed)), closes [#497](https://github.com/reactivemarkets/react-financial-charts/issues/497)
+
+
+
+
+
 # [1.1.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.1...v1.1.0) (2021-02-26)
 
 

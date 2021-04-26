@@ -7,7 +7,10 @@ import { SVGComponent } from "./SVGComponent";
 
 export interface AlternatingFillAreaSeriesProps {
     readonly baseAt: number;
-    readonly className?: string;
+    /**
+     * Wether to connect the area between undefined data points.
+     */
+    readonly connectNulls?: boolean;
     /**
      * Color, gradient, or pattern to use for fill.
      */
@@ -51,7 +54,7 @@ export interface AlternatingFillAreaSeriesProps {
  */
 export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAreaSeriesProps> {
     public static defaultProps = {
-        className: "react-financial-charts-alternating-area",
+        connectNulls: false,
         fillStyle: {
             top: "rgba(38, 166, 154, 0.1)",
             bottom: "rgba(239, 83, 80, 0.1)",
@@ -75,7 +78,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
 
     public render() {
         const {
-            className,
+            connectNulls,
             yAccessor,
             curve,
             strokeStyle = AlternatingFillAreaSeries.defaultProps.strokeStyle,
@@ -85,10 +88,11 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
         } = this.props;
 
         return (
-            <g className={className}>
+            <g>
                 <SVGComponent>{this.renderClip}</SVGComponent>
                 <AreaSeries
                     canvasClip={this.topClip}
+                    connectNulls={connectNulls}
                     yAccessor={yAccessor}
                     curve={curve}
                     baseAt={this.baseAt}
@@ -99,6 +103,7 @@ export class AlternatingFillAreaSeries extends React.Component<AlternatingFillAr
                 />
                 <AreaSeries
                     canvasClip={this.bottomClip}
+                    connectNulls={connectNulls}
                     yAccessor={yAccessor}
                     curve={curve}
                     baseAt={this.baseAt}

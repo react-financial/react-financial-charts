@@ -12,6 +12,14 @@ export interface AreaOnlySeriesProps {
         | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number | undefined);
     readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
     /**
+     * Wether to connect the area between undefined data points.
+     */
+    readonly connectNulls?: boolean;
+    /**
+     * A factory for a curve generator for the area.
+     */
+    readonly curve?: CurveFactory;
+    /**
      * The default accessor for defined returns not NaN, thus assumes that the input data is always a number.
      */
     readonly defined?: (data: number | undefined) => boolean;
@@ -20,17 +28,17 @@ export interface AreaOnlySeriesProps {
      */
     readonly fillStyle?: string;
     /**
-     * A factory for a curve generator for the area.
-     */
-    readonly curve?: CurveFactory;
-    /**
      * Selector for data to plot.
      */
     readonly yAccessor: (data: any) => number | undefined;
 }
 
+/**
+ * `AreaOnlySeries` component.
+ */
 export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
     public static defaultProps = {
+        connectNulls: false,
         defined: (d: number | undefined) => d !== undefined && !isNaN(d),
         base: (yScale: ScaleContinuousNumeric<number, number>) => first(yScale.range()),
     };
@@ -41,6 +49,7 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
         const {
+            connectNulls,
             fillStyle,
             curve,
             canvasClip,
@@ -65,21 +74,23 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
             ctx.fillStyle = fillStyle;
         }
 
-        ctx.beginPath();
         const newBase = functor(base);
+
         const areaSeries = area()
-            .defined((d) => defined(yAccessor(d)))
             .x((d) => Math.round(xScale(xAccessor(d))))
             .y0((d) => newBase(yScale, d, moreProps))
-            .y1((d) => Math.round(yScale(yAccessor(d))))
-            .context(ctx);
+            .y1((d) => Math.round(yScale(yAccessor(d))));
 
         if (curve !== undefined) {
             areaSeries.curve(curve);
         }
 
-        areaSeries(plotData);
+        if (!connectNulls) {
+            areaSeries.defined((d) => defined(yAccessor(d)));
+        }
 
+        ctx.beginPath();
+        areaSeries.context(ctx)(plotData);
         ctx.fill();
 
         if (canvasClip !== undefined) {

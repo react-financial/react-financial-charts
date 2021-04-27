@@ -7,6 +7,7 @@ import {
     Chart,
     ChartCanvas,
     LabelAnnotation,
+    SvgPathAnnotation,
     XAxis,
     YAxis,
     withDeviceRatio,
@@ -15,6 +16,8 @@ import {
 import { IOHLCData, withOHLCData } from "../../data";
 
 interface ChartProps {
+    readonly labelAnnotation?: boolean;
+    readonly svgAnnotation?: boolean;
     readonly data: IOHLCData[];
     readonly height: number;
     readonly ratio: number;
@@ -22,9 +25,18 @@ interface ChartProps {
 }
 
 class Annotated extends React.Component<ChartProps> {
-    private readonly annotation = {
+    private readonly labelAnnotation = {
         text: "Monday",
         tooltip: "Go short",
+        y: ({ yScale, datum }: any) => yScale(datum.high),
+    };
+    private readonly svgAnnotation = {
+        fill: "#2196f3",
+        path: () =>
+            "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z",
+        pathWidth: 12,
+        pathHeight: 22,
+        tooltip: "Svg Annotation",
         y: ({ yScale, datum }: any) => yScale(datum.high),
     };
     private readonly margin = { left: 0, right: 48, top: 0, bottom: 24 };
@@ -33,7 +45,7 @@ class Annotated extends React.Component<ChartProps> {
     );
 
     public render() {
-        const { data: initialData, height, ratio, width } = this.props;
+        const { data: initialData, height, ratio, width, labelAnnotation, svgAnnotation } = this.props;
 
         const ema12 = ema()
             .id(1)
@@ -68,7 +80,12 @@ class Annotated extends React.Component<ChartProps> {
                     <XAxis showGridLines />
                     <YAxis showGridLines />
                     <CandlestickSeries />
-                    <Annotate with={LabelAnnotation} usingProps={this.annotation} when={this.when} />
+                    {labelAnnotation && (
+                        <Annotate with={LabelAnnotation} usingProps={this.labelAnnotation} when={this.when} />
+                    )}
+                    {svgAnnotation && (
+                        <Annotate with={SvgPathAnnotation} usingProps={this.svgAnnotation} when={this.when} />
+                    )}
                 </Chart>
             </ChartCanvas>
         );

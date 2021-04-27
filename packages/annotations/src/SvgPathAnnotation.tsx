@@ -15,7 +15,9 @@ export interface SvgPathAnnotationProps {
         },
     ) => void;
     readonly opacity?: number;
-    readonly path: ({ x, y }: { x: number; y: number }) => string;
+    readonly path: (datum: any) => string;
+    readonly pathHeight: number;
+    readonly pathWidth: number;
     readonly plotData: any[];
     readonly stroke?: string;
     readonly tooltip?: string | ((datum: any) => string);
@@ -64,14 +66,20 @@ export class SvgPathAnnotation extends React.Component<SvgPathAnnotationProps> {
     };
 
     public render() {
-        const { className, stroke, opacity, path } = this.props;
+        const { className, datum, stroke, opacity, path, pathWidth, pathHeight } = this.props;
 
         const { x, y, fill, tooltip } = this.helper();
 
         return (
             <g className={className} onClick={this.handleClick}>
                 <title>{tooltip}</title>
-                <path d={path({ x, y })} stroke={stroke} fill={fill} opacity={opacity} />
+                <path
+                    transform={`translate(${x - pathWidth},${y - pathHeight})`}
+                    d={path(datum)}
+                    stroke={stroke}
+                    fill={fill}
+                    opacity={opacity}
+                />
             </g>
         );
     }
@@ -89,11 +97,14 @@ export class SvgPathAnnotation extends React.Component<SvgPathAnnotationProps> {
         const xFunc = functor(x);
         const yFunc = functor(y);
 
-        const [xPos, yPos] = [xFunc({ xScale, xAccessor, datum, plotData }), yFunc({ yScale, datum, plotData })];
+        const [xPos, yPos]: [number, number] = [
+            xFunc({ xScale, xAccessor, datum, plotData }),
+            yFunc({ yScale, datum, plotData }),
+        ];
 
         return {
-            x: xPos,
-            y: yPos,
+            x: Math.round(xPos),
+            y: Math.round(yPos),
             fill: functor(fill)(datum),
             tooltip: functor(tooltip)(datum),
         };

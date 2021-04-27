@@ -7,4 +7,6 @@ export default {
     title: "Features/Annotate",
 };
 
-export const labels = () => <Annotated />;
+export const labels = () => <Annotated labelAnnotation />;
+
+export const paths = () => <Annotated svgAnnotation />;

@@ -109,7 +109,10 @@ export class LabelAnnotation extends React.Component<LabelAnnotationProps> {
         const xFunc = functor(x);
         const yFunc = functor(y);
 
-        const [xPos, yPos] = [xFunc({ xScale, xAccessor, datum, plotData }), yFunc({ yScale, datum, plotData })];
+        const [xPos, yPos]: [number, number] = [
+            xFunc({ xScale, xAccessor, datum, plotData }),
+            yFunc({ yScale, datum, plotData }),
+        ];
 
         return {
             xPos,

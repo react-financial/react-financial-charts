@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/reactivemarkets/react-financial-charts/compare/v1.2.0...v1.2.1) (2021-04-27)
+
+**Note:** Version bump only for package react-financial-charts
+
+
+
+
+
 # [1.2.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.1.0...v1.2.0) (2021-04-26)
 
 **Note:** Version bump only for package react-financial-charts

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/reactivemarkets/react-financial-charts/compare/v1.2.0...v1.2.1) (2021-04-27)
+
+
+### Bug Fixes
+
+* **annotations:** fixing svg path annotation ([05cd1ec](https://github.com/reactivemarkets/react-financial-charts/commit/05cd1ec00153add3d62ce3ce31bac1ddb78cb427)), closes [#496](https://github.com/reactivemarkets/react-financial-charts/issues/496)
+
+
+
+
+
 # [1.1.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.1...v1.1.0) (2021-02-26)
 
 

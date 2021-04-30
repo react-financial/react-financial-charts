@@ -7,7 +7,7 @@ import { EachTrendLine } from "./wrapper";
 export interface TrendLineProps {
     readonly snap: boolean;
     readonly enabled: boolean;
-    readonly snapTo: (datum: any) => number;
+    readonly snapTo?: (datum: any) => number | number[];
     readonly shouldDisableSnap?: (e: React.MouseEvent) => boolean;
     readonly onStart: (e: React.MouseEvent, moreProps: any) => void;
     readonly onComplete?: (e: React.MouseEvent, newTrends: any[], moreProps: any) => void;

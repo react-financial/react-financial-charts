@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/reactivemarkets/react-financial-charts/compare/v1.2.1...v1.2.2) (2021-04-30)
+
+
+### Bug Fixes
+
+* **interactive:** correcting props on TrendLine ([95cbb8e](https://github.com/reactivemarkets/react-financial-charts/commit/95cbb8e1a2f075969815d7ecfaaa8f2251fd4f84))
+
+
+
+
+
 # [1.1.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.0.1...v1.1.0) (2021-02-26)
 
 

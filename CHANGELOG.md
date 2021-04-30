@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/markmcdowell/react-financial-charts/compare/v1.2.1...v1.2.2) (2021-04-30)
+
+
+### Bug Fixes
+
+* **interactive:** correcting props on TrendLine ([95cbb8e](https://github.com/markmcdowell/react-financial-charts/commit/95cbb8e1a2f075969815d7ecfaaa8f2251fd4f84))
+* **stories:** adding showTicks={false} to XAxis in StockChart ([4966ea7](https://github.com/markmcdowell/react-financial-charts/commit/4966ea75b1eeee3d8f718d2c68a2f7186e210d6d)), closes [#509](https://github.com/markmcdowell/react-financial-charts/issues/509)
+
+
+
+
+
 ## [1.2.1](https://github.com/markmcdowell/react-financial-charts/compare/v1.2.0...v1.2.1) (2021-04-27)
 
 

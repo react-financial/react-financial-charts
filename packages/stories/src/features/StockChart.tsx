@@ -102,7 +102,7 @@ class StockChart extends React.Component<StockChartProps> {
                     <BarSeries fillStyle={this.volumeColor} yAccessor={this.volumeSeries} />
                 </Chart>
                 <Chart id={3} height={chartHeight} yExtents={this.candleChartExtents}>
-                    <XAxis showGridLines showTickLabel={false} />
+                    <XAxis showGridLines showTicks={false} showTickLabel={false} />
                     <YAxis showGridLines tickFormat={this.pricesDisplayFormat} />
                     <CandlestickSeries />
                     <LineSeries yAccessor={ema26.accessor()} strokeStyle={ema26.stroke()} />

@@ -14,7 +14,7 @@ export interface MouseLocationIndicatorProps {
     readonly enabled: boolean;
     readonly snap: boolean;
     readonly shouldDisableSnap: (e: React.MouseEvent) => boolean;
-    readonly snapTo?: (datum: any) => number;
+    readonly snapTo?: (datum: any) => number | number[];
     readonly onMouseMove: (e: React.MouseEvent, xyValue: number[], moreProps: any) => void;
     readonly onMouseDown: (e: React.MouseEvent, xyValue: number[], moreProps: any) => void;
     readonly onClick: (e: React.MouseEvent, xyValue: number[], moreProps: any) => void;

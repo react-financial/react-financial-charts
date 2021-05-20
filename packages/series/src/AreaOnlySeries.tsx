@@ -26,7 +26,9 @@ export interface AreaOnlySeriesProps {
     /**
      * Color, gradient, or pattern to use for fill.
      */
-    readonly fillStyle?: string;
+    readonly fillStyle?:
+        | string
+        | ((context: CanvasRenderingContext2D, moreProps: any) => string | CanvasGradient | CanvasPattern);
     /**
      * Selector for data to plot.
      */
@@ -71,7 +73,11 @@ export class AreaOnlySeries extends React.Component<AreaOnlySeriesProps> {
         }
 
         if (fillStyle !== undefined) {
-            ctx.fillStyle = fillStyle;
+            if (typeof fillStyle === "string") {
+                ctx.fillStyle = fillStyle;
+            } else {
+                ctx.fillStyle = fillStyle(ctx, moreProps);
+            }
         }
 
         const newBase = functor(base);

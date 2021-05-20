@@ -20,7 +20,9 @@ export interface AreaSeriesProps {
     /**
      * Color, gradient, or pattern to use for fill.
      */
-    readonly fillStyle?: string;
+    readonly fillStyle?:
+        | string
+        | ((context: CanvasRenderingContext2D, moreProps: any) => string | CanvasGradient | CanvasPattern);
     /**
      * A factory for a curve generator for the area and line.
      */

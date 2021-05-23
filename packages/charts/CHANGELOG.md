@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.2.2...v1.3.0) (2021-05-23)
+
+
+### Bug Fixes
+
+* adding module to type property in package.json ([1359ac6](https://github.com/reactivemarkets/react-financial-charts/commit/1359ac6e93d9638792c7bb478bba5fe1e5484a82)), closes [#520](https://github.com/reactivemarkets/react-financial-charts/issues/520)
+
+
+
+
+
 ## [1.2.2](https://github.com/reactivemarkets/react-financial-charts/compare/v1.2.1...v1.2.2) (2021-04-30)
 
 **Note:** Version bump only for package react-financial-charts

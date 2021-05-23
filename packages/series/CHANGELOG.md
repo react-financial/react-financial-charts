@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.2.2...v1.3.0) (2021-05-23)
+
+
+### Bug Fixes
+
+* adding module to type property in package.json ([1359ac6](https://github.com/reactivemarkets/react-financial-charts/commit/1359ac6e93d9638792c7bb478bba5fe1e5484a82)), closes [#520](https://github.com/reactivemarkets/react-financial-charts/issues/520)
+
+
+### Features
+
+* **series:** provide a fillStyle factory option for the AreaSeries ([b1249fa](https://github.com/reactivemarkets/react-financial-charts/commit/b1249fabbd8b96f120901ba2454cdb569c38a314))
+
+
+
+
+
 # [1.2.0](https://github.com/reactivemarkets/react-financial-charts/compare/v1.1.0...v1.2.0) (2021-04-26)
 
 

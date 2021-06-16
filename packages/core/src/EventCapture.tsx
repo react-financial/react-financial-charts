@@ -198,7 +198,12 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     };
 
     public handleWheel = (e: React.WheelEvent) => {
-        const { onPan, zoom, onZoom } = this.props;
+        const { pan, onPan, zoom, onZoom } = this.props;
+
+        if (!pan && !zoom) {
+            return;
+        }
+
         const { panInProgress } = this.state;
 
         const yZoom = Math.abs(e.deltaY) > Math.abs(e.deltaX) && Math.abs(e.deltaY) > 0;

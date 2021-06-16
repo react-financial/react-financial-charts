@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/markmcdowell/react-financial-charts/compare/v1.3.0...v1.3.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* do not capture wheel when pan and zoom disabled ([357383b](https://github.com/markmcdowell/react-financial-charts/commit/357383bbb823122806f6d7ec398bd885365bd908))
+
+
+
+
+
 # [1.3.0](https://github.com/markmcdowell/react-financial-charts/compare/v1.2.2...v1.3.0) (2021-05-23)
 
 

@@ -143,7 +143,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
                 }
 
                 const xValue = xAccessor(d);
-                const x = Math.round(xScale(xValue));
+                const x = xScale(xValue);
                 const y = Math.round(yScale(Math.max(ohlc.open, ohlc.close)));
                 const height = Math.max(1, Math.round(Math.abs(yScale(ohlc.open) - yScale(ohlc.close))));
 

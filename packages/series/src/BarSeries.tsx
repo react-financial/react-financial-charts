@@ -134,7 +134,7 @@ export class BarSeries extends React.Component<BarSeriesProps> {
                 }
 
                 const xValue = xAccessor(d);
-                const x = Math.round(xScale(xValue)) - offset;
+                const x = xScale(xValue) - offset;
 
                 let y = yScale(yValue);
 

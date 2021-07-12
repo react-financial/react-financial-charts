@@ -124,7 +124,7 @@ export class BarSeries extends React.Component<BarSeriesProps> {
             plotData,
         });
 
-        const offset = Math.floor(0.5 * barWidth);
+        const offset = 0.5 * barWidth;
 
         return plotData
             .map((d) => {

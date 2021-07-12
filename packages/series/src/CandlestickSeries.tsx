@@ -132,8 +132,7 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
             plotData,
         });
 
-        const trueOffset = 0.5 * width;
-        const offset = trueOffset > 0.7 ? Math.round(trueOffset) : Math.floor(trueOffset);
+        const offset = 0.5 * width;
 
         return plotData
             .filter((d) => d.close !== undefined)

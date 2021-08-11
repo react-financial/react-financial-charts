@@ -4,9 +4,9 @@
 
 > **Note:** v1 is a fully breaking change with large parts, if not all, rewritten. Do not expect the same API! although the same features should exist.
 
-![ci](https://github.com/reactivemarkets/react-financial-charts/workflows/ci/badge.svg)
+![ci](https://github.com/react-financial/react-financial-charts/workflows/ci/badge.svg)
 [![codecov](https://codecov.io/gh/reactivemarkets/react-financial-charts/branch/master/graph/badge.svg)](https://codecov.io/gh/reactivemarkets/react-financial-charts)
- [![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/reactivemarkets/react-financial-charts/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react-financial-charts.svg?style=flat)](https://www.npmjs.com/package/react-financial-charts)
+ [![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/react-financial/react-financial-charts/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/react-financial-charts.svg?style=flat)](https://www.npmjs.com/package/react-financial-charts)
 
 Charts dedicated to finance.
 
@@ -61,7 +61,7 @@ npm install react-financial-charts
 
 ## Documentation
 
-[Stories](https://reactivemarkets.github.io/react-financial-charts/)
+[Stories](https://react-financial.github.io/react-financial-charts/)
 
 ## Contributing
 
@@ -72,7 +72,7 @@ This project is a mono-repo that uses [Lerna](https://lernajs.io/) to manage dep
 To get started run:
 
 ```bash
-git clone https://github.com/reactivemarkets/react-financial-charts.git
+git clone https://github.com/react-financial/react-financial-charts.git
 cd react-financial-charts
 npm ci
 npm run build

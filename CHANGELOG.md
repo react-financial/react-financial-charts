@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/markmcdowell/react-financial-charts/compare/v1.3.1...v1.3.2) (2021-10-17)
+
+
+### Bug Fixes
+
+* **series:** fixing bug in CandlestickSeries ([b7201f8](https://github.com/markmcdowell/react-financial-charts/commit/b7201f882b36671400bae6ab79d6ef3ef65b9b69)), closes [#594](https://github.com/markmcdowell/react-financial-charts/issues/594)
+* do not round offset anymore ([2dc53ee](https://github.com/markmcdowell/react-financial-charts/commit/2dc53ee59056a617dd9c95b114c36ed7f0d89ab1))
+* remove rounding of x-axis location ([5cf2c13](https://github.com/markmcdowell/react-financial-charts/commit/5cf2c1389c5d7364d6241f3c83b0a37ba445cf5f))
+* remove rounding of x-axis location ([64e893f](https://github.com/markmcdowell/react-financial-charts/commit/64e893fb3a2d1c2b3f430b90572784f5c8fe02fa))
+* stop rounding offset ([7944b2d](https://github.com/markmcdowell/react-financial-charts/commit/7944b2d4dd66ccfda459011f33ba08c01db1b561))
+
+
+
+
+
 ## [1.3.1](https://github.com/markmcdowell/react-financial-charts/compare/v1.3.0...v1.3.1) (2021-06-16)
 
 

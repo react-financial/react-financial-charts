@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/markmcdowell/react-financial-charts/compare/v1.3.1...v1.3.2) (2021-10-17)
+
+**Note:** Version bump only for package @react-financial-charts/stories
+
+
+
+
+
 ## [1.3.1](https://github.com/markmcdowell/react-financial-charts/compare/v1.3.0...v1.3.1) (2021-06-16)
 
 **Note:** Version bump only for package @react-financial-charts/stories

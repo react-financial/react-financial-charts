@@ -135,7 +135,14 @@ export class CandlestickSeries extends React.Component<CandlestickSeriesProps> {
         const offset = 0.5 * width;
 
         return plotData
-            .filter((d) => d.close !== undefined)
+            .filter((d) => {
+                const ohlc = yAccessor(d);
+                if (ohlc === undefined) {
+                    return false;
+                }
+
+                return true;
+            })
             .map((d) => {
                 const ohlc = yAccessor(d);
                 if (ohlc === undefined) {

@@ -1,6 +1,7 @@
 export * from "./BollingerBandTooltip";
 export * from "./GroupTooltip";
 export * from "./HoverTooltip";
+export * from "./SelectedCandlestick";
 export * from "./MACDTooltip";
 export * from "./MovingAverageTooltip";
 export * from "./OHLCTooltip";

@@ -1,8 +1,8 @@
 import { GenericChartComponent, last } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
-import { layouts, SingleTooltip } from "./SingleTooltip";
-import { ToolTipText } from "./ToolTipText";
+import { layouts, SingleTooltip } from "./SingleTooltip.js";
+import { ToolTipText } from "./ToolTipText.js";
 
 export interface GroupTooltipProps {
     readonly className?: string;

@@ -2,8 +2,8 @@ import { strokeDashTypes } from "@react-financial-charts/core";
 import { ScaleContinuousNumeric } from "d3-scale";
 import { CurveFactory } from "d3-shape";
 import * as React from "react";
-import { AreaSeries } from "./AreaSeries";
-import { SVGComponent } from "./SVGComponent";
+import { AreaSeries } from "./AreaSeries.js";
+import { SVGComponent } from "./SVGComponent.js";
 
 export interface AlternatingFillAreaSeriesProps {
     readonly baseAt: number;

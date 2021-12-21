@@ -26,8 +26,8 @@ THE SOFTWARE.
 
 */
 
-import { functor, path } from "./index";
-import { noop } from "./noop";
+import { functor, path } from "./index.js";
+import { noop } from "./noop.js";
 
 interface SlidingWindow {
     (data: any[]): any[];

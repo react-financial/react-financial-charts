@@ -1,6 +1,6 @@
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
-import { getCurrentItem } from "../utils/ChartDataUtil";
-import { last } from "../utils/index";
+import { getCurrentItem } from "../utils/ChartDataUtil.js";
+import { last } from "../utils/index.js";
 
 export interface IZoomAnchorOptions<TData, TXAxis extends number | Date> {
     readonly plotData: TData[];

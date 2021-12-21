@@ -1,5 +1,5 @@
-import { path, slidingWindow } from "../utils";
-import { ForceIndex as defaultOptions } from "./defaultOptionsForComputation";
+import { path, slidingWindow } from "../utils/index.js";
+import { ForceIndex as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export interface ForceIndexOptions {
     readonly sourcePath: string;

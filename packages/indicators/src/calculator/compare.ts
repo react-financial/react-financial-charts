@@ -1,5 +1,5 @@
-import { path } from "../utils";
-import { Change as defaultOptions } from "./defaultOptionsForComputation";
+import { path } from "../utils/index.js";
+import { Change as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export interface CompareOptions {
     readonly basePath: string;

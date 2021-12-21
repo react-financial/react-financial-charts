@@ -1,7 +1,7 @@
 import { Story } from "@storybook/react";
 import * as React from "react";
-import { Label, LabelProps } from "../../../../annotations/src/Label";
-import Annotations from "./Annotations";
+import { Label, LabelProps } from "../../../../annotations/src/Label.js";
+import Annotations from "./Annotations.js";
 
 export default {
     component: Label,

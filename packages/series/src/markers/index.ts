@@ -1,3 +1,3 @@
-export * from "./CircleMarker";
-export * from "./SquareMarker";
-export * from "./TriangleMarker";
+export * from "./CircleMarker.js";
+export * from "./SquareMarker.js";
+export * from "./TriangleMarker.js";

@@ -1,4 +1,4 @@
-import { identity, merge, slidingWindow } from "../utils";
+import { identity, merge, slidingWindow } from "../utils/index.js";
 
 export interface Algorithm {
     (data: any[]): any;

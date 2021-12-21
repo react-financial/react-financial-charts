@@ -1,8 +1,8 @@
 import { zip } from "d3-array";
-import { SmoothedForceIndex as defaultOptions } from "./defaultOptionsForComputation";
-import ema from "./ema";
-import forceIndex from "./forceIndex";
-import sma from "./sma";
+import { SmoothedForceIndex as defaultOptions } from "./defaultOptionsForComputation.js";
+import ema from "./ema.js";
+import forceIndex from "./forceIndex.js";
+import sma from "./sma.js";
 
 export default function () {
     const underlyingAlgorithm = forceIndex();

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { ascending as d3Ascending } from "d3-array";
 import { noop, strokeDashTypes } from "@react-financial-charts/core";
-import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
-import { isHover, saveNodeType } from "../utils";
-import { ClickableCircle, HoverTextNearMouse, InteractiveStraightLine } from "../components";
+import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil.js";
+import { isHover, saveNodeType } from "../utils.js";
+import { ClickableCircle, HoverTextNearMouse, InteractiveStraightLine } from "../components/index.js";
 
 export interface EachTrendLineProps {
     readonly x1Value: any;

@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { LineSeries } from "./LineSeries";
-import { StraightLine } from "./StraightLine";
+import { LineSeries } from "./LineSeries.js";
+import { StraightLine } from "./StraightLine.js";
 
 export interface StochasticSeriesProps {
     readonly className?: string;

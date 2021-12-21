@@ -1,7 +1,7 @@
 import { Story } from "@storybook/react";
 import * as React from "react";
-import { LineSeries, LineSeriesProps } from "../../../../series/src/LineSeries";
-import { Daily, Intraday } from "./BasicLineSeries";
+import { LineSeries, LineSeriesProps } from "../../../../series/src/LineSeries.js";
+import { Daily, Intraday } from "./BasicLineSeries.js";
 
 export default {
     component: LineSeries,

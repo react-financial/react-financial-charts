@@ -26,9 +26,9 @@ THE SOFTWARE.
 
 */
 
-import { identity } from "./identity";
-import { functor } from "./index";
-import { noop } from "./noop";
+import { identity } from "./identity.js";
+import { functor } from "./index.js";
+import { noop } from "./noop.js";
 
 interface AccumulatingWindow {
     (data: any[]): any[];

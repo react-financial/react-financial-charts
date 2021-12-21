@@ -1,4 +1,4 @@
-import { getClosestItemIndexes, getClosestItem } from "../closestItem";
+import { getClosestItemIndexes, getClosestItem } from "../closestItem.js";
 
 const data = [
     {

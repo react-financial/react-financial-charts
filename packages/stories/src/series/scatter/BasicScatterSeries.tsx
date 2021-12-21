@@ -6,7 +6,7 @@ import { XAxis, YAxis } from "@react-financial-charts/axes";
 import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
 import { ScatterSeries, CircleMarker } from "@react-financial-charts/series";
 import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
-import { IOHLCData, withOHLCData } from "../../data";
+import { IOHLCData, withOHLCData } from "../../data.js";
 
 interface ChartProps {
     readonly data: IOHLCData[];

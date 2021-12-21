@@ -24,8 +24,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-import { path } from "../utils";
-import { EMA as defaultOptions } from "./defaultOptionsForComputation";
+import { path } from "../utils/index.js";
+import { EMA as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export interface EMAOptions {
     readonly windowSize: number;

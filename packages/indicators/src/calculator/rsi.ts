@@ -25,8 +25,8 @@ THE SOFTWARE.
 */
 
 import { mean } from "d3-array";
-import { path, slidingWindow } from "../utils";
-import { RSI as defaultOptions } from "./defaultOptionsForComputation";
+import { path, slidingWindow } from "../utils/index.js";
+import { RSI as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export interface RSIOptions {
     windowSize: number;

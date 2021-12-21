@@ -1,7 +1,7 @@
 import { Story } from "@storybook/react";
 import * as React from "react";
-import { BollingerSeries, BollingerSeriesProps } from "../../../../series/src/BollingerSeries";
-import BollingerIndicator from "./BollingerIndicator";
+import { BollingerSeries, BollingerSeriesProps } from "../../../../series/src/BollingerSeries.js";
+import BollingerIndicator from "./BollingerIndicator.js";
 
 export default {
     title: "Visualization/Indicator/Bollinger Band",

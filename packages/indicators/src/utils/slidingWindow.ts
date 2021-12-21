@@ -26,8 +26,8 @@ THE SOFTWARE.
 
 */
 
-import { functor } from "./functor";
-import { path } from "./path";
+import { functor } from "./functor.js";
+import { path } from "./path.js";
 
 interface SlidingWindow {
     (data: any[]): any[];

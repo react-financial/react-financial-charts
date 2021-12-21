@@ -1,8 +1,8 @@
 import * as React from "react";
 import { ChartContext, GenericChartComponent, getMouseCanvas, isDefined, noop } from "@react-financial-charts/core";
-import { HoverTextNearMouse } from "./components";
-import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { EachText } from "./wrapper";
+import { HoverTextNearMouse } from "./components/index.js";
+import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils.js";
+import { EachText } from "./wrapper/index.js";
 
 interface InteractiveTextProps {
     readonly onChoosePosition: (e: React.MouseEvent, newText: any, moreProps: any) => void;

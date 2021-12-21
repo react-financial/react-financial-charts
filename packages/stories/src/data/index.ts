@@ -1,3 +1,3 @@
-export * from "./iOHLCData";
-export * from "./withOHLCData";
-export * from "./withUpdatingData";
+export * from "./iOHLCData.js";
+export * from "./withOHLCData.js";
+export * from "./withUpdatingData.js";

@@ -1,2 +1,2 @@
-export * from "./withDeviceRatio";
-export * from "./withSize";
+export * from "./withDeviceRatio.js";
+export * from "./withSize.js";

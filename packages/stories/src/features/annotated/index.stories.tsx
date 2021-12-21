@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Annotate } from "@react-financial-charts/annotations";
-import Annotated from "./Annotated";
+import Annotated from "./Annotated.js";
 
 export default {
     component: Annotate,

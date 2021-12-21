@@ -1,8 +1,8 @@
 import * as React from "react";
 import { isDefined, isNotDefined, noop, strokeDashTypes } from "@react-financial-charts/core";
-import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { HoverTextNearMouse, MouseLocationIndicator, InteractiveStraightLine } from "./components";
-import { EachTrendLine } from "./wrapper";
+import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils.js";
+import { HoverTextNearMouse, MouseLocationIndicator, InteractiveStraightLine } from "./components/index.js";
+import { EachTrendLine } from "./wrapper/index.js";
 
 export interface TrendLineProps {
     readonly snap: boolean;

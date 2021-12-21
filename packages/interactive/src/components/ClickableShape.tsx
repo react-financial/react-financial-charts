@@ -1,6 +1,6 @@
 import * as React from "react";
 import { getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
-import { isHovering2 } from "./InteractiveStraightLine";
+import { isHovering2 } from "./InteractiveStraightLine.js";
 
 export interface ClickableShapeProps {
     readonly fontWeight: string;

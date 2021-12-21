@@ -4,7 +4,7 @@ import { XAxis, YAxis } from "@react-financial-charts/axes";
 import { renko } from "@react-financial-charts/indicators";
 import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
 import { RenkoSeries } from "@react-financial-charts/series";
-import { IOHLCData, withOHLCData } from "../../data";
+import { IOHLCData, withOHLCData } from "../../data.js";
 import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
 
 interface ChartProps {

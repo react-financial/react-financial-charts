@@ -1,6 +1,6 @@
 import { mean } from "d3-array";
-import { slidingWindow } from "../utils";
-import { SMA as defaultOptions } from "./defaultOptionsForComputation";
+import { slidingWindow } from "../utils/index.js";
+import { SMA as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export interface SMAOptions {
     readonly sourcePath?: string;

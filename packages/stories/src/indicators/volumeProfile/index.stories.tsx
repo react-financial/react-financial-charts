@@ -1,6 +1,6 @@
 import * as React from "react";
-import { VolumeProfileSeries } from "../../../../series/src/VolumeProfileSeries";
-import VolumeProfile from "./VolumeProfile";
+import { VolumeProfileSeries } from "../../../../series/src/VolumeProfileSeries.js";
+import VolumeProfile from "./VolumeProfile.js";
 
 export default {
     title: "Visualization/Indicator/Volume Profile",

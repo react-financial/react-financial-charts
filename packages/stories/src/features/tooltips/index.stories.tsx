@@ -1,6 +1,6 @@
 import * as React from "react";
-import { HoverTooltip } from "../../../../tooltip/src/HoverTooltip";
-import Tooltips from "./Tooltips";
+import { HoverTooltip } from "../../../../tooltip/src/HoverTooltip.js";
+import Tooltips from "./Tooltips.js";
 
 export default {
     title: "Features/Tooltips",

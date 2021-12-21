@@ -1,1 +1,1 @@
-export * from "./zoomBehavior";
+export * from "./zoomBehavior.js";

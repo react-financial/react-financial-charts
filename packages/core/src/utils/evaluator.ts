@@ -1,6 +1,6 @@
 import { max, min } from "d3-array";
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
-import { getClosestItemIndexes, head, isDefined, isNotDefined, last } from "../utils";
+import { getClosestItemIndexes, head, isDefined, isNotDefined, last } from "../utils/index.js";
 
 function getNewEnd<T, TAccessor extends number | Date>(
     fallbackEnd: { lastItem: T; lastItemX: TAccessor },

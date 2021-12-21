@@ -1,9 +1,9 @@
 import * as React from "react";
 import { isDefined, isNotDefined, noop } from "@react-financial-charts/core";
-import { HoverTextNearMouse, MouseLocationIndicator } from "./components";
-import { getSlope, getYIntercept } from "./components/InteractiveStraightLine";
-import { isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { EachEquidistantChannel } from "./wrapper";
+import { HoverTextNearMouse, MouseLocationIndicator } from "./components/index.js";
+import { getSlope, getYIntercept } from "./components/InteractiveStraightLine.js";
+import { isHoverForInteractiveType, saveNodeType, terminate } from "./utils.js";
+import { EachEquidistantChannel } from "./wrapper/index.js";
 
 interface EquidistantChannelProps {
     readonly enabled: boolean;

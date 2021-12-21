@@ -1,7 +1,7 @@
-import { atr } from "../calculator";
-import { merge, rebind } from "../utils";
-import { ATROptions } from "../calculator/atr";
-import baseIndicator from "./baseIndicator";
+import { atr } from "../calculator/index.js";
+import { merge, rebind } from "../utils/index.js";
+import { ATROptions } from "../calculator/atr.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "ATR";
 

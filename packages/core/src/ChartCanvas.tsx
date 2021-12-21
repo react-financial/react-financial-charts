@@ -1,19 +1,19 @@
 import { extent as d3Extent, max, min } from "d3-array";
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";
-import { clearCanvas, functor, head, identity, isDefined, isNotDefined, last, shallowEqual } from "./utils";
-import { IZoomAnchorOptions, mouseBasedZoomAnchor } from "./zoom";
+import { clearCanvas, functor, head, identity, isDefined, isNotDefined, last, shallowEqual } from "./utils/index.js";
+import { IZoomAnchorOptions, mouseBasedZoomAnchor } from "./zoom/index.js";
 import {
     ChartConfig,
     getChartConfigWithUpdatedYScales,
     getCurrentCharts,
     getCurrentItem,
     getNewChartConfig,
-} from "./utils/ChartDataUtil";
-import { EventCapture } from "./EventCapture";
-import { CanvasContainer, ICanvasContexts } from "./CanvasContainer";
-import evaluator from "./utils/evaluator";
-import { MoreProps } from "./GenericComponent";
+} from "./utils/ChartDataUtil.js";
+import { EventCapture } from "./EventCapture.js";
+import { CanvasContainer, ICanvasContexts } from "./CanvasContainer.js";
+import evaluator from "./utils/evaluator.js";
+import { MoreProps } from "./GenericComponent.js";
 
 const CANDIDATES_FOR_RESET = ["seriesName"];
 

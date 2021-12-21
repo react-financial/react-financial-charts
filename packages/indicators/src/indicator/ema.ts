@@ -1,7 +1,7 @@
-import { merge, rebind } from "../utils";
-import { ema } from "../calculator";
-import { EMAOptions } from "../calculator/ema";
-import baseIndicator from "./baseIndicator";
+import { merge, rebind } from "../utils/index.js";
+import { ema } from "../calculator/index.js";
+import { EMAOptions } from "../calculator/ema.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "EMA";
 

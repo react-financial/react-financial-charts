@@ -1,6 +1,6 @@
 import * as React from "react";
 import { atr } from "@react-financial-charts/indicators";
-import ATRIndicator from "./AtrIndicator";
+import ATRIndicator from "./AtrIndicator.js";
 
 export default {
     title: "Visualization/Indicator/ATR",

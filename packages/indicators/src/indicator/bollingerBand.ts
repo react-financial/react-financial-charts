@@ -1,7 +1,7 @@
-import { merge, rebind } from "../utils";
-import { bollingerband } from "../calculator";
-import { BollingerBandOptions } from "../calculator/bollingerband";
-import baseIndicator from "./baseIndicator";
+import { merge, rebind } from "../utils/index.js";
+import { bollingerband } from "../calculator/index.js";
+import { BollingerBandOptions } from "../calculator/bollingerband.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "BollingerBand";
 

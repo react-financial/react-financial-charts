@@ -1,4 +1,4 @@
-import { PointAndFigure as defaultOptions } from "./defaultOptionsForComputation";
+import { PointAndFigure as defaultOptions } from "./defaultOptionsForComputation.js";
 
 function createBox(d: any, dateAccessor: any, dateMutator: any) {
     const box = {

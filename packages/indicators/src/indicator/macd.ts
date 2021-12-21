@@ -1,8 +1,8 @@
-import { merge, rebind } from "../utils";
-import { macd } from "../calculator";
-import { MACDOptions } from "../calculator/macd";
-import baseIndicator from "./baseIndicator";
-import { MACD as appearanceOptions } from "./defaultOptionsForAppearance";
+import { merge, rebind } from "../utils/index.js";
+import { macd } from "../calculator/index.js";
+import { MACDOptions } from "../calculator/macd.js";
+import baseIndicator from "./baseIndicator.js";
+import { MACD as appearanceOptions } from "./defaultOptionsForAppearance.js";
 
 const ALGORITHM_TYPE = "MACD";
 

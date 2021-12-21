@@ -1,7 +1,7 @@
 import React, { ForwardedRef, useCallback, useContext } from "react";
-import { GenericComponent, GenericComponentProps, GenericComponentRef, MoreProps } from "./GenericComponent";
-import { isDefined } from "./utils";
-import { ChartContext } from "./Chart";
+import { GenericComponent, GenericComponentProps, GenericComponentRef, MoreProps } from "./GenericComponent.js";
+import { isDefined } from "./utils/index.js";
+import { ChartContext } from "./Chart.js";
 
 const ALWAYS_TRUE_TYPES = ["drag", "dragend"];
 

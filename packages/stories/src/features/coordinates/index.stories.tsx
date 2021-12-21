@@ -1,6 +1,6 @@
 import * as React from "react";
 import { MouseCoordinateY } from "@react-financial-charts/coordinates";
-import Coordinates from "./Coordinates";
+import Coordinates from "./Coordinates.js";
 
 export default {
     component: MouseCoordinateY,

@@ -1,7 +1,7 @@
-import { merge, rebind } from "../utils";
-import { rsi } from "../calculator";
-import { RSIOptions } from "../calculator/rsi";
-import baseIndicator from "./baseIndicator";
+import { merge, rebind } from "../utils/index.js";
+import { rsi } from "../calculator/index.js";
+import { RSIOptions } from "../calculator/rsi.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "RSI";
 

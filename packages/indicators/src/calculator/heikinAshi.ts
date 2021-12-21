@@ -1,4 +1,4 @@
-import { mappedSlidingWindow } from "../utils";
+import { mappedSlidingWindow } from "../utils/index.js";
 
 export default function () {
     let source = (x: any) => x;

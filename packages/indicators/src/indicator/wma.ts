@@ -1,7 +1,7 @@
-import { merge, rebind } from "../utils";
-import { wma } from "../calculator";
-import { WMAOptions } from "../calculator/wma";
-import baseIndicator from "./baseIndicator";
+import { merge, rebind } from "../utils/index.js";
+import { wma } from "../calculator/index.js";
+import { WMAOptions } from "../calculator/wma.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "WMA";
 

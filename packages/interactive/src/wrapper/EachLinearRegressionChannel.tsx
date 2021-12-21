@@ -1,12 +1,12 @@
-import { getCurrentItem } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
+import { getCurrentItem } from "@react-financial-charts/core/lib/utils/ChartDataUtil.js";
 import * as React from "react";
-import { isHover, saveNodeType } from "../utils";
-import { HoverTextNearMouse, ClickableCircle } from "../components";
+import { isHover, saveNodeType } from "../utils.js";
+import { HoverTextNearMouse, ClickableCircle } from "../components/index.js";
 import {
     edge1Provider,
     edge2Provider,
     LinearRegressionChannelWithArea,
-} from "../components/LinearRegressionChannelWithArea";
+} from "../components/LinearRegressionChannelWithArea.js";
 
 export interface EachLinearRegressionChannelProps {
     readonly defaultClassName?: string;

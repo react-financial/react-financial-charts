@@ -1,6 +1,6 @@
-import { functor, merge } from "../utils";
-import atr from "./atr";
-import { Renko as defaultOptions } from "./defaultOptionsForComputation";
+import { functor, merge } from "../utils/index.js";
+import atr from "./atr.js";
+import { Renko as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export default function () {
     let options = defaultOptions;

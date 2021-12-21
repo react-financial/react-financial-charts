@@ -2,9 +2,9 @@ import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 export {
     default as discontinuousTimeScaleProvider,
     discontinuousTimeScaleProviderBuilder,
-} from "./discontinuousTimeScaleProvider";
-export { default as financeDiscontinuousScale } from "./financeDiscontinuousScale";
-export * from "./timeFormat";
+} from "./discontinuousTimeScaleProvider.js";
+export { default as financeDiscontinuousScale } from "./financeDiscontinuousScale.js";
+export * from "./timeFormat.js";
 
 export const defaultScaleProvider = <TData, TXAxis extends number | Date>(
     xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,

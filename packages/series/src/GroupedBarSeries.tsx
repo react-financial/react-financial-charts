@@ -1,7 +1,7 @@
 import { getAxisCanvas, GenericChartComponent } from "@react-financial-charts/core";
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";
-import { drawOnCanvasHelper, identityStack, StackedBarSeries } from "./StackedBarSeries";
+import { drawOnCanvasHelper, identityStack, StackedBarSeries } from "./StackedBarSeries.js";
 
 export interface GroupedBarSeriesProps {
     readonly baseAt:

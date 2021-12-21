@@ -1,6 +1,6 @@
 import { ascending } from "d3-array";
 import { scaleLinear, InterpolatorFactory } from "d3-scale";
-import { levelDefinition } from "./levels";
+import { levelDefinition } from "./levels.js";
 
 const MAX_LEVEL = levelDefinition.length - 1;
 

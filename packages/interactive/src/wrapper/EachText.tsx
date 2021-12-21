@@ -1,7 +1,7 @@
 import * as React from "react";
-import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
-import { isHover, saveNodeType } from "../utils";
-import { HoverTextNearMouse, InteractiveText } from "../components";
+import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil.js";
+import { isHover, saveNodeType } from "../utils.js";
+import { HoverTextNearMouse, InteractiveText } from "../components/index.js";
 
 export interface EachTextProps {
     readonly index?: number;

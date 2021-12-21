@@ -1,7 +1,7 @@
 import * as React from "react";
 import { strokeDashTypes } from "@react-financial-charts/core";
-import { isHover, saveNodeType } from "../utils";
-import { ClickableShape, InteractiveYCoordinate } from "../components";
+import { isHover, saveNodeType } from "../utils.js";
+import { ClickableShape, InteractiveYCoordinate } from "../components/index.js";
 
 export interface EachInteractiveYCoordinateProps {
     readonly index?: number;

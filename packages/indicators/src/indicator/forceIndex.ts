@@ -1,7 +1,7 @@
-import { merge, rebind } from "../utils";
-import { forceIndex } from "../calculator";
-import { ForceIndexOptions } from "../calculator/forceIndex";
-import baseIndicator from "./baseIndicator";
+import { merge, rebind } from "../utils/index.js";
+import { forceIndex } from "../calculator/index.js";
+import { ForceIndexOptions } from "../calculator/forceIndex.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "ForceIndex";
 

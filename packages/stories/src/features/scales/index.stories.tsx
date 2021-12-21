@@ -1,6 +1,6 @@
 import { scaleLog, scaleUtc } from "d3-scale";
 import * as React from "react";
-import { Daily } from "./Scales";
+import { Daily } from "./Scales.js";
 
 export default {
     title: "Features/Scales",

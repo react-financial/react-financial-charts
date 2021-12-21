@@ -1,6 +1,6 @@
-import { heikinAshi } from "../calculator";
-import baseIndicator from "./baseIndicator";
-import { merge, rebind } from "../utils";
+import { heikinAshi } from "../calculator/index.js";
+import baseIndicator from "./baseIndicator.js";
+import { merge, rebind } from "../utils/index.js";
 
 const ALGORITHM_TYPE = "HeikinAshi";
 

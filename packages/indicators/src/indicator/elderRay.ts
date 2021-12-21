@@ -1,7 +1,7 @@
-import { elderRay } from "../calculator";
-import { merge, rebind } from "../utils";
-import { ElderRayOptions } from "../calculator/elderRay";
-import baseIndicator from "./baseIndicator";
+import { elderRay } from "../calculator/index.js";
+import { merge, rebind } from "../utils/index.js";
+import { ElderRayOptions } from "../calculator/elderRay.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "ElderRay";
 

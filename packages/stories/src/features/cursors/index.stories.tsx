@@ -1,7 +1,7 @@
 import { Story } from "@storybook/react";
 import * as React from "react";
-import { Cursor, CursorProps } from "../../../../coordinates/src/Cursor";
-import Cursors from "./Cursors";
+import { Cursor, CursorProps } from "../../../../coordinates/src/Cursor.js";
+import Cursors from "./Cursors.js";
 
 export default {
     component: Cursor,

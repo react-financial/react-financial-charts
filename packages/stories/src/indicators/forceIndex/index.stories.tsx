@@ -1,6 +1,6 @@
 import * as React from "react";
 import { forceIndex } from "@react-financial-charts/indicators";
-import ForceIndicator from "./ForceIndicator";
+import ForceIndicator from "./ForceIndicator.js";
 
 export default {
     title: "Visualization/Indicator/Force Index",

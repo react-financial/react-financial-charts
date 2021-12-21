@@ -1,7 +1,7 @@
-import { merge, rebind } from "../utils";
-import { compare } from "../calculator";
-import { CompareOptions } from "../calculator/compare";
-import baseIndicator from "./baseIndicator";
+import { merge, rebind } from "../utils/index.js";
+import { compare } from "../calculator/index.js";
+import { CompareOptions } from "../calculator/compare.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "Compare";
 

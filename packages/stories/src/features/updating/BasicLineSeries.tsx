@@ -11,7 +11,7 @@ import {
     XAxis,
     YAxis,
 } from "react-financial-charts";
-import { IOHLCData, withUpdatingData, withOHLCData } from "../../data";
+import { IOHLCData, withUpdatingData, withOHLCData } from "../../data.js";
 
 interface ChartProps {
     readonly data: IOHLCData[];

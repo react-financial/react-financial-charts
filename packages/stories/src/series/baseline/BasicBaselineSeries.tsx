@@ -3,7 +3,7 @@ import { Chart, ChartCanvas } from "@react-financial-charts/core";
 import { XAxis, YAxis } from "@react-financial-charts/axes";
 import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
 import { AlternatingFillAreaSeries, AlternatingFillAreaSeriesProps } from "@react-financial-charts/series";
-import { IOHLCData, withOHLCData } from "../../data";
+import { IOHLCData, withOHLCData } from "../../data.js";
 import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
 
 interface ChartProps extends Partial<AlternatingFillAreaSeriesProps> {

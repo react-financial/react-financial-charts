@@ -24,8 +24,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 import { zip } from "d3-array";
-import { MACD as defaultOptions } from "./defaultOptionsForComputation";
-import ema from "./ema";
+import { MACD as defaultOptions } from "./defaultOptionsForComputation.js";
+import ema from "./ema.js";
 
 export interface MACDOptions {
     readonly fast: number;

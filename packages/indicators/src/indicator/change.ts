@@ -1,7 +1,7 @@
-import { change } from "../calculator";
-import { merge, rebind } from "../utils";
-import { ChangeOptions } from "../calculator/change";
-import baseIndicator from "./baseIndicator";
+import { change } from "../calculator/index.js";
+import { merge, rebind } from "../utils/index.js";
+import { ChangeOptions } from "../calculator/change.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "Change";
 

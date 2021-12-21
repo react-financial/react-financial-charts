@@ -25,8 +25,8 @@ THE SOFTWARE.
 */
 
 import { max, mean, min, zip } from "d3-array";
-import { slidingWindow } from "../utils";
-import { FullStochasticOscillator as defaultOptions } from "./defaultOptionsForComputation";
+import { slidingWindow } from "../utils/index.js";
+import { FullStochasticOscillator as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export interface STOOptions {
     readonly windowSize: number;

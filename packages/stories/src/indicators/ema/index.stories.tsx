@@ -1,5 +1,5 @@
 import * as React from "react";
-import EMAIndicator from "./EmaIndicator";
+import EMAIndicator from "./EmaIndicator.js";
 
 export default {
     title: "Visualization/Indicator/EMA",

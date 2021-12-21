@@ -1,8 +1,8 @@
 import { functor, GenericChartComponent, last, MoreProps } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
-import { ToolTipText } from "./ToolTipText";
-import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
+import { ToolTipText } from "./ToolTipText.js";
+import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel.js";
 
 export interface SingleMAToolTipProps {
     readonly color: string;

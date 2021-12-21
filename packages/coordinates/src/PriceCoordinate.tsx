@@ -1,7 +1,7 @@
 import { format } from "d3-format";
 import * as React from "react";
 import { getAxisCanvas, GenericChartComponent, functor, strokeDashTypes } from "@react-financial-charts/core";
-import { drawOnCanvas } from "./EdgeCoordinateV3";
+import { drawOnCanvas } from "./EdgeCoordinateV3.js";
 
 interface PriceCoordinateProps {
     readonly arrowWidth?: number;

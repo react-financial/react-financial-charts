@@ -1,6 +1,6 @@
 import { sum } from "d3-array";
-import { slidingWindow } from "../utils";
-import { ATR as defaultOptions } from "./defaultOptionsForComputation";
+import { slidingWindow } from "../utils/index.js";
+import { ATR as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export interface ATROptions {
     readonly windowSize: number;

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ElderRaySeries } from "../../../../series/src/ElderRaySeries";
-import ElderRayIndicator from "./ElderRayIndicator";
+import { ElderRaySeries } from "../../../../series/src/ElderRaySeries.js";
+import ElderRayIndicator from "./ElderRayIndicator.js";
 
 export default {
     title: "Visualization/Indicator/Elder Ray",

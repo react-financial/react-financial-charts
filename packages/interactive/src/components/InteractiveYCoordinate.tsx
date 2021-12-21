@@ -1,6 +1,6 @@
 import * as React from "react";
-import { drawOnCanvas } from "@react-financial-charts/coordinates/lib/EdgeCoordinateV3";
-import { getYCoordinate } from "@react-financial-charts/coordinates/lib/MouseCoordinateY";
+import { drawOnCanvas } from "@react-financial-charts/coordinates/lib/EdgeCoordinateV3.js";
+import { getYCoordinate } from "@react-financial-charts/coordinates/lib/MouseCoordinateY.js";
 import {
     getStrokeDasharrayCanvas,
     getMouseCanvas,

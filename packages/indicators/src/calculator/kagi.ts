@@ -1,6 +1,6 @@
-import { functor, merge, path } from "../utils";
-import atr from "./atr";
-import { Kagi as defaultOptions } from "./defaultOptionsForComputation";
+import { functor, merge, path } from "../utils/index.js";
+import atr from "./atr.js";
+import { Kagi as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export default function () {
     let options = defaultOptions;

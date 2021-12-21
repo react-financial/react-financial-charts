@@ -11,7 +11,7 @@ import { range as d3Range, zip } from "d3-array";
 import { forceCollide, forceSimulation, forceX } from "d3-force";
 import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
-import { AxisZoomCapture } from "./AxisZoomCapture";
+import { AxisZoomCapture } from "./AxisZoomCapture.js";
 
 interface AxisProps {
     readonly axisZoomCallback?: (domain: number[]) => void;

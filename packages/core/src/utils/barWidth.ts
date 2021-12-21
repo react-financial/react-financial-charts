@@ -1,5 +1,5 @@
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
-import { first, last } from ".";
+import { first, last } from "./index.js";
 
 /**
  * Bar width is based on the amount of items in the plot data and the distance between the first and last of those

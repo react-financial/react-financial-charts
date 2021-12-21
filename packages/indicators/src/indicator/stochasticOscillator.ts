@@ -1,7 +1,7 @@
-import { merge, rebind } from "../utils";
-import { sto } from "../calculator";
-import { STOOptions } from "../calculator/sto";
-import baseIndicator from "./baseIndicator";
+import { merge, rebind } from "../utils/index.js";
+import { sto } from "../calculator/index.js";
+import { STOOptions } from "../calculator/sto.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "STO";
 

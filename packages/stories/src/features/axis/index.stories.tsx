@@ -1,7 +1,7 @@
 import { Story } from "@storybook/react";
 import * as React from "react";
-import { YAxis, YAxisProps } from "../../../../axes/src/YAxis";
-import AxisExample from "./Axis";
+import { YAxis, YAxisProps } from "../../../../axes/src/YAxis.js";
+import AxisExample from "./Axis.js";
 
 export default {
     component: YAxis,

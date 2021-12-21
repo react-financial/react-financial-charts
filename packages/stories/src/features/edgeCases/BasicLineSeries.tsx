@@ -9,7 +9,7 @@ import {
     withDeviceRatio,
     withSize,
 } from "react-financial-charts";
-import { IOHLCData } from "../../data";
+import { IOHLCData } from "../../data.js";
 
 interface ChartProps {
     readonly data: IOHLCData[];

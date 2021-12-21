@@ -1,6 +1,6 @@
-import { merge, rebind, slidingWindow } from "../utils";
-import baseIndicator from "./baseIndicator";
-import { ElderImpulse as appearanceOptions } from "./defaultOptionsForAppearance";
+import { merge, rebind, slidingWindow } from "../utils/index.js";
+import baseIndicator from "./baseIndicator.js";
+import { ElderImpulse as appearanceOptions } from "./defaultOptionsForAppearance.js";
 
 const ALGORITHM_TYPE = "ElderImpulse";
 

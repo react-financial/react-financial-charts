@@ -1,14 +1,14 @@
 import React from "react";
-export { default as zipper } from "./zipper";
-export { default as slidingWindow } from "./slidingWindow";
-export * from "./closestItem";
-export * from "./identity";
-export * from "./noop";
-export * from "./shallowEqual";
-export { default as accumulatingWindow } from "./accumulatingWindow";
-export * from "./barWidth";
-export * from "./strokeDasharray";
-export * from "./PureComponent";
+export { default as zipper } from "./zipper.js";
+export { default as slidingWindow } from "./slidingWindow.js";
+export * from "./closestItem.js";
+export * from "./identity.js";
+export * from "./noop.js";
+export * from "./shallowEqual.js";
+export { default as accumulatingWindow } from "./accumulatingWindow.js";
+export * from "./barWidth.js";
+export * from "./strokeDasharray.js";
+export * from "./PureComponent.js";
 
 export const sign = (x: any) => {
     // @ts-ignore

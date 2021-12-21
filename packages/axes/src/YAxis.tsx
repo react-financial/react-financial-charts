@@ -1,6 +1,6 @@
 import { ChartContext, strokeDashTypes } from "@react-financial-charts/core";
 import * as React from "react";
-import { Axis } from "./Axis";
+import { Axis } from "./Axis.js";
 
 export interface YAxisProps {
     readonly axisAt?: number | "left" | "right" | "middle";

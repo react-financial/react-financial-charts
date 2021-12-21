@@ -1,6 +1,6 @@
-import { rebind } from "../utils";
-import { pointAndFigure } from "../calculator";
-import baseIndicator from "./baseIndicator";
+import { rebind } from "../utils/index.js";
+import { pointAndFigure } from "../calculator/index.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "PointAndFigure";
 

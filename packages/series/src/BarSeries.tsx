@@ -8,7 +8,7 @@ import {
 import { group } from "d3-array";
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";
-import { drawOnCanvasHelper, identityStack } from "./StackedBarSeries";
+import { drawOnCanvasHelper, identityStack } from "./StackedBarSeries.js";
 
 interface IBar {
     readonly x: number;

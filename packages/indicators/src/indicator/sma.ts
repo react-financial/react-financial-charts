@@ -1,7 +1,7 @@
-import { merge, rebind } from "../utils";
-import { sma } from "../calculator";
-import { SMAOptions } from "../calculator/sma";
-import baseIndicator from "./baseIndicator";
+import { merge, rebind } from "../utils/index.js";
+import { sma } from "../calculator/index.js";
+import { SMAOptions } from "../calculator/sma.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "SMA";
 

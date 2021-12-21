@@ -1,7 +1,7 @@
-import { merge, rebind } from "../utils";
-import { tma } from "../calculator";
-import { TMAOptions } from "../calculator/tma";
-import baseIndicator from "./baseIndicator";
+import { merge, rebind } from "../utils/index.js";
+import { tma } from "../calculator/index.js";
+import { TMAOptions } from "../calculator/tma.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "TMA";
 

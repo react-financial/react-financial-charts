@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IOHLCData } from "./iOHLCData";
+import { IOHLCData } from "./iOHLCData.js";
 
 interface WithOHLCDataProps {
     readonly data: IOHLCData[];

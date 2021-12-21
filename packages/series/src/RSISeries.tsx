@@ -1,8 +1,8 @@
 import * as React from "react";
 import { strokeDashTypes } from "@react-financial-charts/core";
-import { LineSeries } from "./LineSeries";
-import { StraightLine } from "./StraightLine";
-import { SVGComponent } from "./SVGComponent";
+import { LineSeries } from "./LineSeries.js";
+import { StraightLine } from "./StraightLine.js";
+import { SVGComponent } from "./SVGComponent.js";
 
 export interface RSISeriesProps {
     readonly className?: string;

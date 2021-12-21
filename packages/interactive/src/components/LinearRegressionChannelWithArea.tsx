@@ -1,7 +1,7 @@
 import { deviation, sum, zip } from "d3-array";
 import * as React from "react";
 import { getClosestItemIndexes, getMouseCanvas, GenericChartComponent } from "@react-financial-charts/core";
-import { isHovering2 } from "./InteractiveStraightLine";
+import { isHovering2 } from "./InteractiveStraightLine.js";
 
 export interface LinearRegressionChannelWithAreaProps {
     readonly x1Value: any;

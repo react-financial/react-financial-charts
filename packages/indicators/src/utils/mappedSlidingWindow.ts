@@ -1,5 +1,5 @@
-import { functor } from "./functor";
-import { identity } from "./identity";
+import { functor } from "./functor.js";
+import { identity } from "./identity.js";
 
 interface MappedSlidingWindow {
     (data: any[]): any;

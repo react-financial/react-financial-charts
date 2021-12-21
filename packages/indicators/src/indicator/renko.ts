@@ -1,6 +1,6 @@
-import { rebind } from "../utils";
-import { renko } from "../calculator";
-import baseIndicator from "./baseIndicator";
+import { rebind } from "../utils/index.js";
+import { renko } from "../calculator/index.js";
+import baseIndicator from "./baseIndicator.js";
 
 const ALGORITHM_TYPE = "Renko";
 

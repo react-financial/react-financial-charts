@@ -1,8 +1,8 @@
 import { functor, GenericChartComponent, last } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
-import { ToolTipText } from "./ToolTipText";
-import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
+import { ToolTipText } from "./ToolTipText.js";
+import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel.js";
 
 const displayTextsDefault = {
     o: "O: ",

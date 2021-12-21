@@ -1,6 +1,6 @@
 import * as React from "react";
-import { MACDSeries } from "../../../../series/src/MACDSeries";
-import MACDIndicator from "./MacdIndicator";
+import { MACDSeries } from "../../../../series/src/MACDSeries.js";
+import MACDIndicator from "./MacdIndicator.js";
 
 export default {
     title: "Visualization/Indicator/MACD",

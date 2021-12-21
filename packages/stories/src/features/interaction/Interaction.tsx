@@ -10,7 +10,7 @@ import {
     withSize,
     IZoomAnchorOptions,
 } from "react-financial-charts";
-import { IOHLCData, withOHLCData } from "../../data";
+import { IOHLCData, withOHLCData } from "../../data.js";
 
 interface ChartProps {
     readonly clamp?: boolean;

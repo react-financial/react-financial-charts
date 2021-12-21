@@ -1,5 +1,5 @@
-import { slidingWindow } from "../utils";
-import { Change as defaultOptions } from "./defaultOptionsForComputation";
+import { slidingWindow } from "../utils/index.js";
+import { Change as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export interface ChangeOptions {
     readonly sourcePath: string;

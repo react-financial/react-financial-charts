@@ -1,8 +1,8 @@
 import * as React from "react";
 import { isDefined, isNotDefined } from "@react-financial-charts/core";
-import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { HoverTextNearMouse, MouseLocationIndicator } from "./components";
-import { EachLinearRegressionChannel } from "./wrapper";
+import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils.js";
+import { HoverTextNearMouse, MouseLocationIndicator } from "./components/index.js";
+import { EachLinearRegressionChannel } from "./wrapper/index.js";
 
 export interface StandardDeviationChannelProps {
     readonly enabled: boolean;

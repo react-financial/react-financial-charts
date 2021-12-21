@@ -9,7 +9,7 @@ import {
     noop,
     strokeDashTypes,
 } from "@react-financial-charts/core";
-import { drawOnCanvas } from "./EdgeCoordinateV3";
+import { drawOnCanvas } from "./EdgeCoordinateV3.js";
 
 export interface EdgeIndicatorProps {
     readonly arrowWidth?: number;

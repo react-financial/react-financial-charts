@@ -1,5 +1,5 @@
 import * as React from "react";
-import StockChart, { MinutesStockChart, SecondsStockChart } from "./StockChart";
+import StockChart, { MinutesStockChart, SecondsStockChart } from "./StockChart.js";
 
 export default {
     component: StockChart,

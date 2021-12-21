@@ -1,7 +1,7 @@
 import { ScaleContinuousNumeric, scaleLinear } from "d3-scale";
 import * as React from "react";
-import { ChartCanvasContext, chartCanvasContextDefaultValue, ChartCanvasContextType } from "./ChartCanvas";
-import { ChartConfig } from "./utils/ChartDataUtil";
+import { ChartCanvasContext, chartCanvasContextDefaultValue, ChartCanvasContextType } from "./ChartCanvas.js";
+import { ChartConfig } from "./utils/ChartDataUtil.js";
 
 export type ChartContextType = Omit<ChartCanvasContextType<number | Date>, "chartConfig"> & {
     chartConfig: ChartConfig;

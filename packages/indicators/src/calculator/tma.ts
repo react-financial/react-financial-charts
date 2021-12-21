@@ -32,8 +32,8 @@
 */
 
 import { sum } from "d3-array";
-import { slidingWindow } from "../utils";
-import { TMA as defaultOptions } from "./defaultOptionsForComputation";
+import { slidingWindow } from "../utils/index.js";
+import { TMA as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export interface TMAOptions {
     readonly sourcePath?: string;

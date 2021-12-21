@@ -10,7 +10,7 @@ import {
     withDeviceRatio,
     withSize,
 } from "react-financial-charts";
-import { IOHLCData, withOHLCData } from "../../data";
+import { IOHLCData, withOHLCData } from "../../data.js";
 
 interface ChartProps extends Partial<YAxisProps> {
     readonly data: IOHLCData[];

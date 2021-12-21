@@ -1,7 +1,7 @@
 import { slidingWindow, zipper } from "@react-financial-charts/core";
 import { timeFormat, timeFormatDefaultLocale } from "d3-time-format";
-import financeDiscontinuousScale from "./financeDiscontinuousScale";
-import { defaultFormatters, levelDefinition, IFormatters } from "./levels";
+import financeDiscontinuousScale from "./financeDiscontinuousScale.js";
+import { defaultFormatters, levelDefinition, IFormatters } from "./levels.js";
 
 const evaluateLevel = (row: any, date: Date, i: number, formatters: IFormatters) => {
     return levelDefinition

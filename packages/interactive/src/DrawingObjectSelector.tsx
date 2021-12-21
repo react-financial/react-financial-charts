@@ -1,6 +1,6 @@
 import * as React from "react";
 import { head, isDefined, mapObject, GenericComponent, getMouseCanvas } from "@react-financial-charts/core";
-import { getMorePropsForChart, getSelected } from "./utils";
+import { getMorePropsForChart, getSelected } from "./utils.js";
 
 interface DrawingObjectSelectorProps {
     readonly getInteractiveNodes: () => any[];

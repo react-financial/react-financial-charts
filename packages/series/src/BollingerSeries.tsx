@@ -1,7 +1,7 @@
 import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
-import { AreaOnlySeries } from "./AreaOnlySeries";
-import { LineSeries } from "./LineSeries";
+import { AreaOnlySeries } from "./AreaOnlySeries.js";
+import { LineSeries } from "./LineSeries.js";
 
 export interface BollingerSeriesProps {
     readonly areaClassName?: string;

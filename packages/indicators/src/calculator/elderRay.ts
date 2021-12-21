@@ -25,9 +25,9 @@ THE SOFTWARE.
 */
 
 import { mean, zip } from "d3-array";
-import { slidingWindow } from "../utils";
-import ema from "./ema";
-import { ElderRay as defaultOptions } from "./defaultOptionsForComputation";
+import { slidingWindow } from "../utils/index.js";
+import ema from "./ema.js";
+import { ElderRay as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export interface ElderRayOptions {
     readonly movingAverageType: string;

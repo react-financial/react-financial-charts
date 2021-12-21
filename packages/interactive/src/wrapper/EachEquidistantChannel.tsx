@@ -1,8 +1,8 @@
 import * as React from "react";
 import { isDefined, noop } from "@react-financial-charts/core";
-import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil";
-import { isHover, saveNodeType } from "../utils";
-import { ChannelWithArea, ClickableCircle, HoverTextNearMouse } from "../components";
+import { getXValue } from "@react-financial-charts/core/lib/utils/ChartDataUtil.js";
+import { isHover, saveNodeType } from "../utils.js";
+import { ChannelWithArea, ClickableCircle, HoverTextNearMouse } from "../components/index.js";
 
 export interface EachEquidistantChannelProps {
     readonly startXY: number[];

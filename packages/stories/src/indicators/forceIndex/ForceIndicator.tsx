@@ -6,7 +6,7 @@ import { ema, forceIndex } from "@react-financial-charts/indicators";
 import { discontinuousTimeScaleProviderBuilder } from "@react-financial-charts/scales";
 import { LineSeries, StraightLine } from "@react-financial-charts/series";
 import { SingleValueTooltip } from "@react-financial-charts/tooltip";
-import { IOHLCData, withOHLCData } from "../../data";
+import { IOHLCData, withOHLCData } from "../../data.js";
 import { withDeviceRatio, withSize } from "@react-financial-charts/utils";
 
 interface ChartProps {

@@ -1,8 +1,8 @@
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";
-import { BarSeries } from "./BarSeries";
-import { LineSeries } from "./LineSeries";
-import { StraightLine } from "./StraightLine";
+import { BarSeries } from "./BarSeries.js";
+import { LineSeries } from "./LineSeries.js";
+import { StraightLine } from "./StraightLine.js";
 
 export interface MACDSeriesProps {
     readonly className?: string;

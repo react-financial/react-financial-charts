@@ -1,9 +1,9 @@
 import { format } from "d3-format";
 import * as React from "react";
 import { ChartContext, isDefined, strokeDashTypes } from "@react-financial-charts/core";
-import { HoverTextNearMouse } from "./components";
-import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { EachInteractiveYCoordinate } from "./wrapper";
+import { HoverTextNearMouse } from "./components/index.js";
+import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils.js";
+import { EachInteractiveYCoordinate } from "./wrapper/index.js";
 
 interface InteractiveYCoordinateProps {
     readonly onChoosePosition: (e: React.MouseEvent, newText: any, moreProps: any) => void;

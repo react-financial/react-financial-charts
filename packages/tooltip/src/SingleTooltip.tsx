@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ToolTipText } from "./ToolTipText";
-import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel";
+import { ToolTipText } from "./ToolTipText.js";
+import { ToolTipTSpanLabel } from "./ToolTipTSpanLabel.js";
 
 export type layouts = "horizontal" | "horizontalRows" | "horizontalInline" | "vertical" | "verticalRows";
 

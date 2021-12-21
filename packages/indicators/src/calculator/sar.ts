@@ -1,5 +1,5 @@
-import { mappedSlidingWindow } from "../utils";
-import { SAR as defaultOptions } from "./defaultOptionsForComputation";
+import { mappedSlidingWindow } from "../utils/index.js";
+import { SAR as defaultOptions } from "./defaultOptionsForComputation.js";
 
 function calc(prev: any, now: any) {
     const risingSar = prev.risingSar + prev.af * (prev.risingEp - prev.risingSar);

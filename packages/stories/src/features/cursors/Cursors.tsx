@@ -13,7 +13,7 @@ import {
     CursorProps,
     CurrentCoordinate,
 } from "react-financial-charts";
-import { IOHLCData, withOHLCData } from "../../data";
+import { IOHLCData, withOHLCData } from "../../data.js";
 
 interface ChartProps extends CursorProps {
     readonly crosshair?: boolean;

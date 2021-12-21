@@ -1,7 +1,7 @@
 import { strokeDashTypes } from "@react-financial-charts/core";
 import * as React from "react";
-import { OverlayBarSeries } from "./OverlayBarSeries";
-import { StraightLine } from "./StraightLine";
+import { OverlayBarSeries } from "./OverlayBarSeries.js";
+import { StraightLine } from "./StraightLine.js";
 
 export interface ElderRaySeriesProps {
     readonly fillStyle?: {

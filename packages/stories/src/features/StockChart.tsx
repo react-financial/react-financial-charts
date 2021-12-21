@@ -26,7 +26,7 @@ import {
     withDeviceRatio,
     withSize,
 } from "react-financial-charts";
-import { IOHLCData, withOHLCData } from "../data";
+import { IOHLCData, withOHLCData } from "../data.js";
 
 interface StockChartProps {
     readonly data: IOHLCData[];

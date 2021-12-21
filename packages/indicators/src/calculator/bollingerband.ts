@@ -25,9 +25,9 @@ THE SOFTWARE.
 */
 
 import { deviation, mean } from "d3-array";
-import { path, slidingWindow, zipper } from "../utils";
-import ema from "./ema";
-import { BollingerBand as defaultOptions } from "./defaultOptionsForComputation";
+import { path, slidingWindow, zipper } from "../utils/index.js";
+import ema from "./ema.js";
+import { BollingerBand as defaultOptions } from "./defaultOptionsForComputation.js";
 
 export interface BollingerBandOptions {
     readonly windowSize: number;

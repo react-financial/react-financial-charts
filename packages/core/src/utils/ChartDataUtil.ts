@@ -3,9 +3,9 @@ import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import flattenDeep from "lodash.flattendeep";
 import * as React from "react";
 
-import { ChartDefaultConfig, ChartProps } from "../Chart";
+import { ChartDefaultConfig, ChartProps } from "../Chart.js";
 
-import { functor, getClosestItem, isNotDefined, isObject, last, mapObject, shallowEqual, zipper } from "./index";
+import { functor, getClosestItem, isNotDefined, isObject, last, mapObject, shallowEqual, zipper } from "./index.js";
 
 export interface ChartConfig {
     id: number | string;

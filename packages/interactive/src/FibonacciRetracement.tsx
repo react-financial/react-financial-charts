@@ -1,8 +1,8 @@
 import * as React from "react";
 import { isDefined, isNotDefined, noop } from "@react-financial-charts/core";
-import { HoverTextNearMouse, MouseLocationIndicator } from "./components";
-import { isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
-import { EachFibRetracement } from "./wrapper";
+import { HoverTextNearMouse, MouseLocationIndicator } from "./components/index.js";
+import { isHoverForInteractiveType, saveNodeType, terminate } from "./utils.js";
+import { EachFibRetracement } from "./wrapper/index.js";
 
 interface FibonacciRetracementProps {
     readonly enabled: boolean;

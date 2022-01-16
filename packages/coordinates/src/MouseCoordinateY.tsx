@@ -19,6 +19,7 @@ export interface MouseCoordinateYProps {
     readonly strokeOpacity?: number;
     readonly strokeWidth?: number;
     readonly textFill?: string;
+    readonly yAccessor?: (data: any) => number | undefined;
     readonly yAxisPad?: number;
 }
 
@@ -65,6 +66,7 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
         const {
             chartConfig: { yScale },
             chartId,
+            currentItem,
             currentCharts,
             mouseXY,
             show,
@@ -82,9 +84,13 @@ export class MouseCoordinateY extends React.Component<MouseCoordinateYProps> {
             return undefined;
         }
 
-        const y = mouseXY[1];
+        const { displayFormat, yAccessor } = props;
 
-        const { displayFormat } = props;
+        if (yAccessor && !currentItem) {
+            return undefined;
+        }
+
+        const y = yAccessor ? yScale(yAccessor(currentItem)) : mouseXY[1];
 
         const coordinate = displayFormat(yScale.invert(y));
 

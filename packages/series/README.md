@@ -1,5 +1,5 @@
 # Series
 
 ```bash
-npm i @react-finanical-charts/series
+npm i @react-financial-charts/series
 ```

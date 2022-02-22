@@ -1,5 +1,5 @@
 # Interactive
 
 ```bash
-npm i @react-finanical-charts/interactive
+npm i @react-financial-charts/interactive
 ```

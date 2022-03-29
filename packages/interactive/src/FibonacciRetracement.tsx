@@ -21,9 +21,8 @@ interface FibonacciRetracementProps {
     readonly currentPositionRadius?: number;
     readonly retracements: any[];
     readonly appearance: {
-        readonly stroke: string;
+        readonly strokeStyle: string;
         readonly strokeWidth: number;
-        readonly strokeOpacity: number;
         readonly fontFamily: string;
         readonly fontSize: number;
         readonly fontFill: string;
@@ -59,9 +58,8 @@ export class FibonacciRetracement extends React.Component<FibonacciRetracementPr
         currentPositionStrokeWidth: 3,
         currentPositionRadius: 4,
         appearance: {
-            stroke: "#000000",
+            strokeStyle: "#000000",
             strokeWidth: 1,
-            strokeOpacity: 1,
             fontFamily: "-apple-system, system-ui, Roboto, 'Helvetica Neue', Ubuntu, sans-serif",
             fontSize: 11,
             fontFill: "#000000",

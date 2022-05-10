@@ -111,6 +111,7 @@ export const Renko = {
 
 export const PointAndFigure = {
     boxSize: 0.5,
+    boxSizeProp: '',
     reversal: 3,
     sourcePath: "high/low", // "close", "high/low"
 };

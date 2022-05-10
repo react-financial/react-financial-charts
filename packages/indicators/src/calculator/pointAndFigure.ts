@@ -74,7 +74,7 @@ export default function () {
     };
 
     const calculator = (rawData: any[]) => {
-        const { reversal, boxSize, sourcePath } = options;
+        let { reversal, boxSize, boxSizeProp, sourcePath } = options;
 
         const source =
             // eslint-disable-next-line prettier/prettier
@@ -100,6 +100,10 @@ export default function () {
         rawData.forEach(function (d) {
             // @ts-ignore
             column.volume = (column.volume || 0) + d.volume;
+
+            if (boxSizeProp !== '') {
+                boxSize = d[boxSizeProp] || boxSize
+            }
 
             if (!box.startOfYear) {
                 box.startOfYear = d.startOfYear;

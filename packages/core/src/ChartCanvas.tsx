@@ -1,10 +1,10 @@
 import { extent as d3Extent, max, min } from "d3-array";
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
-import * as PropTypes from "prop-types";
 import * as React from "react";
 import { clearCanvas, functor, head, identity, isDefined, isNotDefined, last, shallowEqual } from "./utils";
-import { mouseBasedZoomAnchor, IZoomAnchorOptions } from "./zoom/zoomBehavior";
+import { IZoomAnchorOptions, mouseBasedZoomAnchor } from "./zoom/zoomBehavior";
 import {
+    ChartConfig,
     getChartConfigWithUpdatedYScales,
     getCurrentCharts,
     getCurrentItem,
@@ -66,6 +66,51 @@ const getCursorStyle = () => {
 	}`;
     return <style type="text/css">{tooltipStyle}</style>;
 };
+
+export interface ChartCanvasContextType<TXAxis extends number | Date> {
+    width: number;
+    height: number;
+    margin: {};
+    chartId: number | string;
+    getCanvasContexts?: () => void;
+    xScale: Function;
+    // Not sure if it should be optional
+    xAccessor: (data: any) => TXAxis;
+    displayXAccessor: (data: any) => TXAxis;
+    plotData: any[];
+    fullData: any[];
+    chartConfig: ChartConfig[];
+    morePropsDecorator?: () => void;
+    generateSubscriptionId?: () => void;
+    getMutableState: () => {};
+    amIOnTop: (id: string) => boolean;
+    subscribe: (id: string, rest: any) => void;
+    unsubscribe: (id: string) => void;
+    setCursorClass: (className: string) => void;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {};
+export const chartCanvasContextDefaultValue: ChartCanvasContextType<number | Date> = {
+    amIOnTop: () => false,
+    chartConfig: [],
+    chartId: 0,
+    displayXAccessor: () => 0,
+    fullData: [],
+    getMutableState: () => ({}),
+    height: 0,
+    margin: {},
+    plotData: [],
+    setCursorClass: noop,
+    subscribe: noop,
+    unsubscribe: noop,
+    width: 0,
+    xAccessor: () => 0,
+    xScale: noop,
+};
+export const ChartCanvasContext = React.createContext<ChartCanvasContextType<number | Date>>(
+    chartCanvasContextDefaultValue,
+);
 
 const getDimensions = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) => {
     const { margin, height, width } = props;
@@ -343,10 +388,10 @@ export interface ChartCanvasProps<TXAxis extends number | Date> {
 }
 
 interface ChartCanvasState<TXAxis extends number | Date> {
-    xAccessor?: (data: any) => TXAxis;
+    xAccessor: (data: any) => TXAxis;
     displayXAccessor?: any;
     filterData?: any;
-    chartConfig?: any;
+    chartConfig: ChartConfig[];
     plotData: any[];
     xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
 }
@@ -376,50 +421,6 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         zIndex: 1,
         zoomAnchor: mouseBasedZoomAnchor,
         zoomMultiplier: 1.1,
-    };
-
-    public static childContextTypes = {
-        plotData: PropTypes.array,
-        fullData: PropTypes.array,
-        chartConfig: PropTypes.arrayOf(
-            PropTypes.shape({
-                id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-                origin: PropTypes.arrayOf(PropTypes.number).isRequired,
-                padding: PropTypes.oneOfType([
-                    PropTypes.number,
-                    PropTypes.shape({
-                        top: PropTypes.number,
-                        bottom: PropTypes.number,
-                    }),
-                ]),
-                yExtents: PropTypes.arrayOf(PropTypes.func),
-                yExtentsProvider: PropTypes.func,
-                yScale: PropTypes.func.isRequired,
-                mouseCoordinates: PropTypes.shape({
-                    at: PropTypes.string,
-                    format: PropTypes.func,
-                }),
-                width: PropTypes.number.isRequired,
-                height: PropTypes.number.isRequired,
-            }),
-        ).isRequired,
-        xScale: PropTypes.func.isRequired,
-        xAccessor: PropTypes.func.isRequired,
-        displayXAccessor: PropTypes.func.isRequired,
-        width: PropTypes.number.isRequired,
-        height: PropTypes.number.isRequired,
-        margin: PropTypes.object.isRequired,
-        ratio: PropTypes.number.isRequired,
-        getCanvasContexts: PropTypes.func,
-        xAxisZoom: PropTypes.func,
-        yAxisZoom: PropTypes.func,
-        amIOnTop: PropTypes.func,
-        redraw: PropTypes.func,
-        subscribe: PropTypes.func,
-        unsubscribe: PropTypes.func,
-        setCursorClass: PropTypes.func,
-        generateSubscriptionId: PropTypes.func,
-        getMutableState: PropTypes.func,
     };
 
     private readonly canvasContainerRef = React.createRef<CanvasContainer>();
@@ -635,6 +636,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             plotData,
             mouseXY,
             currentItem,
+            xAccessor,
         };
     };
 
@@ -1116,9 +1118,10 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         this.triggerEvent("dblclick", {}, e);
     };
 
-    public getChildContext() {
+    public getContextValues() {
         const dimensions = getDimensions(this.props);
         return {
+            chartId: -1,
             fullData: this.fullData,
             plotData: this.state.plotData,
             width: dimensions.width,
@@ -1235,72 +1238,74 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const cursor = getCursorStyle();
 
         return (
-            <div
-                style={{ position: "relative", width, height }}
-                className={className}
-                onClick={onClick}
-                onDoubleClick={onDoubleClick}
-            >
-                <CanvasContainer
-                    ref={this.canvasContainerRef}
-                    ratio={ratio}
-                    width={width}
-                    height={height}
-                    style={{ height, zIndex, width }}
-                />
-                <svg
+            <ChartCanvasContext.Provider value={this.getContextValues()}>
+                <div
+                    style={{ position: "relative", width, height }}
                     className={className}
-                    width={width}
-                    height={height}
-                    style={{ position: "absolute", zIndex: zIndex + 5 }}
+                    onClick={onClick}
+                    onDoubleClick={onDoubleClick}
                 >
-                    {cursor}
-                    <defs>
-                        <clipPath id="chart-area-clip">
-                            <rect x="0" y="0" width={dimensions.width} height={dimensions.height} />
-                        </clipPath>
-                        {chartConfig.map((each: any, idx: number) => (
-                            <clipPath key={idx} id={`chart-area-clip-${each.id}`}>
-                                <rect x="0" y="0" width={each.width} height={each.height} />
+                    <CanvasContainer
+                        ref={this.canvasContainerRef}
+                        ratio={ratio}
+                        width={width}
+                        height={height}
+                        style={{ height, zIndex, width }}
+                    />
+                    <svg
+                        className={className}
+                        width={width}
+                        height={height}
+                        style={{ position: "absolute", zIndex: zIndex + 5 }}
+                    >
+                        {cursor}
+                        <defs>
+                            <clipPath id="chart-area-clip">
+                                <rect x="0" y="0" width={dimensions.width} height={dimensions.height} />
                             </clipPath>
-                        ))}
-                    </defs>
-                    <g transform={`translate(${margin.left + 0.5}, ${margin.top + 0.5})`}>
-                        <EventCapture
-                            ref={this.eventCaptureRef}
-                            useCrossHairStyleCursor={cursorStyle}
-                            mouseMove={mouseMoveEvent && interaction}
-                            zoom={!disableZoom && interaction}
-                            pan={!disablePan && interaction}
-                            width={dimensions.width}
-                            height={dimensions.height}
-                            chartConfig={chartConfig}
-                            xScale={xScale!}
-                            xAccessor={xAccessor}
-                            focus={defaultFocus}
-                            disableInteraction={disableInteraction}
-                            getAllPanConditions={this.getAllPanConditions}
-                            onContextMenu={this.handleContextMenu}
-                            onClick={this.handleClick}
-                            onDoubleClick={this.handleDoubleClick}
-                            onMouseDown={this.handleMouseDown}
-                            onMouseMove={this.handleMouseMove}
-                            onMouseEnter={this.handleMouseEnter}
-                            onMouseLeave={this.handleMouseLeave}
-                            onDragStart={this.handleDragStart}
-                            onDrag={this.handleDrag}
-                            onDragComplete={this.handleDragEnd}
-                            onZoom={this.handleZoom}
-                            onPinchZoom={this.handlePinchZoom}
-                            onPinchZoomEnd={this.handlePinchZoomEnd}
-                            onPan={this.handlePan}
-                            onPanEnd={this.handlePanEnd}
-                        />
+                            {chartConfig.map((each: any, idx: number) => (
+                                <clipPath key={idx} id={`chart-area-clip-${each.id}`}>
+                                    <rect x="0" y="0" width={each.width} height={each.height} />
+                                </clipPath>
+                            ))}
+                        </defs>
+                        <g transform={`translate(${margin.left + 0.5}, ${margin.top + 0.5})`}>
+                            <EventCapture
+                                ref={this.eventCaptureRef}
+                                useCrossHairStyleCursor={cursorStyle}
+                                mouseMove={mouseMoveEvent && interaction}
+                                zoom={!disableZoom && interaction}
+                                pan={!disablePan && interaction}
+                                width={dimensions.width}
+                                height={dimensions.height}
+                                chartConfig={chartConfig}
+                                xScale={xScale!}
+                                xAccessor={xAccessor}
+                                focus={defaultFocus}
+                                disableInteraction={disableInteraction}
+                                getAllPanConditions={this.getAllPanConditions}
+                                onContextMenu={this.handleContextMenu}
+                                onClick={this.handleClick}
+                                onDoubleClick={this.handleDoubleClick}
+                                onMouseDown={this.handleMouseDown}
+                                onMouseMove={this.handleMouseMove}
+                                onMouseEnter={this.handleMouseEnter}
+                                onMouseLeave={this.handleMouseLeave}
+                                onDragStart={this.handleDragStart}
+                                onDrag={this.handleDrag}
+                                onDragComplete={this.handleDragEnd}
+                                onZoom={this.handleZoom}
+                                onPinchZoom={this.handlePinchZoom}
+                                onPinchZoomEnd={this.handlePinchZoomEnd}
+                                onPan={this.handlePan}
+                                onPanEnd={this.handlePanEnd}
+                            />
 
-                        <g className="react-financial-charts-avoid-interaction">{this.props.children}</g>
-                    </g>
-                </svg>
-            </div>
+                            <g className="react-financial-charts-avoid-interaction">{this.props.children}</g>
+                        </g>
+                    </svg>
+                </div>
+            </ChartCanvasContext.Provider>
         );
     }
 }

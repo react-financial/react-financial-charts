@@ -1,7 +1,17 @@
-import { scaleLinear, ScaleContinuousNumeric } from "d3-scale";
-import * as PropTypes from "prop-types";
+import { ScaleContinuousNumeric, scaleLinear } from "d3-scale";
 import * as React from "react";
-import { PureComponent } from "./utils";
+import { ChartCanvasContext, chartCanvasContextDefaultValue, ChartCanvasContextType } from "./ChartCanvas";
+import { ChartConfig } from "./utils/ChartDataUtil";
+
+export type ChartContextType = Omit<ChartCanvasContextType<number | Date>, "chartConfig"> & {
+    chartConfig: ChartConfig;
+};
+export const ChartContext = React.createContext<ChartContextType>({
+    ...chartCanvasContextDefaultValue,
+    // @ts-ignore
+    chartConfig: {},
+    chartId: 0,
+});
 
 export interface ChartProps {
     readonly flipYScale?: boolean;
@@ -24,91 +34,89 @@ export interface ChartProps {
     readonly yScale?: ScaleContinuousNumeric<number, number>;
 }
 
-export class Chart extends PureComponent<ChartProps> {
-    public static defaultProps = {
-        flipYScale: false,
-        id: 0,
-        origin: [0, 0],
-        padding: 0,
-        yPan: true,
-        yPanEnabled: false,
-        yScale: scaleLinear(),
-    };
+export const Chart = React.memo((props: React.PropsWithChildren<ChartProps>) => {
+    const {
+        // flipYScale = false,
+        id = 0,
+        // origin = [0, 0],
+        // padding = 0,
+        // yPan = true,
+        // yPanEnabled = false,
+        // yScale = scaleLinear(),
+        onContextMenu,
+        onDoubleClick,
+    } = props;
 
-    public static contextTypes = {
-        chartConfig: PropTypes.array,
-        subscribe: PropTypes.func.isRequired,
-        unsubscribe: PropTypes.func.isRequired,
-    };
+    const chartCanvasContextValue = React.useContext(ChartCanvasContext);
+    const { subscribe, unsubscribe, chartConfig } = chartCanvasContextValue;
 
-    public static childContextTypes = {
-        chartConfig: PropTypes.object.isRequired,
-        chartId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-    };
+    const listener = React.useCallback(
+        (type: string, moreProps: any, _: any, e: React.MouseEvent) => {
+            switch (type) {
+                case "contextmenu": {
+                    if (onContextMenu === undefined) {
+                        return;
+                    }
 
-    public componentDidMount() {
-        const { id } = this.props;
-        const { subscribe } = this.context;
+                    const { currentCharts } = moreProps;
+                    if (currentCharts.indexOf(id) > -1) {
+                        onContextMenu(e, moreProps);
+                    }
 
+                    break;
+                }
+                case "dblclick": {
+                    if (onDoubleClick === undefined) {
+                        return;
+                    }
+
+                    const { currentCharts } = moreProps;
+                    if (currentCharts.indexOf(id) > -1) {
+                        onDoubleClick(e, moreProps);
+                    }
+
+                    break;
+                }
+            }
+        },
+        [onContextMenu, onDoubleClick, id],
+    );
+
+    React.useEffect(() => {
         subscribe(`chart_${id}`, {
-            listener: this.listener,
+            listener,
         });
-    }
+        return () => unsubscribe(`chart_${id}`);
+    }, [subscribe, unsubscribe, id, listener]);
 
-    public componentWillUnmount() {
-        const { id } = this.props;
-        const { unsubscribe } = this.context;
-
-        unsubscribe(`chart_${id}`);
-    }
-
-    public getChildContext() {
-        const { id: chartId } = this.props;
-
-        const chartConfig = this.context.chartConfig.find(({ id }: any) => id === chartId);
-
+    const config = chartConfig.find(({ id }) => id === props.id)!;
+    const contextValue = React.useMemo(() => {
         return {
-            chartId,
-            chartConfig,
+            ...chartCanvasContextValue,
+            chartId: id,
+            chartConfig: config,
         };
-    }
+    }, [id, config, chartCanvasContextValue]);
 
-    public render() {
-        const { origin } = this.context.chartConfig.find(({ id }: any) => id === this.props.id);
+    const {
+        origin: [x, y],
+    } = config;
 
-        const [x, y] = origin;
+    return (
+        <ChartContext.Provider value={contextValue}>
+            <g transform={`translate(${x}, ${y})`}>{props.children}</g>
+        </ChartContext.Provider>
+    );
+});
 
-        return <g transform={`translate(${x}, ${y})`}>{this.props.children}</g>;
-    }
+export const ChartDefaultConfig = {
+    flipYScale: false,
+    id: 0,
+    origin: [0, 0],
+    padding: 0,
+    yPan: true,
+    yPanEnabled: false,
+    yScale: scaleLinear(),
+};
 
-    private readonly listener = (type: string, moreProps: any, _: any, e: React.MouseEvent) => {
-        const { id, onContextMenu, onDoubleClick } = this.props;
-
-        switch (type) {
-            case "contextmenu": {
-                if (onContextMenu === undefined) {
-                    return;
-                }
-
-                const { currentCharts } = moreProps;
-                if (currentCharts.indexOf(id) > -1) {
-                    onContextMenu(e, moreProps);
-                }
-
-                break;
-            }
-            case "dblclick": {
-                if (onDoubleClick === undefined) {
-                    return;
-                }
-
-                const { currentCharts } = moreProps;
-                if (currentCharts.indexOf(id) > -1) {
-                    onDoubleClick(e, moreProps);
-                }
-
-                break;
-            }
-        }
-    };
-}
+Chart.displayName = "Chart";

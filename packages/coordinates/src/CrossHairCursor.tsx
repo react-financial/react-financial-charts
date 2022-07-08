@@ -1,10 +1,10 @@
-import * as PropTypes from "prop-types";
 import * as React from "react";
 import {
     getStrokeDasharrayCanvas,
     strokeDashTypes,
     GenericComponent,
     getMouseCanvas,
+    ChartCanvasContext,
 } from "@react-financial-charts/core";
 
 const defaultCustomX = (props: CrossHairCursorProps, moreProps: any) => {
@@ -31,10 +31,7 @@ export class CrossHairCursor extends React.Component<CrossHairCursorProps> {
         strokeWidth: 1,
     };
 
-    public static contextTypes = {
-        margin: PropTypes.object.isRequired,
-        ratio: PropTypes.number.isRequired,
-    };
+    public static contextType = ChartCanvasContext;
 
     public render() {
         return (

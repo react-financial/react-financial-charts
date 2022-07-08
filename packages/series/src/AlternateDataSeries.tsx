@@ -1,36 +1,29 @@
-import * as PropTypes from "prop-types";
 import * as React from "react";
+import { ChartCanvasContext } from "@react-financial-charts/core";
 
 export interface AlternateDataSeriesProps<TData> {
     readonly data: TData[];
 }
 
-export class AlternateDataSeries<TData> extends React.Component<AlternateDataSeriesProps<TData>> {
-    public static contextTypes = {
-        plotData: PropTypes.array,
-        xAccessor: PropTypes.func.isRequired,
-    };
-
-    public static childContextTypes = {
-        plotData: PropTypes.array,
-    };
-
-    public getChildContext() {
-        const { data } = this.props;
-        const { plotData, xAccessor } = this.context;
+export const AlternateDataSeries = <TData,>({
+    data,
+    children,
+}: React.PropsWithChildren<AlternateDataSeriesProps<TData>>) => {
+    const context = React.useContext(ChartCanvasContext);
+    const contextValue = React.useMemo(() => {
+        const { plotData, xAccessor } = context;
 
         const startDate = xAccessor(plotData[0]);
         const endDate = xAccessor(plotData[plotData.length - 1]);
 
         return {
+            ...context,
             plotData: data.filter((d) => {
                 const date = xAccessor(d);
                 return date > startDate && date < endDate;
             }),
         };
-    }
+    }, [data, context]);
 
-    public render() {
-        return this.props.children;
-    }
-}
+    return <ChartCanvasContext.Provider value={contextValue}>{children}</ChartCanvasContext.Provider>;
+};

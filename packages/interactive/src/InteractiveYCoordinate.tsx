@@ -1,7 +1,6 @@
 import { format } from "d3-format";
-import * as PropTypes from "prop-types";
 import * as React from "react";
-import { isDefined, strokeDashTypes } from "@react-financial-charts/core";
+import { ChartContext, isDefined, strokeDashTypes } from "@react-financial-charts/core";
 import { HoverTextNearMouse } from "./components";
 import { getValueFromOverride, isHoverForInteractiveType, saveNodeType, terminate } from "./utils";
 import { EachInteractiveYCoordinate } from "./wrapper";
@@ -106,12 +105,7 @@ export class InteractiveYCoordinate extends React.Component<InteractiveYCoordina
         yCoordinateList: [],
     };
 
-    public static contextTypes = {
-        subscribe: PropTypes.func.isRequired,
-        unsubscribe: PropTypes.func.isRequired,
-        generateSubscriptionId: PropTypes.func.isRequired,
-        chartId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-    };
+    public static contextType = ChartContext;
 
     // @ts-ignore
     private getSelectionState: any;

@@ -1,5 +1,4 @@
-import { strokeDashTypes } from "@react-financial-charts/core";
-import * as PropTypes from "prop-types";
+import { ChartContext, strokeDashTypes } from "@react-financial-charts/core";
 import * as React from "react";
 import { Axis } from "./Axis";
 
@@ -67,10 +66,7 @@ export class XAxis<T extends number | Date> extends React.Component<XAxisProps<T
         zoomCursorClassName: "react-financial-charts-ew-resize-cursor",
     };
 
-    public static contextTypes = {
-        chartConfig: PropTypes.object.isRequired,
-        xAxisZoom: PropTypes.func.isRequired,
-    };
+    public static contextType = ChartContext;
 
     public render() {
         const {

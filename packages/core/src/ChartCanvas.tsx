@@ -489,6 +489,9 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         return null;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    public componentDidUpdate() {}
+
     public getMutableState = () => {
         return this.mutableState;
     };

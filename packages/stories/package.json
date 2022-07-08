@@ -14,8 +14,8 @@
     "d3-dsv": "^2.0.0",
     "d3-format": "^2.0.0",
     "d3-time-format": "^3.0.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-financial-charts": "file:../charts"
   }
 }

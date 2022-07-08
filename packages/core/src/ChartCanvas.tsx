@@ -2,7 +2,7 @@ import { extent as d3Extent, max, min } from "d3-array";
 import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
 import * as React from "react";
 import { clearCanvas, functor, head, identity, isDefined, isNotDefined, last, shallowEqual } from "./utils";
-import { IZoomAnchorOptions, mouseBasedZoomAnchor } from "./zoom/zoomBehavior";
+import { IZoomAnchorOptions, mouseBasedZoomAnchor } from "./zoom";
 import {
     ChartConfig,
     getChartConfigWithUpdatedYScales,
@@ -388,12 +388,15 @@ export interface ChartCanvasProps<TXAxis extends number | Date> {
 }
 
 interface ChartCanvasState<TXAxis extends number | Date> {
+    lastProps?: ChartCanvasProps<TXAxis>;
+    propIteration?: number;
     xAccessor: (data: any) => TXAxis;
     displayXAccessor?: any;
     filterData?: any;
     chartConfig: ChartConfig[];
     plotData: any[];
     xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
+    fullData: any[];
 }
 
 export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
@@ -426,7 +429,6 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
     private readonly canvasContainerRef = React.createRef<CanvasContainer>();
     private readonly eventCaptureRef = React.createRef<EventCapture>();
     private finalPinch?: boolean;
-    private fullData: any[];
     private lastSubscriptionId = 0;
     private mutableState = {};
     private panInProgress = false;
@@ -443,22 +445,52 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
 
     public constructor(props: ChartCanvasProps<TXAxis>) {
         super(props);
+        this.state = resetChart(props);
+    }
 
-        const { fullData, ...state } = resetChart(props);
+    public static getDerivedStateFromProps<TXAxis extends number | Date>(
+        props: ChartCanvasProps<TXAxis>,
+        state: ChartCanvasState<TXAxis>,
+    ): ChartCanvasState<TXAxis> {
+        const { chartConfig: initialChartConfig, plotData, xAccessor, xScale } = state;
+        const interaction = isInteractionEnabled(xScale, xAccessor, plotData);
+        const shouldReset = shouldResetChart(state.lastProps || {}, props);
+        let newState: ChartCanvasState<TXAxis>;
+        if (!interaction || shouldReset || !shallowEqual(state.lastProps?.xExtents, props.xExtents)) {
+            // do reset
+            newState = resetChart(props);
+        } else {
+            const [start, end] = xScale.domain();
+            const prevLastItem = last(state.fullData);
 
-        this.state = state;
-        this.fullData = fullData;
+            const calculatedState = calculateFullData(props);
+            const { xAccessor } = calculatedState;
+            const previousX = xAccessor(prevLastItem);
+            const lastItemWasVisible = previousX <= end && previousX >= start;
+
+            newState = updateChart(calculatedState, xScale, props, lastItemWasVisible, initialChartConfig);
+        }
+        return {
+            ...newState,
+            lastProps: props,
+            propIteration: (state.propIteration || 0) + 1,
+        };
+    }
+
+    public getSnapshotBeforeUpdate(
+        prevProps: Readonly<ChartCanvasProps<TXAxis>>,
+        prevState: Readonly<ChartCanvasState<TXAxis>>,
+    ) {
+        // propIteration is incremented when the props change to differentiate between state updates
+        // and prop updates
+        if (prevState.propIteration !== this.state.propIteration && !this.panInProgress) {
+            this.clearThreeCanvas();
+        }
+        return null;
     }
 
     public getMutableState = () => {
         return this.mutableState;
-    };
-
-    public getDataInfo = () => {
-        return {
-            ...this.state,
-            fullData: this.fullData,
-        };
     };
 
     public getCanvasContexts = () => {
@@ -552,8 +584,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             plotData: initialPlotData,
         } = this.state;
 
-        const { filterData } = this.state;
-        const { fullData } = this;
+        const { filterData, fullData } = this.state;
         const { postCalculator = ChartCanvas.defaultProps.postCalculator } = this.props;
 
         const { plotData: beforePlotData, domain } = filterData(fullData, newDomain, xAccessor, initialXScale, {
@@ -590,8 +621,8 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             xAccessor,
             displayXAccessor,
             filterData,
+            fullData,
         } = this.state;
-        const { fullData } = this;
         const { postCalculator = ChartCanvas.defaultProps.postCalculator } = this.props;
 
         const { topLeft: iTL, bottomRight: iBR } = pinchCoordinates(initialPinch);
@@ -637,6 +668,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             mouseXY,
             currentItem,
             xAccessor,
+            fullData,
         };
     };
 
@@ -667,14 +699,12 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
 
         if (this.finalPinch) {
             const state = this.pinchZoomHelper(initialPinch, this.finalPinch);
-            const { xScale } = state;
+            const { xScale, fullData } = state;
             this.triggerEvent("pinchzoom", state, e);
 
             this.finalPinch = undefined;
 
             this.clearThreeCanvas();
-
-            const { fullData } = this;
             const firstItem = head(fullData);
             const scale_start = head(xScale.domain());
             const data_start = xAccessor(firstItem);
@@ -705,13 +735,12 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             return;
         }
 
-        const { xAccessor, xScale: initialXScale, plotData: initialPlotData } = this.state;
+        const { xAccessor, xScale: initialXScale, plotData: initialPlotData, fullData } = this.state;
         const {
             zoomMultiplier = ChartCanvas.defaultProps.zoomMultiplier,
             zoomAnchor = ChartCanvas.defaultProps.zoomAnchor,
         } = this.props;
 
-        const { fullData } = this;
         const item = zoomAnchor({
             xScale: initialXScale!,
             xAccessor: xAccessor!,
@@ -788,8 +817,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const { xScale, plotData, chartConfig } = this.calculateStateForDomain(newDomain);
         this.clearThreeCanvas();
 
-        const { xAccessor } = this.state;
-        const { fullData } = this;
+        const { xAccessor, fullData } = this.state;
         const firstItem = head(fullData);
         const scale_start = head(xScale.domain());
         const data_start = xAccessor!(firstItem);
@@ -846,7 +874,6 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         this.subscriptions.forEach((each) => {
             const state = {
                 ...this.state,
-                fullData: this.fullData,
                 subscriptions: this.subscriptions,
             };
             each.listener(type, props, state, e);
@@ -872,8 +899,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         { dx, dy }: { dx: number; dy: number },
         chartsToPan: string[],
     ) => {
-        const { xAccessor, displayXAccessor, chartConfig: initialChartConfig, filterData } = this.state;
-        const { fullData } = this;
+        const { xAccessor, displayXAccessor, chartConfig: initialChartConfig, filterData, fullData } = this.state;
         const { postCalculator = ChartCanvas.defaultProps.postCalculator } = this.props;
 
         const newDomain = initialXScale
@@ -970,8 +996,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         this.triggerEvent("panend", state, e);
 
         requestAnimationFrame(() => {
-            const { xAccessor } = this.state;
-            const { fullData } = this;
+            const { xAccessor, fullData } = this.state;
 
             const firstItem = head(fullData);
             const scale_start = head(xScale.domain());
@@ -1118,11 +1143,12 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         this.triggerEvent("dblclick", {}, e);
     };
 
+    // TODO: Memoize this
     public getContextValues() {
         const dimensions = getDimensions(this.props);
         return {
             chartId: -1,
-            fullData: this.fullData,
+            fullData: this.state.fullData,
             plotData: this.state.plotData,
             width: dimensions.width,
             height: dimensions.height,
@@ -1143,40 +1169,6 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             amIOnTop: this.amIOnTop,
             setCursorClass: this.setCursorClass,
         };
-    }
-
-    public UNSAFE_componentWillReceiveProps(nextProps: ChartCanvasProps<TXAxis>) {
-        const reset = shouldResetChart(this.props, nextProps);
-
-        const { chartConfig: initialChartConfig, plotData, xAccessor, xScale } = this.state;
-
-        const interaction = isInteractionEnabled(xScale, xAccessor, plotData);
-
-        let newState;
-        if (!interaction || reset || !shallowEqual(this.props.xExtents, nextProps.xExtents)) {
-            // do reset
-            newState = resetChart(nextProps);
-            this.mutableState = {};
-        } else {
-            const [start, end] = xScale.domain();
-            const prevLastItem = last(this.fullData);
-
-            const calculatedState = calculateFullData(nextProps);
-            const { xAccessor } = calculatedState;
-            const previousX = xAccessor(prevLastItem);
-            const lastItemWasVisible = previousX <= end && previousX >= start;
-
-            newState = updateChart(calculatedState, xScale, nextProps, lastItemWasVisible, initialChartConfig);
-        }
-
-        const { fullData, ...state } = newState;
-
-        if (!this.panInProgress) {
-            this.clearThreeCanvas();
-
-            this.setState(state);
-        }
-        this.fullData = fullData;
     }
 
     public resetYDomain = (chartId?: string) => {

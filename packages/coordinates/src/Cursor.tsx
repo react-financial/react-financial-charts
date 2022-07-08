@@ -1,12 +1,12 @@
 import {
+    ChartCanvasContext,
     first,
-    getStrokeDasharrayCanvas,
     GenericComponent,
     getMouseCanvas,
+    getStrokeDasharrayCanvas,
     last,
     strokeDashTypes,
 } from "@react-financial-charts/core";
-import * as PropTypes from "prop-types";
 import * as React from "react";
 
 export interface CursorProps {
@@ -39,10 +39,7 @@ export class Cursor extends React.Component<CursorProps> {
         xCursorShapeStrokeStyle: "rgba(0, 0, 0, 0.5)",
     };
 
-    public static contextTypes = {
-        margin: PropTypes.object.isRequired,
-        ratio: PropTypes.number.isRequired,
-    };
+    public static contextType = ChartCanvasContext;
 
     public render() {
         return (

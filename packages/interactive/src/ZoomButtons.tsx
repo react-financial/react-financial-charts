@@ -1,6 +1,5 @@
-import { last } from "@react-financial-charts/core";
+import { ChartContext, last } from "@react-financial-charts/core";
 import { interpolateNumber } from "d3-interpolate";
-import * as PropTypes from "prop-types";
 import * as React from "react";
 
 export interface ZoomButtonsProps {
@@ -27,13 +26,7 @@ export class ZoomButtons extends React.Component<ZoomButtonsProps> {
         zoomMultiplier: 1.5,
     };
 
-    public static contextTypes = {
-        xScale: PropTypes.func.isRequired,
-        chartConfig: PropTypes.object.isRequired,
-        plotData: PropTypes.array.isRequired,
-        xAccessor: PropTypes.func.isRequired,
-        xAxisZoom: PropTypes.func.isRequired,
-    };
+    public static contextType = ChartContext;
 
     private interval?: number;
 

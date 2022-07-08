@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as PropTypes from "prop-types";
 import * as React from "react";
 import { functor, identity } from "./utils";
 import { ICanvasContexts } from "./CanvasContainer";
+import { ChartCanvasContext } from "./ChartCanvas";
 
-const aliases = {
+const aliases: Record<string, string> = {
     mouseleave: "mousemove", // to draw interactive after mouse exit
     panend: "pan",
     pinchzoom: "pan",
@@ -64,33 +64,12 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         enableDragOnHover: false,
     };
 
-    public static contextTypes = {
-        width: PropTypes.number.isRequired,
-        height: PropTypes.number.isRequired,
-        margin: PropTypes.object.isRequired,
-        chartId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        getCanvasContexts: PropTypes.func,
-        xScale: PropTypes.func.isRequired,
-        xAccessor: PropTypes.func.isRequired,
-        displayXAccessor: PropTypes.func.isRequired,
-        plotData: PropTypes.array.isRequired,
-        fullData: PropTypes.array.isRequired,
-        chartConfig: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-        morePropsDecorator: PropTypes.func,
-        generateSubscriptionId: PropTypes.func,
-        getMutableState: PropTypes.func.isRequired,
-        amIOnTop: PropTypes.func.isRequired,
-        subscribe: PropTypes.func.isRequired,
-        unsubscribe: PropTypes.func.isRequired,
-        setCursorClass: PropTypes.func.isRequired,
-    };
-
     public moreProps: any = {};
 
     private dragInProgress = false;
     private evaluationInProgress = false;
     private iSetTheCursorClass = false;
-    private suscriberId: number;
+    private readonly subscriberId: number;
 
     public constructor(props: GenericComponentProps, context: any) {
         super(props, context);
@@ -108,7 +87,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
 
         const { generateSubscriptionId } = context;
 
-        this.suscriberId = generateSubscriptionId();
+        this.subscriberId = generateSubscriptionId();
 
         this.state = {
             updateCount: 0,
@@ -204,12 +183,12 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
                     this.moreProps.hovering &&
                     !this.props.selected &&
                     /* && !prevHover */
-                    amIOnTop(this.suscriberId) &&
+                    amIOnTop(this.subscriberId) &&
                     this.props.onHover !== undefined
                 ) {
                     setCursorClass("react-financial-charts-pointer-cursor");
                     this.iSetTheCursorClass = true;
-                } else if (this.moreProps.hovering && this.props.selected && amIOnTop(this.suscriberId)) {
+                } else if (this.moreProps.hovering && this.props.selected && amIOnTop(this.subscriberId)) {
                     setCursorClass(this.props.interactiveCursorClass);
                     this.iSetTheCursorClass = true;
                 } else if (prevHover && !this.moreProps.hovering && this.iSetTheCursorClass) {
@@ -261,7 +240,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
             case "dragstart": {
                 if (this.getPanConditions().draggable) {
                     const { amIOnTop } = this.context;
-                    if (amIOnTop(this.suscriberId)) {
+                    if (amIOnTop(this.subscriberId)) {
                         this.dragInProgress = true;
                         if (this.props.onDragStart !== undefined) {
                             this.props.onDragStart(e, this.getMoreProps());
@@ -313,9 +292,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         };
     }
 
-    // @ts-ignore
-    public draw({ trigger, force }: { force: boolean; trigger: string } = { force: false }) {
-        // @ts-ignore
+    public draw({ trigger, force = false }: { force: boolean; trigger: string }) {
         const type = aliases[trigger] || trigger;
         const proceed = this.props.drawOn.indexOf(type) > -1;
 
@@ -336,7 +313,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         const { subscribe, chartId } = this.context;
         const { clip, edgeClip } = this.props;
 
-        subscribe(this.suscriberId, {
+        subscribe(this.subscriberId, {
             chartId,
             clip,
             edgeClip,
@@ -350,7 +327,7 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
 
     public componentWillUnmount() {
         const { unsubscribe } = this.context;
-        unsubscribe(this.suscriberId);
+        unsubscribe(this.subscriberId);
         if (this.iSetTheCursorClass) {
             const { setCursorClass } = this.context;
             setCursorClass(null);
@@ -471,6 +448,8 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
         return <g style={style}>{svgDraw(this.getMoreProps())}</g>;
     }
 }
+
+GenericComponent.contextType = ChartCanvasContext;
 
 export const getAxisCanvas = (contexts: ICanvasContexts) => {
     return contexts.axes;

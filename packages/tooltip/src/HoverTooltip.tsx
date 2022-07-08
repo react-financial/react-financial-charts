@@ -1,7 +1,6 @@
 import { max, sum } from "d3-array";
-import * as PropTypes from "prop-types";
 import * as React from "react";
-import { first, isDefined, GenericComponent, last } from "@react-financial-charts/core";
+import { ChartCanvasContext, first, GenericComponent, isDefined, last } from "@react-financial-charts/core";
 
 const PADDING = 4;
 const X = 8;
@@ -226,10 +225,7 @@ export class HoverTooltip extends React.Component<HoverTooltipProps> {
         fontSize: 14,
     };
 
-    public static contextTypes = {
-        margin: PropTypes.object.isRequired,
-        ratio: PropTypes.number.isRequired,
-    };
+    public static contextType = ChartCanvasContext;
 
     public render() {
         return <GenericComponent canvasDraw={this.drawOnCanvas} drawOn={["mousemove", "pan"]} />;

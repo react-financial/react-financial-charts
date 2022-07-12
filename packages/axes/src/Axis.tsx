@@ -1,7 +1,8 @@
 import {
     first,
-    getAxisCanvas,
     GenericChartComponent,
+    GenericComponentRef,
+    getAxisCanvas,
     getStrokeDasharrayCanvas,
     last,
     strokeDashTypes,
@@ -57,6 +58,16 @@ interface AxisProps {
     readonly zoomCursorClassName?: string;
 }
 
+interface Tick {
+    value: number;
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+    labelX: number;
+    labelY: number;
+}
+
 export class Axis extends React.Component<AxisProps> {
     public static defaultProps = {
         edgeClip: false,
@@ -64,7 +75,7 @@ export class Axis extends React.Component<AxisProps> {
         zoomCursorClassName: "",
     };
 
-    private readonly chartRef = React.createRef<GenericChartComponent>();
+    private readonly chartRef = React.createRef<GenericComponentRef>();
 
     public render() {
         const {
@@ -138,7 +149,7 @@ export class Axis extends React.Component<AxisProps> {
         }
 
         if (showGridLines) {
-            tickProps.ticks.forEach((tick: any) => {
+            tickProps.ticks.forEach((tick) => {
                 drawGridLine(ctx, tick, tickProps, moreProps);
             });
         }
@@ -209,7 +220,7 @@ const tickHelper = (props: AxisProps, scale: ScaleContinuousNumeric<number, numb
     const sign = orient === "top" || orient === "left" ? -1 : 1;
     const tickSpacing = Math.max(innerTickSize, 0) + tickPadding;
 
-    let ticks;
+    let ticks: Tick[];
     let dy;
     // tslint:disable-next-line: variable-name
     let canvas_dy;
@@ -346,7 +357,7 @@ const drawTicks = (ctx: CanvasRenderingContext2D, result: any) => {
     });
 };
 
-const drawGridLine = (ctx: CanvasRenderingContext2D, tick: any, result: any, moreProps: any) => {
+const drawGridLine = (ctx: CanvasRenderingContext2D, tick: Tick, result: any, moreProps: any) => {
     const { orient, gridLinesStrokeWidth, gridLinesStrokeStyle, gridLinesStrokeDasharray } = result;
 
     const { chartConfig } = moreProps;

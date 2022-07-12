@@ -48,7 +48,7 @@ export const Chart = React.memo((props: React.PropsWithChildren<ChartProps>) => 
     } = props;
 
     const chartCanvasContextValue = React.useContext(ChartCanvasContext);
-    const { subscribe, unsubscribe, chartConfig } = chartCanvasContextValue;
+    const { subscribe, unsubscribe, chartConfigs } = chartCanvasContextValue;
 
     const listener = React.useCallback(
         (type: string, moreProps: any, _: any, e: React.MouseEvent) => {
@@ -89,7 +89,7 @@ export const Chart = React.memo((props: React.PropsWithChildren<ChartProps>) => 
         return () => unsubscribe(`chart_${id}`);
     }, [subscribe, unsubscribe, id, listener]);
 
-    const config = chartConfig.find(({ id }) => id === props.id)!;
+    const config = chartConfigs.find(({ id }) => id === props.id)!;
     const contextValue = React.useMemo(() => {
         return {
             ...chartCanvasContextValue,
@@ -104,7 +104,9 @@ export const Chart = React.memo((props: React.PropsWithChildren<ChartProps>) => 
 
     return (
         <ChartContext.Provider value={contextValue}>
-            <g transform={`translate(${x}, ${y})`}>{props.children}</g>
+            <g transform={`translate(${x}, ${y})`} id={`chart_${id}`}>
+                {props.children}
+            </g>
         </ChartContext.Provider>
     );
 });

@@ -1,4 +1,4 @@
-import { functor, GenericChartComponent, last } from "@react-financial-charts/core";
+import { functor, GenericChartComponent, last, MoreProps } from "@react-financial-charts/core";
 import { format } from "d3-format";
 import * as React from "react";
 import { ToolTipText } from "./ToolTipText";
@@ -96,13 +96,8 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
         return <GenericChartComponent clip={false} svgDraw={this.renderSVG} drawOn={["mousemove"]} />;
     }
 
-    private readonly renderSVG = (moreProps: any) => {
-        const {
-            chartId,
-            chartConfig,
-            chartConfig: { height },
-            fullData,
-        } = moreProps;
+    private readonly renderSVG = (moreProps: MoreProps) => {
+        const { chartId, chartConfig, chartConfig: { height = 0 } = {}, fullData } = moreProps;
 
         const {
             className,
@@ -122,7 +117,7 @@ export class MovingAverageTooltip extends React.Component<MovingAverageTooltipPr
 
         const currentItem = displayValuesFor(this.props, moreProps) ?? last(fullData);
 
-        const config = chartConfig;
+        const config = chartConfig!;
 
         const origin = functor(originProp);
         const [x, y] = origin(width, height);

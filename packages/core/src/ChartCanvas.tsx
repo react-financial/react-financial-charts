@@ -11,8 +11,9 @@ import {
     getNewChartConfig,
 } from "./utils/ChartDataUtil";
 import { EventCapture } from "./EventCapture";
-import { CanvasContainer } from "./CanvasContainer";
+import { CanvasContainer, ICanvasContexts } from "./CanvasContainer";
 import evaluator from "./utils/evaluator";
+import { MoreProps } from "./GenericComponent";
 
 const CANDIDATES_FOR_RESET = ["seriesName"];
 
@@ -70,40 +71,46 @@ const getCursorStyle = () => {
 export interface ChartCanvasContextType<TXAxis extends number | Date> {
     width: number;
     height: number;
-    margin: {};
+    margin: { top: number; right: number; bottom: number; left: number };
     chartId: number | string;
-    getCanvasContexts?: () => void;
+    getCanvasContexts?: () => ICanvasContexts | undefined;
     xScale: Function;
+    ratio: number;
     // Not sure if it should be optional
     xAccessor: (data: any) => TXAxis;
     displayXAccessor: (data: any) => TXAxis;
+    xAxisZoom?: (newDomain: any) => void;
+    yAxisZoom?: (chartId: string, newDomain: any) => void;
+    redraw: () => void;
     plotData: any[];
     fullData: any[];
-    chartConfig: ChartConfig[];
+    chartConfigs: ChartConfig[];
     morePropsDecorator?: () => void;
-    generateSubscriptionId?: () => void;
+    generateSubscriptionId?: () => number;
     getMutableState: () => {};
-    amIOnTop: (id: string) => boolean;
-    subscribe: (id: string, rest: any) => void;
-    unsubscribe: (id: string) => void;
-    setCursorClass: (className: string) => void;
+    amIOnTop: (id: string | number) => boolean;
+    subscribe: (id: string | number, rest: any) => void;
+    unsubscribe: (id: string | number) => void;
+    setCursorClass: (className: string | null | undefined) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
 export const chartCanvasContextDefaultValue: ChartCanvasContextType<number | Date> = {
     amIOnTop: () => false,
-    chartConfig: [],
+    chartConfigs: [],
     chartId: 0,
+    ratio: 0,
     displayXAccessor: () => 0,
     fullData: [],
     getMutableState: () => ({}),
     height: 0,
-    margin: {},
+    margin: { top: 0, right: 0, bottom: 0, left: 0 },
     plotData: [],
     setCursorClass: noop,
     subscribe: noop,
     unsubscribe: noop,
+    redraw: noop,
     width: 0,
     xAccessor: () => 0,
     xScale: noop,
@@ -168,7 +175,7 @@ const resetChart = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis
 
     const dimensions = getDimensions(props);
 
-    const chartConfig = getChartConfigWithUpdatedYScales(
+    const chartConfigs = getChartConfigWithUpdatedYScales(
         getNewChartConfig(dimensions, children),
         { plotData, xAccessor, displayXAccessor, fullData },
         xScale.domain(),
@@ -178,7 +185,7 @@ const resetChart = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis
         ...state,
         xScale,
         plotData,
-        chartConfig,
+        chartConfigs,
     };
 };
 
@@ -237,7 +244,7 @@ const updateChart = (
 
     const plotData = postCalculator(initialPlotData);
 
-    const chartConfig = getChartConfigWithUpdatedYScales(
+    const chartConfigs = getChartConfigWithUpdatedYScales(
         getNewChartConfig(dimensions, children, initialChartConfig),
         { plotData, xAccessor, displayXAccessor, fullData },
         updatedXScale.domain(),
@@ -246,7 +253,7 @@ const updateChart = (
     return {
         xScale: updatedXScale,
         xAccessor,
-        chartConfig,
+        chartConfigs,
         plotData,
         fullData,
         filterData,
@@ -254,7 +261,7 @@ const updateChart = (
 };
 
 const calculateState = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) => {
-    const { xAccessor: inputXAccesor, xExtents: xExtentsProp, data, padding, flipXScale } = props;
+    const { xAccessor: inputXAccessor, xExtents: xExtentsProp, data, padding, flipXScale } = props;
 
     const direction = getXScaleDirection(flipXScale);
 
@@ -264,14 +271,14 @@ const calculateState = <TXAxis extends number | Date>(props: ChartCanvasProps<TX
         typeof xExtentsProp === "function"
             ? xExtentsProp(data)
             : (d3Extent<number | Date>(
-                  xExtentsProp.map((d: any) => functor(d)).map((each: any) => each(data, inputXAccesor)),
+                  xExtentsProp.map((d: any) => functor(d)).map((each: any) => each(data, inputXAccessor)),
               ) as [TXAxis, TXAxis]);
 
     const { xAccessor, displayXAccessor, xScale, fullData, filterData } = calculateFullData(props);
 
     const updatedXScale = setXRange(xScale, dimensions, padding, direction);
 
-    const { plotData, domain } = filterData(fullData, extent, inputXAccesor, updatedXScale);
+    const { plotData, domain } = filterData(fullData, extent, inputXAccessor, updatedXScale);
 
     return {
         plotData,
@@ -393,10 +400,26 @@ interface ChartCanvasState<TXAxis extends number | Date> {
     xAccessor: (data: any) => TXAxis;
     displayXAccessor?: any;
     filterData?: any;
-    chartConfig: ChartConfig[];
+    chartConfigs: ChartConfig[];
     plotData: any[];
     xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
     fullData: any[];
+}
+
+interface Subscription {
+    id: string;
+    getPanConditions: () => {
+        draggable: boolean;
+        panEnabled: boolean;
+    };
+    draw: (props: { trigger: string } | { force: boolean }) => void;
+    listener: (type: string, newMoreProps: MoreProps | undefined, state: any, e: any) => void;
+}
+
+interface MutableState {
+    mouseXY: [number, number];
+    currentItem: any;
+    currentCharts: string[];
 }
 
 export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
@@ -430,10 +453,10 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
     private readonly eventCaptureRef = React.createRef<EventCapture>();
     private finalPinch?: boolean;
     private lastSubscriptionId = 0;
-    private mutableState = {};
+    private mutableState: MutableState = { mouseXY: [0, 0], currentCharts: [], currentItem: null };
     private panInProgress = false;
     private prevMouseXY?: number[];
-    private subscriptions: any[] = [];
+    private subscriptions: Subscription[] = [];
     private waitingForPinchZoomAnimationFrame?: boolean;
     private waitingForPanAnimationFrame?: boolean;
     private waitingForMouseMoveAnimationFrame?: boolean;
@@ -452,7 +475,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         props: ChartCanvasProps<TXAxis>,
         state: ChartCanvasState<TXAxis>,
     ): ChartCanvasState<TXAxis> {
-        const { chartConfig: initialChartConfig, plotData, xAccessor, xScale } = state;
+        const { chartConfigs: initialChartConfig, plotData, xAccessor, xScale } = state;
         const interaction = isInteractionEnabled(xScale, xAccessor, plotData);
         const shouldReset = shouldResetChart(state.lastProps || {}, props);
         let newState: ChartCanvasState<TXAxis>;
@@ -527,7 +550,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         }
     }
 
-    public subscribe = (id: string, rest: any) => {
+    public subscribe = (id: string | number, rest: any) => {
         const {
             getPanConditions = functor({
                 draggable: false,
@@ -542,7 +565,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         });
     };
 
-    public unsubscribe = (id: string) => {
+    public unsubscribe = (id: string | number) => {
         this.subscriptions = this.subscriptions.filter((each) => each.id !== id);
     };
 
@@ -550,20 +573,20 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         return this.subscriptions.map((each) => each.getPanConditions());
     };
 
-    public setCursorClass = (className: string) => {
+    public setCursorClass = (className: string | null | undefined) => {
         this.eventCaptureRef.current?.setCursorClass(className);
     };
 
-    public amIOnTop = (id: string) => {
+    public amIOnTop = (id: string | number) => {
         const dragableComponents = this.subscriptions.filter((each) => each.getPanConditions().draggable);
 
         return dragableComponents.length > 0 && last(dragableComponents).id === id;
     };
 
     public handleContextMenu = (mouseXY: number[], e: React.MouseEvent) => {
-        const { xAccessor, chartConfig, plotData, xScale } = this.state;
+        const { xAccessor, chartConfigs, plotData, xScale } = this.state;
 
-        const currentCharts = getCurrentCharts(chartConfig, mouseXY);
+        const currentCharts = getCurrentCharts(chartConfigs, mouseXY);
 
         const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
 
@@ -583,7 +606,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             xAccessor,
             displayXAccessor,
             xScale: initialXScale,
-            chartConfig: initialChartConfig,
+            chartConfigs: initialChartConfig,
             plotData: initialPlotData,
         } = this.state;
 
@@ -601,7 +624,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             | ScaleContinuousNumeric<number, number>
             | ScaleTime<number, number>;
 
-        const chartConfig = getChartConfigWithUpdatedYScales(
+        const chartConfigs = getChartConfigWithUpdatedYScales(
             initialChartConfig,
             { plotData, xAccessor, displayXAccessor, fullData },
             updatedScale.domain(),
@@ -610,7 +633,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         return {
             xScale: updatedScale,
             plotData,
-            chartConfig,
+            chartConfigs,
         };
     };
 
@@ -619,7 +642,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
 
         const {
             xScale: initialXScale,
-            chartConfig: initialChartConfig,
+            chartConfigs: initialChartConfig,
             plotData: initialPlotData,
             xAccessor,
             displayXAccessor,
@@ -656,7 +679,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
 
         const mouseXY = finalPinch.touch1Pos;
 
-        const chartConfig = getChartConfigWithUpdatedYScales(
+        const chartConfigs = getChartConfigWithUpdatedYScales(
             initialChartConfig,
             { plotData, xAccessor, displayXAccessor, fullData },
             updatedScale.domain(),
@@ -665,7 +688,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         const currentItem = getCurrentItem(updatedScale, xAccessor, mouseXY, plotData);
 
         return {
-            chartConfig,
+            chartConfigs,
             xScale: updatedScale,
             plotData,
             mouseXY,
@@ -758,10 +781,10 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             .map((x) => cx + (x - cx) * c)
             .map((x) => initialXScale.invert(x));
 
-        const { xScale, plotData, chartConfig } = this.calculateStateForDomain(newDomain);
+        const { xScale, plotData, chartConfigs } = this.calculateStateForDomain(newDomain);
 
         const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
-        const currentCharts = getCurrentCharts(chartConfig, mouseXY);
+        const currentCharts = getCurrentCharts(chartConfigs, mouseXY);
 
         this.clearThreeCanvas();
 
@@ -784,7 +807,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             {
                 xScale,
                 plotData,
-                chartConfig,
+                chartConfigs,
                 mouseXY,
                 currentCharts,
                 currentItem,
@@ -799,7 +822,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             {
                 xScale,
                 plotData,
-                chartConfig,
+                chartConfigs,
             },
             () => {
                 if (scale_start < data_start) {
@@ -817,7 +840,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
     };
 
     public xAxisZoom = (newDomain: any) => {
-        const { xScale, plotData, chartConfig } = this.calculateStateForDomain(newDomain);
+        const { xScale, plotData, chartConfigs } = this.calculateStateForDomain(newDomain);
         this.clearThreeCanvas();
 
         const { xAccessor, fullData } = this.state;
@@ -835,7 +858,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             {
                 xScale,
                 plotData,
-                chartConfig,
+                chartConfigs,
             },
             () => {
                 if (scale_start < data_start) {
@@ -854,8 +877,8 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
 
     public yAxisZoom = (chartId: string, newDomain: any) => {
         this.clearThreeCanvas();
-        const { chartConfig: initialChartConfig } = this.state;
-        const chartConfig = initialChartConfig.map((each: any) => {
+        const { chartConfigs: initialChartConfig } = this.state;
+        const chartConfigs = initialChartConfig.map((each: any) => {
             if (each.id === chartId) {
                 const { yScale } = each;
                 return {
@@ -869,7 +892,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         });
 
         this.setState({
-            chartConfig,
+            chartConfigs,
         });
     };
 
@@ -883,7 +906,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         });
     }
 
-    public draw = (props: any) => {
+    public draw = (props: { trigger: string } | { force: boolean }) => {
         this.subscriptions.forEach((each) => {
             if (isDefined(each.draw)) {
                 each.draw(props);
@@ -897,12 +920,12 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
     };
 
     public panHelper = (
-        mouseXY: number[],
+        mouseXY: [number, number],
         initialXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         { dx, dy }: { dx: number; dy: number },
         chartsToPan: string[],
     ) => {
-        const { xAccessor, displayXAccessor, chartConfig: initialChartConfig, filterData, fullData } = this.state;
+        const { xAccessor, displayXAccessor, chartConfigs: initialChartConfig, filterData, fullData } = this.state;
         const { postCalculator = ChartCanvas.defaultProps.postCalculator } = this.props;
 
         const newDomain = initialXScale
@@ -924,7 +947,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
 
         const currentItem = getCurrentItem(updatedScale, xAccessor, mouseXY, plotData);
 
-        const chartConfig = getChartConfigWithUpdatedYScales(
+        const chartConfigs = getChartConfigWithUpdatedYScales(
             initialChartConfig,
             { plotData, xAccessor, displayXAccessor, fullData },
             updatedScale.domain(),
@@ -932,12 +955,12 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             chartsToPan,
         );
 
-        const currentCharts = getCurrentCharts(chartConfig, mouseXY);
+        const currentCharts = getCurrentCharts(chartConfigs, mouseXY);
 
         return {
             xScale: updatedScale,
             plotData,
-            chartConfig,
+            chartConfigs,
             mouseXY,
             currentCharts,
             currentItem,
@@ -945,44 +968,45 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
     };
 
     public handlePan = (
-        mousePosition: number[],
+        mousePosition: [number, number],
         panStartXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         dxdy: { dx: number; dy: number },
         chartsToPan: string[],
         e: React.MouseEvent,
     ) => {
-        if (!this.waitingForPanAnimationFrame) {
-            this.waitingForPanAnimationFrame = true;
-
-            this.hackyWayToStopPanBeyondBounds__plotData =
-                this.hackyWayToStopPanBeyondBounds__plotData ?? this.state.plotData;
-            this.hackyWayToStopPanBeyondBounds__domain =
-                this.hackyWayToStopPanBeyondBounds__domain ?? this.state.xScale!.domain();
-
-            const newState = this.panHelper(mousePosition, panStartXScale, dxdy, chartsToPan);
-
-            this.hackyWayToStopPanBeyondBounds__plotData = newState.plotData;
-            this.hackyWayToStopPanBeyondBounds__domain = newState.xScale.domain();
-
-            this.panInProgress = true;
-
-            this.triggerEvent("pan", newState, e);
-
-            this.mutableState = {
-                mouseXY: newState.mouseXY,
-                currentItem: newState.currentItem,
-                currentCharts: newState.currentCharts,
-            };
-            requestAnimationFrame(() => {
-                this.waitingForPanAnimationFrame = false;
-                this.clearBothCanvas();
-                this.draw({ trigger: "pan" });
-            });
+        if (this.waitingForPanAnimationFrame) {
+            return;
         }
+        this.waitingForPanAnimationFrame = true;
+
+        this.hackyWayToStopPanBeyondBounds__plotData =
+            this.hackyWayToStopPanBeyondBounds__plotData ?? this.state.plotData;
+        this.hackyWayToStopPanBeyondBounds__domain =
+            this.hackyWayToStopPanBeyondBounds__domain ?? this.state.xScale!.domain();
+
+        const newState = this.panHelper(mousePosition, panStartXScale, dxdy, chartsToPan);
+
+        this.hackyWayToStopPanBeyondBounds__plotData = newState.plotData;
+        this.hackyWayToStopPanBeyondBounds__domain = newState.xScale.domain();
+
+        this.panInProgress = true;
+
+        this.triggerEvent("pan", newState, e);
+
+        this.mutableState = {
+            mouseXY: newState.mouseXY,
+            currentItem: newState.currentItem,
+            currentCharts: newState.currentCharts,
+        };
+        requestAnimationFrame(() => {
+            this.waitingForPanAnimationFrame = false;
+            this.clearBothCanvas();
+            this.draw({ trigger: "pan" });
+        });
     };
 
     public handlePanEnd = (
-        mousePosition: number[],
+        mousePosition: [number, number],
         panStartXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         dxdy: { dx: number; dy: number },
         chartsToPan: string[],
@@ -994,7 +1018,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
 
         this.panInProgress = false;
 
-        const { xScale, plotData, chartConfig } = state;
+        const { xScale, plotData, chartConfigs } = state;
 
         this.triggerEvent("panend", state, e);
 
@@ -1017,7 +1041,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
                 {
                     xScale,
                     plotData,
-                    chartConfig,
+                    chartConfigs,
                 },
                 () => {
                     if (scale_start < data_start) {
@@ -1049,40 +1073,37 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         );
     };
 
-    public handleMouseMove = (mouseXY: number[], _: string, e: any) => {
-        if (!this.waitingForMouseMoveAnimationFrame) {
-            this.waitingForMouseMoveAnimationFrame = true;
-
-            const { chartConfig, plotData, xScale, xAccessor } = this.state;
-
-            const currentCharts = getCurrentCharts(chartConfig, mouseXY);
-            const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
-            this.triggerEvent(
-                "mousemove",
-                {
-                    show: true,
-                    mouseXY,
-                    // prevMouseXY is used in interactive components
-                    prevMouseXY: this.prevMouseXY,
-                    currentItem,
-                    currentCharts,
-                },
-                e,
-            );
-
-            this.prevMouseXY = mouseXY;
-            this.mutableState = {
+    public handleMouseMove = (mouseXY: [number, number], _: string, e: any) => {
+        if (this.waitingForMouseMoveAnimationFrame) {
+            return;
+        }
+        this.waitingForMouseMoveAnimationFrame = true;
+        const { chartConfigs, plotData, xScale, xAccessor } = this.state;
+        const currentCharts = getCurrentCharts(chartConfigs, mouseXY);
+        const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
+        this.triggerEvent(
+            "mousemove",
+            {
+                show: true,
                 mouseXY,
+                // prevMouseXY is used in interactive components
+                prevMouseXY: this.prevMouseXY,
                 currentItem,
                 currentCharts,
-            };
-
-            requestAnimationFrame(() => {
-                this.clearMouseCanvas();
-                this.draw({ trigger: "mousemove" });
-                this.waitingForMouseMoveAnimationFrame = false;
-            });
-        }
+            },
+            e,
+        );
+        this.prevMouseXY = mouseXY;
+        this.mutableState = {
+            mouseXY,
+            currentItem,
+            currentCharts,
+        };
+        requestAnimationFrame(() => {
+            this.clearMouseCanvas();
+            this.draw({ trigger: "mousemove" });
+            this.waitingForMouseMoveAnimationFrame = false;
+        });
     };
 
     public handleMouseLeave = (e: any) => {
@@ -1095,10 +1116,13 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         this.triggerEvent("dragstart", { startPos }, e);
     };
 
-    public handleDrag = ({ startPos, mouseXY }: { startPos: number[]; mouseXY: number[] }, e: React.MouseEvent) => {
-        const { chartConfig, plotData, xScale, xAccessor } = this.state;
+    public handleDrag = (
+        { startPos, mouseXY }: { startPos: [number, number]; mouseXY: [number, number] },
+        e: React.MouseEvent,
+    ) => {
+        const { chartConfigs, plotData, xScale, xAccessor } = this.state;
 
-        const currentCharts = getCurrentCharts(chartConfig, mouseXY);
+        const currentCharts = getCurrentCharts(chartConfigs, mouseXY);
         const currentItem = getCurrentItem(xScale, xAccessor, mouseXY, plotData);
 
         this.triggerEvent(
@@ -1147,7 +1171,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
     };
 
     // TODO: Memoize this
-    public getContextValues() {
+    public getContextValues(): ChartCanvasContextType<TXAxis> {
         const dimensions = getDimensions(this.props);
         return {
             chartId: -1,
@@ -1155,7 +1179,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             plotData: this.state.plotData,
             width: dimensions.width,
             height: dimensions.height,
-            chartConfig: this.state.chartConfig,
+            chartConfigs: this.state.chartConfigs,
             xScale: this.state.xScale,
             xAccessor: this.state.xAccessor,
             displayXAccessor: this.state.displayXAccessor,
@@ -1175,9 +1199,9 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
     }
 
     public resetYDomain = (chartId?: string) => {
-        const { chartConfig } = this.state;
+        const { chartConfigs } = this.state;
         let changed = false;
-        const newChartConfig = chartConfig.map((each: any) => {
+        const newChartConfig = chartConfigs.map((each: any) => {
             if (
                 (isNotDefined(chartId) || each.id === chartId) &&
                 !shallowEqual(each.yScale.domain(), each.realYDomain)
@@ -1195,7 +1219,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         if (changed) {
             this.clearThreeCanvas();
             this.setState({
-                chartConfig: newChartConfig,
+                chartConfigs: newChartConfig,
             });
         }
     };
@@ -1222,7 +1246,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
             mouseMoveEvent,
         } = this.props;
 
-        const { plotData, xScale, xAccessor, chartConfig } = this.state;
+        const { plotData, xScale, xAccessor, chartConfigs } = this.state;
 
         const dimensions = getDimensions(this.props);
 
@@ -1258,7 +1282,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
                             <clipPath id="chart-area-clip">
                                 <rect x="0" y="0" width={dimensions.width} height={dimensions.height} />
                             </clipPath>
-                            {chartConfig.map((each: any, idx: number) => (
+                            {chartConfigs.map((each: any, idx: number) => (
                                 <clipPath key={idx} id={`chart-area-clip-${each.id}`}>
                                     <rect x="0" y="0" width={each.width} height={each.height} />
                                 </clipPath>
@@ -1273,7 +1297,7 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
                                 pan={!disablePan && interaction}
                                 width={dimensions.width}
                                 height={dimensions.height}
-                                chartConfig={chartConfig}
+                                chartConfig={chartConfigs}
                                 xScale={xScale!}
                                 xAccessor={xAccessor}
                                 focus={defaultFocus}

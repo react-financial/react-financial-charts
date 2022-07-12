@@ -14,7 +14,7 @@ import {
     TOUCHMOVE,
     touchPosition,
 } from "./utils";
-import { getCurrentCharts } from "./utils/ChartDataUtil";
+import { ChartConfig, getCurrentCharts } from "./utils/ChartDataUtil";
 
 interface EventCaptureProps {
     readonly mouseMove: boolean;
@@ -25,7 +25,7 @@ interface EventCaptureProps {
     readonly useCrossHairStyleCursor?: boolean;
     readonly width: number;
     readonly height: number;
-    readonly chartConfig: { origin: number[]; height: number }[];
+    readonly chartConfig: ChartConfig[];
     readonly xAccessor: any; // func
     readonly xScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
     readonly disableInteraction: boolean;
@@ -34,10 +34,17 @@ interface EventCaptureProps {
     readonly onContextMenu?: (mouseXY: number[], event: React.MouseEvent) => void;
     readonly onDoubleClick?: (mouseXY: number[], event: React.MouseEvent) => void;
     readonly onDragStart?: (details: { startPos: number[] }, event: React.MouseEvent) => void;
-    readonly onDrag?: (details: { startPos: number[]; mouseXY: number[] }, event: React.MouseEvent) => void;
+    readonly onDrag?: (
+        details: { startPos: [number, number]; mouseXY: [number, number] },
+        event: React.MouseEvent,
+    ) => void;
     readonly onDragComplete?: (details: { mouseXY: number[] }, event: React.MouseEvent) => void;
-    readonly onMouseDown?: (mouseXY: number[], currentCharts: string[], event: React.MouseEvent) => void;
-    readonly onMouseMove?: (touchXY: number[], eventType: string, event: React.MouseEvent | React.TouchEvent) => void;
+    readonly onMouseDown?: (mouseXY: [number, number], currentCharts: string[], event: React.MouseEvent) => void;
+    readonly onMouseMove?: (
+        touchXY: [number, number],
+        eventType: string,
+        event: React.MouseEvent | React.TouchEvent,
+    ) => void;
     readonly onMouseEnter?: (event: React.MouseEvent) => void;
     readonly onMouseLeave?: (event: React.MouseEvent) => void;
     readonly onPinchZoom?: (
@@ -64,14 +71,14 @@ interface EventCaptureProps {
         e: React.TouchEvent,
     ) => void;
     readonly onPan?: (
-        mouseXY: number[],
+        mouseXY: [number, number],
         panStartXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         panOrigin: { dx: number; dy: number },
         chartsToPan: string[],
         e: React.MouseEvent,
     ) => void;
     readonly onPanEnd?: (
-        mouseXY: number[],
+        mouseXY: [number, number],
         panStartXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>,
         panOrigin: { dx: number; dy: number },
         chartsToPan: string[],
@@ -83,7 +90,7 @@ interface EventCaptureProps {
 interface EventCaptureState {
     cursorOverrideClass?: string;
     dragInProgress?: boolean;
-    dragStartPosition?: number[];
+    dragStartPosition?: [number, number];
     panInProgress: boolean;
     panStart?: {
         panStartXScale: ScaleContinuousNumeric<number, number> | ScaleTime<number, number>;
@@ -114,7 +121,7 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
     private dy?: number = 0;
     private dragHappened?: boolean;
     private focus?: boolean;
-    private lastNewPos?: number[];
+    private lastNewPos?: [number, number];
     private mouseInside = false;
     private mouseInteraction = true;
     private panEndTimeout?: number;
@@ -657,10 +664,10 @@ export class EventCapture extends React.Component<EventCaptureProps, EventCaptur
         });
     };
 
-    public setCursorClass = (cursorOverrideClass: string) => {
+    public setCursorClass = (cursorOverrideClass: string | undefined | null) => {
         if (cursorOverrideClass !== this.state.cursorOverrideClass) {
             this.setState({
-                cursorOverrideClass,
+                cursorOverrideClass: cursorOverrideClass === null ? undefined : cursorOverrideClass,
             });
         }
     };

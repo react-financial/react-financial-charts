@@ -58,7 +58,7 @@ export class Label extends React.Component<LabelProps> {
 
         const { xScale, chartConfig, xAccessor } = moreProps;
 
-        const yScale = Array.isArray(chartConfig) ? undefined : chartConfig.yScale;
+        const yScale = Array.isArray(chartConfig) || !chartConfig ? undefined : chartConfig.yScale;
 
         const { xPos, yPos, fillStyle, text } = this.helper(moreProps, xAccessor, xScale, yScale);
 

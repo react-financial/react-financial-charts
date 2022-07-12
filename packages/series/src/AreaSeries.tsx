@@ -14,7 +14,7 @@ export interface AreaSeriesProps {
         | ((yScale: ScaleContinuousNumeric<number, number>, d: [number, number], moreProps: any) => number);
     readonly canvasClip?: (context: CanvasRenderingContext2D, moreProps: any) => void;
     /**
-     * Wether to connect the area between undefined data points.
+     * Whether to connect the area between undefined data points.
      */
     readonly connectNulls?: boolean;
     /**

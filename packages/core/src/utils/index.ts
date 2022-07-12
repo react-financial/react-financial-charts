@@ -1,3 +1,4 @@
+import React from "react";
 export { default as zipper } from "./zipper";
 export { default as slidingWindow } from "./slidingWindow";
 export * from "./closestItem";
@@ -100,7 +101,7 @@ export function last(array: any[], accessor?: any) {
     return length ? array[length - 1] : undefined;
 }
 
-export const isDefined = <T>(d: T) => {
+export const isDefined = <T>(d: T): d is NonNullable<T> => {
     return d !== null && d !== undefined;
 };
 

@@ -150,9 +150,9 @@ export function getNewChartConfig(innerDimension: any, children: any, existingCh
     }).filter((each: any) => each !== undefined);
 }
 
-export function getCurrentCharts(chartConfig: any, mouseXY: number[]) {
+export function getCurrentCharts(chartConfig: ChartConfig[], mouseXY: number[]) {
     const currentCharts = chartConfig
-        .filter((eachConfig: any) => {
+        .filter((eachConfig) => {
             const top = eachConfig.origin[1];
             const bottom = top + eachConfig.height;
             return mouseXY[1] > top && mouseXY[1] < bottom;

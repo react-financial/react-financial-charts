@@ -14,6 +14,8 @@ extends:
   - "prettier/@typescript-eslint"
   - "plugin:prettier/recommended"
   - "plugin:jest/recommended"
+  - "plugin:import/warnings"
+  - "plugin:import/typescript"
 rules:
   "@typescript-eslint/explicit-member-accessibility": error
   "@typescript-eslint/explicit-module-boundary-types": off
@@ -33,6 +35,9 @@ rules:
   "no-multiple-empty-lines": error
   "no-var": error
   "prefer-rest-params": 0
+  "import/extensions":
+    - 2
+    - "always"
 settings:
   react:
     version: detect

@@ -67,7 +67,7 @@ npm install react-financial-charts
 
 Refer to [CONTRIBUTING.md](./CONTRIBUTING.md)
 
-This project is a mono-repo that uses [Lerna](https://lernajs.io/) to manage dependencies between packages.
+This project is a mono-repo that uses [Lerna](https://lerna.js.org/) to manage dependencies between packages.
 
 To get started run:
 
@@ -98,8 +98,8 @@ npm start
 - [x] Split project into multiple packages
 - [x] Fix issues with empty datasets
 - [x] Correct all class props
-- [ ] Migrate to new React Context API
-- [ ] Remove all UNSAFE methods
+- [x] Migrate to new React Context API
+- [x] Remove all UNSAFE methods
 - [ ] Add documentation to storybook
 - [ ] Add full test suite
 

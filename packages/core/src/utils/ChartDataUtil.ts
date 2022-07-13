@@ -1,9 +1,8 @@
 import { extent } from "d3-array";
-import { ScaleContinuousNumeric, ScaleTime } from "d3-scale";
+import { ScaleContinuousNumeric, scaleLinear, ScaleTime } from "d3-scale";
 import flattenDeep from "lodash.flattendeep";
 import * as React from "react";
-
-import { ChartDefaultConfig, ChartProps } from "../Chart";
+import type { ChartProps } from "../Chart";
 
 import { functor, getClosestItem, isNotDefined, isObject, last, mapObject, shallowEqual, zipper } from "./index";
 
@@ -30,6 +29,16 @@ export interface ChartConfig {
     readonly height: number;
     mouseCoordinates?: { at: string; format: () => unknown };
 }
+
+export const ChartDefaultConfig = {
+    flipYScale: false,
+    id: 0,
+    origin: [0, 0],
+    padding: 0,
+    yPan: true,
+    yPanEnabled: false,
+    yScale: scaleLinear(),
+};
 
 export function getChartOrigin(origin: any, contextWidth: number, contextHeight: number) {
     const originCoordinates = typeof origin === "function" ? origin(contextWidth, contextHeight) : origin;

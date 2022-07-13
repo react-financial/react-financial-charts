@@ -1,7 +1,7 @@
-import { ScaleContinuousNumeric, scaleLinear } from "d3-scale";
+import { ScaleContinuousNumeric } from "d3-scale";
 import * as React from "react";
 import { ChartCanvasContext, chartCanvasContextDefaultValue, ChartCanvasContextType } from "./ChartCanvas";
-import { ChartConfig } from "./utils/ChartDataUtil";
+import type { ChartConfig } from "./utils/ChartDataUtil";
 
 export type ChartContextType = Omit<ChartCanvasContextType<number | Date>, "chartConfig"> & {
     chartConfig: ChartConfig;
@@ -110,15 +110,5 @@ export const Chart = React.memo((props: React.PropsWithChildren<ChartProps>) => 
         </ChartContext.Provider>
     );
 });
-
-export const ChartDefaultConfig = {
-    flipYScale: false,
-    id: 0,
-    origin: [0, 0],
-    padding: 0,
-    yPan: true,
-    yPanEnabled: false,
-    yScale: scaleLinear(),
-};
 
 Chart.displayName = "Chart";

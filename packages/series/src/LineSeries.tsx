@@ -5,6 +5,7 @@ import {
     getAxisCanvas,
     getMouseCanvas,
     GenericChartComponent,
+    MoreProps,
 } from "@react-financial-charts/core";
 import { line, CurveFactoryLineOnly, CurveFactory } from "d3-shape";
 import * as React from "react";
@@ -126,7 +127,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
         );
     }
 
-    private readonly drawOnCanvas = (lineDash?: number[]) => (ctx: CanvasRenderingContext2D, moreProps: any) => {
+    private readonly drawOnCanvas = (lineDash?: number[]) => (ctx: CanvasRenderingContext2D, moreProps: MoreProps) => {
         const {
             connectNulls,
             yAccessor,
@@ -138,13 +139,12 @@ export class LineSeries extends React.Component<LineSeriesProps> {
             strokeWidth = LineSeries.defaultProps.strokeWidth,
         } = this.props;
 
-        const {
-            xAccessor,
-            xScale,
-            chartConfig: { yScale },
-            plotData,
-            hovering,
-        } = moreProps;
+        const { xAccessor, xScale, chartConfig, plotData, hovering } = moreProps;
+        if (!chartConfig) {
+            console.warn("LineSeries received no chartConfig, is it inside of a Chart?");
+            return;
+        }
+        const { yScale } = chartConfig;
 
         if (canvasClip !== undefined) {
             ctx.save();
@@ -163,7 +163,7 @@ export class LineSeries extends React.Component<LineSeriesProps> {
 
         const dataSeries = line()
             .x((d) => Math.round(xScale(xAccessor(d))))
-            .y((d) => Math.round(yScale(yAccessor(d))));
+            .y((d) => Math.round(yScale(yAccessor(d)!)));
 
         if (curve !== undefined) {
             dataSeries.curve(curve);

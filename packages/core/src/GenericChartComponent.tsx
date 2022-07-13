@@ -85,7 +85,7 @@ export const GenericChartComponent = React.memo(
         }, []);
 
         const updateMoreProps = useCallback(
-            (newMoreProps: MoreProps | undefined, moreProps: MoreProps) => {
+            (newMoreProps: Partial<MoreProps> | undefined, moreProps: MoreProps) => {
                 const { chartConfigs: chartConfigList } = newMoreProps || moreProps;
                 if (chartConfigList && Array.isArray(chartConfigList)) {
                     const { chartId } = context;

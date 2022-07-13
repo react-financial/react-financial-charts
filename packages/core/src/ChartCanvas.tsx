@@ -13,7 +13,7 @@ import {
 import { EventCapture } from "./EventCapture";
 import { CanvasContainer, ICanvasContexts } from "./CanvasContainer";
 import evaluator from "./utils/evaluator";
-import { MoreProps } from "./GenericComponent";
+import type { MoreProps } from "./GenericComponent";
 
 const CANDIDATES_FOR_RESET = ["seriesName"];
 

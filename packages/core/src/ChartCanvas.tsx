@@ -512,8 +512,15 @@ export class ChartCanvas<TXAxis extends number | Date> extends React.Component<
         return null;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    public componentDidUpdate() {}
+    public componentDidUpdate(prevProps: ChartCanvasProps<TXAxis>) {
+        if (prevProps.data !== this.props.data) {
+            this.triggerEvent("dataupdated", {
+                chartConfigs: this.state.chartConfigs,
+                xScale: this.state.xScale,
+                plotData: this.state.plotData,
+            });
+        }
+    }
 
     public getMutableState = () => {
         return this.mutableState;

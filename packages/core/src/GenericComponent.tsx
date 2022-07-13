@@ -14,6 +14,7 @@ import { ChartCanvasContext } from "./ChartCanvas";
 import { useEvent } from "./useEvent";
 import { ChartConfig } from "./utils/ChartDataUtil";
 import { ChartContext } from "./Chart";
+import { ScaleContinuousNumeric } from "d3-scale";
 
 const aliases: Record<string, string> = {
     mouseleave: "mousemove", // to draw interactive after mouse exit
@@ -31,7 +32,7 @@ const aliases: Record<string, string> = {
 
 export interface GenericComponentProps {
     readonly svgDraw?: (moreProps: any) => React.ReactNode;
-    readonly canvasDraw?: (ctx: CanvasRenderingContext2D, moreProps: any) => void;
+    readonly canvasDraw?: (ctx: CanvasRenderingContext2D, moreProps: MoreProps) => void;
     readonly canvasToDraw?: (contexts: ICanvasContexts) => CanvasRenderingContext2D | undefined;
     readonly clip?: boolean;
     readonly disablePan?: boolean;
@@ -60,7 +61,7 @@ export interface GenericComponentProps {
     readonly shouldTypeProceed?: (type: string, moreProps: MoreProps) => boolean;
     readonly preCanvasDraw?: (ctx: CanvasRenderingContext2D, moreProps: MoreProps) => void;
     readonly postCanvasDraw?: (ctx: CanvasRenderingContext2D, moreProps: MoreProps) => void;
-    readonly updateMoreProps?: (newMoreProps: MoreProps | undefined, moreProps: MoreProps) => void;
+    readonly updateMoreProps?: (newMoreProps: Partial<MoreProps> | undefined, moreProps: MoreProps) => void;
     readonly getMoreProps?: (moreProps: MoreProps) => Partial<MoreProps>;
 }
 
@@ -74,7 +75,9 @@ export interface MoreProps {
     chartConfig?: ChartConfig;
     fullData: any[];
     plotData: any[];
+    xAccessor: (datum: any) => any;
     xScale: Function;
+    yScale?: ScaleContinuousNumeric<number, number>;
 }
 
 export interface GenericComponentRef {
@@ -101,15 +104,19 @@ export const GenericComponent = React.memo(
             fullData: context.fullData,
             plotData: context.plotData,
             xScale: context.xScale,
+            xAccessor: context.xAccessor,
         });
         const dragInProgressRef = useRef(false);
         const evaluationInProgressRef = useRef(false);
         const iSetTheCursorClassRef = useRef(false);
 
-        const updateMoreProps = useCallback((newMoreProps: MoreProps | undefined, moreProps: MoreProps) => {
-            Object.assign(moreProps, newMoreProps || {});
-            props.updateMoreProps?.(newMoreProps, moreProps);
-        }, []);
+        const updateMoreProps = useCallback(
+            (newMoreProps: Partial<MoreProps> | undefined, moreProps: MoreProps) => {
+                Object.assign(moreProps, newMoreProps || {});
+                props.updateMoreProps?.(newMoreProps, moreProps);
+            },
+            [props.updateMoreProps],
+        );
 
         const getMoreProps = useCallback(() => {
             const { chartConfigs, xAccessor, displayXAccessor, width, height, fullData } = context;
@@ -117,13 +124,13 @@ export const GenericComponent = React.memo(
             const otherMoreProps = props.getMoreProps?.(moreProps.current);
 
             return {
-                xAccessor,
                 displayXAccessor,
                 width,
                 height,
                 ...moreProps.current,
                 fullData,
                 chartConfigs,
+                xAccessor,
                 ...otherMoreProps,
             };
         }, [context, props.getMoreProps]);

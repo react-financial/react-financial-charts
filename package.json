@@ -3,7 +3,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "postinstall": "npm run bootstrap",
+    "postinstall": "patch-package && npm run bootstrap",
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "build:annotations": "lerna run build --scope='*/annotations'",
@@ -74,6 +74,7 @@
     "jest": "^26.6.3",
     "lerna": "^3.22.1",
     "npm-run-all": "^4.1.5",
+    "patch-package": "^6.4.7",
     "prettier": "^2.2.1",
     "react-docgen-typescript-loader": "^3.7.2",
     "rimraf": "^3.0.2",

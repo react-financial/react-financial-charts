@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-virtualized-auto-sizer/package.json b/node_modules/react-virtualized-auto-sizer/package.json
+index 20ed47c..1ba7ed6 100644
+--- a/node_modules/react-virtualized-auto-sizer/package.json
++++ b/node_modules/react-virtualized-auto-sizer/package.json
+@@ -55,8 +55,8 @@
+     "**/*.js": "eslint --max-warnings 0"
+   },
+   "peerDependencies": {
+-    "react": "^15.3.0 || ^16.0.0-alpha || ^17.0.0",
+-    "react-dom": "^15.3.0 || ^16.0.0-alpha || ^17.0.0"
++    "react": "^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0",
++    "react-dom": "^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0"
+   },
+   "devDependencies": {
+     "babel-core": "^6.26.0",

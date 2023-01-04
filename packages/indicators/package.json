@@ -1,6 +1,6 @@
 {
   "name": "@react-financial-charts/indicators",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Indicators for react-financial-charts",
   "publishConfig": {
     "access": "public"

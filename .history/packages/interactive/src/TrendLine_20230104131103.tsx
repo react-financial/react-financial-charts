@@ -124,7 +124,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                         ? { ...appearance, ...each.appearance }
                         : appearance;
 
-                    const hoverTextWithDefault = each.hoverText ? {...TrendLine.defaultProps.hoverText, ...each.hoverText} : {
+                    const hoverTextWithDefault = {
                         ...TrendLine.defaultProps.hoverText,
                         ...hoverText,
                     };

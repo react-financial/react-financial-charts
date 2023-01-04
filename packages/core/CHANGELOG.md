@@ -3,64 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# 2.0.0 (2023-01-04)
-
-
-### Bug Fixes
-
-* adding module to type property in package.json ([1359ac6](https://github.com/reactivemarkets/react-financial-charts/commit/1359ac6e93d9638792c7bb478bba5fe1e5484a82)), closes [#520](https://github.com/reactivemarkets/react-financial-charts/issues/520)
-* ChartCanvas no longer uses UNSAFE_componentWillReceiveProps ([a9643a2](https://github.com/reactivemarkets/react-financial-charts/commit/a9643a2441d5d59a9587ef7f489613df6b0907fd))
-* Circular import causing use before initialization ([5921432](https://github.com/reactivemarkets/react-financial-charts/commit/592143285d23b1b0f8f82157ea86e76f296ec73f))
-* Data updates cause chart to immediately render with correct scale and data ([729d3c3](https://github.com/reactivemarkets/react-financial-charts/commit/729d3c3ddbec63c18b8f6f56a780cc51a31c9b01))
-* do not capture wheel when pan and zoom disabled ([357383b](https://github.com/reactivemarkets/react-financial-charts/commit/357383bbb823122806f6d7ec398bd885365bd908))
-* Fixed warning from React about using getSnapshotBeforeUpdate without componentDidUpdate ([5da4fd0](https://github.com/reactivemarkets/react-financial-charts/commit/5da4fd0430a916233d3e561f05f99c70266dcfac))
-* fixing scaling when data is discontinuous ([4b20255](https://github.com/reactivemarkets/react-financial-charts/commit/4b20255d05b4590c2a5fc196bf505c95a63431f0))
-* removing canvas gradients ([2205163](https://github.com/reactivemarkets/react-financial-charts/commit/220516356300c6c1c8528de3ca43e7ddaf8e5e66))
-* Resolved another circular dependency ([8ac704c](https://github.com/reactivemarkets/react-financial-charts/commit/8ac704c8a557413933513a2b69ff608990f168ff))
-* **core:** bug with panning on mobiles ([db34691](https://github.com/reactivemarkets/react-financial-charts/commit/db34691d2bf8eb00277d6653034b3541bc75940d)), closes [#459](https://github.com/reactivemarkets/react-financial-charts/issues/459)
-* **core:** CanvasContainer is now a PureComponent ([ec4c43e](https://github.com/reactivemarkets/react-financial-charts/commit/ec4c43e2a15dbf50d60d9547633c4dab44398fe5))
-* **core:** children can be undefined or null ([17aa844](https://github.com/reactivemarkets/react-financial-charts/commit/17aa844d19d87caf8b763cb07d3ea6ddc7c05d9c))
-* **core:** correcting bar width with continuous scales ([a967a18](https://github.com/reactivemarkets/react-financial-charts/commit/a967a18347be6b8ad11d50da579911c9bd2f97ee))
-* **core:** correcting xextents props ([ec80146](https://github.com/reactivemarkets/react-financial-charts/commit/ec80146bb171c21fd0daa41ac620b8081d6e6266))
-* **core:** correcting xExtents type ([d3607fe](https://github.com/reactivemarkets/react-financial-charts/commit/d3607fedccda783badd2214b9d2ec27fa2faca31))
-* **core:** correcting zoom anchor types ([052981a](https://github.com/reactivemarkets/react-financial-charts/commit/052981a9d7462c7c2e9bba4ae9486f1a1db14553))
-* **core:** displayXAccessor is optional ([d6a5dda](https://github.com/reactivemarkets/react-financial-charts/commit/d6a5dda949c5178a8213cabda23d1178d4ea155a))
-* **core:** removing colors ([ceb8217](https://github.com/reactivemarkets/react-financial-charts/commit/ceb8217e9c8795787565c3baa1cedc3e693dfb4c))
-* **core:** using type guard to check type of canvas children ([829ccfa](https://github.com/reactivemarkets/react-financial-charts/commit/829ccfacd11da678a5920c37309fc991130b19ea)), closes [#417](https://github.com/reactivemarkets/react-financial-charts/issues/417)
-* adding more prop types ([c3985d5](https://github.com/reactivemarkets/react-financial-charts/commit/c3985d5ee96fcbd5ad5a922df595d31930d0cee5))
-* correcting more props ([2b3c1e0](https://github.com/reactivemarkets/react-financial-charts/commit/2b3c1e093b12131b7a4bc1ed12fd8ea4c541ac4b))
-* correcting prop types and docs ([198f0a5](https://github.com/reactivemarkets/react-financial-charts/commit/198f0a54dae54075383c25dca67ff48d5e5a1b2a))
-* correcting zoomAnchor prop type ([981077b](https://github.com/reactivemarkets/react-financial-charts/commit/981077b1e6e08b7c22d75842c7df90e82711e038))
-* removing explict returns ([999b5ac](https://github.com/reactivemarkets/react-financial-charts/commit/999b5acb8d1669406e3d8be813d831e20151c87f))
-* updating prop types ([425b0b4](https://github.com/reactivemarkets/react-financial-charts/commit/425b0b459de229770e7608aff4f397b9bb00de5e))
-* **core:** fixing issues with empty data sets ([23c2458](https://github.com/reactivemarkets/react-financial-charts/commit/23c2458bfe55e97eef96f80030fe32b9cf5ac1e1))
-* **core:** fixing re-rendering of svg components ([af0f156](https://github.com/reactivemarkets/react-financial-charts/commit/af0f156c66cd302ec8a45ff6c49e4121385b3ca9))
-* **core:** only draw canvas if the draw function is defined ([354eb54](https://github.com/reactivemarkets/react-financial-charts/commit/354eb5448b8b09dfea1d4515829af4172da9dcc0))
-
-
-### Features
-
-* adding more prop types across all components ([efefd4d](https://github.com/reactivemarkets/react-financial-charts/commit/efefd4dc3000ffe5ad5e63380ab324ab1e232a67))
-* adding react 17 as peer dependency ([569209b](https://github.com/reactivemarkets/react-financial-charts/commit/569209b6eb00f3c93eae1b5a9e4f014c055c93c7)), closes [#468](https://github.com/reactivemarkets/react-financial-charts/issues/468)
-* Eliminated unsafe lifecycle methods, rewrote GenericComponent and GenericChartComponent ([7841001](https://github.com/reactivemarkets/react-financial-charts/commit/7841001b3c88df621361f638411f359af9cbab92))
-* exporting props from components for docs ([fbdaea5](https://github.com/reactivemarkets/react-financial-charts/commit/fbdaea506730b091f4f8f6da52fc030b44d1a6e1))
-* Migrated to new React context API ([bec345b](https://github.com/reactivemarkets/react-financial-charts/commit/bec345b62153ecdf5c01380a8e29ad7398daaafd))
-* **core:** adding onDoubleClick to Chart ([1b6498b](https://github.com/reactivemarkets/react-financial-charts/commit/1b6498b2fba108d930004ddbaaea6573692a1fb4))
-* **core:** replaced onLoadMore with onLoadBefore & onLoadAfter ([4957c32](https://github.com/reactivemarkets/react-financial-charts/commit/4957c32314db84131d3b34a8759dcc9ab28770c1))
-* **deps:** moving to d3 v6 ([8d371d2](https://github.com/reactivemarkets/react-financial-charts/commit/8d371d240bc7ac3db3e2f0037b3c0807e05b4749))
-
-
-* feat!: separating code into packages ([670537f](https://github.com/reactivemarkets/react-financial-charts/commit/670537fa280dddfbe921639a8e22a7c11d14e5f3))
-
-
-### BREAKING CHANGES
-
-* first stage of refactor breaking the code down.
-
-
-
-
-
 ## [1.3.1](https://github.com/reactivemarkets/react-financial-charts/compare/v1.3.0...v1.3.1) (2021-06-16)
 
 

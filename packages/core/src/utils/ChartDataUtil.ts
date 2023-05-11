@@ -227,7 +227,7 @@ export function getChartConfigWithUpdatedYScales(
     });
 
     const combine = zipper().combine(
-        (config: ChartConfig, { realYDomain, yDomainDY, prevYDomain }: typeof yDomains[number]): ChartConfig => {
+        (config: ChartConfig, { realYDomain, yDomainDY, prevYDomain }: (typeof yDomains)[number]): ChartConfig => {
             const { id, padding, height, yScale, yPan, flipYScale, yPanEnabled = false } = config;
 
             const another = chartsToPan !== undefined ? chartsToPan.indexOf(id) > -1 : true;

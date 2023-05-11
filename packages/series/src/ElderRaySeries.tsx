@@ -38,14 +38,8 @@ export class ElderRaySeries extends React.Component<ElderRaySeriesProps> {
     };
 
     public render() {
-        const {
-            className,
-            clip,
-            stroke,
-            straightLineStrokeStyle,
-            straightLineStrokeDasharray,
-            widthRatio,
-        } = this.props;
+        const { className, clip, stroke, straightLineStrokeStyle, straightLineStrokeDasharray, widthRatio } =
+            this.props;
 
         return (
             <g className={className}>

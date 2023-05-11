@@ -114,7 +114,11 @@ export class EachFibRetracement extends React.Component<EachFibRetracementProps,
 
                     const xyProvider = ({ xScale, chartConfig }: any) => {
                         const { yScale } = chartConfig;
-                        const { x1: lineX1, y1: lineY1, x2: lineX2 } = generateLine({
+                        const {
+                            x1: lineX1,
+                            y1: lineY1,
+                            x2: lineX2,
+                        } = generateLine({
                             type: lineType,
                             start: [line.x1, line.y],
                             end: [line.x2, line.y],

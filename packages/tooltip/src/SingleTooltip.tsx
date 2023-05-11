@@ -31,17 +31,8 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
      * Renders the value next to the label.
      */
     public renderValueNextToLabel() {
-        const {
-            origin,
-            yLabel,
-            yValue,
-            labelFill,
-            valueFill,
-            withShape,
-            fontSize,
-            fontFamily,
-            fontWeight,
-        } = this.props;
+        const { origin, yLabel, yValue, labelFill, valueFill, withShape, fontSize, fontFamily, fontWeight } =
+            this.props;
 
         return (
             <g transform={`translate(${origin[0]}, ${origin[1]})`} onClick={this.handleClick}>
@@ -64,17 +55,8 @@ export class SingleTooltip extends React.Component<SingleTooltipProps> {
      * Renders the value beneath the label.
      */
     public renderValueBeneathLabel() {
-        const {
-            origin,
-            yLabel,
-            yValue,
-            labelFill,
-            valueFill,
-            withShape,
-            fontSize,
-            fontFamily,
-            fontWeight,
-        } = this.props;
+        const { origin, yLabel, yValue, labelFill, valueFill, withShape, fontSize, fontFamily, fontWeight } =
+            this.props;
 
         return (
             <g transform={`translate(${origin[0]}, ${origin[1]})`} onClick={this.handleClick}>

@@ -42,8 +42,7 @@
     "d3-array": "^2.9.1",
     "d3-scale": "^3.2.3",
     "d3-selection": "^2.0.0",
-    "lodash.flattendeep": "^4.4.0",
-    "prop-types": "^15.7.2"
+    "lodash.flattendeep": "^4.4.0"
   },
   "peerDependencies": {
     "react": "^16.0.0 || ^17.0.0 || ^18.0.0",

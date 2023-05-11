@@ -21,4 +21,4 @@ You can run `npm run lint` to show any style issues separate from the build.
 
 ## Tests
 
-Tests are using jest, please see existing tests for recommended formatting.
+Tests are using storybook, please see existing tests for recommended formatting.

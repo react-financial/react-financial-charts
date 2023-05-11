@@ -90,15 +90,8 @@ export class LineSeries extends React.Component<LineSeriesProps> {
     };
 
     public render() {
-        const {
-            highlightOnHover,
-            onClick,
-            onContextMenu,
-            onDoubleClick,
-            onHover,
-            onUnHover,
-            strokeDasharray,
-        } = this.props;
+        const { highlightOnHover, onClick, onContextMenu, onDoubleClick, onHover, onUnHover, strokeDasharray } =
+            this.props;
 
         const hoverProps =
             highlightOnHover || onHover || onUnHover

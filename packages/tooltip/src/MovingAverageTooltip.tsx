@@ -22,17 +22,8 @@ export interface SingleMAToolTipProps {
 
 export class SingleMAToolTip extends React.Component<SingleMAToolTipProps> {
     public render() {
-        const {
-            color,
-            displayName,
-            fontSize,
-            fontFamily,
-            fontWeight,
-            textFill,
-            labelFill,
-            labelFontWeight,
-            value,
-        } = this.props;
+        const { color, displayName, fontSize, fontFamily, fontWeight, textFill, labelFill, labelFontWeight, value } =
+            this.props;
 
         const translate = "translate(" + this.props.origin[0] + ", " + this.props.origin[1] + ")";
 

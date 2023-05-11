@@ -115,9 +115,8 @@ export const chartCanvasContextDefaultValue: ChartCanvasContextType<number | Dat
     xAccessor: () => 0,
     xScale: noop,
 };
-export const ChartCanvasContext = React.createContext<ChartCanvasContextType<number | Date>>(
-    chartCanvasContextDefaultValue,
-);
+export const ChartCanvasContext =
+    React.createContext<ChartCanvasContextType<number | Date>>(chartCanvasContextDefaultValue);
 
 const getDimensions = <TXAxis extends number | Date>(props: ChartCanvasProps<TXAxis>) => {
     const { margin, height, width } = props;

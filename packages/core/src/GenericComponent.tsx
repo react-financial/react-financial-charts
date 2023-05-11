@@ -378,16 +378,8 @@ export class GenericComponent extends React.Component<GenericComponentProps, Gen
     }
 
     public getMoreProps() {
-        const {
-            xScale,
-            plotData,
-            chartConfigs,
-            morePropsDecorator,
-            xAccessor,
-            displayXAccessor,
-            width,
-            height,
-        } = this.context;
+        const { xScale, plotData, chartConfigs, morePropsDecorator, xAccessor, displayXAccessor, width, height } =
+            this.context;
 
         const { chartId, fullData } = this.context;
 

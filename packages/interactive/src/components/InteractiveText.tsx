@@ -82,17 +82,8 @@ export class InteractiveText extends React.Component<InteractiveTextProps> {
     };
 
     private readonly drawOnCanvas = (ctx: CanvasRenderingContext2D, moreProps: any) => {
-        const {
-            bgFillStyle,
-            bgStrokeWidth,
-            bgStroke,
-            textFill,
-            fontFamily,
-            fontSize,
-            fontStyle,
-            fontWeight,
-            text,
-        } = this.props;
+        const { bgFillStyle, bgStrokeWidth, bgStroke, textFill, fontFamily, fontSize, fontStyle, fontWeight, text } =
+            this.props;
 
         if (this.calculateTextWidth) {
             ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;

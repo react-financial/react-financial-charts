@@ -1,5 +1,5 @@
 import * as React from "react";
-import AutoSizer, { AutoSizerProps } from "react-virtualized-auto-sizer";
+import AutoSizer, { Props as AutoSizerProps } from "react-virtualized-auto-sizer";
 
 export interface WithSizeProps {
     readonly width: number;

@@ -1,29 +1,23 @@
 {
-  "packages": [
-    "packages/*"
-  ],
-  "version": "1.3.2",
-  "npmClient": "npm",
-  "useWorkspaces": true,
-  "command": {
-    "bootstrap": {
-      "hoist": true
+    "packages": ["packages/*"],
+    "version": "2.0.0",
+    "npmClient": "npm",
+    "useWorkspaces": true,
+    "command": {
+        "bootstrap": {
+            "hoist": true
+        },
+        "publish": {
+            "preDistTag": "next",
+            "noGitReset": true
+        },
+        "version": {
+            "allowBranch": "main",
+            "conventionalCommits": true,
+            "createRelease": "github",
+            "gitRemote": "upstream",
+            "message": "chore(release): publish %v"
+        }
     },
-    "publish": {
-      "preDistTag": "next",
-      "noGitReset": true
-    },
-    "version": {
-      "allowBranch": "main",
-      "conventionalCommits": true,
-      "createRelease": "github",
-      "gitRemote": "upstream",
-      "message": "chore(release): publish %v"
-    }
-  },
-  "ignoreChanges": [
-    "**/__fixtures__/**",
-    "**/__tests__/**",
-    "**/*.md"
-  ]
+    "ignoreChanges": ["**/__fixtures__/**", "**/__tests__/**", "**/*.md"]
 }

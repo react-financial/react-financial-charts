@@ -1,21 +1,21 @@
 {
-  "name": "@react-financial-charts/stories",
-  "version": "1.3.2",
-  "description": "Stories for react financial charts",
-  "private": true,
-  "author": "Reactive Markets",
-  "license": "MIT",
-  "scripts": {
-    "clean": "rimraf ../docs lib",
-    "docs": "build-storybook -c .storybook -o ../../docs",
-    "start": "start-storybook -p 4444"
-  },
-  "dependencies": {
-    "d3-dsv": "^2.0.0",
-    "d3-format": "^2.0.0",
-    "d3-time-format": "^3.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-financial-charts": "file:../charts"
-  }
+    "name": "@react-financial-charts/stories",
+    "version": "2.0.0",
+    "description": "Stories for react financial charts",
+    "private": true,
+    "author": "Reactive Markets",
+    "license": "MIT",
+    "scripts": {
+        "clean": "rimraf ../docs lib",
+        "docs": "build-storybook -c .storybook -o ../../docs",
+        "start": "start-storybook -p 4444"
+    },
+    "dependencies": {
+        "d3-dsv": "^2.0.0",
+        "d3-format": "^2.0.0",
+        "d3-time-format": "^3.0.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-financial-charts": "file:../charts"
+    }
 }

@@ -61,7 +61,8 @@ export default function () {
             d[0] !== undefined && d[1] !== undefined ? d[0] - d[1] : undefined,
         );
 
-        const averageDiff = signalEMA(diff);
+        const largerEMALen = Math.max(slow, fast);
+        const averageDiff = new Array(largerEMALen).concat(signalEMA(diff.slice(largerEMALen)));
 
         return zip(diff, averageDiff).map((d) => ({
             macd: d[0],

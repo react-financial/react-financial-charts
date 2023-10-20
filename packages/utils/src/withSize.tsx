@@ -7,7 +7,9 @@ export interface WithSizeProps {
 }
 
 export const withSize = (props?: Omit<AutoSizerProps, "children">) => {
-    return <TProps extends WithSizeProps>(OriginalComponent: React.ComponentClass<TProps>) => {
+    return <TProps extends WithSizeProps>(
+        OriginalComponent: React.ComponentClass<TProps> | React.FunctionComponent<TProps>,
+    ) => {
         return class WithSize extends React.Component<Omit<TProps, "width" | "height">> {
             public render() {
                 return (

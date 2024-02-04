@@ -153,6 +153,7 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                             onDragComplete={this.handleDragLineComplete}
                             edgeInteractiveCursor="react-financial-charts-move-cursor"
                             lineInteractiveCursor="react-financial-charts-move-cursor"
+                            onSelect={this.handleSelect}
                         />
                     );
                 })}
@@ -278,6 +279,19 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
                 index,
                 ...newXYValue,
             },
+        });
+    };
+
+    private readonly handleSelect = (_: React.MouseEvent, index: number | undefined, moreProps: any)  => {
+        const { trends, onSelect} = this.props;
+        const newTrends = trends.map((d, dIdx) => ({ ...d, selected: dIdx === index }));
+        this.setState({
+            trends: newTrends,
+        }, () => {
+            const { onSelect } = this.props;
+            if (onSelect !== undefined) {
+                onSelect(e, newTrends, moreProps);
+            }
         });
     };
 }

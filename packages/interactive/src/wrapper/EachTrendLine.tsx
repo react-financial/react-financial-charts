@@ -219,16 +219,20 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         onDragComplete(e, moreProps);
     };
 
-    private readonly handleEdge2DragStart = () => {
+    private readonly handleEdge2DragStart = (e) => {
+        const { index, onSelect } = this.props;
         this.setState({
             anchor: "edge1",
         });
+        onSelect(e, index)
     };
 
-    private readonly handleEdge1DragStart = () => {
+    private readonly handleEdge1DragStart = (e) => {
+        const { index, onSelect } = this.props;
         this.setState({
             anchor: "edge2",
         });
+        onSelect(e, index)
     };
 
     private readonly handleLineDrag = (e: React.MouseEvent, moreProps: any) => {
@@ -265,8 +269,8 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         });
     };
 
-    private readonly handleLineDragStart = () => {
-        const { x1Value, y1Value, x2Value, y2Value } = this.props;
+    private readonly handleLineDragStart = (e) => {
+        const { x1Value, y1Value, x2Value, y2Value, onSelect, index } = this.props;
 
         this.dragStart = {
             x1Value,
@@ -274,6 +278,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
             x2Value,
             y2Value,
         };
+        onSelect(e, index)
     };
 }
 

@@ -282,16 +282,19 @@ export class TrendLine extends React.Component<TrendLineProps, TrendLineState> {
         });
     };
 
-    private readonly handleSelect = (_: React.MouseEvent, index: number | undefined, moreProps: any)  => {
-        const { trends, onSelect} = this.props;
+    private readonly handleSelect = (e: React.MouseEvent, index: number | undefined, moreProps: any) => {
+        const { trends } = this.props;
         const newTrends = trends.map((d, dIdx) => ({ ...d, selected: dIdx === index }));
-        this.setState({
-            trends: newTrends,
-        }, () => {
-            const { onSelect } = this.props;
-            if (onSelect !== undefined) {
-                onSelect(e, newTrends, moreProps);
-            }
-        });
+        this.setState(
+            {
+                trends: newTrends,
+            },
+            () => {
+                const { onSelect } = this.props;
+                if (onSelect !== undefined) {
+                    onSelect(e, newTrends, moreProps);
+                }
+            },
+        );
     };
 }

@@ -19,7 +19,7 @@ export interface EachTrendLineProps {
     readonly onEdge1Drag: any; // func
     readonly onEdge2Drag: any; // func
     readonly onDragComplete?: (e: React.MouseEvent, moreProps: any) => void;
-    readonly onSelect: (e: React.MouseEvent, interactives: any[], moreProps: any) => void;
+    readonly onSelect: (e: React.MouseEvent, index: number | undefined, moreProps: any) => void;
     readonly r: number;
     readonly strokeOpacity: number;
     readonly defaultClassName?: string;
@@ -219,20 +219,20 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         onDragComplete(e, moreProps);
     };
 
-    private readonly handleEdge2DragStart = (e) => {
+    private readonly handleEdge2DragStart = (e: React.MouseEvent, moreProps: any) => {
         const { index, onSelect } = this.props;
         this.setState({
             anchor: "edge1",
         });
-        onSelect(e, index)
+        onSelect(e, index, moreProps);
     };
 
-    private readonly handleEdge1DragStart = (e) => {
+    private readonly handleEdge1DragStart = (e: React.MouseEvent, moreProps: any) => {
         const { index, onSelect } = this.props;
         this.setState({
             anchor: "edge2",
         });
-        onSelect(e, index)
+        onSelect(e, index, moreProps);
     };
 
     private readonly handleLineDrag = (e: React.MouseEvent, moreProps: any) => {
@@ -269,7 +269,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
         });
     };
 
-    private readonly handleLineDragStart = (e) => {
+    private readonly handleLineDragStart = (e: React.MouseEvent, moreProps: any) => {
         const { x1Value, y1Value, x2Value, y2Value, onSelect, index } = this.props;
 
         this.dragStart = {
@@ -278,7 +278,7 @@ export class EachTrendLine extends React.Component<EachTrendLineProps, EachTrend
             x2Value,
             y2Value,
         };
-        onSelect(e, index)
+        onSelect(e, index, moreProps);
     };
 }
 

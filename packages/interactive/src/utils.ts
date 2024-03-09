@@ -74,15 +74,18 @@ function getMouseXY(moreProps: any, [ox, oy]: any) {
 
 export function getMorePropsForChart(moreProps: any, chartId: any) {
     const { chartConfig: chartConfigList } = moreProps;
-    const chartConfig = chartConfigList.find((each: any) => each.id === chartId);
-
-    const { origin } = chartConfig;
-    const mouseXY = getMouseXY(moreProps, origin);
-    return {
-        ...moreProps,
-        chartConfig,
-        mouseXY,
-    };
+    if (chartConfigList && Array.isArray(chartConfigList)) {
+        const chartConfig = chartConfigList.find((each: any) => each.id === chartId);
+        if (chartConfig) {
+            const { origin } = chartConfig;
+            const mouseXY = getMouseXY(moreProps, origin);
+            return {
+                ...moreProps,
+                chartConfig,
+                mouseXY,
+            };
+        }
+    }
 }
 
 export function getSelected(interactives: any) {

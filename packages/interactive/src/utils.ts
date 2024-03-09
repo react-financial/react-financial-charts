@@ -84,6 +84,7 @@ export function getMorePropsForChart(moreProps: any, chartId: any) {
                 chartConfig,
                 mouseXY,
             };
+        }
     }
 }
 
